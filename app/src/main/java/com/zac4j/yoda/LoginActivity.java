@@ -3,6 +3,7 @@ package com.zac4j.yoda;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
@@ -25,6 +26,8 @@ public class LoginActivity extends AppCompatActivity implements WeiboAuthListene
   // default redirect url
   public static final String REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
 
+  private TextView mTokenView;
+
   private SsoHandler mSsoHandler;
   private final CompositeDisposable mDisposable = new CompositeDisposable();
 
@@ -32,25 +35,30 @@ public class LoginActivity extends AppCompatActivity implements WeiboAuthListene
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
 
+    mTokenView = (TextView) findViewById(R.id.token);
+
     AuthInfo authInfo = createAuthorizeInfo();
     mSsoHandler = new SsoHandler(this, authInfo);
 
     Oauth2AccessToken token = AccessTokenKeeper.readAccessToken(this);
     if (token.isSessionValid()) {
-      return;
+      mTokenView.setText(token.getToken());
+      System.out.println("token: " + token.getToken());
+    } else {
+      mSsoHandler.authorize(this);
     }
-    mSsoHandler.authorize(this);
   }
 
   private AuthInfo createAuthorizeInfo() {
     String scope = getWeiboScope();
-     return new AuthInfo(this, APP_KEY, REDIRECT_URL, scope);
+    return new AuthInfo(this, APP_KEY, REDIRECT_URL, scope);
   }
 
   private String getWeiboScope() {
     return "email,direct_messages_read,direct_messages_write,"
         + "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
-        + "follow_app_official_microblog," + "invitation_write";
+        + "follow_app_official_microblog,"
+        + "invitation_write";
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -91,10 +99,10 @@ public class LoginActivity extends AppCompatActivity implements WeiboAuthListene
   }
 
   @Override public void onWeiboException(WeiboException e) {
-
+    System.out.println("Weibo error: " + e);
   }
 
   @Override public void onCancel() {
-
+    LoginActivity.this.finish();
   }
 }
