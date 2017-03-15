@@ -1,4 +1,4 @@
-package com.zac4j.yoda;
+package com.zac4j.yoda.ui.login;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
+import com.zac4j.yoda.R;
 import com.zac4j.yoda.utils.Logger;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;

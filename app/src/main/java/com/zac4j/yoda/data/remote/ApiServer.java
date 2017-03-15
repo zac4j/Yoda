@@ -4,7 +4,6 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.zac4j.yoda.data.model.Weibo;
 import io.reactivex.Observable;
 import java.util.List;
-import java.util.Map;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
