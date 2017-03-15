@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public interface ApiServer {
 
-  String BASE_URL = "";
+  String BASE_URL = "https://api.weibo.com/2/";
 
   class Factory {
     public static ApiServer create() {
