@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/space.small"
+    >
+
+  <ImageView
+      android:id="@id/weibo_list_item_iv_avatar"
+      android:layout_width="@dimen/weibo_list_item_avatar_size"
+      android:layout_height="@dimen/weibo_list_item_avatar_size"
+      tools:src="@drawable/ic_avatar"
+      />
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginStart="@dimen/space.small"
+      android:layout_toEndOf="@id/weibo_list_item_iv_avatar"
+      android:orientation="vertical"
+      >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+      <TextView
+          android:id="@id/weibo_list_item_tv_nickname"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textAppearance="@style/TextAppearance.AppCompat"
+          tools:text="湾区日报"
+          />
+
+      <TextView
+          android:id="@id/weibo_list_item_tv_username"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="@dimen/space.small"
+          android:layout_marginStart="@dimen/space.small"
+          android:textAppearance="@style/TextAppearance.AppCompat.Small"
+          tools:text="wanquribao"
+          />
+
+      <TextView
+          android:id="@id/weibo_list_item_tv_posttime"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+          tools:text="4min"
+          />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@id/weibo_list_item_tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Would you like to have a library of swatches at your fingertips in Sketch? Check out this plugin!http://buff.ly/2lErpKy "
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+      <TextView
+          android:id="@id/weibo_list_item_tv_repost"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:drawablePadding="@dimen/space.very_small"
+          android:drawableStart="@drawable/ic_weibo_repost"
+          android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+          tools:text="100"
+          />
+
+      <TextView
+          android:id="@id/weibo_list_item_tv_reply"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="@dimen/space.small"
+          android:layout_marginStart="@dimen/space.small"
+          android:drawablePadding="@dimen/space.very_small"
+          android:drawableStart="@drawable/ic_weibo_reply"
+          android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+          tools:text="110"
+          />
+
+      <TextView
+          android:id="@id/weibo_list_item_tv_like"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:drawablePadding="@dimen/space.very_small"
+          android:drawableStart="@drawable/ic_weibo_like"
+          android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+          tools:text="120"
+          />
+
+    </LinearLayout>
+  </LinearLayout>
+</RelativeLayout>

@@ -1,9 +1,9 @@
 package com.zac4j.yoda.ui.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
@@ -11,7 +11,7 @@ import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
-import com.zac4j.yoda.R;
+import com.zac4j.yoda.ui.main.MainActivity;
 import com.zac4j.yoda.utils.Logger;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -27,23 +27,18 @@ public class LoginActivity extends AppCompatActivity implements WeiboAuthListene
   // default redirect url
   public static final String REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
 
-  private TextView mTokenView;
-
   private SsoHandler mSsoHandler;
   private final CompositeDisposable mDisposable = new CompositeDisposable();
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_login);
-
-    mTokenView = (TextView) findViewById(R.id.token);
 
     AuthInfo authInfo = createAuthorizeInfo();
     mSsoHandler = new SsoHandler(this, authInfo);
 
     Oauth2AccessToken token = AccessTokenKeeper.readAccessToken(this);
     if (token.isSessionValid()) {
-      mTokenView.setText(token.getToken());
+      startMainPage(LoginActivity.this);
       System.out.println("token: " + token.getToken());
     } else {
       mSsoHandler.authorize(this);
@@ -60,6 +55,12 @@ public class LoginActivity extends AppCompatActivity implements WeiboAuthListene
         + "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
         + "follow_app_official_microblog,"
         + "invitation_write";
+  }
+
+  private void startMainPage(Context context) {
+    Intent intent = new Intent(context, MainActivity.class);
+    startActivity(intent);
+    LoginActivity.this.finish();
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -95,6 +96,7 @@ public class LoginActivity extends AppCompatActivity implements WeiboAuthListene
 
           @Override public void onComplete() {
             Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+            startMainPage(LoginActivity.this);
           }
         }));
   }

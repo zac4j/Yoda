@@ -5,7 +5,7 @@ android {
   buildToolsVersion rootProject.ext.buildToolsVersion
   defaultConfig {
     applicationId "com.zac4j.yoda"
-    minSdkVersion 16
+    minSdkVersion 17
     targetSdkVersion 25
     versionCode 1
     versionName "1.0"
@@ -31,7 +31,8 @@ repositories{
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   compile(name: 'weibosdk', ext: 'aar')
-  compile "com.android.support:appcompat-v7:${appcompatVersion}"
+  compile "com.android.support:appcompat-v7:${supportLibVersion}"
+  compile "com.android.support:design:${supportLibVersion}"
   // Retrofit2
   compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
   compile "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
@@ -39,10 +40,13 @@ dependencies {
   // Stetho
   compile "com.facebook.stetho:stetho:${stethoVersion}"
   compile "com.facebook.stetho:stetho-okhttp3:${stethoVersion}"
-  // Rx
+  // Reactive
   compile "io.reactivex.rxjava2:rxandroid:${rxandroidVersion}"
   compile "io.reactivex.rxjava2:rxjava:${rxjavaVersion}"
   // Dagger2
   compile "com.google.dagger:dagger:${daggerVersion}"
   provided "com.google.dagger:dagger-compiler:${daggerVersion}"
+  // ButterKnife
+  compile "com.jakewharton:butterknife:${knifeVersion}"
+  annotationProcessor "com.jakewharton:butterknife-compiler:${knifeVersion}"
 }

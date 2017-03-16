@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!--Main page-->
+  <item name="main_drawer_layout" type="id"/>
+  <item name="main_nav_view" type="id"/>
+  <item name="main_container" type="id"/>
+  <item name="main_appbar" type="id"/>
+  <item name="main_toolbar" type="id"/>
+  <item name="main_tabs" type="id"/>
+  <item name="main_viewpager" type="id"/>
+  <item name="main_fab" type="id"/>
+
+  <!--Main pager list item-->
+  <item name="weibo_list_item_tv_nickname" type="id"/>
+  <item name="weibo_list_item_tv_username" type="id"/>
+  <item name="weibo_list_item_tv_posttime" type="id"/>
+  <item name="weibo_list_item_media_container" type="id"/>
+  <item name="weibo_list_item_iv_avatar" type="id"/>
+  <item name="weibo_list_item_tv_content" type="id"/>
+  <item name="weibo_list_item_tv_repost" type="id"/>
+  <item name="weibo_list_item_tv_reply" type="id"/>
+  <item name="weibo_list_item_tv_like" type="id"/>
+</resources>

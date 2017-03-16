@@ -24,12 +24,13 @@ task clean(type: Delete) {
 ext {
   compileSdkVersion = 25
   buildToolsVersion = "25.0.2"
-  appcompatVersion = "25.2.0"
+  supportLibVersion = "25.3.0"
   // network
   retrofitVersion = "2.2.0"
   stethoVersion = "1.4.2"
   // dependency injection
   daggerVersion = "2.9"
+  knifeVersion= "8.5.1";
   // async job
   rxandroidVersion = "2.0.1"
   rxjavaVersion = "2.0.7"
