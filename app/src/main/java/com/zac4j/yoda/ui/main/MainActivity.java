@@ -10,7 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import butterknife.BindView;
 import com.zac4j.yoda.R;
-import com.zac4j.yoda.adapter.MainPagerAdapter;
+import com.zac4j.yoda.ui.adapter.MainPagerAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import javax.inject.Inject;
 

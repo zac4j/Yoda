@@ -5,7 +5,6 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.zac4j.yoda.data.local.PreferencesHelper;
 import com.zac4j.yoda.data.remote.ApiServer;
-import com.zac4j.yoda.data.remote.HttpClient;
 import com.zac4j.yoda.di.ApplicationContext;
 import com.zac4j.yoda.di.module.ApplicationModule;
 import dagger.Component;

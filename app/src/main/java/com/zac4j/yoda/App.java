@@ -7,6 +7,7 @@ import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.di.component.ApplicationComponent;
 import com.zac4j.yoda.di.component.DaggerApplicationComponent;
 import com.zac4j.yoda.di.module.ApplicationModule;
+import timber.log.Timber;
 
 /**
  * App
@@ -22,6 +23,7 @@ public class App extends Application {
 
     if (BuildConfig.DEBUG) {
       Stetho.initializeWithDefaults(this);
+      Timber.plant(new Timber.DebugTree());
     }
   }
 

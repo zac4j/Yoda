@@ -34,4 +34,8 @@ ext {
   // async job
   rxandroidVersion = "2.0.1"
   rxjavaVersion = "2.0.7"
+  // image
+  glideVersion = "3.7.0"
+  // log
+  timberVersion = "4.5.1"
 }

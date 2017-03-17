@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class BaseActivity extends AppCompatActivity {
 
-  private static final String KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID";
+  private static final String KEY_ACTIVITY_ID = "activity_id";
   private static final AtomicLong NEXT_ID = new AtomicLong(0);
   private static final LongSparseArray<PerConfigComponent> sComponentsArray =
       new LongSparseArray<>();

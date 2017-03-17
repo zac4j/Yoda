@@ -1,9 +1,8 @@
 package com.zac4j.yoda.data.remote;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
-import com.zac4j.yoda.data.model.Weibo;
-import io.reactivex.Observable;
-import java.util.List;
+import com.zac4j.yoda.data.model.Timeline;
+import io.reactivex.Single;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -21,7 +20,7 @@ public interface ApiServer {
 
   String BASE_URL = "https://api.weibo.com/2/";
 
-  @GET("statuses/{scope}_timeline.json") Observable<List<Weibo>> getWeiboList(
+  @GET("statuses/{scope}_timeline.json") Single<Timeline> getTimeline(
       @Path("scope") String scope, @Query("access_token") String token,
       @Query("count") String count, @Query("page") String page);
 

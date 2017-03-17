@@ -13,11 +13,15 @@
   <!--Main pager list item-->
   <item name="weibo_list_item_tv_nickname" type="id"/>
   <item name="weibo_list_item_tv_username" type="id"/>
-  <item name="weibo_list_item_tv_posttime" type="id"/>
+  <item name="weibo_list_item_tv_post_from" type="id"/>
+  <item name="weibo_list_item_tv_post_time" type="id"/>
   <item name="weibo_list_item_media_container" type="id"/>
   <item name="weibo_list_item_iv_avatar" type="id"/>
   <item name="weibo_list_item_tv_content" type="id"/>
   <item name="weibo_list_item_tv_repost" type="id"/>
   <item name="weibo_list_item_tv_reply" type="id"/>
   <item name="weibo_list_item_tv_like" type="id"/>
+  <item name="home_rv_weibo_list" type="id"/>
+  <item name="progress_bar" type="id"/>
+  <item name="home_swipe_weibo_list_container" type="id"/>
 </resources>

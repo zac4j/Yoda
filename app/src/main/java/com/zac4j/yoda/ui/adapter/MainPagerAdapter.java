@@ -1,4 +1,4 @@
-package com.zac4j.yoda.adapter;
+package com.zac4j.yoda.ui.adapter;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

@@ -12,7 +12,6 @@ import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.zac4j.yoda.ui.main.MainActivity;
-import com.zac4j.yoda.utils.Logger;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -20,6 +19,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import java.util.concurrent.Callable;
+import timber.log.Timber;
 
 public class LoginActivity extends AppCompatActivity implements WeiboAuthListener {
   private static final String TAG = "LoginActivity";
@@ -86,12 +86,12 @@ public class LoginActivity extends AppCompatActivity implements WeiboAuthListene
               AccessTokenKeeper.writeAccessToken(LoginActivity.this, token);
             } else {
               String code = bundle.getString("code");
-              Logger.d(TAG, "\nObtained the code: " + code);
+              Timber.d("error code: " + code);
             }
           }
 
           @Override public void onError(Throwable e) {
-            Logger.e(TAG, "Auth.onComplete()", e);
+            Timber.e(e);
           }
 
           @Override public void onComplete() {
@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements WeiboAuthListene
   }
 
   @Override public void onWeiboException(WeiboException e) {
-    System.out.println("Weibo error: " + e);
+    Timber.e(e);
   }
 
   @Override public void onCancel() {

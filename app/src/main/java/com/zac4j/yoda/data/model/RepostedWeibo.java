@@ -5,45 +5,126 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Weibo Model
- * Created by Zac on 2017/3/15.
+ * Repost Weibo Model
+ * Created by zac on 3/17/2017.
  */
-public class Weibo {
 
-  @SerializedName("created_at") @Expose private String createdAt;
-  @SerializedName("id") @Expose private Integer id;
-  @SerializedName("mid") @Expose private String mid;
-  @SerializedName("idstr") @Expose private String idstr;
-  @SerializedName("text") @Expose private String text;
-  @SerializedName("source_allowclick") @Expose private Integer sourceAllowclick;
-  @SerializedName("source_type") @Expose private Integer sourceType;
-  @SerializedName("source") @Expose private String source;
-  @SerializedName("favorited") @Expose private Boolean favorited;
-  @SerializedName("truncated") @Expose private Boolean truncated;
-  @SerializedName("in_reply_to_status_id") @Expose private String inReplyToStatusId;
-  @SerializedName("in_reply_to_user_id") @Expose private String inReplyToUserId;
-  @SerializedName("in_reply_to_screen_name") @Expose private String inReplyToScreenName;
-  @SerializedName("pic_urls") @Expose private List<Object> picUrls = null;
-  @SerializedName("geo") @Expose private Object geo;
-  @SerializedName("user") @Expose private User user;
-  @SerializedName("retweeted_status") @Expose private RepostedWeibo repostedWeibo;
-  @SerializedName("reposts_count") @Expose private Integer repostsCount;
-  @SerializedName("comments_count") @Expose private Integer commentsCount;
-  @SerializedName("attitudes_count") @Expose private Integer attitudesCount;
-  @SerializedName("isLongText") @Expose private Boolean isLongText;
-  @SerializedName("mlevel") @Expose private Integer mlevel;
-  @SerializedName("visible") @Expose private Visible visible;
-  @SerializedName("biz_feature") @Expose private Integer bizFeature;
-  @SerializedName("hasActionTypeCard") @Expose private Integer hasActionTypeCard;
-  @SerializedName("darwin_tags") @Expose private List<Object> darwinTags = null;
-  @SerializedName("hot_weibo_tags") @Expose private List<Object> hotWeiboTags = null;
-  @SerializedName("text_tag_tips") @Expose private List<Object> textTagTips = null;
-  @SerializedName("rid") @Expose private String rid;
-  @SerializedName("userType") @Expose private Integer userType;
-  @SerializedName("cardid") @Expose private String cardid;
-  @SerializedName("positive_recom_flag") @Expose private Integer positiveRecomFlag;
-  @SerializedName("gif_ids") @Expose private String gifIds;
-  @SerializedName("is_show_bulletin") @Expose private Integer isShowBulletin;
+public class RepostedWeibo {
+
+  @SerializedName("created_at")
+  @Expose
+  private String createdAt;
+  @SerializedName("id")
+  @Expose
+  private Integer id;
+  @SerializedName("mid")
+  @Expose
+  private String mid;
+  @SerializedName("idstr")
+  @Expose
+  private String idstr;
+  @SerializedName("text")
+  @Expose
+  private String text;
+  @SerializedName("textLength")
+  @Expose
+  private Integer textLength;
+  @SerializedName("source_allowclick")
+  @Expose
+  private Integer sourceAllowclick;
+  @SerializedName("source_type")
+  @Expose
+  private Integer sourceType;
+  @SerializedName("source")
+  @Expose
+  private String source;
+  @SerializedName("favorited")
+  @Expose
+  private Boolean favorited;
+  @SerializedName("truncated")
+  @Expose
+  private Boolean truncated;
+  @SerializedName("in_reply_to_status_id")
+  @Expose
+  private String inReplyToStatusId;
+  @SerializedName("in_reply_to_user_id")
+  @Expose
+  private String inReplyToUserId;
+  @SerializedName("in_reply_to_screen_name")
+  @Expose
+  private String inReplyToScreenName;
+  @SerializedName("pic_urls")
+  @Expose
+  private List<PictureUrl> picUrls = null;
+  @SerializedName("thumbnail_pic")
+  @Expose
+  private String thumbnailPic;
+  @SerializedName("bmiddle_pic")
+  @Expose
+  private String bmiddlePic;
+  @SerializedName("original_pic")
+  @Expose
+  private String originalPic;
+  @SerializedName("geo")
+  @Expose
+  private Object geo;
+  @SerializedName("user")
+  @Expose
+  private User user;
+  @SerializedName("reposts_count")
+  @Expose
+  private Integer repostsCount;
+  @SerializedName("comments_count")
+  @Expose
+  private Integer commentsCount;
+  @SerializedName("attitudes_count")
+  @Expose
+  private Integer attitudesCount;
+  @SerializedName("isLongText")
+  @Expose
+  private Boolean isLongText;
+  @SerializedName("mlevel")
+  @Expose
+  private Integer mlevel;
+  @SerializedName("visible")
+  @Expose
+  private Visible visible;
+  @SerializedName("biz_ids")
+  @Expose
+  private List<Integer> bizIds = null;
+  @SerializedName("biz_feature")
+  @Expose
+  private Integer bizFeature;
+  @SerializedName("page_type")
+  @Expose
+  private Integer pageType;
+  @SerializedName("hasActionTypeCard")
+  @Expose
+  private Integer hasActionTypeCard;
+  @SerializedName("darwin_tags")
+  @Expose
+  private List<Object> darwinTags = null;
+  @SerializedName("hot_weibo_tags")
+  @Expose
+  private List<Object> hotWeiboTags = null;
+  @SerializedName("text_tag_tips")
+  @Expose
+  private List<Object> textTagTips = null;
+  @SerializedName("userType")
+  @Expose
+  private Integer userType;
+  @SerializedName("cardid")
+  @Expose
+  private String cardid;
+  @SerializedName("positive_recom_flag")
+  @Expose
+  private Integer positiveRecomFlag;
+  @SerializedName("gif_ids")
+  @Expose
+  private String gifIds;
+  @SerializedName("is_show_bulletin")
+  @Expose
+  private Integer isShowBulletin;
 
   public String getCreatedAt() {
     return createdAt;
@@ -83,6 +164,14 @@ public class Weibo {
 
   public void setText(String text) {
     this.text = text;
+  }
+
+  public Integer getTextLength() {
+    return textLength;
+  }
+
+  public void setTextLength(Integer textLength) {
+    this.textLength = textLength;
   }
 
   public Integer getSourceAllowclick() {
@@ -149,12 +238,36 @@ public class Weibo {
     this.inReplyToScreenName = inReplyToScreenName;
   }
 
-  public List<Object> getPicUrls() {
+  public List<PictureUrl> getPicUrls() {
     return picUrls;
   }
 
-  public void setPicUrls(List<Object> picUrls) {
+  public void setPicUrls(List<PictureUrl> picUrls) {
     this.picUrls = picUrls;
+  }
+
+  public String getThumbnailPic() {
+    return thumbnailPic;
+  }
+
+  public void setThumbnailPic(String thumbnailPic) {
+    this.thumbnailPic = thumbnailPic;
+  }
+
+  public String getBmiddlePic() {
+    return bmiddlePic;
+  }
+
+  public void setBmiddlePic(String bmiddlePic) {
+    this.bmiddlePic = bmiddlePic;
+  }
+
+  public String getOriginalPic() {
+    return originalPic;
+  }
+
+  public void setOriginalPic(String originalPic) {
+    this.originalPic = originalPic;
   }
 
   public Object getGeo() {
@@ -171,14 +284,6 @@ public class Weibo {
 
   public void setUser(User user) {
     this.user = user;
-  }
-
-  public RepostedWeibo getRepostedWeibo() {
-    return repostedWeibo;
-  }
-
-  public void setRetweetedStatus(RepostedWeibo repostedWeibo) {
-    this.repostedWeibo = repostedWeibo;
   }
 
   public Integer getRepostsCount() {
@@ -229,12 +334,28 @@ public class Weibo {
     this.visible = visible;
   }
 
+  public List<Integer> getBizIds() {
+    return bizIds;
+  }
+
+  public void setBizIds(List<Integer> bizIds) {
+    this.bizIds = bizIds;
+  }
+
   public Integer getBizFeature() {
     return bizFeature;
   }
 
   public void setBizFeature(Integer bizFeature) {
     this.bizFeature = bizFeature;
+  }
+
+  public Integer getPageType() {
+    return pageType;
+  }
+
+  public void setPageType(Integer pageType) {
+    this.pageType = pageType;
   }
 
   public Integer getHasActionTypeCard() {
@@ -267,14 +388,6 @@ public class Weibo {
 
   public void setTextTagTips(List<Object> textTagTips) {
     this.textTagTips = textTagTips;
-  }
-
-  public String getRid() {
-    return rid;
-  }
-
-  public void setRid(String rid) {
-    this.rid = rid;
   }
 
   public Integer getUserType() {
@@ -316,4 +429,5 @@ public class Weibo {
   public void setIsShowBulletin(Integer isShowBulletin) {
     this.isShowBulletin = isShowBulletin;
   }
+
 }
