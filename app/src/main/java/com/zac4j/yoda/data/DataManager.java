@@ -32,7 +32,7 @@ import retrofit2.http.Query;
     return mApiServer;
   }
 
-  public Single<Timeline> getTimeline(String token, String count, String page) {
+  public Single<Timeline> getTimeline(String token, int count, int page) {
     return mApiServer.getTimeline("friends", token, count, page);
   }
 }

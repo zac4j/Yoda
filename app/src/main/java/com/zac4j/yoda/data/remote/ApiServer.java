@@ -22,7 +22,7 @@ public interface ApiServer {
 
   @GET("statuses/{scope}_timeline.json") Single<Timeline> getTimeline(
       @Path("scope") String scope, @Query("access_token") String token,
-      @Query("count") String count, @Query("page") String page);
+      @Query("count") int count, @Query("page") int page);
 
   class Factory {
     public static ApiServer create() {

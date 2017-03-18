@@ -39,15 +39,13 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
     }
   }
 
-  public void getTimeline(String token, String count, String page) {
+  public void getTimeline(String token, int count, int page) {
     checkViewAttached();
-    getMvpView().showProgress(true);
     mDataManager.getTimeline(token, count, page)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new DisposableSingleObserver<Timeline>() {
           @Override public void onSuccess(Timeline timeline) {
-            getMvpView().showProgress(false);
             if (timeline != null) {
               List<Weibo> weiboList = timeline.getWeiboList();
               getMvpView().showTimeline(weiboList);
@@ -55,7 +53,6 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
           }
 
           @Override public void onError(Throwable e) {
-            getMvpView().showProgress(false);
             getMvpView().showError(e.getMessage());
             Timber.e(e);
           }

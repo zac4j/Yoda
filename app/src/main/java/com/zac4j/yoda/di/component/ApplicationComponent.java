@@ -3,6 +3,7 @@ package com.zac4j.yoda.di.component;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.zac4j.yoda.data.DataManager;
 import com.zac4j.yoda.data.local.PreferencesHelper;
 import com.zac4j.yoda.data.remote.ApiServer;
 import com.zac4j.yoda.di.ApplicationContext;
@@ -22,7 +23,7 @@ import javax.inject.Singleton;
 
   Gson gson();
 
-  HttpClient httpClient();
-
   ApiServer webService();
+
+  DataManager dataManager();
 }

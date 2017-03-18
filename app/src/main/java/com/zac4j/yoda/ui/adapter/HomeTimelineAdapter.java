@@ -14,9 +14,12 @@ import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Weibo;
+import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.utils.img.RoundTransformation;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import javax.inject.Inject;
 
 /**
  * Home Weibo List Adapter
@@ -28,9 +31,21 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
   private Context mContext;
   private List<Weibo> mWeiboList;
 
-  public HomeTimelineAdapter(Context context, List<Weibo> weiboList) {
+  @Inject public HomeTimelineAdapter(@ActivityContext Context context) {
     mContext = context;
-    mWeiboList = weiboList;
+    mWeiboList = Collections.emptyList();
+  }
+
+  public void setWeiboList(List<Weibo> weiboList) {
+    if (weiboList == null || weiboList.isEmpty()) {
+      return;
+    }
+    mWeiboList.addAll(weiboList);
+    notifyDataSetChanged();
+  }
+
+  public void clear() {
+    mWeiboList.clear();
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -45,6 +60,7 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
     }
     Weibo weibo = mWeiboList.get(position);
     String content = weibo.getText();
+    holder.setContent(content);
   }
 
   @Override public int getItemCount() {

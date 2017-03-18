@@ -1,8 +1,9 @@
 package com.zac4j.yoda.ui.adapter;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main Pager Adapter
@@ -12,23 +13,27 @@ import android.support.v4.app.FragmentManager;
 public class MainPagerAdapter extends SmartPagerAdapter {
 
   private static final int MAIN_PAGER_COUNT = 3;
-  private final String[] mMainPagerTitle = {};
-  private Context mContext;
+  private final List<Fragment> mPagerContainer = new ArrayList<>();
+  private final List<String> mPagerTitles = new ArrayList<>();
 
-  public MainPagerAdapter(FragmentManager fm, Context context) {
+  public MainPagerAdapter(FragmentManager fm) {
     super(fm);
-    mContext = context;
+  }
+
+  public void addFragment(Fragment fragment, String title) {
+    mPagerContainer.add(fragment);
+    mPagerTitles.add(title);
   }
 
   @Override public Fragment getItem(int position) {
-    return null;
+    return mPagerContainer.get(position);
   }
 
   @Override public int getCount() {
-    return MAIN_PAGER_COUNT;
+    return 1;
   }
 
   @Override public CharSequence getPageTitle(int position) {
-    return mMainPagerTitle[position % MAIN_PAGER_COUNT];
+    return mPagerTitles.get(position);
   }
 }

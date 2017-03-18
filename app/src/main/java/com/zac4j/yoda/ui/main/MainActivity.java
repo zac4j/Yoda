@@ -9,9 +9,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.adapter.MainPagerAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
+import com.zac4j.yoda.ui.home.TimelineFragment;
 import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity implements MainView {
@@ -28,6 +30,8 @@ public class MainActivity extends BaseActivity implements MainView {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+
+    ButterKnife.bind(this);
 
     if (mToolbar != null) {
       setSupportActionBar(mToolbar);
@@ -49,7 +53,8 @@ public class MainActivity extends BaseActivity implements MainView {
   }
 
   private void setupViewPager(ViewPager viewPager) {
-    MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager(), this);
+    MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
+    adapter.addFragment(new TimelineFragment(), "Timeline");
     viewPager.setAdapter(adapter);
   }
 

@@ -12,7 +12,5 @@ import java.util.List;
 
 public interface TimelineView extends MvpView {
 
-  void showProgress(boolean show);
-
   void showTimeline(List<Weibo> weiboList);
 }

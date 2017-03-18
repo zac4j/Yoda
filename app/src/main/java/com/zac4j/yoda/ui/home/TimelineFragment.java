@@ -3,6 +3,7 @@ package com.zac4j.yoda.ui.home;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.adapter.HomeTimelineAdapter;
 import com.zac4j.yoda.data.model.Weibo;
@@ -25,11 +27,16 @@ import javax.inject.Inject;
 
 public class TimelineFragment extends BaseFragment implements TimelineView {
 
-  @Inject TimelinePresenter mPresenter;
+  // Server default weibo count is 20 as well.
+  public static final int DEFAULT_WEIBO_COUNT = 20;
+  private int requestCount = DEFAULT_WEIBO_COUNT;
+  private int requestPage = 1;
 
-  @BindView(R.id.home_swipe_weibo_list_container) SwipeRefreshLayout mSwipeWeiboListContainer;
+  @Inject TimelinePresenter mPresenter;
+  @Inject HomeTimelineAdapter mTimelineAdapter;
+
+  @BindView(R.id.home_swipe_weibo_list_container) SwipeRefreshLayout mSwipeContainer;
   @BindView(R.id.home_rv_weibo_list) RecyclerView mWeiboListView;
-  @BindView(R.id.progress_bar) ProgressBar mProgressBar;
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -40,7 +47,22 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     ButterKnife.bind(this, view);
     mPresenter.attach(this);
 
+    final String token = AccessTokenKeeper.readAccessToken(getContext()).getToken();
 
+    mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+      @Override public void onRefresh() {
+        mPresenter.getTimeline(token, requestCount, requestPage);
+      }
+    });
+
+    mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+        android.R.color.holo_green_light, android.R.color.holo_orange_light,
+        android.R.color.holo_red_light);
+
+    mWeiboListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    mWeiboListView.setAdapter(mTimelineAdapter);
+
+    mPresenter.getTimeline(token, requestCount, requestPage);
 
     return view;
   }
@@ -49,16 +71,11 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
   }
 
-  @Override public void showProgress(boolean show) {
-    if (show) {
-      mProgressBar.setVisibility(View.VISIBLE);
-    } else {
-      mProgressBar.setVisibility(View.GONE);
-    }
-  }
-
   @Override public void showTimeline(List<Weibo> weiboList) {
-    HomeTimelineAdapter adapter = new HomeTimelineAdapter(getContext(), weiboList);
-    mWeiboListView.setAdapter(adapter);
+    mTimelineAdapter.clear();
+    mTimelineAdapter.setWeiboList(weiboList);
+
+    mSwipeContainer.setRefreshing(false);
+    mWeiboListView.setVisibility(View.VISIBLE);
   }
 }
