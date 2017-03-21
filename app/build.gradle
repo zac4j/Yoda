@@ -20,6 +20,9 @@ android {
   lintOptions {
     abortOnError false
   }
+  packagingOptions {
+    exclude 'META-INF/LICENSE'
+  }
 }
 
 repositories{
@@ -36,7 +39,7 @@ dependencies {
   // Retrofit2
   compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
   compile "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
-  compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+  compile "com.squareup.retrofit2:converter-jackson:${retrofitVersion}"
   // Stetho
   compile "com.facebook.stetho:stetho:${stethoVersion}"
   compile "com.facebook.stetho:stetho-okhttp3:${stethoVersion}"

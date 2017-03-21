@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
-import com.zac4j.yoda.utils.img.RoundTransformation;
+import com.zac4j.yoda.util.img.RoundTransformation;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;

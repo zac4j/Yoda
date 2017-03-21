@@ -1,6 +1,5 @@
 package com.zac4j.yoda.ui.home;
 
-import com.zac4j.yoda.data.model.Timeline;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.base.MvpView;
 import java.util.List;
@@ -11,6 +10,16 @@ import java.util.List;
  */
 
 public interface TimelineView extends MvpView {
+
+  void showProgress(boolean show);
+
+  void showRefresh(boolean refresh);
+
+  boolean isRefreshing();
+
+  boolean isProgressing();
+
+  void showEmpty();
 
   void showTimeline(List<Weibo> weiboList);
 }

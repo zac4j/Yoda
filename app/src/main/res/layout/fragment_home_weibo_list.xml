@@ -20,4 +20,22 @@
         />
   </android.support.v4.widget.SwipeRefreshLayout>
 
+  <ProgressBar
+      android:id="@id/progress_bar"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:visibility="gone"
+      style="@style/Widget.AppCompat.ProgressBar"
+      />
+
+  <ImageView
+      android:id="@id/empty_view"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:src="@drawable/ic_avatar"
+      android:visibility="gone"
+      />
+
 </RelativeLayout>

@@ -22,7 +22,6 @@ import java.util.concurrent.Callable;
 import timber.log.Timber;
 
 public class LoginActivity extends AppCompatActivity implements WeiboAuthListener {
-  private static final String TAG = "LoginActivity";
   private static final String APP_KEY = "3363502716";
   // default redirect url
   public static final String REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";

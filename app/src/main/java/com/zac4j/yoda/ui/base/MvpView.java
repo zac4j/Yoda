@@ -7,4 +7,6 @@ package com.zac4j.yoda.ui.base;
 
 public interface MvpView {
   void showError(String message);
+
+  void onTokenInvalid();
 }

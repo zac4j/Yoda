@@ -24,4 +24,5 @@
   <item name="home_rv_weibo_list" type="id"/>
   <item name="progress_bar" type="id"/>
   <item name="home_swipe_weibo_list_container" type="id"/>
+  <item name="empty_view" type="id"/>
 </resources>

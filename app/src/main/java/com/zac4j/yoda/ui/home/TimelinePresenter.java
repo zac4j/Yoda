@@ -4,12 +4,13 @@ import com.zac4j.yoda.data.DataManager;
 import com.zac4j.yoda.data.model.Timeline;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.base.BasePresenter;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import com.zac4j.yoda.util.RxUtils;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
-import io.reactivex.schedulers.Schedulers;
+import java.io.IOException;
 import java.util.List;
 import javax.inject.Inject;
+import retrofit2.Response;
 import timber.log.Timber;
 
 /**
@@ -41,21 +42,42 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
 
   public void getTimeline(String token, int count, int page) {
     checkViewAttached();
+    if (!getMvpView().isRefreshing()) {
+      getMvpView().showProgress(true);
+    }
     mDataManager.getTimeline(token, count, page)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new DisposableSingleObserver<Timeline>() {
-          @Override public void onSuccess(Timeline timeline) {
-            if (timeline != null) {
-              List<Weibo> weiboList = timeline.getWeiboList();
+        .compose(RxUtils.<Response<Object>>applySchedulers())
+        .compose(RxUtils.handleResponse(getMvpView()))
+        .subscribe(new DisposableSingleObserver<Response<Object>>() {
+          @Override public void onSuccess(Response<Object> response) {
+            hideProgress();
+            if (response.isSuccessful()) {
+              String data = response.body().toString();
+              Timeline timeline = null;
+              try {
+                timeline = mDataManager.getObjectMapper().readValue(data, Timeline.class);
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+
+              if (timeline == null) {
+                return;
+              }
+
+              List<Weibo> weiboList = timeline.getStatuses();
               getMvpView().showTimeline(weiboList);
             }
           }
 
           @Override public void onError(Throwable e) {
-            getMvpView().showError(e.getMessage());
+            hideProgress();
             Timber.e(e);
           }
         });
+  }
+
+  private void hideProgress() {
+    getMvpView().showRefresh(false);
+    getMvpView().showProgress(false);
   }
 }

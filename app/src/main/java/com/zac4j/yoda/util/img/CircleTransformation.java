@@ -1,4 +1,4 @@
-package com.zac4j.yoda.utils.img;
+package com.zac4j.yoda.util.img;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -1,5 +1,6 @@
 package com.zac4j.yoda.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -10,10 +11,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.adapter.MainPagerAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.home.TimelineFragment;
+import com.zac4j.yoda.ui.login.LoginActivity;
 import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity implements MainView {
@@ -60,5 +63,10 @@ public class MainActivity extends BaseActivity implements MainView {
 
   @Override public void showError(String message) {
     showToast(message);
+  }
+
+  @Override public void onTokenInvalid() {
+    AccessTokenKeeper.clear(this);
+    startActivity(new Intent(this, LoginActivity.class));
   }
 }

@@ -1,36 +1,48 @@
 package com.zac4j.yoda.data.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
+import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * Weibo Visible Model
- * Created by zac on 3/17/2017.
+ * Visible Model
+ * Created by zac on 3/21/2017.
  */
 
-public class Visible {
+@JsonInclude(JsonInclude.Include.NON_NULL) @JsonPropertyOrder({
+    "type", "list_id"
+}) public class Visible {
 
-  @SerializedName("type")
-  @Expose
-  private Integer type;
-  @SerializedName("list_id")
-  @Expose
-  private Integer listId;
+  @JsonProperty("type") private Integer type;
+  @JsonProperty("list_id") private Integer listId;
+  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<>();
 
-  public Integer getType() {
+  @JsonProperty("type") public Integer getType() {
     return type;
   }
 
-  public void setType(Integer type) {
+  @JsonProperty("type") public void setType(Integer type) {
     this.type = type;
   }
 
-  public Integer getListId() {
+  @JsonProperty("list_id") public Integer getListId() {
     return listId;
   }
 
-  public void setListId(Integer listId) {
+  @JsonProperty("list_id") public void setListId(Integer listId) {
     this.listId = listId;
   }
 
+  @JsonAnyGetter public Map<String, Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
+
+  @JsonAnySetter public void setAdditionalProperty(String name, Object value) {
+    this.additionalProperties.put(name, value);
+  }
 }

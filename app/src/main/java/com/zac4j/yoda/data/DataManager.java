@@ -1,13 +1,12 @@
 package com.zac4j.yoda.data;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.local.PreferencesHelper;
-import com.zac4j.yoda.data.model.Timeline;
 import com.zac4j.yoda.data.remote.ApiServer;
 import io.reactivex.Single;
-import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import retrofit2.http.Query;
+import retrofit2.Response;
 
 /**
  * Data access manager
@@ -18,10 +17,13 @@ import retrofit2.http.Query;
 
   private ApiServer mApiServer;
   private PreferencesHelper mPrefsHelper;
+  private ObjectMapper mObjectMapper;
 
-  @Inject public DataManager(ApiServer apiServer, PreferencesHelper prefsHelper) {
+  @Inject
+  public DataManager(ApiServer apiServer, PreferencesHelper prefsHelper, ObjectMapper mapper) {
     mApiServer = apiServer;
     mPrefsHelper = prefsHelper;
+    mObjectMapper = mapper;
   }
 
   public PreferencesHelper getPrefsHelper() {
@@ -32,7 +34,11 @@ import retrofit2.http.Query;
     return mApiServer;
   }
 
-  public Single<Timeline> getTimeline(String token, int count, int page) {
+  public ObjectMapper getObjectMapper() {
+    return mObjectMapper;
+  }
+
+  public Single<Response<Object>> getTimeline(String token, int count, int page) {
     return mApiServer.getTimeline("friends", token, count, page);
   }
 }

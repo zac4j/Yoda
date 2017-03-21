@@ -8,15 +8,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
-import com.zac4j.yoda.ui.adapter.HomeTimelineAdapter;
 import com.zac4j.yoda.data.model.Weibo;
+import com.zac4j.yoda.ui.adapter.HomeTimelineAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
+import com.zac4j.yoda.ui.main.MainActivity;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -37,6 +39,8 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
 
   @BindView(R.id.home_swipe_weibo_list_container) SwipeRefreshLayout mSwipeContainer;
   @BindView(R.id.home_rv_weibo_list) RecyclerView mWeiboListView;
+  @BindView(R.id.progress_bar) ProgressBar mProgressBar;
+  @BindView(R.id.empty_view) ImageView mEmptyView;
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -69,6 +73,30 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
 
   @Override public void showError(String message) {
     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+  }
+
+  @Override public void onTokenInvalid() {
+    ((MainActivity) getActivity()).onTokenInvalid();
+  }
+
+  @Override public void showProgress(boolean show) {
+    mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+  }
+
+  @Override public void showRefresh(boolean refresh) {
+    mSwipeContainer.setRefreshing(refresh);
+  }
+
+  @Override public boolean isRefreshing() {
+    return mSwipeContainer.isRefreshing();
+  }
+
+  @Override public boolean isProgressing() {
+    return mProgressBar.isShown();
+  }
+
+  @Override public void showEmpty() {
+    mEmptyView.setVisibility(View.VISIBLE);
   }
 
   @Override public void showTimeline(List<Weibo> weiboList) {

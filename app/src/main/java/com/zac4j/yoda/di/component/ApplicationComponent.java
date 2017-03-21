@@ -2,7 +2,7 @@ package com.zac4j.yoda.di.component;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
 import com.zac4j.yoda.data.local.PreferencesHelper;
 import com.zac4j.yoda.data.remote.ApiServer;
@@ -21,7 +21,7 @@ import javax.inject.Singleton;
 
   PreferencesHelper prefsHelper();
 
-  Gson gson();
+  ObjectMapper mapper();
 
   ApiServer webService();
 

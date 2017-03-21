@@ -2,7 +2,8 @@ package com.zac4j.yoda.di.module;
 
 import android.app.Application;
 import android.content.Context;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.remote.ApiServer;
 import com.zac4j.yoda.di.ApplicationContext;
 import dagger.Module;
@@ -14,8 +15,7 @@ import javax.inject.Singleton;
  * Created by zac on 16-7-3.
  */
 
-@Module
-public class ApplicationModule {
+@Module public class ApplicationModule {
 
   private Application mApplication;
 
@@ -31,12 +31,13 @@ public class ApplicationModule {
     return mApplication;
   }
 
-  @Provides Gson provideGson() {
-    return new Gson();
+  @Provides ObjectMapper provideMapper() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+    return mapper;
   }
 
   @Provides @Singleton ApiServer provideWebService() {
     return ApiServer.Factory.create();
   }
-
 }
