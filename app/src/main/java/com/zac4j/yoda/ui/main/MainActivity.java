@@ -15,6 +15,7 @@ import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.adapter.MainPagerAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
+import com.zac4j.yoda.ui.home.NotificationFragment;
 import com.zac4j.yoda.ui.home.TimelineFragment;
 import com.zac4j.yoda.ui.login.LoginActivity;
 import javax.inject.Inject;
@@ -58,6 +59,7 @@ public class MainActivity extends BaseActivity implements MainView {
   private void setupViewPager(ViewPager viewPager) {
     MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
     adapter.addFragment(new TimelineFragment(), "Timeline");
+    adapter.addFragment(new NotificationFragment(), "Notification");
     viewPager.setAdapter(adapter);
   }
 
