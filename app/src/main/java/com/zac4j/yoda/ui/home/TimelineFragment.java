@@ -3,6 +3,7 @@ package com.zac4j.yoda.ui.home;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -64,6 +65,8 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
         android.R.color.holo_red_light);
 
     mWeiboListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    mWeiboListView.addItemDecoration(
+        new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
     mWeiboListView.setAdapter(mTimelineAdapter);
 
     mPresenter.getTimeline(token, requestCount, requestPage);

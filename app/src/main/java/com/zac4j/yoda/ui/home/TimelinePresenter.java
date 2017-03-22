@@ -1,5 +1,6 @@
 package com.zac4j.yoda.ui.home;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
 import com.zac4j.yoda.data.model.Timeline;
 import com.zac4j.yoda.data.model.Weibo;
@@ -52,10 +53,12 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
           @Override public void onSuccess(Response<Object> response) {
             hideProgress();
             if (response.isSuccessful()) {
-              String data = response.body().toString();
+              Object data = response.body();
               Timeline timeline = null;
+              ObjectMapper mapper = mDataManager.getObjectMapper();
               try {
-                timeline = mDataManager.getObjectMapper().readValue(data, Timeline.class);
+                String value = mapper.writeValueAsString(data);
+                timeline = mapper.readValue(value, Timeline.class);
               } catch (IOException e) {
                 e.printStackTrace();
               }

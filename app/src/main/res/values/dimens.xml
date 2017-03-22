@@ -22,6 +22,7 @@
   <dimen name="list_item_avatar_size">40dp</dimen>
 
   <!--space-->
+  <dimen name="space.large">32dp</dimen>
   <dimen name="space.medium">16dp</dimen>
   <dimen name="space.small">8dp</dimen>
   <dimen name="space.very_small">4dp</dimen>
@@ -29,7 +30,7 @@
   <dimen name="space.divider">1dp</dimen>
 
   <!--main pager sizes-->
-  <dimen name="weibo_list_item_avatar_size">20dp</dimen>
+  <dimen name="weibo_list_item_avatar_size">32dp</dimen>
   <dimen name="weibo_list_item_media_height">67.5dp</dimen>
 
 </resources>

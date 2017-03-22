@@ -26,14 +26,14 @@ public class Timeline {
   @JsonProperty("advertises") private List<Object> advertises = null;
   @JsonProperty("ad") private List<Object> ad = null;
   @JsonProperty("hasvisible") private Boolean hasvisible;
-  @JsonProperty("previous_cursor") private Integer previousCursor;
-  @JsonProperty("next_cursor") private Integer nextCursor;
-  @JsonProperty("total_number") private Integer totalNumber;
-  @JsonProperty("interval") private Integer interval;
-  @JsonProperty("uve_blank") private Integer uveBlank;
-  @JsonProperty("since_id") private Integer sinceId;
-  @JsonProperty("max_id") private Integer maxId;
-  @JsonProperty("has_unread") private Integer hasUnread;
+  @JsonProperty("previous_cursor") private Long previousCursor;
+  @JsonProperty("next_cursor") private Long nextCursor;
+  @JsonProperty("total_number") private Long totalNumber;
+  @JsonProperty("interval") private Long interval;
+  @JsonProperty("uve_blank") private Long uveBlank;
+  @JsonProperty("since_id") private Long sinceId;
+  @JsonProperty("max_id") private Long maxId;
+  @JsonProperty("has_unread") private Long hasUnread;
   @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<>();
 
   @JsonProperty("statuses") public List<Weibo> getStatuses() {
@@ -68,67 +68,67 @@ public class Timeline {
     this.hasvisible = hasvisible;
   }
 
-  @JsonProperty("previous_cursor") public Integer getPreviousCursor() {
+  @JsonProperty("previous_cursor") public Long getPreviousCursor() {
     return previousCursor;
   }
 
-  @JsonProperty("previous_cursor") public void setPreviousCursor(Integer previousCursor) {
+  @JsonProperty("previous_cursor") public void setPreviousCursor(Long previousCursor) {
     this.previousCursor = previousCursor;
   }
 
-  @JsonProperty("next_cursor") public Integer getNextCursor() {
+  @JsonProperty("next_cursor") public Long getNextCursor() {
     return nextCursor;
   }
 
-  @JsonProperty("next_cursor") public void setNextCursor(Integer nextCursor) {
+  @JsonProperty("next_cursor") public void setNextCursor(Long nextCursor) {
     this.nextCursor = nextCursor;
   }
 
-  @JsonProperty("total_number") public Integer getTotalNumber() {
+  @JsonProperty("total_number") public Long getTotalNumber() {
     return totalNumber;
   }
 
-  @JsonProperty("total_number") public void setTotalNumber(Integer totalNumber) {
+  @JsonProperty("total_number") public void setTotalNumber(Long totalNumber) {
     this.totalNumber = totalNumber;
   }
 
-  @JsonProperty("interval") public Integer getInterval() {
+  @JsonProperty("interval") public Long getInterval() {
     return interval;
   }
 
-  @JsonProperty("interval") public void setInterval(Integer interval) {
+  @JsonProperty("interval") public void setInterval(Long interval) {
     this.interval = interval;
   }
 
-  @JsonProperty("uve_blank") public Integer getUveBlank() {
+  @JsonProperty("uve_blank") public Long getUveBlank() {
     return uveBlank;
   }
 
-  @JsonProperty("uve_blank") public void setUveBlank(Integer uveBlank) {
+  @JsonProperty("uve_blank") public void setUveBlank(Long uveBlank) {
     this.uveBlank = uveBlank;
   }
 
-  @JsonProperty("since_id") public Integer getSinceId() {
+  @JsonProperty("since_id") public Long getSinceId() {
     return sinceId;
   }
 
-  @JsonProperty("since_id") public void setSinceId(Integer sinceId) {
+  @JsonProperty("since_id") public void setSinceId(Long sinceId) {
     this.sinceId = sinceId;
   }
 
-  @JsonProperty("max_id") public Integer getMaxId() {
+  @JsonProperty("max_id") public Long getMaxId() {
     return maxId;
   }
 
-  @JsonProperty("max_id") public void setMaxId(Integer maxId) {
+  @JsonProperty("max_id") public void setMaxId(Long maxId) {
     this.maxId = maxId;
   }
 
-  @JsonProperty("has_unread") public Integer getHasUnread() {
+  @JsonProperty("has_unread") public Long getHasUnread() {
     return hasUnread;
   }
 
-  @JsonProperty("has_unread") public void setHasUnread(Integer hasUnread) {
+  @JsonProperty("has_unread") public void setHasUnread(Long hasUnread) {
     this.hasUnread = hasUnread;
   }
 
@@ -138,5 +138,36 @@ public class Timeline {
 
   @JsonAnySetter public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
+  }
+
+  @Override public String toString() {
+    return "Timeline{"
+        + "statuses="
+        + statuses
+        + ", advertises="
+        + advertises
+        + ", ad="
+        + ad
+        + ", hasvisible="
+        + hasvisible
+        + ", previousCursor="
+        + previousCursor
+        + ", nextCursor="
+        + nextCursor
+        + ", totalNumber="
+        + totalNumber
+        + ", interval="
+        + interval
+        + ", uveBlank="
+        + uveBlank
+        + ", sinceId="
+        + sinceId
+        + ", maxId="
+        + maxId
+        + ", hasUnread="
+        + hasUnread
+        + ", additionalProperties="
+        + additionalProperties
+        + '}';
   }
 }

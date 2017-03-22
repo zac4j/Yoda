@@ -1,7 +1,10 @@
 package com.zac4j.yoda.ui.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.zac4j.yoda.R;
+import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.util.img.RoundTransformation;
@@ -40,6 +44,14 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
     if (weiboList == null || weiboList.isEmpty()) {
       return;
     }
+    mWeiboList = weiboList;
+    notifyDataSetChanged();
+  }
+
+  public void addWeiboList(List<Weibo> weiboList) {
+    if (weiboList == null || weiboList.isEmpty()) {
+      return;
+    }
     mWeiboList.addAll(weiboList);
     notifyDataSetChanged();
   }
@@ -54,13 +66,45 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
     return new ViewHolder(view);
   }
 
-  @Override public void onBindViewHolder(ViewHolder holder, int position) {
+  @SuppressWarnings("deprecation") @Override
+  public void onBindViewHolder(ViewHolder holder, int position) {
     if (mWeiboList == null || mWeiboList.isEmpty()) {
       return;
     }
     Weibo weibo = mWeiboList.get(position);
+    // 微博内容
     String content = weibo.getText();
     holder.setContent(content);
+    // 转发数
+    long repostCount = weibo.getRepostsCount();
+    holder.setRepostNumber(repostCount);
+    // 评论数
+    long commentCount = weibo.getCommentsCount();
+    holder.setReplyNumber(commentCount);
+    // 点赞数
+    long likeCount = weibo.getAttitudesCount();
+    holder.setLikeNumber(likeCount);
+
+    String source = weibo.getSource();
+    if (!TextUtils.isEmpty(source)) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        holder.setPostSource(Html.fromHtml(source, Html.FROM_HTML_MODE_LEGACY));
+      } else {
+        holder.setPostSource(Html.fromHtml(source));
+      }
+    }
+    // 用户信息
+    setUserInfo(holder, weibo.getUser());
+  }
+
+  private void setUserInfo(ViewHolder holder, User user) {
+    if (user == null) {
+      return;
+    }
+    holder.setAvatar(mContext, user.getProfileImageUrl());
+    holder.setNickname(user.getScreenName());
+    String username = "@" + user.getDomain();
+    holder.setUsername(username);
   }
 
   @Override public int getItemCount() {
@@ -105,7 +149,7 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
       mNicknameView.setText(nickname);
     }
 
-    public void setUsernameView(String username) {
+    public void setUsername(String username) {
       if (TextUtils.isEmpty(username)) {
         return;
       }
@@ -119,7 +163,7 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
       mPostTimeView.setText(postTime);
     }
 
-    public void setPostSource(String postSource) {
+    public void setPostSource(Spanned postSource) {
       if (TextUtils.isEmpty(postSource)) {
         return;
       }
@@ -137,15 +181,15 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
       mMediaContainer = mediaContainer;
     }
 
-    public void setRepostNumber(int repostNumber) {
+    public void setRepostNumber(long repostNumber) {
       mRepostBtn.setText(String.format(Locale.getDefault(), "%d", repostNumber));
     }
 
-    public void setReplyNumber(int replyNumber) {
+    public void setReplyNumber(long replyNumber) {
       mReplyBtn.setText(String.format(Locale.getDefault(), "%d", replyNumber));
     }
 
-    public void setLikeNumber(int likeNumber) {
+    public void setLikeNumber(long likeNumber) {
       mLikeBtn.setText(String.format(Locale.getDefault(), "%d", likeNumber));
     }
   }
