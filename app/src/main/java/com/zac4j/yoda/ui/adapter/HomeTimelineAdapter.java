@@ -19,6 +19,7 @@ import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
+import com.zac4j.yoda.util.TimeUtils;
 import com.zac4j.yoda.util.img.RoundTransformation;
 import java.util.Collections;
 import java.util.List;
@@ -72,6 +73,10 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
       return;
     }
     Weibo weibo = mWeiboList.get(position);
+    // 发送时间
+    String pattern = "E MMM dd HH:mm:ss Z yyyy";
+    String dateStr = TimeUtils.getYmd(weibo.getCreatedAt(), pattern);
+    holder.setPostTime(dateStr);
     // 微博内容
     String content = weibo.getText();
     holder.setContent(content);
@@ -85,6 +90,7 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
     long likeCount = weibo.getAttitudesCount();
     holder.setLikeNumber(likeCount);
 
+    // 发送来源
     String source = weibo.getSource();
     if (!TextUtils.isEmpty(source)) {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -95,6 +101,10 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
     }
     // 用户信息
     setUserInfo(holder, weibo.getUser());
+
+    // 多媒体消息
+    String media = weibo.getBmiddlePic();
+    holder.setMediaContent(mContext, media);
   }
 
   private void setUserInfo(ViewHolder holder, User user) {
@@ -122,7 +132,7 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
     @BindView(R.id.weibo_list_item_tv_post_time) TextView mPostTimeView;
     @BindView(R.id.weibo_list_item_tv_post_from) TextView mPostSourceView;
     @BindView(R.id.weibo_list_item_tv_content) TextView mContentView;
-    @BindView(R.id.weibo_list_item_media_container) ViewStub mMediaContainer;
+    @BindView(R.id.weibo_list_item_media_container) ImageView mMediaContainer;
     @BindView(R.id.weibo_list_item_tv_repost) TextView mRepostBtn;
     @BindView(R.id.weibo_list_item_tv_reply) TextView mReplyBtn;
     @BindView(R.id.weibo_list_item_tv_like) TextView mLikeBtn;
@@ -177,8 +187,12 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
       mContentView.setText(content);
     }
 
-    public void setMediaContainer(ViewStub mediaContainer) {
-      mMediaContainer = mediaContainer;
+    public void setMediaContent(Context context, String mediaUrl) {
+      if (TextUtils.isEmpty(mediaUrl)) {
+        return;
+      }
+      Glide.with(context).load(mediaUrl).fitCenter().into(mMediaContainer);
+      mMediaContainer.setVisibility(View.VISIBLE);
     }
 
     public void setRepostNumber(long repostNumber) {

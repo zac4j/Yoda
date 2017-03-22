@@ -40,8 +40,8 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
 
   @BindView(R.id.home_swipe_weibo_list_container) SwipeRefreshLayout mSwipeContainer;
   @BindView(R.id.home_rv_weibo_list) RecyclerView mWeiboListView;
-  @BindView(R.id.progress_bar) ProgressBar mProgressBar;
-  @BindView(R.id.empty_view) ImageView mEmptyView;
+  @BindView(R.id.home_progress_bar) ProgressBar mProgressBar;
+  @BindView(R.id.home_empty_view) ImageView mEmptyView;
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,

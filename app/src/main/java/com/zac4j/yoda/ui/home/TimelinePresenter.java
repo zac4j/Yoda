@@ -7,6 +7,7 @@ import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.base.BasePresenter;
 import com.zac4j.yoda.util.RxUtils;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +22,6 @@ import timber.log.Timber;
 
 public class TimelinePresenter extends BasePresenter<TimelineView> {
 
-  private static final String TAG = "TimelinePresenter";
   private final DataManager mDataManager;
   private CompositeDisposable mDisposable;
 
@@ -46,10 +46,10 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
     if (!getMvpView().isRefreshing()) {
       getMvpView().showProgress(true);
     }
-    mDataManager.getTimeline(token, count, page)
+    Disposable disposable = mDataManager.getTimeline(token, count, page)
         .compose(RxUtils.<Response<Object>>applySchedulers())
         .compose(RxUtils.handleResponse(getMvpView()))
-        .subscribe(new DisposableSingleObserver<Response<Object>>() {
+        .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
             hideProgress();
             if (response.isSuccessful()) {
@@ -77,6 +77,7 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
             Timber.e(e);
           }
         });
+    mDisposable.add(disposable);
   }
 
   private void hideProgress() {

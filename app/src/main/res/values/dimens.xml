@@ -31,6 +31,6 @@
 
   <!--main pager sizes-->
   <dimen name="weibo_list_item_avatar_size">32dp</dimen>
-  <dimen name="weibo_list_item_media_height">67.5dp</dimen>
+  <dimen name="weibo_list_item_media_height">136dp</dimen>
 
 </resources>
