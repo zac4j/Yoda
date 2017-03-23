@@ -30,7 +30,7 @@ public class MainPagerAdapter extends SmartPagerAdapter {
   }
 
   @Override public int getCount() {
-    return 1;
+    return mPagerContainer.size() % MAIN_PAGER_COUNT;
   }
 
   @Override public CharSequence getPageTitle(int position) {

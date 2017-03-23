@@ -2,13 +2,16 @@ package com.zac4j.yoda.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
@@ -47,6 +50,10 @@ public class MainActivity extends BaseActivity implements MainView {
       actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
+    if (mNavigationView != null) {
+      setupDrawer(mNavigationView);
+    }
+
     if (mViewPager != null) {
       setupViewPager(mViewPager);
     }
@@ -56,11 +63,32 @@ public class MainActivity extends BaseActivity implements MainView {
     }
   }
 
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        mDrawerLayout.openDrawer(GravityCompat.START);
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
+  }
+
+  private void setupDrawer(NavigationView navigationView) {
+    navigationView.setNavigationItemSelectedListener(
+        new NavigationView.OnNavigationItemSelectedListener() {
+          @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            item.setChecked(true);
+            mDrawerLayout.closeDrawers();
+            return true;
+          }
+        });
+  }
+
   private void setupViewPager(ViewPager viewPager) {
     MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
     adapter.addFragment(new TimelineFragment(), "Timeline");
     adapter.addFragment(new NotificationFragment(), "Notification");
     viewPager.setAdapter(adapter);
+    viewPager.setOffscreenPageLimit(1);
   }
 
   @Override public void showError(String message) {
