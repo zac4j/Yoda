@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -20,7 +19,7 @@ import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.util.TimeUtils;
-import com.zac4j.yoda.util.img.RoundTransformation;
+import com.zac4j.yoda.util.img.CircleTransformation;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -148,7 +147,7 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
       }
       Glide.with(context)
           .load(imageUrl)
-          .transform(new RoundTransformation(context))
+          .transform(new CircleTransformation(context))
           .into(mAvatarView);
     }
 
@@ -191,7 +190,7 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
       if (TextUtils.isEmpty(mediaUrl)) {
         return;
       }
-      Glide.with(context).load(mediaUrl).fitCenter().into(mMediaContainer);
+      Glide.with(context).load(mediaUrl).into(mMediaContainer);
       mMediaContainer.setVisibility(View.VISIBLE);
     }
 

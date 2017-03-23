@@ -16,7 +16,8 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
  */
 
 public class RoundTransformation extends BitmapTransformation {
-  private static float radius = 0f;
+
+  private static float radius = 4f;
 
   public RoundTransformation(BitmapPool bitmapPool) {
     super(bitmapPool);
