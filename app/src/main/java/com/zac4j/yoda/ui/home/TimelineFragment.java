@@ -19,9 +19,13 @@ import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.adapter.HomeTimelineAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
+import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
 import com.zac4j.yoda.ui.main.MainActivity;
 import java.util.List;
 import javax.inject.Inject;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 /**
  * Weibo list page
@@ -31,9 +35,10 @@ import javax.inject.Inject;
 public class TimelineFragment extends BaseFragment implements TimelineView {
 
   // Server default weibo count is 20 as well.
-  public static final int DEFAULT_WEIBO_COUNT = 20;
-  private int requestCount = DEFAULT_WEIBO_COUNT;
-  private int requestPage = 1;
+  public static final int DEFAULT_WEIBO_COUNT = 6;
+  private int mRequestCount = DEFAULT_WEIBO_COUNT;
+  private int mRequestPage = 1;
+  private EndlessRecyclerViewScrollListener mScrollListener;
 
   @Inject TimelinePresenter mPresenter;
   @Inject HomeTimelineAdapter mTimelineAdapter;
@@ -41,7 +46,7 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
   @BindView(R.id.home_swipe_weibo_list_container) SwipeRefreshLayout mSwipeContainer;
   @BindView(R.id.home_rv_weibo_list) RecyclerView mWeiboListView;
   @BindView(R.id.home_progress_bar) ProgressBar mProgressBar;
-  @BindView(R.id.home_empty_view) ImageView mEmptyView;
+  @BindView(R.id.home_empty_view) View mEmptyView;
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -54,9 +59,24 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
 
     final String token = AccessTokenKeeper.readAccessToken(getContext()).getToken();
 
+    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+    mWeiboListView.setLayoutManager(layoutManager);
+    mWeiboListView.addItemDecoration(
+        new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+    mWeiboListView.setAdapter(mTimelineAdapter);
+
+    mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+      @Override public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+        System.out.println("page >> " + page);
+        mRequestPage = page;
+        mPresenter.getTimeline(token, mRequestCount, mRequestPage);
+      }
+    };
+    mWeiboListView.addOnScrollListener(mScrollListener);
+
     mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override public void onRefresh() {
-        mPresenter.getTimeline(token, requestCount, requestPage);
+        mPresenter.getTimeline(token, mRequestCount, mRequestPage);
       }
     });
 
@@ -64,12 +84,7 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
         android.R.color.holo_green_light, android.R.color.holo_orange_light,
         android.R.color.holo_red_light);
 
-    mWeiboListView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    mWeiboListView.addItemDecoration(
-        new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-    mWeiboListView.setAdapter(mTimelineAdapter);
-
-    mPresenter.getTimeline(token, requestCount, requestPage);
+    mPresenter.getTimeline(token, mRequestCount, mRequestPage);
 
     return view;
   }
@@ -83,7 +98,7 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
   }
 
   @Override public void showProgress(boolean show) {
-    mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+    mProgressBar.setVisibility(show ? VISIBLE : GONE);
   }
 
   @Override public void showRefresh(boolean refresh) {
@@ -98,15 +113,20 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     return mProgressBar.isShown();
   }
 
-  @Override public void showEmpty() {
-    mEmptyView.setVisibility(View.VISIBLE);
+  @Override public void showEmpty(boolean show) {
+    mEmptyView.setVisibility(show ? VISIBLE : GONE);
   }
 
   @Override public void showTimeline(List<Weibo> weiboList) {
-    mTimelineAdapter.clear();
-    mTimelineAdapter.setWeiboList(weiboList);
+    if (mRequestPage == 1) { // while refresh the list.
+      if (mScrollListener != null) {
+        mScrollListener.resetState();
+      }
+      mTimelineAdapter.clear();
+    }
+    mTimelineAdapter.addWeiboList(weiboList);
 
     mSwipeContainer.setRefreshing(false);
-    mWeiboListView.setVisibility(View.VISIBLE);
+    mWeiboListView.setVisibility(VISIBLE);
   }
 }

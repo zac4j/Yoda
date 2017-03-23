@@ -52,6 +52,7 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
             hideProgress();
+            getMvpView().showEmpty(false);
             if (response.isSuccessful()) {
               Object data = response.body();
               Timeline timeline = null;
@@ -74,6 +75,7 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
 
           @Override public void onError(Throwable e) {
             hideProgress();
+            getMvpView().showEmpty(true);
             Timber.e(e);
           }
         });

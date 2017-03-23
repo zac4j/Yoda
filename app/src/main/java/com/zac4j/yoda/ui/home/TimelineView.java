@@ -19,7 +19,7 @@ public interface TimelineView extends MvpView {
 
   boolean isProgressing();
 
-  void showEmpty();
+  void showEmpty(boolean show);
 
   void showTimeline(List<Weibo> weiboList);
 }

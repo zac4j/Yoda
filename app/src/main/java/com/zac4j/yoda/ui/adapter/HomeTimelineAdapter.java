@@ -20,6 +20,7 @@ import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.util.TimeUtils;
 import com.zac4j.yoda.util.img.CircleTransformation;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -37,15 +38,7 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
 
   @Inject public HomeTimelineAdapter(@ActivityContext Context context) {
     mContext = context;
-    mWeiboList = Collections.emptyList();
-  }
-
-  public void setWeiboList(List<Weibo> weiboList) {
-    if (weiboList == null || weiboList.isEmpty()) {
-      return;
-    }
-    mWeiboList = weiboList;
-    notifyDataSetChanged();
+    mWeiboList = new ArrayList<>();
   }
 
   public void addWeiboList(List<Weibo> weiboList) {
@@ -58,6 +51,7 @@ public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapte
 
   public void clear() {
     mWeiboList.clear();
+    notifyDataSetChanged();
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
