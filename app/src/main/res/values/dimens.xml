@@ -33,4 +33,9 @@
   <dimen name="weibo_list_item_avatar_size">32dp</dimen>
   <dimen name="weibo_list_item_media_height">136dp</dimen>
 
+  <dimen name="avatar.large">128dp</dimen>
+  <dimen name="avatar.medium">96dp</dimen>
+  <dimen name="avatar.small">32dp</dimen>
+  <dimen name="avatar.very_small">24dp</dimen>
+
 </resources>

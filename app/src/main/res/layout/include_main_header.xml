@@ -1,20 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="192dp"
     android:background="?attr/colorPrimaryDark"
-    android:gravity="bottom"
-    android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="@dimen/space.medium"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     >
 
-  <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Username"
-      android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+  <ImageView
+      android:id="@id/main_drawer_header_avatar"
+      android:layout_width="@dimen/avatar.medium"
+      android:layout_height="@dimen/avatar.medium"
+      android:layout_centerInParent="true"
+      tools:src="@drawable/joanne"
       />
 
-</LinearLayout>
+  <TextView
+      android:id="@id/main_drawer_header_username"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+      tools:text="Arron"
+      />
+
+  <TextView
+      android:id="@id/main_drawer_header_words"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/main_drawer_header_avatar"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="@dimen/space.small"
+      android:ellipsize="end"
+      android:maxLines="2"
+      android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+      tools:text="I wrote song for a living"
+      />
+
+</RelativeLayout>

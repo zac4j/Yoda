@@ -31,4 +31,7 @@
   <item name="home_rv_notification_list" type="id"/>
   <item name="notification_progress_bar" type="id"/>
   <item name="notification_empty_view" type="id"/>
+  <item name="main_drawer_header_avatar" type="id"/>
+  <item name="main_drawer_header_username" type="id"/>
+  <item name="main_drawer_header_words" type="id"/>
 </resources>
