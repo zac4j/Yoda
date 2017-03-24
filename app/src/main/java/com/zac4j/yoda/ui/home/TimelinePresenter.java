@@ -54,8 +54,8 @@ public class TimelinePresenter extends BasePresenter<TimelineView> {
             hideProgress();
             getMvpView().showEmpty(false);
             if (response.isSuccessful()) {
-              Object data = response.body();
               Timeline timeline = null;
+              Object data = response.body();
               ObjectMapper mapper = mDataManager.getObjectMapper();
               try {
                 String value = mapper.writeValueAsString(data);

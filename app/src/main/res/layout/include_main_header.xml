@@ -18,24 +18,24 @@
       />
 
   <TextView
-      android:id="@id/main_drawer_header_username"
+      android:id="@id/main_drawer_header_desc"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-      tools:text="Arron"
-      />
-
-  <TextView
-      android:id="@id/main_drawer_header_words"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_below="@id/main_drawer_header_avatar"
+      android:layout_alignParentBottom="true"
       android:layout_centerHorizontal="true"
-      android:layout_marginTop="@dimen/space.small"
       android:ellipsize="end"
       android:maxLines="2"
       android:textAppearance="@style/TextAppearance.AppCompat.Body1"
       tools:text="I wrote song for a living"
+      />
+
+  <ProgressBar
+      android:id="@id/main_drawer_header_progress_bar"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:visibility="gone"
+      style="@android:style/Widget.ProgressBar.Small"
       />
 
 </RelativeLayout>

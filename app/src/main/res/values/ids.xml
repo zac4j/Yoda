@@ -33,5 +33,8 @@
   <item name="notification_empty_view" type="id"/>
   <item name="main_drawer_header_avatar" type="id"/>
   <item name="main_drawer_header_username" type="id"/>
-  <item name="main_drawer_header_words" type="id"/>
+  <item name="main_drawer_header_desc" type="id"/>
+  <item name="main_progress_bar" type="id"/>
+  <item name="main_empty_view" type="id"/>
+  <item name="main_drawer_header_progress_bar" type="id"/>
 </resources>

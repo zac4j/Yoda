@@ -1,6 +1,7 @@
 package com.zac4j.yoda.data.remote;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.reactivex.Single;
 import okhttp3.OkHttpClient;
 import retrofit2.Response;
@@ -23,6 +24,9 @@ public interface ApiServer {
   @GET("statuses/{scope}_timeline.json") Single<Response<Object>> getTimeline(
       @Path("scope") String scope, @Query("access_token") String token, @Query("count") int count,
       @Query("page") int page);
+
+  @GET("users/show.json") Single<Response<Object>> getUserProfile(
+      @Query("access_token") String token, @Query("uid") String uid);
 
   class Factory {
     public static ApiServer create() {

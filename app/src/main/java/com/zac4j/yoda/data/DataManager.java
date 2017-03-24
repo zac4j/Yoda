@@ -41,4 +41,8 @@ import retrofit2.Response;
   public Single<Response<Object>> getTimeline(String token, int count, int page) {
     return mApiServer.getTimeline("friends", token, count, page);
   }
+
+  public Single<Response<Object>> getUserProfile(String token, String uid) {
+    return mApiServer.getUserProfile(token, uid);
+  }
 }

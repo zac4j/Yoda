@@ -27,11 +27,13 @@ public class RxUtils {
     };
   }
 
-  public static SingleTransformer<Response<Object>, Response<Object>> handleResponse(final MvpView mvpView) {
+  public static SingleTransformer<Response<Object>, Response<Object>> handleResponse(
+      final MvpView mvpView) {
     return new SingleTransformer<Response<Object>, Response<Object>>() {
       @Override public SingleSource<Response<Object>> apply(Single<Response<Object>> upstream) {
         return upstream.map(new Function<Response<Object>, Response<Object>>() {
-          @Override public Response<Object> apply(@NonNull Response<Object> response) throws Exception {
+          @Override public Response<Object> apply(@NonNull Response<Object> response)
+              throws Exception {
             if (!response.isSuccessful()) {
               String errorBody = response.errorBody().string();
               System.out.println("error body: " + errorBody);

@@ -10,10 +10,18 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.bumptech.glide.Glide;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.adapter.MainPagerAdapter;
@@ -21,7 +29,11 @@ import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.home.NotificationFragment;
 import com.zac4j.yoda.ui.home.TimelineFragment;
 import com.zac4j.yoda.ui.login.LoginActivity;
+import com.zac4j.yoda.util.img.CircleTransformation;
 import javax.inject.Inject;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class MainActivity extends BaseActivity implements MainView {
 
@@ -29,16 +41,25 @@ public class MainActivity extends BaseActivity implements MainView {
 
   @BindView(R.id.main_toolbar) Toolbar mToolbar;
   @BindView(R.id.main_drawer_layout) DrawerLayout mDrawerLayout;
+  private ImageView mAvatarView;
+  private TextView mUsernameView;
+  private TextView mUserDescView;
+  private ProgressBar mProgressBar;
+
   @BindView(R.id.main_nav_view) NavigationView mNavigationView;
   @BindView(R.id.main_viewpager) ViewPager mViewPager;
   @BindView(R.id.main_fab) FloatingActionButton mFABtn;
   @BindView(R.id.main_tabs) TabLayout mTableLayout;
 
+  private DrawerLayout.DrawerListener mDrawerToggle;
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    getActivityComponent().inject(this);
     ButterKnife.bind(this);
+    mMainPresenter.attach(this);
 
     if (mToolbar != null) {
       setSupportActionBar(mToolbar);
@@ -52,6 +73,12 @@ public class MainActivity extends BaseActivity implements MainView {
 
     if (mNavigationView != null) {
       setupDrawer(mNavigationView);
+      // Get navigation view header layout
+      View HeaderLayout = mNavigationView.getHeaderView(0);
+      mAvatarView = (ImageView) HeaderLayout.findViewById(R.id.main_drawer_header_avatar);
+      mUsernameView = (TextView) HeaderLayout.findViewById(R.id.main_drawer_header_username);
+      mUserDescView = (TextView) HeaderLayout.findViewById(R.id.main_drawer_header_desc);
+      mProgressBar = (ProgressBar) HeaderLayout.findViewById(R.id.main_drawer_header_progress_bar);
     }
 
     if (mViewPager != null) {
@@ -67,12 +94,40 @@ public class MainActivity extends BaseActivity implements MainView {
     switch (item.getItemId()) {
       case android.R.id.home:
         mDrawerLayout.openDrawer(GravityCompat.START);
+
+        // Get user profile
+        Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(MainActivity.this);
+        mMainPresenter.getUserProfile(accessToken.getToken(), accessToken.getUid());
         return true;
     }
     return super.onOptionsItemSelected(item);
   }
 
+  @Override protected void onDestroy() {
+    mDrawerLayout.removeDrawerListener(mDrawerToggle);
+    super.onDestroy();
+  }
+
   private void setupDrawer(NavigationView navigationView) {
+    mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,
+        R.string.drawer_close) {
+
+      /** Called when a drawer has settled in a completely closed state. */
+      public void onDrawerClosed(View view) {
+        super.onDrawerClosed(view);
+        showProgress(false);
+      }
+
+      /** Called when a drawer has settled in a completely open state. */
+      public void onDrawerOpened(View drawerView) {
+        super.onDrawerOpened(drawerView);
+        Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(MainActivity.this);
+        mMainPresenter.getUserProfile(accessToken.getToken(), accessToken.getUid());
+      }
+    };
+    // Set the drawer toggle as the DrawerListener
+    mDrawerLayout.addDrawerListener(mDrawerToggle);
+
     navigationView.setNavigationItemSelectedListener(
         new NavigationView.OnNavigationItemSelectedListener() {
           @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -98,5 +153,36 @@ public class MainActivity extends BaseActivity implements MainView {
   @Override public void onTokenInvalid() {
     AccessTokenKeeper.clear(this);
     startActivity(new Intent(this, LoginActivity.class));
+  }
+
+  @Override public boolean isProcessing() {
+    return mProgressBar != null && mProgressBar.isShown();
+  }
+
+  @Override public void showProgress(boolean show) {
+    if (mProgressBar != null) {
+      mProgressBar.setVisibility(show ? VISIBLE : GONE);
+    }
+  }
+
+  @Override public void showAvatar(String avatarUrl) {
+    if (TextUtils.isEmpty(avatarUrl)) {
+      return;
+    }
+    Glide.with(this).load(avatarUrl).transform(new CircleTransformation(this)).into(mAvatarView);
+  }
+
+  @Override public void showUsername(String username) {
+    if (TextUtils.isEmpty(username)) {
+      return;
+    }
+    mUsernameView.setText(username);
+  }
+
+  @Override public void showUserDescription(String description) {
+    if (TextUtils.isEmpty(description)) {
+      return;
+    }
+    mUserDescView.setText(description);
   }
 }
