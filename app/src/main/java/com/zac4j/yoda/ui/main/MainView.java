@@ -12,7 +12,5 @@ public interface MainView extends MvpView {
 
   void showAvatar(String avatarUrl);
 
-  void showUsername(String username);
-
   void showUserDescription(String description);
 }

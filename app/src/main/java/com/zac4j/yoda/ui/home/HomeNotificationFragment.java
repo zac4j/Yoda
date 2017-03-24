@@ -21,9 +21,9 @@ import javax.inject.Inject;
  * Created by zac on 3/22/2017.
  */
 
-public class NotificationFragment extends BaseFragment implements NotificationView {
+public class HomeNotificationFragment extends BaseFragment implements HomeNotificationView {
 
-  @Inject NotificationPresenter mPresenter;
+  @Inject HomeNotificationPresenter mPresenter;
 
   @BindView(R.id.home_rv_notification_list) RecyclerView mNotificationListView;
   @BindView(R.id.home_swipe_notifications_container) SwipeRefreshLayout

@@ -78,7 +78,6 @@ import timber.log.Timber;
 
   private void setUserProfile(User user) {
     getMvpView().showAvatar(user.getProfileImageUrl());
-    getMvpView().showUsername(user.getScreenName());
     getMvpView().showUserDescription(user.getDescription());
   }
 }

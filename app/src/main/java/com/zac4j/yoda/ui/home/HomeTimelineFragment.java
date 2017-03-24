@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -32,7 +31,7 @@ import static android.view.View.VISIBLE;
  * Created by zac on 3/17/2017.
  */
 
-public class TimelineFragment extends BaseFragment implements TimelineView {
+public class HomeTimelineFragment extends BaseFragment implements HomeTimelineView {
 
   // Server default weibo count is 20 as well.
   public static final int DEFAULT_WEIBO_COUNT = 6;
@@ -40,7 +39,7 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
   private int mRequestPage = 1;
   private EndlessRecyclerViewScrollListener mScrollListener;
 
-  @Inject TimelinePresenter mPresenter;
+  @Inject HomeTimelinePresenter mPresenter;
   @Inject HomeTimelineAdapter mTimelineAdapter;
 
   @BindView(R.id.home_swipe_weibo_list_container) SwipeRefreshLayout mSwipeContainer;

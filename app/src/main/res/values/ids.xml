@@ -10,6 +10,9 @@
   <item name="main_viewpager" type="id"/>
   <item name="main_fab" type="id"/>
 
+  <!--Main Navigation Drawer-->
+  <item name="nav_drawer_my_moments" type="id" />
+
   <!--Main pager list item-->
   <item name="weibo_list_item_tv_nickname" type="id"/>
   <item name="weibo_list_item_tv_username" type="id"/>
@@ -37,4 +40,5 @@
   <item name="main_progress_bar" type="id"/>
   <item name="main_empty_view" type="id"/>
   <item name="main_drawer_header_progress_bar" type="id"/>
+  <item name="user_container" type="id"/>
 </resources>

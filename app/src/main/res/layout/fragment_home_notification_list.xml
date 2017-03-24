@@ -29,7 +29,7 @@
       />
 
   <include
-      layout="@layout/include_main_empty_view"
+      layout="@layout/include_empty_view"
       android:id="@id/notification_empty_view"
       />
 

@@ -10,16 +10,16 @@ import javax.inject.Inject;
  * Created by zac on 3/22/2017.
  */
 
-public class NotificationPresenter extends BasePresenter<NotificationView> {
+public class HomeNotificationPresenter extends BasePresenter<HomeNotificationView> {
 
   private final DataManager mDataManager;
   private CompositeDisposable mDisposable;
 
-  @Inject public NotificationPresenter(DataManager dataManager) {
+  @Inject public HomeNotificationPresenter(DataManager dataManager) {
     mDataManager = dataManager;
   }
 
-  @Override public void attach(NotificationView mvpView) {
+  @Override public void attach(HomeNotificationView mvpView) {
     super.attach(mvpView);
     mDisposable = new CompositeDisposable();
   }

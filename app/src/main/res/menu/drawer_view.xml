@@ -18,9 +18,9 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
+            android:id="@id/nav_drawer_my_moments"
             android:icon="@drawable/ic_dashboard"
-            android:title="Home" />
+            android:title="@string/nav_drawer_my_moments" />
         <item
             android:id="@+id/nav_messages"
             android:icon="@drawable/ic_event"

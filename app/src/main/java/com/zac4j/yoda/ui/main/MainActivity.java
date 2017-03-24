@@ -26,8 +26,8 @@ import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.adapter.MainPagerAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
-import com.zac4j.yoda.ui.home.NotificationFragment;
-import com.zac4j.yoda.ui.home.TimelineFragment;
+import com.zac4j.yoda.ui.home.HomeNotificationFragment;
+import com.zac4j.yoda.ui.home.HomeTimelineFragment;
 import com.zac4j.yoda.ui.login.LoginActivity;
 import com.zac4j.yoda.util.img.CircleTransformation;
 import javax.inject.Inject;
@@ -42,7 +42,6 @@ public class MainActivity extends BaseActivity implements MainView {
   @BindView(R.id.main_toolbar) Toolbar mToolbar;
   @BindView(R.id.main_drawer_layout) DrawerLayout mDrawerLayout;
   private ImageView mAvatarView;
-  private TextView mUsernameView;
   private TextView mUserDescView;
   private ProgressBar mProgressBar;
 
@@ -76,7 +75,6 @@ public class MainActivity extends BaseActivity implements MainView {
       // Get navigation view header layout
       View HeaderLayout = mNavigationView.getHeaderView(0);
       mAvatarView = (ImageView) HeaderLayout.findViewById(R.id.main_drawer_header_avatar);
-      mUsernameView = (TextView) HeaderLayout.findViewById(R.id.main_drawer_header_username);
       mUserDescView = (TextView) HeaderLayout.findViewById(R.id.main_drawer_header_desc);
       mProgressBar = (ProgressBar) HeaderLayout.findViewById(R.id.main_drawer_header_progress_bar);
     }
@@ -140,8 +138,8 @@ public class MainActivity extends BaseActivity implements MainView {
 
   private void setupViewPager(ViewPager viewPager) {
     MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
-    adapter.addFragment(new TimelineFragment(), "Timeline");
-    adapter.addFragment(new NotificationFragment(), "Notification");
+    adapter.addFragment(new HomeTimelineFragment(), "Timeline");
+    adapter.addFragment(new HomeNotificationFragment(), "Notification");
     viewPager.setAdapter(adapter);
     viewPager.setOffscreenPageLimit(1);
   }
@@ -170,13 +168,6 @@ public class MainActivity extends BaseActivity implements MainView {
       return;
     }
     Glide.with(this).load(avatarUrl).transform(new CircleTransformation(this)).into(mAvatarView);
-  }
-
-  @Override public void showUsername(String username) {
-    if (TextUtils.isEmpty(username)) {
-      return;
-    }
-    mUsernameView.setText(username);
   }
 
   @Override public void showUserDescription(String description) {

@@ -20,16 +20,16 @@ import timber.log.Timber;
  * Created by zac on 3/17/2017.
  */
 
-public class TimelinePresenter extends BasePresenter<TimelineView> {
+public class HomeTimelinePresenter extends BasePresenter<HomeTimelineView> {
 
   private final DataManager mDataManager;
   private CompositeDisposable mDisposable;
 
-  @Inject public TimelinePresenter(DataManager dataManager) {
+  @Inject public HomeTimelinePresenter(DataManager dataManager) {
     mDataManager = dataManager;
   }
 
-  @Override public void attach(TimelineView mvpView) {
+  @Override public void attach(HomeTimelineView mvpView) {
     super.attach(mvpView);
     mDisposable = new CompositeDisposable();
   }

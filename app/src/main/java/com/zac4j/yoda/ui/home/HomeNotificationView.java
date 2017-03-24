@@ -7,7 +7,7 @@ import com.zac4j.yoda.ui.base.MvpView;
  * Created by zac on 3/22/2017.
  */
 
-public interface NotificationView extends MvpView {
+public interface HomeNotificationView extends MvpView {
   void showProgress(boolean show);
 
   void showRefresh(boolean refresh);

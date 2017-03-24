@@ -9,7 +9,7 @@ import java.util.List;
  * Created by zac on 3/17/2017.
  */
 
-public interface TimelineView extends MvpView {
+public interface HomeTimelineView extends MvpView {
 
   void showProgress(boolean show);
 
