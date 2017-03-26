@@ -6,12 +6,12 @@
     >
 
   <android.support.v4.widget.SwipeRefreshLayout
-      android:id="@id/home_swipe_weibo_list_container"
+      android:id="@id/swipe_weibo_list_container"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       >
     <android.support.v7.widget.RecyclerView
-        android:id="@id/home_rv_weibo_list"
+        android:id="@id/recycler_weibo_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
@@ -20,7 +20,7 @@
   </android.support.v4.widget.SwipeRefreshLayout>
 
   <ProgressBar
-      android:id="@id/home_progress_bar"
+      android:id="@id/progress_bar"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerInParent="true"
@@ -29,8 +29,8 @@
       />
 
   <include
-      layout="@layout/include_empty_view"
-      android:id="@id/home_empty_view"
+      layout="@layout/include_error_view"
+      android:id="@id/error_view"
       />
 
 </RelativeLayout>

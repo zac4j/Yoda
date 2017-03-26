@@ -1,10 +1,11 @@
-package com.zac4j.yoda.ui.home;
+package com.zac4j.yoda.ui.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
 import com.zac4j.yoda.data.model.Timeline;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.base.BasePresenter;
+import com.zac4j.yoda.ui.home.HomeTimelineView;
 import com.zac4j.yoda.util.RxUtils;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -20,16 +21,16 @@ import timber.log.Timber;
  * Created by zac on 3/17/2017.
  */
 
-public class HomeTimelinePresenter extends BasePresenter<HomeTimelineView> {
+public class UserTimelinePresenter extends BasePresenter<UserTimelineView> {
 
   private final DataManager mDataManager;
   private CompositeDisposable mDisposable;
 
-  @Inject public HomeTimelinePresenter(DataManager dataManager) {
+  @Inject public UserTimelinePresenter(DataManager dataManager) {
     mDataManager = dataManager;
   }
 
-  @Override public void attach(HomeTimelineView mvpView) {
+  @Override public void attach(UserTimelineView mvpView) {
     super.attach(mvpView);
     mDisposable = new CompositeDisposable();
   }
@@ -46,7 +47,7 @@ public class HomeTimelinePresenter extends BasePresenter<HomeTimelineView> {
     if (!getMvpView().isRefreshing()) {
       getMvpView().showProgress(true);
     }
-    Disposable disposable = mDataManager.getHomeTimeline(token, count, page)
+    Disposable disposable = mDataManager.getUserTimeline(token, count, page)
         .compose(RxUtils.<Response<Object>>applySchedulers())
         .compose(RxUtils.handleResponse(getMvpView()))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
@@ -69,13 +70,16 @@ public class HomeTimelinePresenter extends BasePresenter<HomeTimelineView> {
               }
 
               List<Weibo> weiboList = timeline.getStatuses();
-              getMvpView().showTimeline(weiboList);
+              if (weiboList.isEmpty()) {
+                getMvpView().showEmpty(true);
+              } else {
+                getMvpView().showTimeline(weiboList);
+              }
             }
           }
 
           @Override public void onError(Throwable e) {
             hideProgress();
-            getMvpView().showEmpty(true);
             Timber.e(e);
           }
         });

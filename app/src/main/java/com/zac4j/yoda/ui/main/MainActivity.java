@@ -29,6 +29,7 @@ import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.home.HomeNotificationFragment;
 import com.zac4j.yoda.ui.home.HomeTimelineFragment;
 import com.zac4j.yoda.ui.login.LoginActivity;
+import com.zac4j.yoda.ui.user.UserActivity;
 import com.zac4j.yoda.util.img.CircleTransformation;
 import javax.inject.Inject;
 
@@ -131,6 +132,11 @@ public class MainActivity extends BaseActivity implements MainView {
           @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             item.setChecked(true);
             mDrawerLayout.closeDrawers();
+            switch (item.getItemId()) {
+              case R.id.nav_drawer_my_moments:
+                startActivity(new Intent(MainActivity.this, UserActivity.class));
+                break;
+            }
             return true;
           }
         });

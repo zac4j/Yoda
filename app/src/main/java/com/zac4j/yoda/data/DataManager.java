@@ -38,8 +38,12 @@ import retrofit2.Response;
     return mObjectMapper;
   }
 
-  public Single<Response<Object>> getTimeline(String token, int count, int page) {
+  public Single<Response<Object>> getHomeTimeline(String token, int count, int page) {
     return mApiServer.getTimeline("friends", token, count, page);
+  }
+
+  public Single<Response<Object>> getUserTimeline(String token, int count, int page) {
+    return mApiServer.getTimeline("user", token, count, page);
   }
 
   public Single<Response<Object>> getUserProfile(String token, String uid) {

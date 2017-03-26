@@ -31,12 +31,12 @@ import javax.inject.Inject;
  * Created by zac on 3/17/2017.
  */
 
-public class HomeTimelineAdapter extends RecyclerView.Adapter<HomeTimelineAdapter.ViewHolder> {
+public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHolder> {
 
   private Context mContext;
   private List<Weibo> mWeiboList;
 
-  @Inject public HomeTimelineAdapter(@ActivityContext Context context) {
+  @Inject public TimelineAdapter(@ActivityContext Context context) {
     mContext = context;
     mWeiboList = new ArrayList<>();
   }

@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Weibo;
-import com.zac4j.yoda.ui.adapter.HomeTimelineAdapter;
+import com.zac4j.yoda.ui.adapter.TimelineAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
 import com.zac4j.yoda.ui.main.MainActivity;
@@ -40,19 +40,19 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
   private EndlessRecyclerViewScrollListener mScrollListener;
 
   @Inject HomeTimelinePresenter mPresenter;
-  @Inject HomeTimelineAdapter mTimelineAdapter;
+  @Inject TimelineAdapter mTimelineAdapter;
 
-  @BindView(R.id.home_swipe_weibo_list_container) SwipeRefreshLayout mSwipeContainer;
-  @BindView(R.id.home_rv_weibo_list) RecyclerView mWeiboListView;
-  @BindView(R.id.home_progress_bar) ProgressBar mProgressBar;
-  @BindView(R.id.home_empty_view) View mEmptyView;
+  @BindView(R.id.swipe_weibo_list_container) SwipeRefreshLayout mSwipeContainer;
+  @BindView(R.id.recycler_weibo_list) RecyclerView mWeiboListView;
+  @BindView(R.id.progress_bar) ProgressBar mProgressBar;
+  @BindView(R.id.error_view) View mErrorView;
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     getFragmentComponent().inject(this);
 
-    View view = inflater.inflate(R.layout.fragment_home_weibo_list, container, false);
+    View view = inflater.inflate(R.layout.fragment_weibo_list, container, false);
     ButterKnife.bind(this, view);
     mPresenter.attach(this);
 
@@ -113,7 +113,7 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
   }
 
   @Override public void showEmpty(boolean show) {
-    mEmptyView.setVisibility(show ? VISIBLE : GONE);
+    mErrorView.setVisibility(show ? VISIBLE : GONE);
   }
 
   @Override public void showTimeline(List<Weibo> weiboList) {
