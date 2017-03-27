@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+  <android.support.design.widget.AppBarLayout
+      android:id="@id/appbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+      >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_scrollFlags="enterAlways|snap"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        />
+
+  </android.support.design.widget.AppBarLayout>
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="?android:actionBarSize"
+      >
+
+    <EditText
+        android:id="@id/send_weibo_et_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/send_weibo_action_container"
+        android:background="@color/white"
+        android:gravity="top|start"
+        android:hint="@string/send_weibo_content_input_hint"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:maxLength="140"
+        android:maxLines="10"
+        android:padding="@dimen/space.small"
+        android:scrollbars="vertical"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        />
+
+    <LinearLayout
+        android:id="@id/send_weibo_action_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height.medium"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/space.small"
+        android:orientation="horizontal"
+        android:weightSum="5"
+        >
+
+      <ImageView
+          android:id="@id/send_weibo_iv_action_camera"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:layout_weight="1"
+          android:src="@drawable/ic_weibo_camera"
+          android:tint="@color/gray_light"
+          />
+
+      <ImageView
+          android:id="@id/send_weibo_iv_action_gallery"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:layout_weight="1"
+          android:src="@drawable/ic_weibo_gallery"
+          android:tint="@color/gray_light"
+          />
+
+      <ImageView
+          android:id="@id/send_weibo_iv_action_location"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:layout_weight="1"
+          android:src="@drawable/ic_weibo_location"
+          android:tint="@color/gray_light"
+          />
+
+      <ImageView
+          android:id="@id/send_weibo_iv_action_visibility"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:layout_weight="1"
+          android:src="@drawable/ic_weibo_visibility"
+          android:tint="@color/gray_light"
+          />
+
+      <TextView
+          android:id="@id/send_weibo_tv_action_send"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:layout_weight="1"
+          android:gravity="center"
+          android:text="@string/send"
+          android:textAppearance="@style/TextAppearance.AppCompat.Small"
+          android:textColor="@color/blue_light"
+          />
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/include_progressbar"
+        android:id="@id/send_weibo_progressbar"
+        />
+
+  </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

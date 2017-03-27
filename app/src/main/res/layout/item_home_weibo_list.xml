@@ -94,6 +94,7 @@
           android:layout_height="wrap_content"
           android:drawablePadding="@dimen/space.very_small"
           android:drawableStart="@drawable/ic_weibo_repost"
+          android:gravity="center"
           android:textAppearance="@style/TextAppearance.AppCompat.Caption"
           tools:text="100"
           />
@@ -106,6 +107,7 @@
           android:layout_marginStart="@dimen/space.large"
           android:drawablePadding="@dimen/space.very_small"
           android:drawableStart="@drawable/ic_weibo_reply"
+          android:gravity="center"
           android:textAppearance="@style/TextAppearance.AppCompat.Caption"
           tools:text="110"
           />
@@ -116,6 +118,7 @@
           android:layout_height="wrap_content"
           android:drawablePadding="@dimen/space.very_small"
           android:drawableStart="@drawable/ic_weibo_like"
+          android:gravity="center"
           android:textAppearance="@style/TextAppearance.AppCompat.Caption"
           tools:text="120"
           />

@@ -2,6 +2,7 @@ package com.zac4j.yoda.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.local.PreferencesHelper;
+import com.zac4j.yoda.data.model.post.TextWeibo;
 import com.zac4j.yoda.data.remote.ApiServer;
 import io.reactivex.Single;
 import javax.inject.Inject;
@@ -48,5 +49,9 @@ import retrofit2.Response;
 
   public Single<Response<Object>> getUserProfile(String token, String uid) {
     return mApiServer.getUserProfile(token, uid);
+  }
+
+  public Single<Response<Object>> sendWeibo(TextWeibo weibo) {
+    return mApiServer.sendWeibo(weibo);
   }
 }

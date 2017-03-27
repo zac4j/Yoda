@@ -50,7 +50,8 @@ public class UserActivity extends BaseActivity {
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case android.R.id.home:
-        UserActivity.this.finish();
+        onBackPressed();
+        break;
     }
     return true;
   }

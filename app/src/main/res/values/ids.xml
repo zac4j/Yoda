@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <!--Commons-->
+  <item name="appbar" type="id"/>
+  <item name="toolbar" type="id"/>
+  <item name="root_layout" type="id"/>
+  <item name="error_view_img" type="id"/>
+  <item name="error_view_txt" type="id"/>
+
   <!--Main page-->
   <item name="main_drawer_layout" type="id"/>
   <item name="main_nav_view" type="id"/>
@@ -47,6 +54,16 @@
   <item name="user_fragment_container" type="id"/>
   <item name="user_toolbar" type="id"/>
   <item name="user_appbar" type="id"/>
-  <item name="error_view_img" type="id"/>
-  <item name="error_view_txt" type="id"/>
+
+  <!--Send Weibo-->
+  <item name="send_weibo_action_container" type="id"/>
+  <item name="send_weibo_et_content" type="id"/>
+  <item name="send_weibo_rv_gallery" type="id"/>
+  <item name="send_weibo_iv_action_camera" type="id"/>
+  <item name="send_weibo_iv_action_gallery" type="id"/>
+  <item name="send_weibo_iv_action_visibility" type="id"/>
+  <item name="send_weibo_iv_action_location" type="id"/>
+  <item name="send_weibo_tv_action_send" type="id"/>
+  <item name="send_weibo_progressbar" type="id"/>
+
 </resources>

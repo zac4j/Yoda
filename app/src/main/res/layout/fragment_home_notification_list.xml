@@ -19,13 +19,9 @@
         />
   </android.support.v4.widget.SwipeRefreshLayout>
 
-  <ProgressBar
+  <include
+      layout="@layout/include_progressbar"
       android:id="@id/notification_progress_bar"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_centerInParent="true"
-      android:visibility="gone"
-      style="@style/Widget.AppCompat.ProgressBar"
       />
 
   <include
