@@ -3,11 +3,13 @@
   <string name="drawer_open">Open</string>
   <string name="drawer_close">Close</string>
   <string name="nav_drawer_my_moments">My Moments</string>
-  <string name="error_check_network">Check Your Network Connection!</string>
-  <string name="error_no_weibo">You Have Not Post Weibo!</string>
 
   <!--Commons-->
   <string name="send">Send</string>
   <string name="send_weibo_content_input_hint">Ask a question&#8230;</string>
   <string name="ok">OK</string>
+  <string name="error_check_network">Check Your Network Connection!</string>
+  <string name="error_no_weibo">You Have Not Post Weibo!</string>
+  <string name="token">access_token</string>
+  <string name="text_weibo">status</string>
 </resources>

@@ -8,8 +8,6 @@ import com.zac4j.yoda.ui.base.MvpView;
  */
 public interface MainView extends MvpView {
 
-  boolean isProcessing();
-
   void showAvatar(String avatarUrl);
 
   void showUserDescription(String description);

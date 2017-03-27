@@ -3,12 +3,15 @@ package com.zac4j.yoda.data.remote;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.zac4j.yoda.data.model.post.TextWeibo;
 import io.reactivex.Single;
+import java.util.Map;
 import okhttp3.OkHttpClient;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -49,10 +52,11 @@ public interface ApiServer {
   /**
    * Send Text Weibo
    *
-   * @param weibo weibo content
+   * @param weibo weibo form contents
    * @return weibo
    */
-  @POST("statuses/update.json") Single<Response<Object>> sendWeibo(@Body TextWeibo weibo);
+  @FormUrlEncoded
+  @POST("statuses/update.json") Single<Response<Object>> sendTextWeibo(@FieldMap Map<String, String> weibo);
 
   class Factory {
     public static ApiServer create() {

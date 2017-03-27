@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
 import com.zac4j.yoda.data.model.Timeline;
 import com.zac4j.yoda.data.model.Weibo;
+import com.zac4j.yoda.di.PerConfig;
 import com.zac4j.yoda.ui.base.BasePresenter;
 import com.zac4j.yoda.ui.home.HomeTimelineView;
 import com.zac4j.yoda.util.RxUtils;
@@ -21,7 +22,7 @@ import timber.log.Timber;
  * Created by zac on 3/17/2017.
  */
 
-public class UserTimelinePresenter extends BasePresenter<UserTimelineView> {
+@PerConfig public class UserTimelinePresenter extends BasePresenter<UserTimelineView> {
 
   private final DataManager mDataManager;
   private CompositeDisposable mDisposable;

@@ -1,6 +1,9 @@
 package com.zac4j.yoda.util;
 
 import android.text.TextUtils;
+import android.util.JsonReader;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zac4j.yoda.data.model.response.Error;
 import com.zac4j.yoda.ui.base.MvpView;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
@@ -9,6 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import org.json.JSONObject;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -37,11 +41,13 @@ public class RxUtils {
             if (!response.isSuccessful()) {
               String errorBody = response.errorBody().string();
               System.out.println("error body: " + errorBody);
-              if (!TextUtils.isEmpty(errorBody) && errorBody.contains("21327")) {
+              if (!TextUtils.isEmpty(errorBody) && errorBody.contains("213")) {
                 mvpView.onTokenInvalid();
               } else {
                 Timber.e(errorBody);
-                mvpView.showError("Network bad, try request later!");
+                ObjectMapper mapper = new ObjectMapper();
+                Error error = mapper.readValue(errorBody, Error.class);
+                mvpView.showError(error.getError());
               }
             }
             return response;

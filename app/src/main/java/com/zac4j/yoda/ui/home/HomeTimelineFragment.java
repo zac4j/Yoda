@@ -92,12 +92,18 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
   }
 
+  @Override public boolean isProcessing() {
+    return mProgressBar != null && mProgressBar.isShown();
+  }
+
   @Override public void onTokenInvalid() {
     ((MainActivity) getActivity()).onTokenInvalid();
   }
 
   @Override public void showProgress(boolean show) {
-    mProgressBar.setVisibility(show ? VISIBLE : GONE);
+    if (mProgressBar != null) {
+      mProgressBar.setVisibility(show ? VISIBLE : GONE);
+    }
   }
 
   @Override public void showRefresh(boolean refresh) {

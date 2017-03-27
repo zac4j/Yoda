@@ -1,25 +1,32 @@
 package com.zac4j.yoda.ui.weibo;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
+import com.zac4j.yoda.data.model.User;
+import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.data.model.post.TextWeibo;
+import com.zac4j.yoda.di.PerConfig;
 import com.zac4j.yoda.ui.base.BasePresenter;
 import com.zac4j.yoda.util.RxUtils;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
+import java.io.IOException;
+import java.util.Map;
 import javax.inject.Inject;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Send Weibo Presenter
  * Created by zac on 3/27/2017.
  */
 
-public class SendWeiboPresenter extends BasePresenter<SendWeiboView> {
+@PerConfig public class SendWeiboPresenter extends BasePresenter<SendWeiboView> {
 
-  @Inject DataManager mDataManager;
+  private final DataManager mDataManager;
   private CompositeDisposable mDisposable;
 
-  public SendWeiboPresenter(DataManager dataManager) {
+  @Inject public SendWeiboPresenter(DataManager dataManager) {
     mDataManager = dataManager;
   }
 
@@ -37,18 +44,40 @@ public class SendWeiboPresenter extends BasePresenter<SendWeiboView> {
     }
   }
 
-  public void sendWeibo(TextWeibo weibo) {
+  public void sendTextWeibo(Map<String, String> weiboMap) {
     checkViewAttached();
-    mDisposable.add(mDataManager.sendWeibo(weibo)
+    if (isProcessing()) {
+      return;
+    }
+    showProgress(true);
+    mDisposable.add(mDataManager.sendTextWeibo(weiboMap)
         .compose(RxUtils.<Response<Object>>applySchedulers())
         .compose(RxUtils.handleResponse(getMvpView()))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
+            showProgress(false);
+            if (response.isSuccessful()) {
+              Weibo weibo = null;
+              Object data = response.body();
+              ObjectMapper mapper = mDataManager.getObjectMapper();
+              try {
+                String value = mapper.writeValueAsString(data);
+                weibo = mapper.readValue(value, Weibo.class);
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
 
+              if (weibo == null) {
+                return;
+              }
+
+              getMvpView().showMessage("Successfully sent !");
+            }
           }
 
           @Override public void onError(Throwable e) {
-
+            showProgress(false);
+            Timber.e(e);
           }
         }));
   }

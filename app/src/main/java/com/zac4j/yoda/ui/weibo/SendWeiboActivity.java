@@ -4,19 +4,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
+import com.zac4j.yoda.data.model.post.TextWeibo;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.login.LoginActivity;
+import java.util.HashMap;
+import java.util.Map;
+import javax.inject.Inject;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -28,15 +35,22 @@ import static android.view.View.VISIBLE;
 
 public class SendWeiboActivity extends BaseActivity implements SendWeiboView {
 
+  @Inject SendWeiboPresenter mPresenter;
+
   @BindView(R.id.toolbar) Toolbar mToolbar;
   @BindView(R.id.root_layout) View mRootView;
   @BindView(R.id.send_weibo_et_content) EditText mContentInput;
   @BindView(R.id.send_weibo_progressbar) ProgressBar mProgressBar;
 
+  private final Map<String, String> mTextWeiboMap = new HashMap<>();
+
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_send_weibo);
+
+    getActivityComponent().inject(this);
     ButterKnife.bind(this);
+    mPresenter.attach(this);
 
     if (mToolbar != null) {
       setSupportActionBar(mToolbar);
@@ -46,6 +60,16 @@ public class SendWeiboActivity extends BaseActivity implements SendWeiboView {
     if (actionBar != null) {
       actionBar.setDisplayHomeAsUpEnabled(true);
     }
+
+    setupToken();
+  }
+
+  private void setupToken() {
+    String token = AccessTokenKeeper.readAccessToken(SendWeiboActivity.this).getToken();
+    if (TextUtils.isEmpty(token)) {
+      return;
+    }
+    mTextWeiboMap.put(getString(R.string.token), token);
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -72,25 +96,37 @@ public class SendWeiboActivity extends BaseActivity implements SendWeiboView {
       case R.id.send_weibo_iv_action_visibility:
         break;
       case R.id.send_weibo_tv_action_send:
+        String weiboContent = mContentInput.getText().toString();
+        if (TextUtils.isEmpty(weiboContent)) {
+          showError("Not allowed empty weibo content !");
+          return;
+        }
+        mTextWeiboMap.put(getString(R.string.text_weibo), weiboContent);
+        mPresenter.sendTextWeibo(mTextWeiboMap);
         break;
     }
   }
 
   @Override public void showProgress(boolean show) {
-    mProgressBar.setVisibility(show ? VISIBLE : GONE);
+    if (mProgressBar != null) {
+      mProgressBar.setVisibility(show ? VISIBLE : GONE);
+    }
   }
 
   @Override public void showError(String message) {
-    final Snackbar snackbar = Snackbar.make(mRootView, message, Snackbar.LENGTH_INDEFINITE);
-    snackbar.setAction(R.string.ok, new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        snackbar.dismiss();
-      }
-    });
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+  }
+
+  @Override public boolean isProcessing() {
+    return mProgressBar != null && mProgressBar.isShown();
   }
 
   @Override public void onTokenInvalid() {
     AccessTokenKeeper.clear(this);
     startActivity(new Intent(this, LoginActivity.class));
+  }
+
+  @Override public void showMessage(String message) {
+    Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();
   }
 }

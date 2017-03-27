@@ -40,7 +40,7 @@ import timber.log.Timber;
 
   public void getUserProfile(String token, final String uid) {
     checkViewAttached();
-    if (getMvpView().isProcessing()) {
+    if (isProcessing()) {
       return;
     }
     showProgress(true);

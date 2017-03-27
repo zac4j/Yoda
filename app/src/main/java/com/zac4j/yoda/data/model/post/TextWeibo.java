@@ -22,11 +22,26 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   @JsonProperty("status") private String status;
   @JsonProperty("visible") private Integer visible;
   @JsonProperty("list_id") private String listId;
-  @JsonProperty("lat") private Double lat;
-  @JsonProperty("long") private Double _long;
+  @JsonProperty("lat") private Double latitude;
+  @JsonProperty("long") private Double longitude;
   @JsonProperty("annotations") private String annotations;
   @JsonProperty("rip") private String rip;
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<>();
+
+  public TextWeibo() {
+  }
+
+  public TextWeibo(String accessToken, String status, Integer visible, String listId,
+      Double latitude, Double longitude, String annotations, String rip) {
+    this.accessToken = accessToken;
+    this.status = status;
+    this.visible = visible;
+    this.listId = listId;
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.annotations = annotations;
+    this.rip = rip;
+  }
 
   @JsonProperty("access_token") public String getAccessToken() {
     return accessToken;
@@ -60,20 +75,20 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     this.listId = listId;
   }
 
-  @JsonProperty("lat") public Double getLat() {
-    return lat;
+  @JsonProperty("lat") public Double getLatitude() {
+    return latitude;
   }
 
-  @JsonProperty("lat") public void setLat(Double lat) {
-    this.lat = lat;
+  @JsonProperty("lat") public void setLatitude(Double latitude) {
+    this.latitude = latitude;
   }
 
-  @JsonProperty("long") public Double getLong() {
-    return _long;
+  @JsonProperty("long") public Double getLongitude() {
+    return longitude;
   }
 
-  @JsonProperty("long") public void setLong(Double _long) {
-    this._long = _long;
+  @JsonProperty("long") public void setLongitude(Double longitude) {
+    this.longitude = longitude;
   }
 
   @JsonProperty("annotations") public String getAnnotations() {

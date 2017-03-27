@@ -45,7 +45,7 @@ public class Weibo {
   @JsonProperty("thumbnail_pic") private String thumbnailPic;
   @JsonProperty("bmiddle_pic") private String bmiddlePic;
   @JsonProperty("original_pic") private String originalPic;
-  @JsonProperty("geo") private Object geo;
+  @JsonProperty("geo") private Geography geo;
   @JsonProperty("user") private User user;
   @JsonProperty("reposts_count") private Long repostsCount;
   @JsonProperty("comments_count") private Long commentsCount;
@@ -213,11 +213,11 @@ public class Weibo {
     this.originalPic = originalPic;
   }
 
-  @JsonProperty("geo") public Object getGeo() {
+  @JsonProperty("geo") public Geography getGeo() {
     return geo;
   }
 
-  @JsonProperty("geo") public void setGeo(Object geo) {
+  @JsonProperty("geo") public void setGeo(Geography geo) {
     this.geo = geo;
   }
 

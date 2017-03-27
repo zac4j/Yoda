@@ -96,12 +96,18 @@ public class UserTimelineFragment extends BaseFragment implements UserTimelineVi
     mErrorView.setVisibility(VISIBLE);
   }
 
+  @Override public boolean isProcessing() {
+    return mProgressBar != null && mProgressBar.isShown();
+  }
+
   @Override public void onTokenInvalid() {
     ((UserActivity) getActivity()).onTokenInvalid();
   }
 
   @Override public void showProgress(boolean show) {
-    mProgressBar.setVisibility(show ? VISIBLE : GONE);
+    if (mProgressBar != null) {
+      mProgressBar.setVisibility(show ? VISIBLE : GONE);
+    }
   }
 
   @Override public void showRefresh(boolean refresh) {

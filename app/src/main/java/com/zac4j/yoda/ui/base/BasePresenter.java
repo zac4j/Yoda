@@ -31,6 +31,10 @@ public class BasePresenter<T extends MvpView> implements Presenter<T> {
     mMvpView.showProgress(show);
   }
 
+  public boolean isProcessing() {
+    return mMvpView.isProcessing();
+  }
+
   public void checkViewAttached() {
     if (!isViewAttached()) throw new MvpViewNotAttachedException();
   }

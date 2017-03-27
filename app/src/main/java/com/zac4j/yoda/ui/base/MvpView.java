@@ -10,5 +10,7 @@ public interface MvpView {
 
   void showError(String message);
 
+  boolean isProcessing();
+
   void onTokenInvalid();
 }

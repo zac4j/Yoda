@@ -8,7 +8,5 @@ import com.zac4j.yoda.ui.base.MvpView;
  */
 
 public interface SendWeiboView extends MvpView {
-
-
-
+  void showMessage(String message);
 }

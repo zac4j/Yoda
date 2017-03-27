@@ -28,8 +28,8 @@ public class HomeNotificationFragment extends BaseFragment implements HomeNotifi
   @BindView(R.id.home_rv_notification_list) RecyclerView mNotificationListView;
   @BindView(R.id.home_swipe_notifications_container) SwipeRefreshLayout
       mSwipeNotificationsContainer;
-  @BindView(R.id.notification_progress_bar) ProgressBar mNotificationProgressBar;
-  @BindView(R.id.notification_empty_view) View mNotificationEmptyView;
+  @BindView(R.id.notification_progress_bar) ProgressBar mProgressBar;
+  @BindView(R.id.notification_empty_view) View mEmptyView;
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -48,12 +48,18 @@ public class HomeNotificationFragment extends BaseFragment implements HomeNotifi
     Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
   }
 
+  @Override public boolean isProcessing() {
+    return mProgressBar != null && mProgressBar.isShown();
+  }
+
   @Override public void onTokenInvalid() {
     ((MainActivity) getActivity()).onTokenInvalid();
   }
 
   @Override public void showProgress(boolean show) {
-    mNotificationProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+    if (mProgressBar != null) {
+      mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
   }
 
   @Override public void showRefresh(boolean refresh) {
@@ -65,10 +71,10 @@ public class HomeNotificationFragment extends BaseFragment implements HomeNotifi
   }
 
   @Override public boolean isProgressing() {
-    return mNotificationProgressBar.isShown();
+    return mProgressBar.isShown();
   }
 
   @Override public void showEmpty() {
-    mNotificationEmptyView.setVisibility(View.VISIBLE);
+    mEmptyView.setVisibility(View.VISIBLE);
   }
 }

@@ -1,6 +1,7 @@
 package com.zac4j.yoda.ui.home;
 
 import com.zac4j.yoda.data.DataManager;
+import com.zac4j.yoda.di.PerConfig;
 import com.zac4j.yoda.ui.base.BasePresenter;
 import io.reactivex.disposables.CompositeDisposable;
 import javax.inject.Inject;
@@ -10,7 +11,7 @@ import javax.inject.Inject;
  * Created by zac on 3/22/2017.
  */
 
-public class HomeNotificationPresenter extends BasePresenter<HomeNotificationView> {
+@PerConfig public class HomeNotificationPresenter extends BasePresenter<HomeNotificationView> {
 
   private final DataManager mDataManager;
   private CompositeDisposable mDisposable;
