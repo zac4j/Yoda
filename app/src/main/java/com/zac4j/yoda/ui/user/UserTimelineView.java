@@ -11,13 +11,9 @@ import java.util.List;
 
 public interface UserTimelineView extends MvpView {
 
-  void showProgress(boolean show);
-
   void showRefresh(boolean refresh);
 
   boolean isRefreshing();
-
-  boolean isProgressing();
 
   void showEmpty(boolean show);
 

@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -118,14 +117,18 @@ public class UserTimelineFragment extends BaseFragment implements UserTimelineVi
     return mSwipeContainer.isRefreshing();
   }
 
-  @Override public boolean isProgressing() {
-    return mProgressBar.isShown();
+  public boolean isProgressing() {
+    return mProgressBar != null && mProgressBar.isShown();
   }
 
   @Override public void showEmpty(boolean show) {
-    mErrorView.setVisibility(VISIBLE);
-    mErrorViewImg.setImageResource(R.drawable.ic_weibo);
-    mErrorViewText.setText(R.string.error_no_weibo);
+    if (show) {
+      mErrorView.setVisibility(VISIBLE);
+      mErrorViewImg.setImageResource(R.drawable.ic_weibo);
+      mErrorViewText.setText(R.string.error_no_weibo);
+    } else {
+      mErrorView.setVisibility(GONE);
+    }
   }
 
   @Override public void showTimeline(List<Weibo> weiboList) {

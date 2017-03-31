@@ -6,10 +6,19 @@
 
   <!--Commons-->
   <string name="send">Send</string>
-  <string name="send_weibo_content_input_hint">Ask a question&#8230;</string>
+  <string name="weibo_send_content_input_hint">Ask a question&#8230;</string>
   <string name="ok">OK</string>
   <string name="error_check_network">Check Your Network Connection!</string>
   <string name="error_no_weibo">You Have Not Post Weibo!</string>
-  <string name="token">access_token</string>
-  <string name="text_weibo">status</string>
+
+  <!--Weibo Commons-->
+  <string name="weibo_token">access_token</string>
+  <string name="weibo_text">status</string>
+  <string name="weibo_picture">pic</string>
+  <string name="weibo_latitude">lat</string>
+  <string name="weibo_longitude">long</string>
+  <string name="weibo_visibility">visible</string>
+  <string name="weibo_list_id">list_id</string>
+  <string name="weibo_annotations">annotations</string>
+  <string name="weibo_rip">rip</string>
 </resources>

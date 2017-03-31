@@ -1,5 +1,8 @@
 package com.zac4j.yoda.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +28,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "is_show_bulletin"
 })
 
-public class Weibo {
-
+public class Weibo implements Parcelable {
   @JsonProperty("created_at") private String createdAt;
   @JsonProperty("id") private Long id;
   @JsonProperty("mid") private String mid;
@@ -380,4 +382,226 @@ public class Weibo {
   @JsonAnySetter public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
   }
+
+  protected Weibo(Parcel in) {
+    createdAt = in.readString();
+    id = in.readByte() == 0x00 ? null : in.readLong();
+    mid = in.readString();
+    idstr = in.readString();
+    text = in.readString();
+    textLength = in.readByte() == 0x00 ? null : in.readLong();
+    sourceAllowclick = in.readByte() == 0x00 ? null : in.readLong();
+    sourceType = in.readByte() == 0x00 ? null : in.readLong();
+    source = in.readString();
+    byte favoritedVal = in.readByte();
+    favorited = favoritedVal == 0x02 ? null : favoritedVal != 0x00;
+    byte truncatedVal = in.readByte();
+    truncated = truncatedVal == 0x02 ? null : truncatedVal != 0x00;
+    inReplyToStatusId = in.readString();
+    inReplyToUserId = in.readString();
+    inReplyToScreenName = in.readString();
+    if (in.readByte() == 0x01) {
+      picUrls = new ArrayList<Object>();
+      in.readList(picUrls, Object.class.getClassLoader());
+    } else {
+      picUrls = null;
+    }
+    thumbnailPic = in.readString();
+    bmiddlePic = in.readString();
+    originalPic = in.readString();
+    geo = (Geography) in.readValue(Geography.class.getClassLoader());
+    user = (User) in.readValue(User.class.getClassLoader());
+    repostsCount = in.readByte() == 0x00 ? null : in.readLong();
+    commentsCount = in.readByte() == 0x00 ? null : in.readLong();
+    attitudesCount = in.readByte() == 0x00 ? null : in.readLong();
+    byte isLongTextVal = in.readByte();
+    isLongText = isLongTextVal == 0x02 ? null : isLongTextVal != 0x00;
+    mlevel = in.readByte() == 0x00 ? null : in.readLong();
+    visible = (Visible) in.readValue(Visible.class.getClassLoader());
+    bizFeature = in.readByte() == 0x00 ? null : in.readLong();
+    pageType = in.readByte() == 0x00 ? null : in.readLong();
+    hasActionTypeCard = in.readByte() == 0x00 ? null : in.readLong();
+    if (in.readByte() == 0x01) {
+      darwinTags = new ArrayList<>();
+      in.readList(darwinTags, Object.class.getClassLoader());
+    } else {
+      darwinTags = null;
+    }
+    if (in.readByte() == 0x01) {
+      hotWeiboTags = new ArrayList<>();
+      in.readList(hotWeiboTags, Object.class.getClassLoader());
+    } else {
+      hotWeiboTags = null;
+    }
+    if (in.readByte() == 0x01) {
+      textTagTips = new ArrayList<>();
+      in.readList(textTagTips, Object.class.getClassLoader());
+    } else {
+      textTagTips = null;
+    }
+    rid = in.readString();
+    userType = in.readByte() == 0x00 ? null : in.readLong();
+    cardid = in.readString();
+    positiveRecomFlag = in.readByte() == 0x00 ? null : in.readLong();
+    gifIds = in.readString();
+    isShowBulletin = in.readByte() == 0x00 ? null : in.readLong();
+  }
+
+  @Override public int describeContents() {
+    return 0;
+  }
+
+  @Override public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(createdAt);
+    if (id == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeLong(id);
+    }
+    dest.writeString(mid);
+    dest.writeString(idstr);
+    dest.writeString(text);
+    if (textLength == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeLong(textLength);
+    }
+    if (sourceAllowclick == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeLong(sourceAllowclick);
+    }
+    if (sourceType == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeLong(sourceType);
+    }
+    dest.writeString(source);
+    if (favorited == null) {
+      dest.writeByte((byte) (0x02));
+    } else {
+      dest.writeByte((byte) (favorited ? 0x01 : 0x00));
+    }
+    if (truncated == null) {
+      dest.writeByte((byte) (0x02));
+    } else {
+      dest.writeByte((byte) (truncated ? 0x01 : 0x00));
+    }
+    dest.writeString(inReplyToStatusId);
+    dest.writeString(inReplyToUserId);
+    dest.writeString(inReplyToScreenName);
+    if (picUrls == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeList(picUrls);
+    }
+    dest.writeString(thumbnailPic);
+    dest.writeString(bmiddlePic);
+    dest.writeString(originalPic);
+    dest.writeValue(geo);
+    dest.writeValue(user);
+    if (repostsCount == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeLong(repostsCount);
+    }
+    if (commentsCount == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeLong(commentsCount);
+    }
+    if (attitudesCount == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeLong(attitudesCount);
+    }
+    if (isLongText == null) {
+      dest.writeByte((byte) (0x02));
+    } else {
+      dest.writeByte((byte) (isLongText ? 0x01 : 0x00));
+    }
+    if (mlevel == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeLong(mlevel);
+    }
+    dest.writeValue(visible);
+    if (bizFeature == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeLong(bizFeature);
+    }
+    if (pageType == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeLong(pageType);
+    }
+    if (hasActionTypeCard == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeLong(hasActionTypeCard);
+    }
+    if (darwinTags == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeList(darwinTags);
+    }
+    if (hotWeiboTags == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeList(hotWeiboTags);
+    }
+    if (textTagTips == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeList(textTagTips);
+    }
+    dest.writeString(rid);
+    if (userType == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeLong(userType);
+    }
+    dest.writeString(cardid);
+    if (positiveRecomFlag == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeLong(positiveRecomFlag);
+    }
+    dest.writeString(gifIds);
+    if (isShowBulletin == null) {
+      dest.writeByte((byte) (0x00));
+    } else {
+      dest.writeByte((byte) (0x01));
+      dest.writeLong(isShowBulletin);
+    }
+  }
+
+  @SuppressWarnings("unused") public static final Parcelable.Creator<Weibo> CREATOR =
+      new Parcelable.Creator<Weibo>() {
+        @Override public Weibo createFromParcel(Parcel in) {
+          return new Weibo(in);
+        }
+
+        @Override public Weibo[] newArray(int size) {
+          return new Weibo[size];
+        }
+      };
 }

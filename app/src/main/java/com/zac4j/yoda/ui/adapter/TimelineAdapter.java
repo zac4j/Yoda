@@ -1,6 +1,7 @@
 package com.zac4j.yoda.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -13,15 +14,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.bumptech.glide.Glide;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
+import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
 import com.zac4j.yoda.util.TimeUtils;
 import com.zac4j.yoda.util.img.CircleTransformation;
+import io.reactivex.Maybe;
+import io.reactivex.subjects.MaybeSubject;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import javax.inject.Inject;
@@ -56,7 +60,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-    View view = inflater.inflate(R.layout.item_home_weibo_list, parent, false);
+    View view = inflater.inflate(R.layout.list_item_weibo_home, parent, false);
     return new ViewHolder(view);
   }
 
@@ -65,7 +69,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     if (mWeiboList == null || mWeiboList.isEmpty()) {
       return;
     }
-    Weibo weibo = mWeiboList.get(position);
+    final Weibo weibo = mWeiboList.get(position);
     // 发送时间
     String pattern = "E MMM dd HH:mm:ss Z yyyy";
     String dateStr = TimeUtils.getYmd(weibo.getCreatedAt(), pattern);
@@ -98,6 +102,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     // 多媒体消息
     String media = weibo.getBmiddlePic();
     holder.setMediaContent(mContext, media);
+
+    // Click Event
+    holder.itemView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+
+      }
+    });
   }
 
   private void setUserInfo(ViewHolder holder, User user) {
@@ -135,7 +146,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       ButterKnife.bind(ViewHolder.this, itemView);
     }
 
-    public void setAvatar(Context context, String imageUrl) {
+    void setAvatar(Context context, String imageUrl) {
       if (TextUtils.isEmpty(imageUrl)) {
         return;
       }
@@ -145,42 +156,42 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
           .into(mAvatarView);
     }
 
-    public void setNickname(String nickname) {
+    void setNickname(String nickname) {
       if (TextUtils.isEmpty(nickname)) {
         return;
       }
       mNicknameView.setText(nickname);
     }
 
-    public void setUsername(String username) {
+    void setUsername(String username) {
       if (TextUtils.isEmpty(username)) {
         return;
       }
       mUsernameView.setText(username);
     }
 
-    public void setPostTime(String postTime) {
+    void setPostTime(String postTime) {
       if (TextUtils.isEmpty(postTime)) {
         return;
       }
       mPostTimeView.setText(postTime);
     }
 
-    public void setPostSource(Spanned postSource) {
+    void setPostSource(Spanned postSource) {
       if (TextUtils.isEmpty(postSource)) {
         return;
       }
       mPostSourceView.setText(postSource);
     }
 
-    public void setContent(String content) {
+    void setContent(String content) {
       if (TextUtils.isEmpty(content)) {
         return;
       }
       mContentView.setText(content);
     }
 
-    public void setMediaContent(Context context, String mediaUrl) {
+    void setMediaContent(Context context, String mediaUrl) {
       if (TextUtils.isEmpty(mediaUrl)) {
         return;
       }
@@ -188,15 +199,15 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       mMediaContainer.setVisibility(View.VISIBLE);
     }
 
-    public void setRepostNumber(long repostNumber) {
+    void setRepostNumber(long repostNumber) {
       mRepostBtn.setText(String.format(Locale.getDefault(), "%d", repostNumber));
     }
 
-    public void setReplyNumber(long replyNumber) {
+    void setReplyNumber(long replyNumber) {
       mReplyBtn.setText(String.format(Locale.getDefault(), "%d", replyNumber));
     }
 
-    public void setLikeNumber(long likeNumber) {
+    void setLikeNumber(long likeNumber) {
       mLikeBtn.setText(String.format(Locale.getDefault(), "%d", likeNumber));
     }
   }

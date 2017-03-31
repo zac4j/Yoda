@@ -30,7 +30,7 @@ import com.zac4j.yoda.ui.home.HomeNotificationFragment;
 import com.zac4j.yoda.ui.home.HomeTimelineFragment;
 import com.zac4j.yoda.ui.login.LoginActivity;
 import com.zac4j.yoda.ui.user.UserActivity;
-import com.zac4j.yoda.ui.weibo.SendWeiboActivity;
+import com.zac4j.yoda.ui.weibo.send.WeiboSendActivity;
 import com.zac4j.yoda.util.img.CircleTransformation;
 import javax.inject.Inject;
 
@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity implements MainView {
     if (mFABtn != null) {
       mFABtn.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View v) {
-          startActivity(new Intent(MainActivity.this, SendWeiboActivity.class));
+          startActivity(new Intent(MainActivity.this, WeiboSendActivity.class));
         }
       });
     }

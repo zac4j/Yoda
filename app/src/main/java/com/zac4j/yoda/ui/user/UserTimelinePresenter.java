@@ -46,7 +46,7 @@ import timber.log.Timber;
   public void getTimeline(String token, int count, int page) {
     checkViewAttached();
     if (!getMvpView().isRefreshing()) {
-      getMvpView().showProgress(true);
+      showProgress(true);
     }
     Disposable disposable = mDataManager.getUserTimeline(token, count, page)
         .compose(RxUtils.<Response<Object>>applySchedulers())
@@ -71,16 +71,14 @@ import timber.log.Timber;
               }
 
               List<Weibo> weiboList = timeline.getStatuses();
-              if (weiboList.isEmpty()) {
-                getMvpView().showEmpty(true);
-              } else {
-                getMvpView().showTimeline(weiboList);
-              }
+
+              getMvpView().showTimeline(weiboList);
             }
           }
 
           @Override public void onError(Throwable e) {
             hideProgress();
+            getMvpView().showEmpty(true);
             Timber.e(e);
           }
         });
@@ -89,6 +87,6 @@ import timber.log.Timber;
 
   private void hideProgress() {
     getMvpView().showRefresh(false);
-    getMvpView().showProgress(false);
+    showProgress(false);
   }
 }

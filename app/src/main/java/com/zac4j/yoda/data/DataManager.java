@@ -2,12 +2,13 @@ package com.zac4j.yoda.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.local.PreferencesHelper;
-import com.zac4j.yoda.data.model.post.TextWeibo;
 import com.zac4j.yoda.data.remote.ApiServer;
 import io.reactivex.Single;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 
 /**
@@ -54,5 +55,9 @@ import retrofit2.Response;
 
   public Single<Response<Object>> sendTextWeibo(Map<String, String> weibo) {
     return mApiServer.sendTextWeibo(weibo);
+  }
+
+  public Single<Response<Object>> sendPictureWeibo(Map<String, RequestBody> weibo, MultipartBody.Part image) {
+    return mApiServer.sendPictureWeibo(weibo, image);
   }
 }

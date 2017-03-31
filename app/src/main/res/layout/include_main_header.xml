@@ -11,8 +11,8 @@
 
   <ImageView
       android:id="@id/main_drawer_header_avatar"
-      android:layout_width="@dimen/avatar.medium"
-      android:layout_height="@dimen/avatar.medium"
+      android:layout_width="@dimen/img.medium"
+      android:layout_height="@dimen/img.medium"
       android:layout_centerInParent="true"
       tools:src="@drawable/joanne"
       />

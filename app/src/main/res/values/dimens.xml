@@ -30,19 +30,20 @@
   <dimen name="space.divider">1dp</dimen>
 
   <!--main pager sizes-->
-  <dimen name="weibo_list_item_avatar_size">32dp</dimen>
-  <dimen name="weibo_list_item_media_height">136dp</dimen>
+  <dimen name="weibo_media_height">136dp</dimen>
 
   <!--avatar size-->
-  <dimen name="avatar.large">128dp</dimen>
-  <dimen name="avatar.medium">96dp</dimen>
-  <dimen name="avatar.small">32dp</dimen>
-  <dimen name="avatar.very_small">24dp</dimen>
+  <dimen name="img.very_large">96dp</dimen>
+  <dimen name="img.large">72dp</dimen>
+  <dimen name="img.medium">48dp</dimen>
+  <dimen name="img.small">36dp</dimen>
+  <dimen name="img.very_small">24dp</dimen>
 
   <!--height size-->
   <dimen name="height.very_small">24dp</dimen>
   <dimen name="height.small">36dp</dimen>
   <dimen name="height.medium">48dp</dimen>
   <dimen name="height.large">72dp</dimen>
+  <dimen name="height.very_large">96dp</dimen>
 
 </resources>

@@ -56,14 +56,31 @@
   <item name="user_appbar" type="id"/>
 
   <!--Send Weibo-->
-  <item name="send_weibo_action_container" type="id"/>
-  <item name="send_weibo_et_content" type="id"/>
-  <item name="send_weibo_rv_gallery" type="id"/>
-  <item name="send_weibo_iv_action_camera" type="id"/>
-  <item name="send_weibo_iv_action_gallery" type="id"/>
-  <item name="send_weibo_iv_action_visibility" type="id"/>
-  <item name="send_weibo_iv_action_location" type="id"/>
-  <item name="send_weibo_tv_action_send" type="id"/>
-  <item name="send_weibo_progressbar" type="id"/>
+  <item name="weibo_send_action_container" type="id"/>
+  <item name="weibo_send_et_content" type="id"/>
+  <item name="weibo_send_rv_gallery" type="id"/>
+  <item name="weibo_send_iv_action_camera" type="id"/>
+  <item name="weibo_send_iv_action_gallery" type="id"/>
+  <item name="weibo_send_iv_action_visibility" type="id"/>
+  <item name="weibo_send_iv_action_location" type="id"/>
+  <item name="weibo_send_tv_action_send" type="id"/>
+  <item name="weibo_send_progressbar" type="id"/>
+  <item name="weibo_send_media_container" type="id"/>
+
+  <!--Weibo Image-->
+  <item name="weibo_image_iv_container" type="id"/>
+
+  <!--Weibo Detail-->
+  <item name="weibo_detail_iv_avatar" type="id"/>
+  <item name="weibo_detail_tv_nickname" type="id"/>
+  <item name="weibo_detail_tv_username" type="id"/>
+  <item name="weibo_detail_tv_post_time" type="id"/>
+  <item name="weibo_detail_tv_content" type="id"/>
+  <item name="weibo_detail_tv_post_from" type="id"/>
+  <item name="weibo_detail_fl_media_container" type="id"/>
+  <item name="weibo_detail_tv_repost" type="id"/>
+  <item name="weibo_detail_tv_reply" type="id"/>
+  <item name="weibo_detail_tv_like" type="id"/>
+  <item name="weibo_detail_rv_comment_list" type="id"/>
 
 </resources>

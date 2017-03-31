@@ -12,8 +12,8 @@
 
   <android.support.v7.widget.AppCompatImageView
       android:id="@id/error_view_img"
-      android:layout_width="@dimen/avatar.large"
-      android:layout_height="@dimen/avatar.large"
+      android:layout_width="@dimen/img.large"
+      android:layout_height="@dimen/img.large"
       android:layout_gravity="center_horizontal"
       android:tint="@color/gray_light"
       app:srcCompat="@drawable/ic_storage"

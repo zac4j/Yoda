@@ -1,19 +1,22 @@
 package com.zac4j.yoda.data.remote;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
-import com.zac4j.yoda.data.model.post.TextWeibo;
 import io.reactivex.Single;
 import java.util.Map;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
-import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -55,8 +58,17 @@ public interface ApiServer {
    * @param weibo weibo form contents
    * @return weibo
    */
-  @FormUrlEncoded
-  @POST("statuses/update.json") Single<Response<Object>> sendTextWeibo(@FieldMap Map<String, String> weibo);
+  @FormUrlEncoded @POST("statuses/update.json") Single<Response<Object>> sendTextWeibo(
+      @FieldMap Map<String, String> weibo);
+
+  /**
+   * Send Picture Weibo
+   * @param weiboMap weibo form data
+   * @param image image for weibo
+   * @return weibo
+   */
+  @Multipart @POST("statuses/upload.json") Single<Response<Object>> sendPictureWeibo(
+      @PartMap Map<String, RequestBody> weiboMap, @Part MultipartBody.Part image);
 
   class Factory {
     public static ApiServer create() {
