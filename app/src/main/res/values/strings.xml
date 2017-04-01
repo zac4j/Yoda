@@ -21,4 +21,5 @@
   <string name="weibo_list_id">list_id</string>
   <string name="weibo_annotations">annotations</string>
   <string name="weibo_rip">rip</string>
+  <string name="weibo_detail">Weibo Detail</string>
 </resources>

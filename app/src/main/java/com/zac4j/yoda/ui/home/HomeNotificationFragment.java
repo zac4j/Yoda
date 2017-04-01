@@ -26,8 +26,7 @@ public class HomeNotificationFragment extends BaseFragment implements HomeNotifi
   @Inject HomeNotificationPresenter mPresenter;
 
   @BindView(R.id.home_rv_notification_list) RecyclerView mNotificationListView;
-  @BindView(R.id.home_swipe_notifications_container) SwipeRefreshLayout
-      mSwipeNotificationsContainer;
+  @BindView(R.id.home_swipe_notifications_container) SwipeRefreshLayout mSwipeContainer;
   @BindView(R.id.notification_progress_bar) ProgressBar mProgressBar;
   @BindView(R.id.notification_empty_view) View mEmptyView;
 
@@ -56,6 +55,12 @@ public class HomeNotificationFragment extends BaseFragment implements HomeNotifi
     ((MainActivity) getActivity()).onTokenInvalid();
   }
 
+  @Override public void showMainView(boolean show) {
+    if (mSwipeContainer != null) {
+      mSwipeContainer.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+  }
+
   @Override public void showProgress(boolean show) {
     if (mProgressBar != null) {
       mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
@@ -63,11 +68,11 @@ public class HomeNotificationFragment extends BaseFragment implements HomeNotifi
   }
 
   @Override public void showRefresh(boolean refresh) {
-    mSwipeNotificationsContainer.setRefreshing(refresh);
+    mSwipeContainer.setRefreshing(refresh);
   }
 
   @Override public boolean isRefreshing() {
-    return mSwipeNotificationsContainer.isRefreshing();
+    return mSwipeContainer.isRefreshing();
   }
 
   @Override public boolean isProgressing() {

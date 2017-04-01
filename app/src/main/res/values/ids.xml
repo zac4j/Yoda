@@ -82,5 +82,8 @@
   <item name="weibo_detail_tv_reply" type="id"/>
   <item name="weibo_detail_tv_like" type="id"/>
   <item name="weibo_detail_rv_comment_list" type="id"/>
+  <item name="weibo_detail_main_view" type="id"/>
+  <item name="weibo_send_main_view" type="id"/>
+  <item name="weibo_list_main_view" type="id"/>
 
 </resources>

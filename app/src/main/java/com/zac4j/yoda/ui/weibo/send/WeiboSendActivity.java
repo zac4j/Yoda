@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -53,6 +54,7 @@ public class WeiboSendActivity extends BaseActivity implements WeiboSendView {
 
   @Inject WeiboSendPresenter mPresenter;
 
+  @BindView(R.id.weibo_send_main_view) View mMainView;
   @BindView(R.id.toolbar) Toolbar mToolbar;
   @BindView(R.id.root_layout) View mRootView;
   @BindView(R.id.weibo_send_media_container) FrameLayout mMediaContainer;
@@ -207,6 +209,12 @@ public class WeiboSendActivity extends BaseActivity implements WeiboSendView {
       mImageUri = PhotoUtils.capturePhoto(WeiboSendActivity.this, REQUEST_CAPTURE_CODE);
     } else {
       showMessage("Bad permission request !");
+    }
+  }
+
+  @Override public void showMainView(boolean show) {
+    if (mMainView != null) {
+      mMainView.setVisibility(show ? VISIBLE : GONE);
     }
   }
 

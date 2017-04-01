@@ -103,6 +103,12 @@ public class UserTimelineFragment extends BaseFragment implements UserTimelineVi
     ((UserActivity) getActivity()).onTokenInvalid();
   }
 
+  @Override public void showMainView(boolean show) {
+    if (mSwipeContainer != null) {
+      mSwipeContainer.setVisibility(show ? VISIBLE : GONE);
+    }
+  }
+
   @Override public void showProgress(boolean show) {
     if (mProgressBar != null) {
       mProgressBar.setVisibility(show ? VISIBLE : GONE);

@@ -100,6 +100,12 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
     ((MainActivity) getActivity()).onTokenInvalid();
   }
 
+  @Override public void showMainView(boolean show) {
+    if (mSwipeContainer != null) {
+      mSwipeContainer.setVisibility(show ? VISIBLE : GONE);
+    }
+  }
+
   @Override public void showProgress(boolean show) {
     if (mProgressBar != null) {
       mProgressBar.setVisibility(show ? VISIBLE : GONE);

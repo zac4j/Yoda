@@ -172,6 +172,9 @@ public class MainActivity extends BaseActivity implements MainView {
     return mProgressBar != null && mProgressBar.isShown();
   }
 
+  @Override public void showMainView(boolean show) {
+  }
+
   @Override public void showProgress(boolean show) {
     if (mProgressBar != null) {
       mProgressBar.setVisibility(show ? VISIBLE : GONE);

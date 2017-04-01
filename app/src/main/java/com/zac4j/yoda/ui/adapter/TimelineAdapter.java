@@ -72,7 +72,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     final Weibo weibo = mWeiboList.get(position);
     // 发送时间
     String pattern = "E MMM dd HH:mm:ss Z yyyy";
-    String dateStr = TimeUtils.getYmd(weibo.getCreatedAt(), pattern);
+    String dateStr = TimeUtils.getDate(weibo.getCreatedAt(), pattern);
     holder.setPostTime(dateStr);
     // 微博内容
     String content = weibo.getText();
@@ -103,10 +103,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     String media = weibo.getBmiddlePic();
     holder.setMediaContent(mContext, media);
 
-    // Click Event
     holder.itemView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-
+        Intent intent = new Intent(mContext, WeiboDetailActivity.class);
+        intent.putExtra(WeiboDetailActivity.WEIBO_ID_EXTRA, weibo.getId());
+        mContext.startActivity(intent);
       }
     });
   }

@@ -53,6 +53,10 @@ import retrofit2.Response;
     return mApiServer.getUserProfile(token, uid);
   }
 
+  public Single<Response<Object>> getWeiboById(String token, long id) {
+    return mApiServer.getWeiboInfo(token, id);
+  }
+
   public Single<Response<Object>> sendTextWeibo(Map<String, String> weibo) {
     return mApiServer.sendTextWeibo(weibo);
   }

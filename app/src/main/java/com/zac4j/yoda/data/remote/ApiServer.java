@@ -53,6 +53,16 @@ public interface ApiServer {
       @Query("access_token") String token, @Query("uid") String uid);
 
   /**
+   * Get single weibo info
+   *
+   * @param token user access token
+   * @param id weibo id
+   * @return single weibo info
+   */
+  @GET("statuses/show.json") Single<Response<Object>> getWeiboInfo(
+      @Query("access_token") String token, @Query("id") long id);
+
+  /**
    * Send Text Weibo
    *
    * @param weibo weibo form contents
