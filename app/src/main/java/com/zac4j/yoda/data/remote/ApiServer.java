@@ -1,8 +1,11 @@
 package com.zac4j.yoda.data.remote;
 
+import android.content.Context;
+import android.os.Environment;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import io.reactivex.Single;
 import java.util.Map;
+import okhttp3.Cache;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
@@ -73,6 +76,7 @@ public interface ApiServer {
 
   /**
    * Send Picture Weibo
+   *
    * @param weiboMap weibo form data
    * @param image image for weibo
    * @return weibo
@@ -81,12 +85,10 @@ public interface ApiServer {
       @PartMap Map<String, RequestBody> weiboMap, @Part MultipartBody.Part image);
 
   class Factory {
-    public static ApiServer create() {
-      OkHttpClient.Builder builder = new OkHttpClient.Builder();
-      builder.addNetworkInterceptor(new StethoInterceptor());
+    public static ApiServer create(Context context) {
 
       Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-          .client(builder.build())
+          .client(new HttpClient(context).getHttpClient())
           .addConverterFactory(JacksonConverterFactory.create())
           .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
           .build();

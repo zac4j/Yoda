@@ -35,6 +35,6 @@ import javax.inject.Singleton;
   }
 
   @Provides @Singleton ApiServer provideWebService() {
-    return ApiServer.Factory.create();
+    return ApiServer.Factory.create(mApplication);
   }
 }

@@ -11,10 +11,11 @@
 
   <ImageView
       android:id="@id/main_drawer_header_avatar"
-      android:layout_width="@dimen/img.medium"
-      android:layout_height="@dimen/img.medium"
+      android:layout_width="@dimen/img.large"
+      android:layout_height="@dimen/img.large"
       android:layout_centerInParent="true"
       tools:src="@drawable/joanne"
+      android:contentDescription="@string/avatar"
       />
 
   <TextView

@@ -68,6 +68,7 @@ import timber.log.Timber;
               if (weibo == null) {
                 return;
               }
+              showMainView(true);
               getMvpView().showWeiboInfo(weibo);
             }
           }

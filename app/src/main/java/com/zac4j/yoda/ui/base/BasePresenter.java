@@ -35,6 +35,10 @@ public class BasePresenter<T extends MvpView> implements Presenter<T> {
     return mMvpView.isProcessing();
   }
 
+  public void showMainView(boolean show) {
+    mMvpView.showMainView(show);
+  }
+
   public void checkViewAttached() {
     if (!isViewAttached()) throw new MvpViewNotAttachedException();
   }

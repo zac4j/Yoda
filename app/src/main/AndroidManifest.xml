@@ -29,6 +29,7 @@
     <activity android:name=".ui.weibo.send.WeiboSendActivity"/>
     <activity android:name=".ui.weibo.WeiboImageActivity"/>
     <activity android:name=".ui.weibo.detail.WeiboDetailActivity"/>
+    <activity android:name=".ui.WebViewActivity"/>
   </application>
 
 </manifest>

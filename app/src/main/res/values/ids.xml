@@ -6,6 +6,7 @@
   <item name="root_layout" type="id"/>
   <item name="error_view_img" type="id"/>
   <item name="error_view_txt" type="id"/>
+  <item name="web_view" type="id"/>
 
   <!--Main page-->
   <item name="main_drawer_layout" type="id"/>
@@ -27,6 +28,7 @@
   <item name="weibo_list_item_tv_post_time" type="id"/>
   <item name="weibo_list_item_media_container" type="id"/>
   <item name="weibo_list_item_iv_avatar" type="id"/>
+  <item name="weibo_list_item_tv_repost_content" type="id"/>
   <item name="weibo_list_item_tv_content" type="id"/>
   <item name="weibo_list_item_tv_repost" type="id"/>
   <item name="weibo_list_item_tv_reply" type="id"/>
@@ -85,5 +87,6 @@
   <item name="weibo_detail_main_view" type="id"/>
   <item name="weibo_send_main_view" type="id"/>
   <item name="weibo_list_main_view" type="id"/>
+  <item name="weibo_detail_iv_media_view" type="id"/>
 
 </resources>

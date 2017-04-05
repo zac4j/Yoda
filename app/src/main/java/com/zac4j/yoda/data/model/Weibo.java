@@ -19,10 +19,10 @@ import java.util.Map;
     "created_at", "id", "mid", "idstr", "text", "textLength", "source_allowclick", "source_type",
     "source", "favorited", "truncated", "in_reply_to_status_id", "in_reply_to_user_id",
     "in_reply_to_screen_name", "pic_urls", "thumbnail_pic", "bmiddle_pic", "original_pic", "geo",
-    "user", "reposts_count", "comments_count", "attitudes_count", "isLongText", "mlevel", "visible",
-    "biz_feature", "page_type", "hasActionTypeCard", "darwin_tags", "hot_weibo_tags",
-    "text_tag_tips", "rid", "userType", "cardid", "positive_recom_flag", "gif_ids",
-    "is_show_bulletin"
+    "user", "reposts_count", "retweeted_status", "comments_count", "attitudes_count", "isLongText",
+    "mlevel", "visible", "biz_feature", "page_type", "hasActionTypeCard", "darwin_tags",
+    "hot_weibo_tags", "text_tag_tips", "rid", "userType", "cardid", "positive_recom_flag",
+    "gif_ids", "is_show_bulletin"
 })
 
 public class Weibo {
@@ -48,6 +48,7 @@ public class Weibo {
   @JsonProperty("user") private User user;
   @JsonProperty("reposts_count") private Long repostsCount;
   @JsonProperty("comments_count") private Long commentsCount;
+  @JsonProperty("retweeted_status") private Weibo repostWeibo;
   @JsonProperty("attitudes_count") private Long attitudesCount;
   @JsonProperty("isLongText") private Boolean isLongText;
   @JsonProperty("mlevel") private Long mlevel;
@@ -234,6 +235,14 @@ public class Weibo {
 
   @JsonProperty("reposts_count") public void setRepostsCount(Long repostsCount) {
     this.repostsCount = repostsCount;
+  }
+
+  @JsonProperty("retweeted_status") public Weibo getRepostWeibo() {
+    return repostWeibo;
+  }
+
+  @JsonProperty("retweeted_status") public void setRepostWeibo(Weibo repostWeibo) {
+    this.repostWeibo = repostWeibo;
   }
 
   @JsonProperty("comments_count") public Long getCommentsCount() {

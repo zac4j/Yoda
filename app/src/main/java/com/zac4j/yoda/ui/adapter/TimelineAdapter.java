@@ -10,16 +10,19 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.bumptech.glide.Glide;
+import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
+import com.zac4j.yoda.ui.WebViewActivity;
 import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
 import com.zac4j.yoda.util.TimeUtils;
 import com.zac4j.yoda.util.img.CircleTransformation;
@@ -77,6 +80,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     // 微博内容
     String content = weibo.getText();
     holder.setContent(content);
+
+    // 微博转发内容
+    Weibo repostWeibo = weibo.getRepostWeibo();
+    if (repostWeibo != null) {
+      holder.setRepostContent(repostWeibo);
+    }
+
     // 转发数
     long repostCount = weibo.getRepostsCount();
     holder.setRepostNumber(repostCount);
@@ -105,11 +115,27 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
     holder.itemView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-        Intent intent = new Intent(mContext, WeiboDetailActivity.class);
-        intent.putExtra(WeiboDetailActivity.WEIBO_ID_EXTRA, weibo.getId());
-        mContext.startActivity(intent);
+        goWeiboDetail(mContext, weibo);
       }
     });
+  }
+
+  private void goWeiboDetail(Context context, Weibo weibo) {
+    if (weibo == null) {
+      return;
+    }
+    final String uid = AccessTokenKeeper.readAccessToken(context).getUid();
+    final String weiboUserId = weibo.getUser().getIdstr();
+    if (uid.equals(weiboUserId)) {
+      Intent intent = new Intent(context, WeiboDetailActivity.class);
+      intent.putExtra(WeiboDetailActivity.WEIBO_ID_EXTRA, weibo.getId());
+      context.startActivity(intent);
+    } else {
+      Intent intent = new Intent(context, WebViewActivity.class);
+      intent.putExtra(WebViewActivity.EXTRA_WEIBO_ID, weibo.getIdstr());
+      intent.putExtra(WebViewActivity.EXTRA_UID, weiboUserId);
+      context.startActivity(intent);
+    }
   }
 
   private void setUserInfo(ViewHolder holder, User user) {
@@ -136,6 +162,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     @BindView(R.id.weibo_list_item_tv_username) TextView mUsernameView;
     @BindView(R.id.weibo_list_item_tv_post_time) TextView mPostTimeView;
     @BindView(R.id.weibo_list_item_tv_post_from) TextView mPostSourceView;
+    @BindView(R.id.weibo_list_item_tv_repost_content) TextView mRepostContentView;
     @BindView(R.id.weibo_list_item_tv_content) TextView mContentView;
     @BindView(R.id.weibo_list_item_media_container) ImageView mMediaContainer;
     @BindView(R.id.weibo_list_item_tv_repost) TextView mRepostBtn;
@@ -190,6 +217,25 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         return;
       }
       mContentView.setText(content);
+    }
+
+    void setRepostContent(Weibo repostWeibo) {
+
+      if (repostWeibo == null) {
+        return;
+      }
+
+      String weiboContent = repostWeibo.getText();
+      String name = repostWeibo.getUser().getScreenName();
+
+      if (TextUtils.isEmpty(weiboContent)) {
+        return;
+      }
+
+      weiboContent = "@" + name + ": " + weiboContent;
+
+      mRepostContentView.setVisibility(View.VISIBLE);
+      mRepostContentView.setText(weiboContent);
     }
 
     void setMediaContent(Context context, String mediaUrl) {

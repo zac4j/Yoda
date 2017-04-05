@@ -22,4 +22,5 @@
   <string name="weibo_annotations">annotations</string>
   <string name="weibo_rip">rip</string>
   <string name="weibo_detail">Weibo Detail</string>
+  <string name="avatar">avatar</string>
 </resources>

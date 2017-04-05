@@ -50,7 +50,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
   @BindView(R.id.weibo_detail_tv_post_time) TextView mPostTimeView;
   @BindView(R.id.weibo_detail_tv_post_from) TextView mPostFromView;
   @BindView(R.id.weibo_detail_tv_content) TextView mWeiboContentView;
-  @BindView(R.id.weibo_detail_fl_media_container) FrameLayout mMediaContainer;
+  @BindView(R.id.weibo_detail_iv_media_view) ImageView mMediaView;
   @BindView(R.id.weibo_detail_rv_comment_list) RecyclerView mCommentListView;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -135,13 +135,22 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     }
 
     // set user avatar
-    Glide.with(this).load(user.getProfileImageUrl()).into(mAvatarView);
+    String avatarUrl = user.getProfileImageUrl();
+    if (!TextUtils.isEmpty(avatarUrl)) {
+      Glide.with(this).load(avatarUrl).into(mAvatarView);
+    }
 
     // set username
-    mUsernameView.setText(user.getDomain());
+    String username = user.getDomain();
+    if (!TextUtils.isEmpty(username)) {
+      mUsernameView.setText(user.getDomain());
+    }
 
     // set nickname
-    mNicknameView.setText(user.getName());
+    String name = user.getName();
+    if (!TextUtils.isEmpty(name)) {
+      mNicknameView.setText(name);
+    }
 
     // set post time
     setupPostTime(weibo.getCreatedAt());
@@ -153,6 +162,12 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     if (!TextUtils.isEmpty(content)) {
       mWeiboContentView.setText(content);
     }
+
+    String mediaUrl = weibo.getBmiddlePic();
+    if (!TextUtils.isEmpty(mediaUrl)) {
+      Glide.with(this).load(mediaUrl).into(mMediaView);
+    }
+    mMediaView.setVisibility(View.VISIBLE);
   }
 
   @Override public void showMainView(boolean show) {
