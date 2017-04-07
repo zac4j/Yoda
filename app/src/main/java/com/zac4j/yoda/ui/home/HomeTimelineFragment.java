@@ -34,7 +34,7 @@ import static android.view.View.VISIBLE;
 public class HomeTimelineFragment extends BaseFragment implements HomeTimelineView {
 
   // Server default weibo count is 20 as well.
-  public static final int DEFAULT_WEIBO_COUNT = 15;
+  public static final int DEFAULT_WEIBO_COUNT = 6;
   private int mRequestCount = DEFAULT_WEIBO_COUNT;
   private int mRequestPage = 1;
   private EndlessRecyclerViewScrollListener mScrollListener;
