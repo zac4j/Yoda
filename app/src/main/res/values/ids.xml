@@ -26,7 +26,7 @@
   <item name="weibo_list_item_tv_username" type="id"/>
   <item name="weibo_list_item_tv_post_from" type="id"/>
   <item name="weibo_list_item_tv_post_time" type="id"/>
-  <item name="weibo_list_item_media_container" type="id"/>
+  <item name="weibo_list_item_iv_media" type="id"/>
   <item name="weibo_list_item_iv_avatar" type="id"/>
   <item name="weibo_list_item_tv_repost_content" type="id"/>
   <item name="weibo_list_item_tv_content" type="id"/>
@@ -88,5 +88,9 @@
   <item name="weibo_send_main_view" type="id"/>
   <item name="weibo_list_main_view" type="id"/>
   <item name="weibo_detail_iv_media_view" type="id"/>
+  <item name="weibo_list_item_stub_repost_weibo" type="id"/>
+  <item name="weibo_list_item_stub_tv_repost_content" type="id"/>
+  <item name="weibo_list_item_stub_media_container" type="id"/>
+  <item name="weibo_list_item_stub_iv_media" type="id"/>
 
 </resources>

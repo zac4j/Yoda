@@ -7,9 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -83,9 +85,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
     // 微博转发内容
     Weibo repostWeibo = weibo.getRepostWeibo();
-    if (repostWeibo != null) {
-      holder.setRepostContent(repostWeibo);
-    }
+    holder.setRepostContent(repostWeibo);
 
     // 转发数
     long repostCount = weibo.getRepostsCount();
@@ -162,9 +162,9 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     @BindView(R.id.weibo_list_item_tv_username) TextView mUsernameView;
     @BindView(R.id.weibo_list_item_tv_post_time) TextView mPostTimeView;
     @BindView(R.id.weibo_list_item_tv_post_from) TextView mPostSourceView;
-    @BindView(R.id.weibo_list_item_tv_repost_content) TextView mRepostContentView;
     @BindView(R.id.weibo_list_item_tv_content) TextView mContentView;
-    @BindView(R.id.weibo_list_item_media_container) ImageView mMediaContainer;
+    @BindView(R.id.weibo_list_item_tv_repost_content) TextView mRepostView;
+    @BindView(R.id.weibo_list_item_iv_media) ImageView mMediaView;
     @BindView(R.id.weibo_list_item_tv_repost) TextView mRepostBtn;
     @BindView(R.id.weibo_list_item_tv_reply) TextView mReplyBtn;
     @BindView(R.id.weibo_list_item_tv_like) TextView mLikeBtn;
@@ -176,74 +176,77 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
     void setAvatar(Context context, String imageUrl) {
       if (TextUtils.isEmpty(imageUrl)) {
-        return;
+        Glide.clear(mAvatarView);
+      } else {
+        Glide.with(context)
+            .load(imageUrl)
+            .transform(new CircleTransformation(context))
+            .into(mAvatarView);
       }
-      Glide.with(context)
-          .load(imageUrl)
-          .transform(new CircleTransformation(context))
-          .into(mAvatarView);
     }
 
     void setNickname(String nickname) {
       if (TextUtils.isEmpty(nickname)) {
-        return;
+        mNicknameView.setText("");
+      } else {
+        mNicknameView.setText(nickname);
       }
-      mNicknameView.setText(nickname);
     }
 
     void setUsername(String username) {
       if (TextUtils.isEmpty(username)) {
-        return;
+        mUsernameView.setText("");
+      } else {
+        mUsernameView.setText(username);
       }
-      mUsernameView.setText(username);
     }
 
     void setPostTime(String postTime) {
       if (TextUtils.isEmpty(postTime)) {
-        return;
+        mPostTimeView.setText("");
+      } else {
+        mPostTimeView.setText(postTime);
       }
-      mPostTimeView.setText(postTime);
     }
 
     void setPostSource(Spanned postSource) {
       if (TextUtils.isEmpty(postSource)) {
-        return;
+        mPostSourceView.setText("");
+      } else {
+        mPostSourceView.setText(postSource);
       }
-      mPostSourceView.setText(postSource);
     }
 
     void setContent(String content) {
       if (TextUtils.isEmpty(content)) {
-        return;
+        mContentView.setText("");
+      } else {
+        mContentView.setText(content);
       }
-      mContentView.setText(content);
     }
 
     void setRepostContent(Weibo repostWeibo) {
-
       if (repostWeibo == null) {
-        return;
+        mRepostView.setText("");
+      } else {
+        String weiboContent = repostWeibo.getText();
+        String name = repostWeibo.getUser().getScreenName();
+
+        if (TextUtils.isEmpty(weiboContent)) {
+          return;
+        }
+
+        weiboContent = "@" + name + ": " + weiboContent;
+        mRepostView.setText(weiboContent);
       }
-
-      String weiboContent = repostWeibo.getText();
-      String name = repostWeibo.getUser().getScreenName();
-
-      if (TextUtils.isEmpty(weiboContent)) {
-        return;
-      }
-
-      weiboContent = "@" + name + ": " + weiboContent;
-
-      mRepostContentView.setVisibility(View.VISIBLE);
-      mRepostContentView.setText(weiboContent);
     }
 
     void setMediaContent(Context context, String mediaUrl) {
       if (TextUtils.isEmpty(mediaUrl)) {
-        return;
+        Glide.clear(mMediaView);
+      } else {
+        Glide.with(context).load(mediaUrl).fitCenter().crossFade().into(mMediaView);
       }
-      Glide.with(context).load(mediaUrl).into(mMediaContainer);
-      mMediaContainer.setVisibility(View.VISIBLE);
     }
 
     void setRepostNumber(long repostNumber) {

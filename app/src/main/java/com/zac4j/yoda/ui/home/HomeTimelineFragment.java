@@ -34,7 +34,7 @@ import static android.view.View.VISIBLE;
 public class HomeTimelineFragment extends BaseFragment implements HomeTimelineView {
 
   // Server default weibo count is 20 as well.
-  public static final int DEFAULT_WEIBO_COUNT = 6;
+  public static final int DEFAULT_WEIBO_COUNT = 15;
   private int mRequestCount = DEFAULT_WEIBO_COUNT;
   private int mRequestPage = 1;
   private EndlessRecyclerViewScrollListener mScrollListener;
@@ -67,6 +67,7 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
     mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
       @Override public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
         System.out.println("page >> " + page);
+        System.out.println("totalItemsCount >> " + totalItemsCount);
         mRequestPage = page;
         mPresenter.getTimeline(token, mRequestCount, mRequestPage);
       }
@@ -134,10 +135,10 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
         mScrollListener.resetState();
       }
       mTimelineAdapter.clear();
+      mWeiboListView.setVisibility(VISIBLE);
     }
     mTimelineAdapter.addWeiboList(weiboList);
 
     mSwipeContainer.setRefreshing(false);
-    mWeiboListView.setVisibility(VISIBLE);
   }
 }
