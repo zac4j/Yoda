@@ -23,6 +23,7 @@ import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.ui.WebViewActivity;
 import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
 import com.zac4j.yoda.util.TimeUtils;
+import com.zac4j.yoda.util.WeiboTextHelper;
 import com.zac4j.yoda.util.img.CircleTransformation;
 import java.util.ArrayList;
 import java.util.List;
@@ -215,23 +216,27 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       if (TextUtils.isEmpty(content)) {
         mContentView.setText("");
       } else {
-        mContentView.setText(content);
+        WeiboTextHelper.setupText(mContentView, content);
+        //mContentView.setText(content);
       }
     }
 
     void setRepostContent(Weibo repostWeibo) {
       if (repostWeibo == null) {
         mRepostView.setText("");
+        mRepostView.setBackgroundResource(0);
       } else {
         String weiboContent = repostWeibo.getText();
         String name = repostWeibo.getUser().getScreenName();
 
         if (TextUtils.isEmpty(weiboContent)) {
+          mRepostView.setText("");
           return;
         }
 
         weiboContent = "@" + name + ": " + weiboContent;
-        mRepostView.setText(weiboContent);
+        WeiboTextHelper.setupText(mRepostView, weiboContent);
+        mRepostView.setBackgroundResource(R.drawable.bg_gray_border);
       }
     }
 
