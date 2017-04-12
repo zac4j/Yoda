@@ -66,13 +66,15 @@ public class WebViewActivity extends AppCompatActivity {
     if (mWebView == null) {
       return;
     }
+
+    if (mProgressBar != null) {
+      mProgressBar.setMax(100);
+    }
+
     mWebView.getSettings().setJavaScriptEnabled(true);
     mWebView.setWebChromeClient(new WebChromeClient() {
       @Override public void onProgressChanged(WebView view, int newProgress) {
-        if (mProgressBar != null) {
-          mProgressBar.setMax(100);
-          mProgressBar.setProgress(newProgress);
-        }
+        mProgressBar.setProgress(newProgress);
       }
     });
     mWebView.loadUrl(url);

@@ -7,6 +7,10 @@
   <item name="error_view_img" type="id"/>
   <item name="error_view_txt" type="id"/>
   <item name="web_view" type="id"/>
+  <item name="weibo_media_container" type="id"/>
+  <item name="weibo_media_type" type="id"/>
+  <item name="weibo_media_tv_type" type="id"/>
+  <item name="weibo_media_iv_img" type="id"/>
 
   <!--Main page-->
   <item name="main_drawer_layout" type="id"/>
@@ -71,6 +75,7 @@
 
   <!--Weibo Image-->
   <item name="weibo_image_iv_container" type="id"/>
+  <item name="weibo_image_vp_container" type="id"/>
 
   <!--Weibo Detail-->
   <item name="weibo_detail_iv_avatar" type="id"/>

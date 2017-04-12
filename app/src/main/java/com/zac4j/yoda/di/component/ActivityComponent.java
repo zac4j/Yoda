@@ -6,6 +6,7 @@ import com.zac4j.yoda.di.PerActivity;
 import com.zac4j.yoda.di.module.ActivityModule;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.main.MainActivity;
+import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
 import com.zac4j.yoda.ui.weibo.send.WeiboSendActivity;
 import dagger.Subcomponent;
@@ -25,4 +26,6 @@ import dagger.Subcomponent;
   void inject(WeiboSendActivity sendWeiboActivity);
 
   void inject(WeiboDetailActivity weiboDetailActivity);
+
+  void inject(WeiboImageActivity weiboImageActivity);
 }

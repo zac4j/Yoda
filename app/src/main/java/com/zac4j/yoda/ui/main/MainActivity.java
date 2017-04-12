@@ -31,7 +31,7 @@ import com.zac4j.yoda.ui.home.HomeTimelineFragment;
 import com.zac4j.yoda.ui.login.LoginActivity;
 import com.zac4j.yoda.ui.user.UserActivity;
 import com.zac4j.yoda.ui.weibo.send.WeiboSendActivity;
-import com.zac4j.yoda.util.img.CircleTransformation;
+import com.zac4j.yoda.util.image.CircleTransformation;
 import javax.inject.Inject;
 
 import static android.view.View.GONE;

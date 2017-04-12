@@ -2,6 +2,8 @@ package com.zac4j.yoda.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -14,7 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.bumptech.glide.GenericRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.User;
@@ -24,7 +30,8 @@ import com.zac4j.yoda.ui.WebViewActivity;
 import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
 import com.zac4j.yoda.util.TimeUtils;
 import com.zac4j.yoda.util.WeiboTextHelper;
-import com.zac4j.yoda.util.img.CircleTransformation;
+import com.zac4j.yoda.util.image.CircleTransformation;
+import com.zac4j.yoda.util.image.PhotoUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -106,7 +113,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
     // 多媒体消息
     String media = weibo.getBmiddlePic();
-    holder.setMediaContent(mContext, media);
+    boolean isMultiImages = weibo.getPicUrls().size() > 1;
+    holder.setMediaContent(mContext, media, isMultiImages);
 
     holder.itemView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
@@ -159,7 +167,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     @BindView(R.id.weibo_list_item_tv_post_from) TextView mPostSourceView;
     @BindView(R.id.weibo_list_item_tv_content) TextView mContentView;
     @BindView(R.id.weibo_list_item_tv_repost_content) TextView mRepostView;
-    @BindView(R.id.weibo_list_item_iv_media) ImageView mMediaView;
+    @BindView(R.id.weibo_list_item_iv_media) View mMediaView;
     @BindView(R.id.weibo_list_item_tv_repost) TextView mRepostBtn;
     @BindView(R.id.weibo_list_item_tv_reply) TextView mReplyBtn;
     @BindView(R.id.weibo_list_item_tv_like) TextView mLikeBtn;
@@ -240,11 +248,40 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       }
     }
 
-    void setMediaContent(Context context, String mediaUrl) {
+    void setMediaContent(final Context context, String mediaUrl, boolean isMultiImage) {
+      final ImageView mediaImageView = (ImageView) mMediaView.findViewById(R.id.weibo_media_iv_img);
+      final TextView mediaImageType = (TextView) mMediaView.findViewById(R.id.weibo_media_tv_type);
       if (TextUtils.isEmpty(mediaUrl)) {
-        Glide.clear(mMediaView);
+        Glide.clear(mediaImageView);
+        mediaImageType.setText("");
+        mMediaView.setVisibility(View.GONE);
       } else {
-        Glide.with(context).load(mediaUrl).fitCenter().crossFade().into(mMediaView);
+        mMediaView.setVisibility(View.VISIBLE);
+
+        Glide.with(context)
+            .load(mediaUrl)
+            .centerCrop()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(mediaImageView);
+
+        if (isMultiImage) {
+          mediaImageType.setText(R.string.weibo_media_type_multiple_image);
+          return;
+        }
+
+        GenericRequestBuilder builder =
+            PhotoUtils.getNetworkImageSizeRequest(context).load(Uri.parse(mediaUrl));
+        builder.into(new SimpleTarget<BitmapFactory.Options>() {
+          @Override public void onResourceReady(BitmapFactory.Options resource,
+              GlideAnimation<? super BitmapFactory.Options> glideAnimation) {
+            int imageHeight = resource.outHeight;
+            if (imageHeight >= PhotoUtils.LONG_IMAGE_LENGTH) {
+              mediaImageType.setText(R.string.weibo_media_type_long_image);
+            } else {
+              mediaImageType.setText("");
+            }
+          }
+        });
       }
     }
 
