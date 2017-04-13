@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height.large"
+    android:padding="@dimen/space.small"
+    >
+
+  <ImageView
+      android:id="@id/user_friend_list_iv_avatar"
+      android:layout_width="@dimen/img.medium"
+      android:layout_height="@dimen/img.medium"
+      android:layout_marginEnd="@dimen/space.small"
+      tools:src="@drawable/joanne"
+      />
+
+  <TextView
+      android:id="@id/user_friends_list_tv_nickname"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_toEndOf="@id/user_friend_list_iv_avatar"
+      android:layout_toStartOf="@id/user_friends_list_btn_follow"
+      android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+      tools:text="Lady GaGa"
+      />
+
+  <TextView
+      android:id="@id/user_friends_list_tv_username"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/user_friends_list_tv_nickname"
+      android:layout_toEndOf="@id/user_friend_list_iv_avatar"
+      android:layout_toStartOf="@id/user_friends_list_btn_follow"
+      android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+      tools:text="ladygaga"
+      />
+
+  <TextView
+      android:id="@id/user_friends_list_tv_description"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/user_friends_list_tv_username"
+      android:layout_toEndOf="@id/user_friend_list_iv_avatar"
+      android:layout_toStartOf="@id/user_friends_list_btn_follow"
+      android:ellipsize="end"
+      android:maxLines="2"
+      android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+      tools:text="Singer"
+      />
+
+  <Button
+      android:id="@id/user_friends_list_btn_follow"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentEnd="true"
+      tools:text="取消关注"
+      style="@style/Widget.AppCompat.Button.Colored"
+      />
+
+</RelativeLayout>

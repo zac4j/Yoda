@@ -61,7 +61,12 @@ import retrofit2.Response;
     return mApiServer.sendTextWeibo(weibo);
   }
 
-  public Single<Response<Object>> sendPictureWeibo(Map<String, RequestBody> weibo, MultipartBody.Part image) {
+  public Single<Response<Object>> sendPictureWeibo(Map<String, RequestBody> weibo,
+      MultipartBody.Part image) {
     return mApiServer.sendPictureWeibo(weibo, image);
+  }
+
+  public Single<Response<Object>> getUserFriends(String token, long uid, int count, int cursor) {
+    return mApiServer.getUserFriends(token, uid, count, cursor);
   }
 }

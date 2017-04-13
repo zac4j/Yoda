@@ -84,6 +84,19 @@ public interface ApiServer {
   @Multipart @POST("statuses/upload.json") Single<Response<Object>> sendPictureWeibo(
       @PartMap Map<String, RequestBody> weiboMap, @Part MultipartBody.Part image);
 
+  /**
+   * Get User Friends
+   *
+   * @param token user access token
+   * @param id user id
+   * @param count get friends count each request
+   * @param cursor get friends number cursor
+   * @return friends
+   */
+  @GET("friendships/friends.json") Single<Response<Object>> getUserFriends(
+      @Query("access_token") String token, @Query("uid") long uid, @Query("count") int count,
+      @Query("cursor") int cursor);
+
   class Factory {
     public static ApiServer create(Context context) {
 

@@ -23,10 +23,12 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
+import com.zac4j.yoda.data.model.ThumbUrl;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.ui.WebViewActivity;
+import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
 import com.zac4j.yoda.util.TimeUtils;
 import com.zac4j.yoda.util.WeiboTextHelper;
@@ -115,6 +117,21 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     String media = weibo.getBmiddlePic();
     boolean isMultiImages = weibo.getPicUrls().size() > 1;
     holder.setMediaContent(mContext, media, isMultiImages);
+    ArrayList<ThumbUrl> imgUrlList = new ArrayList<>();
+    if (isMultiImages) {
+      imgUrlList = (ArrayList<ThumbUrl>) weibo.getPicUrls();
+    } else {
+      final String imgUrl = weibo.getOriginalPic();
+      ThumbUrl thumbUrl = new ThumbUrl(imgUrl);
+      imgUrlList.add(thumbUrl);
+    }
+    final Intent intent = new Intent(mContext, WeiboImageActivity.class);
+    intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_LIST, imgUrlList);
+    holder.mMediaView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        mContext.startActivity(intent);
+      }
+    });
 
     holder.itemView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
@@ -129,7 +146,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     }
     final String uid = AccessTokenKeeper.readAccessToken(context).getUid();
     final String weiboUserId = weibo.getUser().getIdstr();
-    if (uid.equals(weiboUserId)) {
+    if (uid.equals(weiboUserId)) { // 如果是自己发的微博
       Intent intent = new Intent(context, WeiboDetailActivity.class);
       intent.putExtra(WeiboDetailActivity.WEIBO_ID_EXTRA, weibo.getId());
       context.startActivity(intent);
@@ -260,9 +277,15 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
         Glide.with(context)
             .load(mediaUrl)
+            .asBitmap()
             .centerCrop()
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(mediaImageView);
+
+        if (mediaUrl.endsWith("gif")) {
+          mediaImageType.setText(R.string.weibo_media_type_gif);
+          return;
+        }
 
         if (isMultiImage) {
           mediaImageType.setText(R.string.weibo_media_type_multiple_image);

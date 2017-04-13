@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -11,6 +12,20 @@
       android:id="@id/weibo_image_vp_container"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:layout_marginTop="?android:actionBarSize"
       />
 
-</LinearLayout>
+  <com.github.chrisbanes.photoview.PhotoView
+      android:id="@id/photo_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="?android:actionBarSize"
+      android:visibility="gone"
+      />
+
+  <include
+      layout="@layout/include_progressbar"
+      android:id="@id/progress_bar"
+      />
+
+</RelativeLayout>

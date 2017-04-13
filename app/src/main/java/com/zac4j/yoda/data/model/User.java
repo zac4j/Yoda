@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "pay_date", "has_service_tel", "verified_reason_modified", "verified_contact_name",
     "verified_contact_email", "verified_contact_mobile", "follow_me", "online_status",
     "bi_followers_count", "lang", "star", "mbtype", "mbrank", "block_word", "block_app",
-    "credit_score", "user_ability", "cardid", "urank"
+    "credit_score", "user_ability", "cardid", "urank", "action_log"
 }) public class User {
 
   @JsonProperty("id") private Long id;
@@ -92,6 +92,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   @JsonProperty("user_ability") private Integer userAbility;
   @JsonProperty("cardid") private String cardid;
   @JsonProperty("urank") private Integer urank;
+  @JsonProperty("action_log") private ActionLog actionLog;
   @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<>();
 
   @JsonProperty("id") public Long getId() {
@@ -592,6 +593,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
   @JsonProperty("urank") public void setUrank(Integer urank) {
     this.urank = urank;
+  }
+
+  @JsonProperty("action_log") public ActionLog getActionLog() {
+    return actionLog;
+  }
+
+  @JsonProperty("action_log") public void setActionLog(ActionLog actionLog) {
+    this.actionLog = actionLog;
   }
 
   @JsonAnyGetter public Map<String, Object> getAdditionalProperties() {

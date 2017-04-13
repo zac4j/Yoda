@@ -7,6 +7,7 @@
   <item name="error_view_img" type="id"/>
   <item name="error_view_txt" type="id"/>
   <item name="web_view" type="id"/>
+  <item name="photo_view" type="id"/>
   <item name="weibo_media_container" type="id"/>
   <item name="weibo_media_type" type="id"/>
   <item name="weibo_media_tv_type" type="id"/>
@@ -97,5 +98,16 @@
   <item name="weibo_list_item_stub_tv_repost_content" type="id"/>
   <item name="weibo_list_item_stub_media_container" type="id"/>
   <item name="weibo_list_item_stub_iv_media" type="id"/>
+
+  <!--User Friends-->
+  <item name="user_friend_list_swipe_container" type="id"/>
+  <item name="user_friend_list_view" type="id"/>
+  <item name="user_friend_list_iv_avatar" type="id"/>
+  <item name="user_friends_list_tv_nickname" type="id"/>
+  <item name="user_friends_list_tv_username" type="id"/>
+  <item name="user_friends_list_tv_description" type="id"/>
+  <item name="user_friends_list_tv_follow" type="id"/>
+  <item name="user_friends_list_btn_follow" type="id"/>
+
 
 </resources>

@@ -72,6 +72,7 @@ import timber.log.Timber;
               }
 
               getMvpView().showMessage("Successfully sent !");
+              getMvpView().finishPublish();
             }
           }
 
@@ -110,6 +111,7 @@ import timber.log.Timber;
               }
 
               getMvpView().showMessage("Successfully sent !");
+              getMvpView().finishPublish();
             }
           }
 

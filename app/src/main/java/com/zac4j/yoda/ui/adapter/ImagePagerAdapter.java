@@ -1,15 +1,15 @@
 package com.zac4j.yoda.ui.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 import com.github.chrisbanes.photoview.PhotoView;
-import com.github.chrisbanes.photoview.PhotoViewAttacher;
+import com.zac4j.yoda.R;
+import com.zac4j.yoda.data.model.ThumbUrl;
+import com.zac4j.yoda.di.ActivityContext;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -22,18 +22,19 @@ import javax.inject.Inject;
 public class ImagePagerAdapter extends PagerAdapter {
 
   private Context mContext;
-  private List<String> mImageUrlList;
+  private List<ThumbUrl> mImageUrlList;
 
-  @Inject public ImagePagerAdapter(Context context) {
+  @Inject public ImagePagerAdapter(@ActivityContext Context context) {
     mContext = context;
     mImageUrlList = new ArrayList<>();
   }
 
-  public void addImageUrlList(List<String> imageUrlList) {
+  public void addImageUrlList(List<ThumbUrl> imageUrlList) {
     if (imageUrlList == null || imageUrlList.isEmpty()) {
       return;
     }
     mImageUrlList.addAll(imageUrlList);
+    notifyDataSetChanged();
   }
 
   @Override public int getCount() {
@@ -51,10 +52,15 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     PhotoView photoView = new PhotoView(mContext);
 
+    final String imgUrl =
+        mImageUrlList.get(position).getThumbnailPic().replaceAll("thumbnail", "large");
+
     Glide.with(mContext)
-        .load(mImageUrlList.get(position))
-        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+        .load(imgUrl)
+        .placeholder(android.R.drawable.progress_indeterminate_horizontal)
         .into(photoView);
+
+    photoView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.black));
 
     container.addView(photoView, ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.MATCH_PARENT);
