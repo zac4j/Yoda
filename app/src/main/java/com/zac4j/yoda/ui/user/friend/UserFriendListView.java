@@ -10,7 +10,7 @@ import com.zac4j.yoda.ui.base.MvpView;
 
 public interface UserFriendListView extends MvpView {
 
-  boolean isFreshing();
+  boolean isRefreshing();
 
   void showFriendList(Friend friend);
 }
