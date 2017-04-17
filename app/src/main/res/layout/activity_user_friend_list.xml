@@ -5,10 +5,13 @@
     android:layout_height="match_parent"
     >
 
+  <include layout="@layout/include_actionbar"/>
+
   <android.support.v4.widget.SwipeRefreshLayout
       android:id="@id/user_friend_list_swipe_container"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:layout_marginTop="?android:actionBarSize"
       >
     <android.support.v7.widget.RecyclerView
         android:id="@id/user_friend_list_view"
@@ -28,5 +31,4 @@
       layout="@layout/include_error_view"
       android:id="@id/error_view"
       />
-
 </RelativeLayout>

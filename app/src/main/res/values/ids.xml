@@ -25,6 +25,7 @@
 
   <!--Main Navigation Drawer-->
   <item name="nav_drawer_my_moments" type="id"/>
+  <item name="nav_drawer_my_friends" type="id"/>
 
   <!--Weibo List Item-->
   <item name="weibo_list_item_tv_nickname" type="id"/>

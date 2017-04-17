@@ -1,7 +1,9 @@
 package com.zac4j.yoda.ui.user.friend;
 
 import com.zac4j.yoda.data.model.Friend;
+import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.ui.base.MvpView;
+import java.util.List;
 
 /**
  * View for User Friends
@@ -11,6 +13,10 @@ import com.zac4j.yoda.ui.base.MvpView;
 public interface UserFriendListView extends MvpView {
 
   boolean isRefreshing();
+
+  void showRefresh(boolean show);
+
+  void showEmpty(boolean show);
 
   void showFriendList(Friend friend);
 }

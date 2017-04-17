@@ -30,6 +30,7 @@ import com.zac4j.yoda.ui.home.HomeNotificationFragment;
 import com.zac4j.yoda.ui.home.HomeTimelineFragment;
 import com.zac4j.yoda.ui.login.LoginActivity;
 import com.zac4j.yoda.ui.user.UserActivity;
+import com.zac4j.yoda.ui.user.friend.UserFriendListActivity;
 import com.zac4j.yoda.ui.weibo.send.WeiboSendActivity;
 import com.zac4j.yoda.util.image.CircleTransformation;
 import javax.inject.Inject;
@@ -144,6 +145,9 @@ public class MainActivity extends BaseActivity implements MainView {
             switch (item.getItemId()) {
               case R.id.nav_drawer_my_moments:
                 startActivity(new Intent(MainActivity.this, UserActivity.class));
+                break;
+              case R.id.nav_drawer_my_friends:
+                startActivity(new Intent(MainActivity.this, UserFriendListActivity.class));
                 break;
             }
             return true;

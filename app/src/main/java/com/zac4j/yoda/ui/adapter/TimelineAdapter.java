@@ -63,7 +63,9 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
   }
 
   public void clear() {
-    mWeiboList.clear();
+    if (mWeiboList != null) {
+      mWeiboList.clear();
+    }
     notifyDataSetChanged();
   }
 

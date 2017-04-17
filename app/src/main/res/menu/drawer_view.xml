@@ -26,9 +26,9 @@
             android:icon="@drawable/ic_event"
             android:title="Messages" />
         <item
-            android:id="@+id/nav_friends"
+            android:id="@id/nav_drawer_my_friends"
             android:icon="@drawable/ic_headset"
-            android:title="Friends" />
+            android:title="@string/nav_drawer_my_friends" />
         <item
             android:id="@+id/nav_discussion"
             android:icon="@drawable/ic_forum"

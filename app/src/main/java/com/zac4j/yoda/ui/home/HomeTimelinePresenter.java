@@ -44,6 +44,11 @@ import timber.log.Timber;
 
   public void getTimeline(String token, int count, int page) {
     checkViewAttached();
+
+    if (isProcessing()) {
+      return;
+    }
+
     if (!getMvpView().isRefreshing()) {
       getMvpView().showProgress(true);
     }

@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.bumptech.glide.Glide;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.User;
@@ -43,13 +42,24 @@ public class FriendListAdapter
     notifyDataSetChanged();
   }
 
+  public void clear() {
+    if (mFriendList != null) {
+      mFriendList.clear();
+    }
+    notifyDataSetChanged();
+  }
+
   @Override public FriendListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View itemView =
-        LayoutInflater.from(mContext).inflate(R.layout.list_item_user_friend, parent, false);
-    return new FriendListViewHolder(itemView);
+    LayoutInflater inflater = LayoutInflater.from(mContext);
+    View view = inflater.inflate(R.layout.list_item_user_friend, parent, false);
+    return new FriendListViewHolder(view);
   }
 
   @Override public void onBindViewHolder(FriendListViewHolder holder, int position) {
+    if (mFriendList == null || mFriendList.isEmpty()) {
+      return;
+    }
+
     final User user = mFriendList.get(position);
 
     if (user == null) {
@@ -64,32 +74,27 @@ public class FriendListAdapter
     String nickname = user.getScreenName();
     holder.setNickname(nickname);
 
-    // Set user username
-    String username = user.getDomain();
-    holder.setUsername(username);
-
     // set user Description
     String description = user.getDescription();
     holder.setDescription(description);
   }
 
   @Override public int getItemCount() {
-    return 0;
+    if (mFriendList == null || mFriendList.isEmpty()) {
+      return 0;
+    }
+    return mFriendList.size();
   }
 
   static class FriendListViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.user_friend_list_iv_avatar) ImageView mAvatarView;
     @BindView(R.id.user_friends_list_tv_nickname) TextView mNicknameView;
-    @BindView(R.id.user_friends_list_tv_username) TextView mUsernameView;
     @BindView(R.id.user_friends_list_tv_description) TextView mDescriptionView;
 
     public FriendListViewHolder(View itemView) {
       super(itemView);
-      ButterKnife.bind(itemView);
-    }
-
-    @OnClick(R.id.user_friends_list_btn_follow) public void onViewClicked() {
+      ButterKnife.bind(this, itemView);
     }
 
     void setAvatar(Context context, String avatarUrl) {
@@ -105,14 +110,6 @@ public class FriendListAdapter
         mNicknameView.setText("");
       } else {
         mNicknameView.setText(nickname);
-      }
-    }
-
-    void setUsername(String username) {
-      if (TextUtils.isEmpty(username)) {
-        mUsernameView.setText("");
-      } else {
-        mUsernameView.setText(username);
       }
     }
 

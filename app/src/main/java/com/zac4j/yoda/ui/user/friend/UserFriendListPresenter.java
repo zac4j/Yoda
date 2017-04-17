@@ -1,11 +1,16 @@
 package com.zac4j.yoda.ui.user.friend;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
+import com.zac4j.yoda.data.model.Friend;
+import com.zac4j.yoda.data.model.response.Error;
 import com.zac4j.yoda.di.PerConfig;
 import com.zac4j.yoda.ui.base.BasePresenter;
 import com.zac4j.yoda.util.RxUtils;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
+import java.io.IOException;
 import javax.inject.Inject;
 import retrofit2.Response;
 
@@ -39,20 +44,51 @@ import retrofit2.Response;
 
   public void getUserFriends(String token, String uid, int count, int cursor) {
     checkViewAttached();
-    if (isProcessing() || getMvpView().isRefreshing()) {
+    if (isProcessing()) {
       return;
     }
-    mDataManager.getUserFriends(token, Long.parseLong(uid), count, cursor)
+    if (!getMvpView().isRefreshing()) {
+      getMvpView().showProgress(true);
+    }
+    Disposable disposable = mDataManager.getUserFriends(token, Long.parseLong(uid), count, cursor)
         .compose(RxUtils.<Response<Object>>applySchedulers())
         .compose(RxUtils.handleResponse(getMvpView()))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
+            hideProgress();
+            if (response.isSuccessful()) {
+              Friend friend = null;
+              Object data = response.body();
+              ObjectMapper mapper = mDataManager.getObjectMapper();
+              try {
+                String value = mapper.writeValueAsString(data);
+                friend = mapper.readValue(value, Friend.class);
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
 
+              if (friend == null) {
+                getMvpView().showEmpty(true);
+                showMainView(false);
+              } else {
+                getMvpView().showEmpty(false);
+                showMainView(true);
+                getMvpView().showFriendList(friend);
+              }
+            }
           }
 
           @Override public void onError(Throwable e) {
-
+            hideProgress();
+            getMvpView().showError(Error.NETWORK);
           }
         });
+
+    mDisposable.add(disposable);
+  }
+
+  private void hideProgress() {
+    getMvpView().showProgress(false);
+    getMvpView().showRefresh(false);
   }
 }

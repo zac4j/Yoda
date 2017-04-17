@@ -2,7 +2,8 @@
   <string name="app_name">Yoda</string>
   <string name="drawer_open">Open</string>
   <string name="drawer_close">Close</string>
-  <string name="nav_drawer_my_moments">My Moments</string>
+  <string name="nav_drawer_my_moments">Moments</string>
+  <string name="nav_drawer_my_friends">Friends</string>
 
   <!--Commons-->
   <string name="send">Send</string>
@@ -10,6 +11,7 @@
   <string name="ok">OK</string>
   <string name="error_check_network">Check Your Network Connection!</string>
   <string name="error_no_weibo">You Have Not Post Weibo!</string>
+  <string name="error_no_friends">You don\'t have friends yet!</string>
 
   <!--Weibo Commons-->
   <string name="weibo_token">access_token</string>
@@ -28,5 +30,6 @@
   <string name="weibo_media_type_multiple_image">多图</string>
   <string name="weibo_media_type_gif">Gif</string>
   <string name="weibo_media_type_video">视频</string>
+  <string name="unfollow">取消关注</string>
 
 </resources>

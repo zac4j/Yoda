@@ -17,6 +17,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL) @JsonPropertyOrder({
     "error", "error_code", "request"
 }) public class Error {
+
+  public static final String NETWORK = "Please check your network connection!";
+
   @JsonProperty("error") private String error;
   @JsonProperty("error_code") private Integer errorCode;
   @JsonProperty("request") private String request;

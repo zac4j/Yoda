@@ -135,10 +135,10 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
         mScrollListener.resetState();
       }
       mTimelineAdapter.clear();
-      mWeiboListView.setVisibility(VISIBLE);
     }
     mTimelineAdapter.addWeiboList(weiboList);
 
     mSwipeContainer.setRefreshing(false);
+    mWeiboListView.setVisibility(VISIBLE);
   }
 }

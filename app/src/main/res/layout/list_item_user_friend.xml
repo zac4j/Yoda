@@ -25,25 +25,14 @@
       />
 
   <TextView
-      android:id="@id/user_friends_list_tv_username"
+      android:id="@id/user_friends_list_tv_description"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_below="@id/user_friends_list_tv_nickname"
       android:layout_toEndOf="@id/user_friend_list_iv_avatar"
       android:layout_toStartOf="@id/user_friends_list_btn_follow"
-      android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-      tools:text="ladygaga"
-      />
-
-  <TextView
-      android:id="@id/user_friends_list_tv_description"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_below="@id/user_friends_list_tv_username"
-      android:layout_toEndOf="@id/user_friend_list_iv_avatar"
-      android:layout_toStartOf="@id/user_friends_list_btn_follow"
       android:ellipsize="end"
-      android:maxLines="2"
+      android:lines="2"
       android:textAppearance="@style/TextAppearance.AppCompat.Caption"
       tools:text="Singer"
       />
@@ -53,7 +42,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_alignParentEnd="true"
-      tools:text="取消关注"
+      android:text="@string/unfollow"
       style="@style/Widget.AppCompat.Button.Colored"
       />
 
