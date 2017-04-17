@@ -50,7 +50,6 @@ public class UserFriendListActivity extends BaseActivity implements UserFriendLi
 
   private int mCount = REQUEST_FRIENDS_COUNT;
   private int mCursor;
-  private boolean mIsProcessing;
   private EndlessRecyclerViewScrollListener mScrollListener;
 
   @Inject FriendListAdapter mAdapter;
@@ -111,7 +110,6 @@ public class UserFriendListActivity extends BaseActivity implements UserFriendLi
 
   @Override public void showProgress(boolean show) {
     if (mProgressBar != null) {
-      mIsProcessing = show;
       mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
   }

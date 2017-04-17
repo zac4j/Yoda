@@ -123,10 +123,6 @@ public class UserTimelineFragment extends BaseFragment implements UserTimelineVi
     return mSwipeContainer.isRefreshing();
   }
 
-  public boolean isProgressing() {
-    return mProgressBar != null && mProgressBar.isShown();
-  }
-
   @Override public void showEmpty(boolean show) {
     if (show) {
       mErrorView.setVisibility(VISIBLE);
