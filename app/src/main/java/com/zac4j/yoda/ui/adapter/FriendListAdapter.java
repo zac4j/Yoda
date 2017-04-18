@@ -1,6 +1,7 @@
 package com.zac4j.yoda.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,9 +16,12 @@ import com.bumptech.glide.Glide;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.di.ActivityContext;
+import com.zac4j.yoda.ui.user.detail.UserDetailActivity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+
+import static com.zac4j.yoda.ui.user.detail.UserDetailActivity.EXTRA_UID;
 
 /**
  * Adapter for User Friend List
@@ -57,13 +61,6 @@ public class FriendListAdapter
   @Override public FriendListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     LayoutInflater inflater = LayoutInflater.from(mContext);
     View view = inflater.inflate(R.layout.list_item_user_friend, parent, false);
-
-    view.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-
-      }
-    });
-
     return new FriendListViewHolder(view);
   }
 
@@ -89,6 +86,14 @@ public class FriendListAdapter
     // set user Description
     String description = user.getDescription();
     holder.setDescription(description);
+
+    holder.itemView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        Intent intent = new Intent(mContext, UserDetailActivity.class);
+        intent.putExtra(EXTRA_UID, user.getId());
+        mContext.startActivity(intent);
+      }
+    });
   }
 
   @Override public int getItemCount() {
