@@ -102,6 +102,13 @@ public class UserFriendListActivity extends BaseActivity implements UserFriendLi
     mPresenter.getUserFriends(accessToken.getToken(), accessToken.getUid(), mCount, mCursor);
   }
 
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    if (mFriendListView != null) {
+      mFriendListView.removeOnScrollListener(mScrollListener);
+    }
+  }
+
   @Override public void showMainView(boolean show) {
     if (mSwipeContainer != null) {
       mSwipeContainer.setVisibility(show ? View.VISIBLE : View.GONE);
@@ -144,6 +151,7 @@ public class UserFriendListActivity extends BaseActivity implements UserFriendLi
       mErrorTextView.setText(getString(R.string.error_no_friends));
     } else {
       mErrorView.setVisibility(View.GONE);
+      mErrorTextView.setText("");
     }
   }
 
@@ -160,8 +168,9 @@ public class UserFriendListActivity extends BaseActivity implements UserFriendLi
 
     List<User> userList = friend.getUsers();
 
-    if (userList == null || userList.isEmpty() || mAdapter == null) {
-      showEmpty(true);
+    if (userList == null || userList.isEmpty()) {
+      showEmpty(mAdapter.isEmpty());
+      return;
     }
 
     mAdapter.addFriendList(userList);

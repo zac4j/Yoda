@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.bumptech.glide.Glide;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.User;
@@ -42,6 +43,10 @@ public class FriendListAdapter
     notifyDataSetChanged();
   }
 
+  public boolean isEmpty() {
+    return mFriendList == null || mFriendList.isEmpty();
+  }
+
   public void clear() {
     if (mFriendList != null) {
       mFriendList.clear();
@@ -52,6 +57,13 @@ public class FriendListAdapter
   @Override public FriendListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     LayoutInflater inflater = LayoutInflater.from(mContext);
     View view = inflater.inflate(R.layout.list_item_user_friend, parent, false);
+
+    view.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+
+      }
+    });
+
     return new FriendListViewHolder(view);
   }
 

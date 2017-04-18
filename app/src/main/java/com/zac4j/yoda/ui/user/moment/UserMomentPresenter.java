@@ -1,4 +1,4 @@
-package com.zac4j.yoda.ui.user;
+package com.zac4j.yoda.ui.user.moment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
@@ -6,7 +6,6 @@ import com.zac4j.yoda.data.model.Timeline;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.PerConfig;
 import com.zac4j.yoda.ui.base.BasePresenter;
-import com.zac4j.yoda.ui.home.HomeTimelineView;
 import com.zac4j.yoda.util.RxUtils;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -22,16 +21,16 @@ import timber.log.Timber;
  * Created by zac on 3/17/2017.
  */
 
-@PerConfig public class UserTimelinePresenter extends BasePresenter<UserTimelineView> {
+@PerConfig public class UserMomentPresenter extends BasePresenter<UserMomentView> {
 
   private final DataManager mDataManager;
   private CompositeDisposable mDisposable;
 
-  @Inject public UserTimelinePresenter(DataManager dataManager) {
+  @Inject public UserMomentPresenter(DataManager dataManager) {
     mDataManager = dataManager;
   }
 
-  @Override public void attach(UserTimelineView mvpView) {
+  @Override public void attach(UserMomentView mvpView) {
     super.attach(mvpView);
     mDisposable = new CompositeDisposable();
   }

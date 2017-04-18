@@ -69,6 +69,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     notifyDataSetChanged();
   }
 
+  public boolean isEmpty() {
+    return mWeiboList == null || mWeiboList.isEmpty();
+  }
+
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     LayoutInflater inflater = LayoutInflater.from(parent.getContext());
     View view = inflater.inflate(R.layout.list_item_weibo_home, parent, false);

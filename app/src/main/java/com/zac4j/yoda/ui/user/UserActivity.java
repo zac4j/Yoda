@@ -14,6 +14,7 @@ import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.login.LoginActivity;
+import com.zac4j.yoda.ui.user.moment.UserMomentFragment;
 
 /**
  * UI for User
@@ -42,7 +43,7 @@ public class UserActivity extends BaseActivity {
     FragmentManager fragmentMgr = getSupportFragmentManager();
     Fragment fragment = fragmentMgr.findFragmentById(R.id.user_fragment_container);
     if (fragment == null) {
-      fragment = new UserTimelineFragment();
+      fragment = new UserMomentFragment();
       fragmentMgr.beginTransaction().add(R.id.user_fragment_container, fragment).commit();
     }
   }

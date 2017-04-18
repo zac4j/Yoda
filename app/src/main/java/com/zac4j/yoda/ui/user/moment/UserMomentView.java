@@ -1,4 +1,4 @@
-package com.zac4j.yoda.ui.user;
+package com.zac4j.yoda.ui.user.moment;
 
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.base.MvpView;
@@ -9,7 +9,7 @@ import java.util.List;
  * Created by zac on 3/17/2017.
  */
 
-public interface UserTimelineView extends MvpView {
+public interface UserMomentView extends MvpView {
 
   void showRefresh(boolean refresh);
 

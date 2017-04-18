@@ -69,4 +69,8 @@ import retrofit2.Response;
   public Single<Response<Object>> getUserFriends(String token, long uid, int count, int cursor) {
     return mApiServer.getUserFriends(token, uid, count, cursor);
   }
+
+  public Single<Response<Object>> unfollowFriend(String token, long uid) {
+    return mApiServer.unfollowFriend(token, uid);
+  }
 }

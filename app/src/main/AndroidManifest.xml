@@ -31,6 +31,7 @@
     <activity android:name=".ui.weibo.detail.WeiboDetailActivity"/>
     <activity android:name=".ui.WebViewActivity"/>
     <activity android:name=".ui.user.friend.UserFriendListActivity"/>
+    <activity android:name=".ui.user.detail.UserDetailActivity"/>
   </application>
 
 </manifest>

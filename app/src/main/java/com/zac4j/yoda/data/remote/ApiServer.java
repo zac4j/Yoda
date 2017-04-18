@@ -88,7 +88,7 @@ public interface ApiServer {
    * Get User Friends
    *
    * @param token user access token
-   * @param id user id
+   * @param uid user id
    * @param count get friends count each request
    * @param cursor get friends number cursor
    * @return friends
@@ -96,6 +96,16 @@ public interface ApiServer {
   @GET("friendships/friends.json") Single<Response<Object>> getUserFriends(
       @Query("access_token") String token, @Query("uid") long uid, @Query("count") int count,
       @Query("cursor") int cursor);
+
+  /**
+   * Unfollow friends
+   *
+   * @param token access token
+   * @param uid friend id
+   * @return user info
+   */
+  @GET("friendships/destroy.json") Single<Response<Object>> unfollowFriend(
+      @Query("access_token") String token, @Query("uid") long uid);
 
   class Factory {
     public static ApiServer create(Context context) {

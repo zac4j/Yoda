@@ -89,6 +89,13 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
     return view;
   }
 
+  @Override public void onDestroy() {
+    super.onDestroy();
+    if (mWeiboListView != null) {
+      mWeiboListView.removeOnScrollListener(mScrollListener);
+    }
+  }
+
   @Override public void showError(String message) {
     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
   }

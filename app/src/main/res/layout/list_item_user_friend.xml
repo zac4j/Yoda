@@ -37,13 +37,4 @@
       tools:text="Singer"
       />
 
-  <Button
-      android:id="@id/user_friends_list_btn_follow"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignParentEnd="true"
-      android:text="@string/unfollow"
-      style="@style/Widget.AppCompat.Button.Colored"
-      />
-
 </RelativeLayout>

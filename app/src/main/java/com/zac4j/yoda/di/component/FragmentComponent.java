@@ -5,7 +5,7 @@ import com.zac4j.yoda.di.module.FragmentModule;
 import com.zac4j.yoda.ui.base.BaseFragment;
 import com.zac4j.yoda.ui.home.HomeNotificationFragment;
 import com.zac4j.yoda.ui.home.HomeTimelineFragment;
-import com.zac4j.yoda.ui.user.UserTimelineFragment;
+import com.zac4j.yoda.ui.user.moment.UserMomentFragment;
 import dagger.Subcomponent;
 
 /**
@@ -20,5 +20,5 @@ import dagger.Subcomponent;
 
   void inject(HomeNotificationFragment homeNotificationFragment);
 
-  void inject(UserTimelineFragment userTimelineFragment);
+  void inject(UserMomentFragment userTimelineFragment);
 }

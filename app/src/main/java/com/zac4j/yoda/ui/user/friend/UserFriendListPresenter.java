@@ -68,10 +68,8 @@ import retrofit2.Response;
               }
 
               if (friend == null) {
-                getMvpView().showEmpty(true);
                 showMainView(false);
               } else {
-                getMvpView().showEmpty(false);
                 showMainView(true);
                 getMvpView().showFriendList(friend);
               }

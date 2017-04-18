@@ -1,4 +1,4 @@
-package com.zac4j.yoda.ui.user;
+package com.zac4j.yoda.ui.user.moment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +21,7 @@ import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.adapter.TimelineAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
+import com.zac4j.yoda.ui.user.UserActivity;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -32,7 +33,7 @@ import static android.view.View.VISIBLE;
  * Created by zac on 3/17/2017.
  */
 
-public class UserTimelineFragment extends BaseFragment implements UserTimelineView {
+public class UserMomentFragment extends BaseFragment implements UserMomentView {
 
   // Server default weibo count is 20 as well.
   public static final int DEFAULT_WEIBO_COUNT = 6;
@@ -40,7 +41,7 @@ public class UserTimelineFragment extends BaseFragment implements UserTimelineVi
   private int mRequestPage = 1;
   private EndlessRecyclerViewScrollListener mScrollListener;
 
-  @Inject UserTimelinePresenter mPresenter;
+  @Inject UserMomentPresenter mPresenter;
   @Inject TimelineAdapter mTimelineAdapter;
 
   @BindView(R.id.swipe_weibo_list_container) SwipeRefreshLayout mSwipeContainer;
@@ -140,6 +141,12 @@ public class UserTimelineFragment extends BaseFragment implements UserTimelineVi
       }
       mTimelineAdapter.clear();
     }
+
+    if (weiboList == null || weiboList.isEmpty()) {
+      showEmpty(mTimelineAdapter.isEmpty());
+      return;
+    }
+
     mTimelineAdapter.addWeiboList(weiboList);
 
     mSwipeContainer.setRefreshing(false);
