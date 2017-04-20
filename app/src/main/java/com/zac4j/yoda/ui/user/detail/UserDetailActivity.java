@@ -2,6 +2,7 @@ package com.zac4j.yoda.ui.user.detail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.base.BaseActivity;
 
 /**
@@ -15,5 +16,6 @@ public class UserDetailActivity extends BaseActivity {
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_user_detail);
   }
 }
