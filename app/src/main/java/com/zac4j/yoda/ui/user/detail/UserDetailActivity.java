@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.base.BaseActivity;
 
@@ -38,6 +37,7 @@ public class UserDetailActivity extends BaseActivity {
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_user_detail);
+
     ButterKnife.bind(this);
 
     setSupportActionBar(mToolbar);
@@ -50,6 +50,5 @@ public class UserDetailActivity extends BaseActivity {
     // mCollapsingToolbar.setTitle();
 
     long uid = getIntent().getLongExtra(EXTRA_UID, 0L);
-
   }
 }
