@@ -117,6 +117,10 @@
   <item name="user_detail_tv_description" type="id"/>
   <item name="user_detail_tv_location" type="id"/>
   <item name="user_detail_tv_link" type="id"/>
+  <item name="user_detail_ll_location_container" type="id"/>
+  <item name="user_detail_vp_media_container" type="id"/>
+  <item name="user_detail_iv_background" type="id"/>
+  <item name="user_detail_fab_avatar" type="id"/>
 
 
 </resources>

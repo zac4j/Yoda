@@ -27,7 +27,7 @@
         >
 
       <ImageView
-          android:id="@+id/backdrop"
+          android:id="@id/user_detail_iv_background"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:fitsSystemWindows="true"
@@ -47,74 +47,131 @@
 
   </android.support.design.widget.AppBarLayout>
 
-  <RelativeLayout
+  <android.support.v4.widget.NestedScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"
       >
-
-    <TextView
-        android:id="@id/user_detail_tv_nickname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        tools:text="雷军"
-        />
-
-    <TextView
-        android:id="@id/user_detail_tv_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/user_detail_tv_nickname"
-        tools:text="obama"
-        />
-
-    <TextView
-        android:id="@id/user_detail_tv_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/user_detail_tv_username"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        tools:text="obama"
-        />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/user_detail_tv_description"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
         >
 
-      <TextView
-          android:id="@id/user_detail_tv_location"
-          android:layout_width="wrap_content"
+      <LinearLayout
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:drawableStart="@drawable/ic_weibo_location"
-          android:gravity="center_vertical"
-          tools:text="BeiJing Haidian"
+          android:orientation="vertical"
+          android:padding="@dimen/space.small"
+          >
+
+        <TextView
+            android:id="@id/user_detail_tv_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            tools:text="雷军"
+            />
+
+        <TextView
+            android:id="@id/user_detail_tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="leijun"
+            />
+
+        <TextView
+            android:id="@id/user_detail_tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            tools:text="CEO of XiaoMi"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+          <TextView
+              android:id="@id/user_detail_tv_location"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:drawableStart="@drawable/ic_weibo_location"
+              android:gravity="center_vertical"
+              tools:text="BeiJing Haidian"
+              />
+
+          <TextView
+              android:id="@id/user_detail_tv_link"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:drawableStart="@drawable/ic_weibo_link"
+              android:gravity="center_vertical"
+              tools:text="http://www.leijun.com"
+              />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+              tools:text="65w"
+              />
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="@dimen/space.very_small"
+              android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+              tools:text="正在关注"
+              />
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="@dimen/space.medium"
+              android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+              tools:text="1065w"
+              />
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="@dimen/space.very_small"
+              android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+              tools:text="关注者"
+              />
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+      <android.support.v4.view.ViewPager
+          android:id="@id/user_detail_vp_media_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_marginTop="@dimen/space.medium"
           />
 
-      <TextView
-          android:id="@id/user_detail_tv_link"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:drawableStart="@drawable/ic_weibo_link"
-          android:gravity="center_vertical"
-          tools:text="http://www.leijun.com"
-          />
     </LinearLayout>
-  </RelativeLayout>
-
-  <android.support.v4.view.ViewPager
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      />
+  </android.support.v4.widget.NestedScrollView>
 
   <android.support.design.widget.FloatingActionButton
+      android:id="@id/user_detail_fab_avatar"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/fab_margin"
       android:clickable="true"
-      android:src="@drawable/ic_discuss"
+      android:src="@drawable/joanne"
       app:layout_anchor="@id/appbar"
       app:layout_anchorGravity="bottom|right|end"
       />

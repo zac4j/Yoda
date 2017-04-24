@@ -11,8 +11,7 @@ import javax.inject.Singleton;
  * Created by zac on 16-7-3.
  */
 
-@Singleton
-public class PreferencesHelper {
+@Singleton public class PreferencesHelper {
 
   private static final String PREFS_FILENAME = "prefs_file";
 
@@ -32,5 +31,4 @@ public class PreferencesHelper {
   public void clear() {
     mPrefs.edit().clear().apply();
   }
-
 }

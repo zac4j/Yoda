@@ -1,7 +1,9 @@
 package com.zac4j.yoda.ui;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -9,7 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,6 +76,20 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     mWebView.getSettings().setJavaScriptEnabled(true);
+
+    mWebView.setWebViewClient(new WebViewClient() {
+      @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        view.loadUrl(url);
+        return true;
+      }
+
+      @TargetApi(Build.VERSION_CODES.LOLLIPOP) @Override
+      public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+        view.loadUrl(request.getUrl().toString());
+        return true;
+      }
+    });
+
     mWebView.setWebChromeClient(new WebChromeClient() {
       @Override public void onProgressChanged(WebView view, int newProgress) {
         mProgressBar.setProgress(newProgress);
