@@ -12,7 +12,7 @@ import io.reactivex.functions.Function;
  * User Profile
  * Created by zac on 4/25/2017.
  */
-@AutoValue public abstract class Profile implements Parcelable {
+@AutoValue public abstract class Friend implements Parcelable {
 
   // Table name
   public static final String TABLE = "profile";
@@ -52,8 +52,8 @@ import io.reactivex.functions.Function;
 
   public abstract long follower();
 
-  public static final Function<Cursor, Profile> MAPPER = new Function<Cursor, Profile>() {
-    @Override public Profile apply(@NonNull Cursor cursor) throws Exception {
+  public static final Function<Cursor, Friend> MAPPER = new Function<Cursor, Friend>() {
+    @Override public Friend apply(@NonNull Cursor cursor) throws Exception {
       long id = Database.getLong(cursor, ID);
       long uid = Database.getLong(cursor, UID);
       String nickname = Database.getString(cursor, NICKNAME);
@@ -65,7 +65,7 @@ import io.reactivex.functions.Function;
       String location = Database.getString(cursor, LOCATION);
       long follow = Database.getLong(cursor, FOLLOW);
       long follower = Database.getLong(cursor, FOLLOWER);
-      return new AutoValue_Profile(id, uid, nickname, username, description, avatarUrl,
+      return new AutoValue_Friend(id, uid, nickname, username, description, avatarUrl,
           backgroundUrl, link, location, follow, follower);
     }
   };
