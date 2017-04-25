@@ -49,7 +49,13 @@ dependencies {
   compile "io.reactivex.rxjava2:rxjava:${rxjavaVersion}"
   // Dagger2
   compile "com.google.dagger:dagger:${daggerVersion}"
-  provided "com.google.dagger:dagger-compiler:${daggerVersion}"
+  annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+  // AutoValue
+  provided "com.google.auto.value:auto-value:${autovalueVersion}"
+  annotationProcessor "com.google.auto.value:auto-value:${autovalueVersion}"
+  annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
+  // SQL
+  compile "com.squareup.sqlbrite:sqlbrite:${sqlbriteVersion}"
   // ButterKnife
   compile "com.jakewharton:butterknife:${knifeVersion}"
   annotationProcessor "com.jakewharton:butterknife-compiler:${knifeVersion}"

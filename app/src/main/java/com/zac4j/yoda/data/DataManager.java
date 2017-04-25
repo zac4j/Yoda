@@ -1,9 +1,7 @@
 package com.zac4j.yoda.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zac4j.yoda.data.local.DatabaseHelper;
 import com.zac4j.yoda.data.local.PreferencesHelper;
-import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.remote.ApiServer;
 import io.reactivex.Single;
 import java.util.Map;
@@ -22,14 +20,12 @@ import retrofit2.Response;
 
   private ApiServer mApiServer;
   private PreferencesHelper mPrefsHelper;
-  private DatabaseHelper databaseHelper;
   private ObjectMapper mObjectMapper;
 
-  @Inject public DataManager(ApiServer apiServer, PreferencesHelper prefsHelper,
-      DatabaseHelper databaseHelper, ObjectMapper mapper) {
+  @Inject
+  public DataManager(ApiServer apiServer, PreferencesHelper prefsHelper, ObjectMapper mapper) {
     mApiServer = apiServer;
     mPrefsHelper = prefsHelper;
-    databaseHelper = databaseHelper;
     mObjectMapper = mapper;
   }
 
@@ -77,5 +73,4 @@ import retrofit2.Response;
   public Single<Response<Object>> unfollowFriend(String token, long uid) {
     return mApiServer.unfollowFriend(token, uid);
   }
-
 }

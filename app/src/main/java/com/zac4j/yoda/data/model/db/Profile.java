@@ -12,10 +12,10 @@ import io.reactivex.functions.Function;
  * User Profile
  * Created by zac on 4/25/2017.
  */
-@AutoValue public abstract class UserProfile implements Parcelable {
+@AutoValue public abstract class Profile implements Parcelable {
 
   // Table name
-  public static final String TABLE = "user_profile";
+  public static final String TABLE = "profile";
 
   // User table columns
   public static final String ID = "id";
@@ -52,8 +52,8 @@ import io.reactivex.functions.Function;
 
   public abstract long follower();
 
-  public static final Function<Cursor, UserProfile> MAPPER = new Function<Cursor, UserProfile>() {
-    @Override public UserProfile apply(@NonNull Cursor cursor) throws Exception {
+  public static final Function<Cursor, Profile> MAPPER = new Function<Cursor, Profile>() {
+    @Override public Profile apply(@NonNull Cursor cursor) throws Exception {
       long id = Database.getLong(cursor, ID);
       long uid = Database.getLong(cursor, UID);
       String nickname = Database.getString(cursor, NICKNAME);
@@ -63,9 +63,9 @@ import io.reactivex.functions.Function;
       String backgroundUrl = Database.getString(cursor, BG_URL);
       String link = Database.getString(cursor, LINK);
       String location = Database.getString(cursor, LOCATION);
-      String follow = Database.getString(cursor, FOLLOW);
-      String follower = Database.getString(cursor, FOLLOWER);
-      return new AutoValue_UserProfile(id, uid, nickname, username, description, avatarUrl,
+      long follow = Database.getLong(cursor, FOLLOW);
+      long follower = Database.getLong(cursor, FOLLOWER);
+      return new AutoValue_Profile(id, uid, nickname, username, description, avatarUrl,
           backgroundUrl, link, location, follow, follower);
     }
   };
@@ -118,12 +118,12 @@ import io.reactivex.functions.Function;
       return this;
     }
 
-    public Builder follow(String follow) {
+    public Builder follow(long follow) {
       values.put(FOLLOW, follow);
       return this;
     }
 
-    public Builder follower(String follower) {
+    public Builder follower(long follower) {
       values.put(FOLLOWER, follower);
       return this;
     }
@@ -131,6 +131,5 @@ import io.reactivex.functions.Function;
     public ContentValues build() {
       return values;
     }
-
   }
 }

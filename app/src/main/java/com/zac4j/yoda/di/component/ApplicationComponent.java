@@ -2,7 +2,10 @@ package com.zac4j.yoda.di.component;
 
 import android.content.Context;
 
+import android.database.sqlite.SQLiteOpenHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite.SqlBrite;
 import com.zac4j.yoda.data.DataManager;
 import com.zac4j.yoda.data.local.DatabaseHelper;
 import com.zac4j.yoda.data.local.PreferencesHelper;
@@ -23,6 +26,10 @@ import javax.inject.Singleton;
   PreferencesHelper prefsHelper();
 
   DatabaseHelper databaseHelper();
+
+  SqlBrite sqlBrite();
+
+  BriteDatabase database();
 
   ObjectMapper mapper();
 

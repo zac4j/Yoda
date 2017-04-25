@@ -3,6 +3,7 @@ package com.zac4j.yoda.data.local;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import com.zac4j.yoda.data.model.db.Profile;
 import com.zac4j.yoda.di.ApplicationContext;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -12,61 +13,47 @@ import javax.inject.Singleton;
  * Created by zac on 4/24/2017.
  */
 @Singleton public class DatabaseHelper extends SQLiteOpenHelper {
+  private static final String NAME = "yoda.db";
+  private static final int VERSION = 1;
 
-  // Database info
-  private static final String DB_NAME = "yoda_data";
-  private static final int DB_VERSION = 1;
-
-  // Table name
-  public static final String TB_USER = "tb_user";
-
-  // User table columns
-  public static final String KEY_ID = "id";
-  public static final String KEY_UID = "uid";
-  public static final String KEY_NICKNAME = "nickname";
-  public static final String KEY_USERNAME = "username";
-  public static final String KEY_AVATAR_URL = "avatar_url";
-  public static final String KEY_BG_URL = "bg_url";
-  public static final String KEY_LINK = "link";
-  public static final String KEY_LOCATION = "location";
-  public static final String KEY_FOLLOW = "follow";
-  public static final String KEY_FOLLOWER = "follower";
+  private static final String CREATE_USER_PROFILE = "CREATE TABLE "
+      + Profile.TABLE
+      + "("
+      + Profile.ID
+      + " INTEGER NOT NULL PRIMARY KEY,"
+      + Profile.UID
+      + " INTEGER NOT NULL DEFAULT 0,"
+      + Profile.NICKNAME
+      + " TEXT NOT NULL,"
+      + Profile.USERNAME
+      + " TEXT NOT NULL,"
+      + Profile.DESCRIPTION
+      + " TEXT NOT NULL,"
+      + Profile.AVATAR_URL
+      + " TEXT NOT NULL,"
+      + Profile.BG_URL
+      + " TEXT NOT NULL,"
+      + Profile.LINK
+      + " TEXT NOT NULL,"
+      + Profile.LOCATION
+      + " TEXT NOT NULL,"
+      + Profile.FOLLOW
+      + " INTEGER NOT NULL DEFAULT 0,"
+      + Profile.FOLLOWER
+      + " INTEGER NOT NULL DEFAULT 0,"
+      + ")";
 
   @Inject public DatabaseHelper(@ApplicationContext Context context) {
-    super(context, DB_NAME, null, DB_VERSION);
+    super(context, NAME, null, VERSION);
   }
 
   @Override public void onCreate(SQLiteDatabase db) {
-    String sql = "CREATE TABLE "
-        + TB_USER
-        + "("
-        + KEY_ID
-        + " INTEGER PRIMARY KEY, "
-        + KEY_UID
-        + " TEXT, "
-        + KEY_NICKNAME
-        + " TEXT, "
-        + KEY_USERNAME
-        + " TEXT, "
-        + KEY_AVATAR_URL
-        + " TEXT, "
-        + KEY_BG_URL
-        + " TEXT, "
-        + KEY_LINK
-        + " TEXT, "
-        + KEY_LOCATION
-        + " TEXT, "
-        + KEY_FOLLOW
-        + " TEXT, "
-        + KEY_FOLLOWER
-        + " TEXT"
-        + ")";
-    db.execSQL(sql);
+    db.execSQL(CREATE_USER_PROFILE);
   }
 
   @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     if (oldVersion != newVersion) {
-      String sql = "DROP TABLE IF EXISTS " + TB_USER;
+      String sql = "DROP TABLE IF EXISTS " + Profile.TABLE;
       db.execSQL(sql);
       onCreate(db);
     }
