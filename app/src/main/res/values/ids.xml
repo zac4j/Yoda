@@ -17,11 +17,14 @@
   <item name="main_drawer_layout" type="id"/>
   <item name="main_nav_view" type="id"/>
   <item name="main_container" type="id"/>
-  <item name="main_appbar" type="id"/>
-  <item name="main_toolbar" type="id"/>
-  <item name="main_tabs" type="id"/>
-  <item name="main_viewpager" type="id"/>
-  <item name="main_fab" type="id"/>
+  <item name="main_vp_container" type="id"/>
+  <item name="main_nav_home" type="id"/>
+  <item name="main_nav_hot" type="id"/>
+  <item name="main_nav_message" type="id"/>
+  <item name="main_nav_notification" type="id"/>
+  <item name="main_nav_profile" type="id"/>
+  <item name="main_bottom_navigation" type="id"/>
+  <item name="main_fab_write" type="id"/>
 
   <!--Main Navigation Drawer-->
   <item name="nav_drawer_my_moments" type="id"/>
@@ -51,12 +54,7 @@
   <item name="home_rv_notification_list" type="id"/>
   <item name="notification_progress_bar" type="id"/>
   <item name="notification_empty_view" type="id"/>
-  <item name="main_drawer_header_avatar" type="id"/>
-  <item name="main_drawer_header_username" type="id"/>
-  <item name="main_drawer_header_desc" type="id"/>
-  <item name="main_progress_bar" type="id"/>
   <item name="main_empty_view" type="id"/>
-  <item name="main_drawer_header_progress_bar" type="id"/>
 
   <!--User -->
   <item name="user_fragment_container" type="id"/>

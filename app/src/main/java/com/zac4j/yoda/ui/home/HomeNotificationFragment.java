@@ -30,6 +30,10 @@ public class HomeNotificationFragment extends BaseFragment implements HomeNotifi
   @BindView(R.id.notification_progress_bar) ProgressBar mProgressBar;
   @BindView(R.id.notification_empty_view) View mEmptyView;
 
+  public static HomeNotificationFragment newInstance() {
+    return new HomeNotificationFragment();
+  }
+
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {

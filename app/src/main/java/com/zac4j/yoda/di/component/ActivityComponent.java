@@ -22,8 +22,6 @@ import dagger.Subcomponent;
 
   void inject(BaseActivity baseActivity);
 
-  void inject(MainActivity mainActivity);
-
   void inject(WeiboSendActivity sendWeiboActivity);
 
   void inject(WeiboDetailActivity weiboDetailActivity);

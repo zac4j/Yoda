@@ -25,6 +25,7 @@ import javax.inject.Inject;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static android.view.View.resolveSize;
 
 /**
  * Weibo list page
@@ -33,7 +34,7 @@ import static android.view.View.VISIBLE;
 
 public class HomeTimelineFragment extends BaseFragment implements HomeTimelineView {
 
-  // Server default weibo count is 20 as well.
+  // WebService default weibo count is 20 as well.
   public static final int DEFAULT_WEIBO_COUNT = 6;
   private int mRequestCount = DEFAULT_WEIBO_COUNT;
   private int mRequestPage = 1;
@@ -46,6 +47,10 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
   @BindView(R.id.recycler_weibo_list) RecyclerView mWeiboListView;
   @BindView(R.id.progress_bar) ProgressBar mProgressBar;
   @BindView(R.id.error_view) View mErrorView;
+
+  public static HomeTimelineFragment newInstance() {
+    return new HomeTimelineFragment();
+  }
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -60,8 +65,8 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
 
     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
     mWeiboListView.setLayoutManager(layoutManager);
-    mWeiboListView.addItemDecoration(
-        new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+    //mWeiboListView.addItemDecoration(
+    //    new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
     mWeiboListView.setAdapter(mTimelineAdapter);
 
     mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {

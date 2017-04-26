@@ -63,7 +63,7 @@ public class WeiboTextHelper {
     System.out.println("startIndex: " + startIndex + " : " + "endIndex: " + endIndex);
     ClickableSpan clickableSpan = new ClickableSpan() {
       @Override public void onClick(View widget) {
-
+        // Click Event
       }
     };
     spannableString.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

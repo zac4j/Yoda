@@ -13,6 +13,13 @@
   <string name="error_no_weibo">You Have Not Post Weibo!</string>
   <string name="error_no_friends">You don\'t have friends yet!</string>
 
+  <!--Home Navigation-->
+  <string name="main_nav_home">Home</string>
+  <string name="main_nav_hot">Hot</string>
+  <string name="main_nav_message">Message</string>
+  <string name="main_nav_notification">Notification</string>
+  <string name="main_nav_profile">Profile</string>
+
   <!--Weibo Commons-->
   <string name="weibo_token">access_token</string>
   <string name="weibo_text">status</string>

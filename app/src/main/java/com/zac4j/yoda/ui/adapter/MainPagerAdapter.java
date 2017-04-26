@@ -2,6 +2,8 @@ package com.zac4j.yoda.ui.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import com.zac4j.yoda.ui.home.HomeNotificationFragment;
+import com.zac4j.yoda.ui.home.HomeTimelineFragment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,28 +14,29 @@ import java.util.List;
 
 public class MainPagerAdapter extends SmartPagerAdapter {
 
-  private static final int MAIN_PAGER_COUNT = 3;
-  private final List<Fragment> mPagerContainer = new ArrayList<>();
-  private final List<String> mPagerTitles = new ArrayList<>();
+  public static final int MAIN_PAGER_COUNT = 5;
 
   public MainPagerAdapter(FragmentManager fm) {
     super(fm);
   }
 
-  public void addFragment(Fragment fragment, String title) {
-    mPagerContainer.add(fragment);
-    mPagerTitles.add(title);
-  }
-
   @Override public Fragment getItem(int position) {
-    return mPagerContainer.get(position);
+    switch (position) {
+      case 0:
+        return HomeTimelineFragment.newInstance();
+      case 1:
+        return HomeNotificationFragment.newInstance();
+      case 2:
+        break;
+      case 3:
+        break;
+      case 4:
+        break;
+    }
+    return null;
   }
 
   @Override public int getCount() {
-    return mPagerContainer.size() % MAIN_PAGER_COUNT;
-  }
-
-  @Override public CharSequence getPageTitle(int position) {
-    return mPagerTitles.get(position);
+    return MAIN_PAGER_COUNT;
   }
 }

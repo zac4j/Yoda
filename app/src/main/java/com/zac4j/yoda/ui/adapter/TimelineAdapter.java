@@ -2,6 +2,7 @@ package com.zac4j.yoda.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -16,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.bumptech.glide.BitmapRequestBuilder;
+import com.bumptech.glide.BitmapTypeRequest;
+import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.GenericRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -75,7 +79,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-    View view = inflater.inflate(R.layout.list_item_weibo_home, parent, false);
+    View view = inflater.inflate(R.layout.list_item_weibo, parent, false);
     return new ViewHolder(view);
   }
 
@@ -271,7 +275,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       }
     }
 
-    void setMediaContent(final Context context, String mediaUrl, boolean isMultiImage) {
+    void setMediaContent(final Context context, final String mediaUrl, final boolean isMultiImage) {
       final ImageView mediaImageView = (ImageView) mMediaView.findViewById(R.id.weibo_media_iv_img);
       final TextView mediaImageType = (TextView) mMediaView.findViewById(R.id.weibo_media_tv_type);
       if (TextUtils.isEmpty(mediaUrl)) {
@@ -280,24 +284,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         mMediaView.setVisibility(View.GONE);
       } else {
         mMediaView.setVisibility(View.VISIBLE);
-
-        Glide.with(context)
-            .load(mediaUrl)
-            .asBitmap()
-            .centerCrop()
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(mediaImageView);
-
-        if (mediaUrl.endsWith("gif")) {
-          mediaImageType.setText(R.string.weibo_media_type_gif);
-          return;
-        }
-
-        if (isMultiImage) {
-          mediaImageType.setText(R.string.weibo_media_type_multiple_image);
-          return;
-        }
-
+        // Request has DiskCacheStrategy.ALL
         GenericRequestBuilder builder =
             PhotoUtils.getNetworkImageSizeRequest(context).load(Uri.parse(mediaUrl));
         builder.into(new SimpleTarget<BitmapFactory.Options>() {
@@ -306,11 +293,25 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             int imageHeight = resource.outHeight;
             if (imageHeight >= PhotoUtils.LONG_IMAGE_LENGTH) {
               mediaImageType.setText(R.string.weibo_media_type_long_image);
+            } else if (mediaUrl.endsWith("gif")) {
+              mediaImageType.setText(R.string.weibo_media_type_gif);
+            } else if (isMultiImage) {
+              mediaImageType.setText(R.string.weibo_media_type_multiple_image);
             } else {
               mediaImageType.setText("");
             }
           }
         });
+
+        BitmapRequestBuilder<String, Bitmap> bitmapRequestBuilder =
+            Glide.with(context).load(mediaUrl).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL);
+        // 如果为长图
+        if (TextUtils.equals(mediaImageType.getText(),
+            context.getString(R.string.weibo_media_type_long_image))) {
+          bitmapRequestBuilder.centerCrop().into(mediaImageView);
+        } else {
+          bitmapRequestBuilder.fitCenter().into(mediaImageView);
+        }
       }
     }
 
