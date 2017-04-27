@@ -53,7 +53,7 @@ dependencies {
   compile "com.google.dagger:dagger:${daggerVersion}"
   annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
   // AutoValue
-  compile "com.google.auto.value:auto-value:${autovalueVersion}"
+  provided "com.google.auto.value:auto-value:${autovalueVersion}"
   annotationProcessor "com.google.auto.value:auto-value:${autovalueVersion}"
   annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
   // SQL

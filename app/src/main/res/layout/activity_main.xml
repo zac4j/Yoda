@@ -19,7 +19,7 @@
       android:layout_height="wrap_content"
       android:layout_gravity="end|bottom"
       android:layout_marginEnd="@dimen/fab_margin"
-      android:layout_marginBottom="@dimen/height_bottom_navigation"
+      android:layout_marginBottom="@dimen/height.large"
       android:src="@drawable/ic_weibo_edit"
       />
 

@@ -65,14 +65,10 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
 
     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
     mWeiboListView.setLayoutManager(layoutManager);
-    //mWeiboListView.addItemDecoration(
-    //    new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
     mWeiboListView.setAdapter(mTimelineAdapter);
 
     mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
       @Override public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-        System.out.println("page >> " + page);
-        System.out.println("totalItemsCount >> " + totalItemsCount);
         mRequestPage = page;
         mPresenter.getTimeline(token, mRequestCount, mRequestPage);
       }

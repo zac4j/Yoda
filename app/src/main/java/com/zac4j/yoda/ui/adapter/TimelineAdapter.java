@@ -284,6 +284,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         mMediaView.setVisibility(View.GONE);
       } else {
         mMediaView.setVisibility(View.VISIBLE);
+
+        final BitmapRequestBuilder<String, Bitmap> bitmapRequestBuilder =
+            Glide.with(context).load(mediaUrl).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL);
+
         // Request has DiskCacheStrategy.ALL
         GenericRequestBuilder builder =
             PhotoUtils.getNetworkImageSizeRequest(context).load(Uri.parse(mediaUrl));
@@ -293,23 +297,21 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             int imageHeight = resource.outHeight;
             if (imageHeight >= PhotoUtils.LONG_IMAGE_LENGTH) {
               mediaImageType.setText(R.string.weibo_media_type_long_image);
-            } else if (mediaUrl.endsWith("gif")) {
-              mediaImageType.setText(R.string.weibo_media_type_gif);
-            } else if (isMultiImage) {
-              mediaImageType.setText(R.string.weibo_media_type_multiple_image);
+              bitmapRequestBuilder.centerCrop().into(mediaImageView);
             } else {
               mediaImageType.setText("");
+              bitmapRequestBuilder.fitCenter().into(mediaImageView);
             }
           }
         });
 
-        BitmapRequestBuilder<String, Bitmap> bitmapRequestBuilder =
-            Glide.with(context).load(mediaUrl).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL);
-        // 如果为长图
-        if (TextUtils.equals(mediaImageType.getText(),
-            context.getString(R.string.weibo_media_type_long_image))) {
-          bitmapRequestBuilder.centerCrop().into(mediaImageView);
-        } else {
+        if (mediaUrl.endsWith("gif")) {
+          mediaImageType.setText(R.string.weibo_media_type_gif);
+          bitmapRequestBuilder.fitCenter().into(mediaImageView);
+        }
+
+        if (isMultiImage) {
+          mediaImageType.setText(R.string.weibo_media_type_multiple_image);
           bitmapRequestBuilder.fitCenter().into(mediaImageView);
         }
       }
