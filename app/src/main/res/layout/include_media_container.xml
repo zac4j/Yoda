@@ -23,6 +23,6 @@
       android:textAppearance="@style/TextAppearance.AppCompat.Small"
       android:textColor="@color/white"
       tools:text="长图"
-      >
-  </TextView>
+      />
+
 </RelativeLayout>

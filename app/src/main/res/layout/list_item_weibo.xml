@@ -79,7 +79,9 @@
           tools:text="Would you like to have a library of swatches at your fingertips in Sketch? Check out this plugin!http://buff.ly/2lErpKy "
           />
 
-      <include layout="@layout/include_repost_container"/>
+      <include
+          android:id="@id/weibo_list_item_repost_container"
+          layout="@layout/include_repost_container"/>
 
       <include
           layout="@layout/include_media_container"

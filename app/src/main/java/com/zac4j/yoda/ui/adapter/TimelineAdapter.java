@@ -99,7 +99,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
     // 微博转发内容
     Weibo repostWeibo = weibo.getRepostWeibo();
-    holder.setRepostContent(repostWeibo);
+    holder.setRepostContent(mContext, repostWeibo);
 
     // 转发数
     long repostCount = weibo.getRepostsCount();
@@ -193,7 +193,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     @BindView(R.id.weibo_list_item_tv_post_time) TextView mPostTimeView;
     @BindView(R.id.weibo_list_item_tv_post_from) TextView mPostSourceView;
     @BindView(R.id.weibo_list_item_tv_content) TextView mContentView;
-    @BindView(R.id.weibo_list_item_tv_repost_content) TextView mRepostView;
+    @BindView(R.id.weibo_list_item_repost_container) View mRepostContentView;
     @BindView(R.id.weibo_list_item_iv_media) View mMediaView;
     @BindView(R.id.weibo_list_item_tv_repost) TextView mRepostBtn;
     @BindView(R.id.weibo_list_item_tv_reply) TextView mReplyBtn;
@@ -256,22 +256,83 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       }
     }
 
-    void setRepostContent(Weibo repostWeibo) {
+    void setRepostContent(Context context, Weibo repostWeibo) {
+      final TextView repostTextView =
+          (TextView) mRepostContentView.findViewById(R.id.weibo_list_item_tv_repost_content);
+      // 转发微博多媒体内容的容器
+      final View mediaContainer =
+          mRepostContentView.findViewById(R.id.weibo_list_item_tv_repost_media);
+      final ImageView mediaImageView =
+          (ImageView) mRepostContentView.findViewById(R.id.weibo_list_item_iv_repost_img);
+      final TextView mediaImageType =
+          (TextView) mRepostContentView.findViewById(R.id.weibo_list_item_tv_repost_type);
+
       if (repostWeibo == null) {
-        mRepostView.setText("");
-        mRepostView.setBackgroundResource(0);
+        repostTextView.setText("");
+        mRepostContentView.setBackgroundResource(0);
+        Glide.clear(mediaImageView);
+        mediaImageType.setText("");
+        mediaContainer.setVisibility(View.GONE);
       } else {
         String weiboContent = repostWeibo.getText();
         String name = repostWeibo.getUser().getScreenName();
 
         if (TextUtils.isEmpty(weiboContent)) {
-          mRepostView.setText("");
+          repostTextView.setText("");
           return;
         }
 
         weiboContent = "@" + name + ": " + weiboContent;
-        WeiboTextHelper.setupText(mRepostView, weiboContent);
-        mRepostView.setBackgroundResource(R.drawable.bg_gray_border);
+        WeiboTextHelper.setupText(repostTextView, weiboContent);
+        mRepostContentView.setBackgroundResource(R.drawable.bg_gray_border);
+
+        String imgUrl = repostWeibo.getBmiddlePic();
+        boolean isMultiImages = repostWeibo.getPicUrls().size() > 1;
+
+        setRepostMediaContent(context, imgUrl, isMultiImages, mediaImageView, mediaImageType, mediaContainer);
+      }
+    }
+
+    void setRepostMediaContent(final Context context, final String mediaUrl,
+        final boolean isMultiImage, final ImageView mediaImageView, final TextView mediaImageType,
+        final View mediaContainer) {
+
+      if (TextUtils.isEmpty(mediaUrl)) {
+        Glide.clear(mediaImageView);
+        mediaImageType.setText("");
+        mediaContainer.setVisibility(View.GONE);
+      } else {
+        mediaContainer.setVisibility(View.VISIBLE);
+
+        final BitmapRequestBuilder<String, Bitmap> bitmapRequestBuilder =
+            Glide.with(context).load(mediaUrl).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL);
+
+        // Request has DiskCacheStrategy.ALL
+        GenericRequestBuilder builder =
+            PhotoUtils.getNetworkImageSizeRequest(context).load(Uri.parse(mediaUrl));
+        builder.into(new SimpleTarget<BitmapFactory.Options>() {
+          @Override public void onResourceReady(BitmapFactory.Options resource,
+              GlideAnimation<? super BitmapFactory.Options> glideAnimation) {
+            int imageHeight = resource.outHeight;
+            if (imageHeight >= PhotoUtils.LONG_IMAGE_LENGTH) {
+              mediaImageType.setText(R.string.weibo_media_type_long_image);
+              bitmapRequestBuilder.centerCrop().into(mediaImageView);
+            } else {
+              mediaImageType.setText("");
+              bitmapRequestBuilder.fitCenter().into(mediaImageView);
+            }
+          }
+        });
+
+        if (mediaUrl.endsWith("gif")) {
+          mediaImageType.setText(R.string.weibo_media_type_gif);
+          bitmapRequestBuilder.fitCenter().into(mediaImageView);
+        }
+
+        if (isMultiImage) {
+          mediaImageType.setText(R.string.weibo_media_type_multiple_image);
+          bitmapRequestBuilder.fitCenter().into(mediaImageView);
+        }
       }
     }
 
