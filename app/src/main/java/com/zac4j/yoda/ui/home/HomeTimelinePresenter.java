@@ -42,7 +42,7 @@ import timber.log.Timber;
     }
   }
 
-  public void getTimeline(String token, int count, int page) {
+  public void getTimeline(String token, int count, int page, boolean isHotTimeline) {
     checkViewAttached();
 
     if (isProcessing()) {
@@ -52,7 +52,7 @@ import timber.log.Timber;
     if (!getMvpView().isRefreshing()) {
       getMvpView().showProgress(true);
     }
-    Disposable disposable = mDataManager.getHomeTimeline(token, count, page)
+    Disposable disposable = mDataManager.getHomeTimeline(token, count, page, isHotTimeline)
         .compose(RxUtils.<Response<Object>>applySchedulers())
         .compose(RxUtils.handleResponse(getMvpView()))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {

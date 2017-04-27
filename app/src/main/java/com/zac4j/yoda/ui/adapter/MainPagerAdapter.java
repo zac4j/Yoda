@@ -23,11 +23,11 @@ public class MainPagerAdapter extends SmartPagerAdapter {
   @Override public Fragment getItem(int position) {
     switch (position) {
       case 0:
-        return HomeTimelineFragment.newInstance();
+        return HomeTimelineFragment.newInstance(false);
       case 1:
-        return HomeNotificationFragment.newInstance();
+        return HomeTimelineFragment.newInstance(true);
       case 2:
-        break;
+        return HomeNotificationFragment.newInstance();
       case 3:
         break;
       case 4:

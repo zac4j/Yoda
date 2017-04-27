@@ -38,8 +38,11 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
   public static final int DEFAULT_WEIBO_COUNT = 6;
   private int mRequestCount = DEFAULT_WEIBO_COUNT;
   private int mRequestPage = 1;
-  private EndlessRecyclerViewScrollListener mScrollListener;
 
+  public static final String EXTRA_IS_HOT = "extra_is_hot";
+  private boolean mIsHotTimeline;
+
+  private EndlessRecyclerViewScrollListener mScrollListener;
   @Inject HomeTimelinePresenter mPresenter;
   @Inject TimelineAdapter mTimelineAdapter;
 
@@ -48,8 +51,17 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
   @BindView(R.id.progress_bar) ProgressBar mProgressBar;
   @BindView(R.id.error_view) View mErrorView;
 
-  public static HomeTimelineFragment newInstance() {
-    return new HomeTimelineFragment();
+  public static HomeTimelineFragment newInstance(boolean isHot) {
+    Bundle args = new Bundle();
+    HomeTimelineFragment fragment = new HomeTimelineFragment();
+    args.putBoolean(EXTRA_IS_HOT, isHot);
+    fragment.setArguments(args);
+    return fragment;
+  }
+
+  @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    mIsHotTimeline = getArguments().getBoolean(EXTRA_IS_HOT, false);
   }
 
   @Nullable @Override
@@ -70,14 +82,14 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
     mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
       @Override public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
         mRequestPage = page;
-        mPresenter.getTimeline(token, mRequestCount, mRequestPage);
+        mPresenter.getTimeline(token, mRequestCount, mRequestPage, mIsHotTimeline);
       }
     };
     mWeiboListView.addOnScrollListener(mScrollListener);
 
     mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override public void onRefresh() {
-        mPresenter.getTimeline(token, mRequestCount, mRequestPage);
+        mPresenter.getTimeline(token, mRequestCount, mRequestPage, mIsHotTimeline);
       }
     });
 
@@ -85,7 +97,7 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
         android.R.color.holo_green_light, android.R.color.holo_orange_light,
         android.R.color.holo_red_light);
 
-    mPresenter.getTimeline(token, mRequestCount, mRequestPage);
+    mPresenter.getTimeline(token, mRequestCount, mRequestPage, mIsHotTimeline);
 
     return view;
   }
