@@ -30,7 +30,7 @@
   <dimen name="space.divider">1dp</dimen>
 
   <!--main pager sizes-->
-  <dimen name="weibo_media_height">124dp</dimen>
+  <dimen name="weibo_media_height">136dp</dimen>
 
   <!--avatar size-->
   <dimen name="img.very_large">96dp</dimen>

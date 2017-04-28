@@ -25,6 +25,8 @@ public class WeiboTextHelper {
     boolean hasAtSignal = false; // if has @Name signal
     boolean hasSharpSignal = false;// if has #Topic# signal
 
+    textView.setVisibility(View.VISIBLE);
+
     for (int i = 0; i < content.length(); i++) {
       if (content.charAt(i) == '@') {
         startNameIndex = i;

@@ -268,17 +268,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
           (TextView) mRepostContentView.findViewById(R.id.weibo_list_item_tv_repost_type);
 
       if (repostWeibo == null) {
-        repostTextView.setText("");
-        mRepostContentView.setBackgroundResource(0);
-        Glide.clear(mediaImageView);
-        mediaImageType.setText("");
+        clearWeiboContainer(mRepostContentView, repostTextView, mediaImageView, mediaImageType);
         mediaContainer.setVisibility(View.GONE);
       } else {
         String weiboContent = repostWeibo.getText();
         String name = repostWeibo.getUser().getScreenName();
 
         if (TextUtils.isEmpty(weiboContent)) {
-          repostTextView.setText("");
+          clearWeiboContainer(mRepostContentView, repostTextView, mediaImageView, mediaImageType);
           return;
         }
 
@@ -289,8 +286,20 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         String imgUrl = repostWeibo.getBmiddlePic();
         boolean isMultiImages = repostWeibo.getPicUrls().size() > 1;
 
-        setRepostMediaContent(context, imgUrl, isMultiImages, mediaImageView, mediaImageType, mediaContainer);
+        setRepostMediaContent(context, imgUrl, isMultiImages, mediaImageView, mediaImageType,
+            mediaContainer);
       }
+    }
+
+    void clearWeiboContainer(View containerView, TextView weiboTextView, ImageView weiboMediaView,
+        TextView weiboMediaTypeView) {
+      containerView.setBackgroundResource(0);
+      containerView.setPadding(0, 0, 0, 0);
+      weiboTextView.setText("");
+      // 我费尽千辛万苦终于发现你躺在这里 >>
+      weiboTextView.setVisibility(View.GONE);
+      Glide.clear(weiboMediaView);
+      weiboMediaTypeView.setText("");
     }
 
     void setRepostMediaContent(final Context context, final String mediaUrl,
