@@ -1,4 +1,4 @@
-package com.zac4j.yoda.ui.home;
+package com.zac4j.yoda.ui.home.timeline;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
@@ -21,16 +21,16 @@ import timber.log.Timber;
  * Created by zac on 3/17/2017.
  */
 
-@PerConfig public class HomeTimelinePresenter extends BasePresenter<HomeTimelineView> {
+@PerConfig public class TimelinePresenter extends BasePresenter<TimelineView> {
 
   private final DataManager mDataManager;
   private CompositeDisposable mDisposable;
 
-  @Inject public HomeTimelinePresenter(DataManager dataManager) {
+  @Inject public TimelinePresenter(DataManager dataManager) {
     mDataManager = dataManager;
   }
 
-  @Override public void attach(HomeTimelineView mvpView) {
+  @Override public void attach(TimelineView mvpView) {
     super.attach(mvpView);
     mDisposable = new CompositeDisposable();
   }

@@ -1,4 +1,4 @@
-package com.zac4j.yoda.ui.home;
+package com.zac4j.yoda.ui.home.notification;
 
 import com.zac4j.yoda.data.DataManager;
 import com.zac4j.yoda.di.PerConfig;
@@ -11,16 +11,16 @@ import javax.inject.Inject;
  * Created by zac on 3/22/2017.
  */
 
-@PerConfig public class HomeNotificationPresenter extends BasePresenter<HomeNotificationView> {
+@PerConfig public class NotificationPresenter extends BasePresenter<NotificationView> {
 
   private final DataManager mDataManager;
   private CompositeDisposable mDisposable;
 
-  @Inject public HomeNotificationPresenter(DataManager dataManager) {
+  @Inject public NotificationPresenter(DataManager dataManager) {
     mDataManager = dataManager;
   }
 
-  @Override public void attach(HomeNotificationView mvpView) {
+  @Override public void attach(NotificationView mvpView) {
     super.attach(mvpView);
     mDisposable = new CompositeDisposable();
   }

@@ -40,7 +40,7 @@ public class WeiboTextHelper {
 
       if (!hasSharpSignal && content.charAt(i) == '#') {
         startTopicIndex = i;
-        System.out.println("start sharp index: " + startTopicIndex);
+        // System.out.println("start sharp index: " + startTopicIndex);
         hasSharpSignal = true;
       }
 
@@ -60,7 +60,7 @@ public class WeiboTextHelper {
     if (startIndex >= endIndex || endIndex - startIndex > MAX_NICKNAME_LENGTH) {
       return;
     }
-    System.out.println("startIndex: " + startIndex + " : " + "endIndex: " + endIndex);
+    // System.out.println("startIndex: " + startIndex + " : " + "endIndex: " + endIndex);
     ClickableSpan clickableSpan = new ClickableSpan() {
       @Override public void onClick(View widget) {
         // Click Event

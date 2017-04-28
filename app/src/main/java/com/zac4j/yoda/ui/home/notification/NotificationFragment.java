@@ -1,4 +1,4 @@
-package com.zac4j.yoda.ui.home;
+package com.zac4j.yoda.ui.home.notification;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,17 +21,17 @@ import javax.inject.Inject;
  * Created by zac on 3/22/2017.
  */
 
-public class HomeNotificationFragment extends BaseFragment implements HomeNotificationView {
+public class NotificationFragment extends BaseFragment implements NotificationView {
 
-  @Inject HomeNotificationPresenter mPresenter;
+  @Inject NotificationPresenter mPresenter;
 
   @BindView(R.id.home_rv_notification_list) RecyclerView mNotificationListView;
   @BindView(R.id.home_swipe_notifications_container) SwipeRefreshLayout mSwipeContainer;
   @BindView(R.id.notification_progress_bar) ProgressBar mProgressBar;
   @BindView(R.id.notification_empty_view) View mEmptyView;
 
-  public static HomeNotificationFragment newInstance() {
-    return new HomeNotificationFragment();
+  public static NotificationFragment newInstance() {
+    return new NotificationFragment();
   }
 
   @Nullable @Override

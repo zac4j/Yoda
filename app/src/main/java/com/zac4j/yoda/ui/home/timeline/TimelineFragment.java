@@ -1,9 +1,8 @@
-package com.zac4j.yoda.ui.home;
+package com.zac4j.yoda.ui.home.timeline;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,14 +24,13 @@ import javax.inject.Inject;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static android.view.View.resolveSize;
 
 /**
  * Weibo list page
  * Created by zac on 3/17/2017.
  */
 
-public class HomeTimelineFragment extends BaseFragment implements HomeTimelineView {
+public class TimelineFragment extends BaseFragment implements TimelineView {
 
   // WebService default weibo count is 20 as well.
   public static final int DEFAULT_WEIBO_COUNT = 6;
@@ -43,7 +41,7 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
   private boolean mIsHotTimeline;
 
   private EndlessRecyclerViewScrollListener mScrollListener;
-  @Inject HomeTimelinePresenter mPresenter;
+  @Inject TimelinePresenter mPresenter;
   @Inject TimelineAdapter mTimelineAdapter;
 
   @BindView(R.id.swipe_weibo_list_container) SwipeRefreshLayout mSwipeContainer;
@@ -51,9 +49,9 @@ public class HomeTimelineFragment extends BaseFragment implements HomeTimelineVi
   @BindView(R.id.progress_bar) ProgressBar mProgressBar;
   @BindView(R.id.error_view) View mErrorView;
 
-  public static HomeTimelineFragment newInstance(boolean isHot) {
+  public static TimelineFragment newInstance(boolean isHot) {
     Bundle args = new Bundle();
-    HomeTimelineFragment fragment = new HomeTimelineFragment();
+    TimelineFragment fragment = new TimelineFragment();
     args.putBoolean(EXTRA_IS_HOT, isHot);
     fragment.setArguments(args);
     return fragment;
