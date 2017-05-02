@@ -15,6 +15,7 @@ import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.home.message.MessengerFragment;
 import com.zac4j.yoda.ui.home.notification.NotificationFragment;
+import com.zac4j.yoda.ui.home.hot.HotTimelineFragment;
 import com.zac4j.yoda.ui.home.timeline.TimelineFragment;
 import com.zac4j.yoda.ui.home.user.UserFragment;
 import com.zac4j.yoda.ui.login.LoginActivity;
@@ -34,7 +35,7 @@ public class MainActivity extends BaseActivity {
 
     Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment_container);
     if (fragment == null) {
-      fragment = TimelineFragment.newInstance(false);
+      fragment = TimelineFragment.newInstance();
       getSupportFragmentManager().beginTransaction()
           .add(R.id.main_fragment_container, fragment)
           .commit();
@@ -51,12 +52,12 @@ public class MainActivity extends BaseActivity {
     mBottomNavigationView.setOnNavigationItemSelectedListener(
         new BottomNavigationView.OnNavigationItemSelectedListener() {
           @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment navigationFragment = TimelineFragment.newInstance(false);
+            Fragment navigationFragment = TimelineFragment.newInstance();
             switch (item.getItemId()) {
               case R.id.main_nav_home:
                 break;
               case R.id.main_nav_hot:
-                navigationFragment = TimelineFragment.newInstance(true);
+                navigationFragment = HotTimelineFragment.newInstance();
                 break;
               case R.id.main_nav_message:
                 navigationFragment = MessengerFragment.newInstance();

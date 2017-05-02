@@ -37,8 +37,7 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
   private int mRequestCount = DEFAULT_WEIBO_COUNT;
   private int mRequestPage = 1;
 
-  public static final String EXTRA_IS_HOT = "extra_is_hot";
-  private boolean mIsHotTimeline;
+  private String mToken; // user token
 
   private EndlessRecyclerViewScrollListener mScrollListener;
   @Inject TimelinePresenter mPresenter;
@@ -49,55 +48,51 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
   @BindView(R.id.progress_bar) ProgressBar mProgressBar;
   @BindView(R.id.error_view) View mErrorView;
 
-  public static TimelineFragment newInstance(boolean isHot) {
-    Bundle args = new Bundle();
-    TimelineFragment fragment = new TimelineFragment();
-    args.putBoolean(EXTRA_IS_HOT, isHot);
-    fragment.setArguments(args);
-    return fragment;
-  }
-
-  @Override public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    mIsHotTimeline = getArguments().getBoolean(EXTRA_IS_HOT, false);
+  public static TimelineFragment newInstance() {
+    return new TimelineFragment();
   }
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    getFragmentComponent().inject(this);
+    return inflater.inflate(R.layout.fragment_weibo_list, container, false);
+  }
 
-    View view = inflater.inflate(R.layout.fragment_weibo_list, container, false);
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+
+    getFragmentComponent().inject(this);
     ButterKnife.bind(this, view);
     mPresenter.attach(this);
-
-    final String token = AccessTokenKeeper.readAccessToken(getContext()).getToken();
 
     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
     mWeiboListView.setLayoutManager(layoutManager);
     mWeiboListView.setAdapter(mTimelineAdapter);
 
+    mToken = AccessTokenKeeper.readAccessToken(getContext()).getToken();
+    System.out.println("Token: " + mToken);
     mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
       @Override public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
         mRequestPage = page;
-        mPresenter.getTimeline(token, mRequestCount, mRequestPage, mIsHotTimeline);
+        mPresenter.getTimeline(mToken, mRequestCount, mRequestPage, false);
       }
     };
     mWeiboListView.addOnScrollListener(mScrollListener);
 
     mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override public void onRefresh() {
-        mPresenter.getTimeline(token, mRequestCount, mRequestPage, mIsHotTimeline);
+        mPresenter.getTimeline(mToken, mRequestCount, mRequestPage, false);
       }
     });
 
     mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
         android.R.color.holo_green_light, android.R.color.holo_orange_light,
         android.R.color.holo_red_light);
+  }
 
-    mPresenter.getTimeline(token, mRequestCount, mRequestPage, mIsHotTimeline);
-
-    return view;
+  @Override public void onResume() {
+    super.onResume();
+    mPresenter.getTimeline(mToken, mRequestCount, mRequestPage, false);
   }
 
   @Override public void onDestroy() {
