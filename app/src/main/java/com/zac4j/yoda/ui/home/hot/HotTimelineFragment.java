@@ -8,14 +8,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
+import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.adapter.TimelineAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
-import com.zac4j.yoda.ui.home.timeline.TimelinePresenter;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
+import com.zac4j.yoda.ui.main.MainActivity;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -23,7 +26,7 @@ import javax.inject.Inject;
  * Created by Zac on 2017/5/1.
  */
 
-public class HotTimelineFragment extends BaseFragment {
+public class HotTimelineFragment extends BaseFragment implements HotTimelineView{
 
   public static final int DEFAULT_REQUEST_WEIBO_COUNT = 50;
 
@@ -33,11 +36,12 @@ public class HotTimelineFragment extends BaseFragment {
   private String mToken; // user token
   private EndlessRecyclerViewScrollListener mScrollListener;
 
-  @Inject TimelinePresenter mPresenter;
+  @Inject HotTimelinePresenter mPresenter;
   @Inject TimelineAdapter mTimelineAdapter;
 
   @BindView(R.id.swipe_weibo_list_container) SwipeRefreshLayout mSwipeContainer;
   @BindView(R.id.recycler_weibo_list) RecyclerView mWeiboListView;
+  @BindView(R.id.progress_bar) ProgressBar mProgressBar;
 
   public static HotTimelineFragment newInstance() {
     return new HotTimelineFragment();
@@ -69,7 +73,7 @@ public class HotTimelineFragment extends BaseFragment {
 
     mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override public void onRefresh() {
-        mPresenter.getTimeline(mToken, mRequestCount, mRequestPage, true);
+        mPresenter.getHotTimeline(mToken, mRequestCount, mRequestPage);
       }
     });
 
@@ -80,7 +84,7 @@ public class HotTimelineFragment extends BaseFragment {
 
   @Override public void onResume() {
     super.onResume();
-    mPresenter.getTimeline(mToken, mRequestCount, mRequestPage, true);
+    mPresenter.getHotTimeline(mToken, mRequestCount, mRequestPage);
   }
 
   @Override public void onDestroy() {
@@ -88,4 +92,35 @@ public class HotTimelineFragment extends BaseFragment {
     mWeiboListView.removeOnScrollListener(mScrollListener);
   }
 
+  @Override public void showMainView(boolean show) {
+    mWeiboListView.setVisibility(show ? View.VISIBLE : View.GONE);
+  }
+
+  @Override public void showProgress(boolean show) {
+    mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+  }
+
+  @Override public void showError(String message) {
+
+  }
+
+  @Override public boolean isProcessing() {
+    return mSwipeContainer.isRefreshing() || mProgressBar.isShown();
+  }
+
+  @Override public void onTokenInvalid() {
+    ((MainActivity)getActivity()).onTokenInvalid();
+  }
+
+  @Override public void showTimeline(List<Weibo> weiboList) {
+    mTimelineAdapter.addWeiboList(weiboList);
+  }
+
+  @Override public void showRefresh(boolean show) {
+    mSwipeContainer.setRefreshing(show);
+  }
+
+  @Override public boolean isRefreshing() {
+    return mSwipeContainer.isRefreshing();
+  }
 }

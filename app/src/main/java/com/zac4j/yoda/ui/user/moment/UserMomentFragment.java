@@ -97,7 +97,7 @@ public class UserMomentFragment extends BaseFragment implements UserMomentView {
   }
 
   @Override public boolean isProcessing() {
-    return mProgressBar != null && mProgressBar.isShown();
+    return mProgressBar.isShown();
   }
 
   @Override public void onTokenInvalid() {
@@ -105,15 +105,11 @@ public class UserMomentFragment extends BaseFragment implements UserMomentView {
   }
 
   @Override public void showMainView(boolean show) {
-    if (mSwipeContainer != null) {
-      mSwipeContainer.setVisibility(show ? VISIBLE : GONE);
-    }
+    mSwipeContainer.setVisibility(show ? VISIBLE : GONE);
   }
 
   @Override public void showProgress(boolean show) {
-    if (mProgressBar != null) {
-      mProgressBar.setVisibility(show ? VISIBLE : GONE);
-    }
+    mProgressBar.setVisibility(show ? VISIBLE : GONE);
   }
 
   @Override public void showRefresh(boolean refresh) {

@@ -1,14 +1,12 @@
-package com.zac4j.yoda.ui.home.timeline;
+package com.zac4j.yoda.ui.home.hot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
 import com.zac4j.yoda.data.model.Timeline;
 import com.zac4j.yoda.data.model.Weibo;
-import com.zac4j.yoda.di.PerConfig;
 import com.zac4j.yoda.ui.base.BasePresenter;
 import com.zac4j.yoda.util.RxUtils;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import java.io.IOException;
 import java.util.List;
@@ -17,22 +15,24 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 /**
- * Timeline Presenter
- * Created by zac on 3/17/2017.
+ * Presenter for Hot Timeline.
+ * Created by zac on 5/2/17.
  */
 
-@PerConfig public class TimelinePresenter extends BasePresenter<TimelineView> {
+public class HotTimelinePresenter extends BasePresenter<HotTimelineView> {
 
   private final DataManager mDataManager;
   private CompositeDisposable mDisposable;
 
-  @Inject public TimelinePresenter(DataManager dataManager) {
+  @Inject public HotTimelinePresenter(DataManager dataManager) {
     mDataManager = dataManager;
   }
 
-  @Override public void attach(TimelineView mvpView) {
+  @Override public void attach(HotTimelineView mvpView) {
     super.attach(mvpView);
-    mDisposable = new CompositeDisposable();
+    if (mDisposable == null) {
+      mDisposable = new CompositeDisposable();
+    }
   }
 
   @Override public void detach() {
@@ -42,7 +42,7 @@ import timber.log.Timber;
     }
   }
 
-  public void getTimeline(String token, int count, int page) {
+  void getHotTimeline(String token, int count, int page) {
     checkViewAttached();
 
     if (isProcessing()) {
@@ -52,13 +52,13 @@ import timber.log.Timber;
     if (!getMvpView().isRefreshing()) {
       getMvpView().showProgress(true);
     }
-    Disposable disposable = mDataManager.getHomeTimeline(token, count, page, false)
+
+    mDataManager.getHomeTimeline(token, count, page, true)
         .compose(RxUtils.<Response<Object>>applySchedulers())
         .compose(RxUtils.handleResponse(getMvpView()))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
             hideProgress();
-            getMvpView().showEmpty(false);
             if (response.isSuccessful()) {
               Timeline timeline = null;
               Object data = response.body();
@@ -81,15 +81,14 @@ import timber.log.Timber;
 
           @Override public void onError(Throwable e) {
             hideProgress();
-            getMvpView().showEmpty(true);
             Timber.e(e);
           }
         });
-    mDisposable.add(disposable);
   }
 
   private void hideProgress() {
     getMvpView().showRefresh(false);
     getMvpView().showProgress(false);
   }
+
 }

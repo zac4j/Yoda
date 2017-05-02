@@ -30,9 +30,7 @@ public class UserActivity extends BaseActivity {
     setContentView(R.layout.activity_user);
     ButterKnife.bind(this);
 
-    if (mToolbar != null) {
-      setSupportActionBar(mToolbar);
-    }
+    setSupportActionBar(mToolbar);
 
     ActionBar actionBar = getSupportActionBar();
     if (actionBar != null) {

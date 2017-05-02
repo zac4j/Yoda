@@ -74,14 +74,14 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
       @Override public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
         mRequestPage = page;
-        mPresenter.getTimeline(mToken, mRequestCount, mRequestPage, false);
+        mPresenter.getTimeline(mToken, mRequestCount, mRequestPage);
       }
     };
     mWeiboListView.addOnScrollListener(mScrollListener);
 
     mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override public void onRefresh() {
-        mPresenter.getTimeline(mToken, mRequestCount, mRequestPage, false);
+        mPresenter.getTimeline(mToken, mRequestCount, mRequestPage);
       }
     });
 
@@ -92,14 +92,12 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
 
   @Override public void onResume() {
     super.onResume();
-    mPresenter.getTimeline(mToken, mRequestCount, mRequestPage, false);
+    mPresenter.getTimeline(mToken, mRequestCount, mRequestPage);
   }
 
   @Override public void onDestroy() {
     super.onDestroy();
-    if (mWeiboListView != null) {
-      mWeiboListView.removeOnScrollListener(mScrollListener);
-    }
+    mWeiboListView.removeOnScrollListener(mScrollListener);
   }
 
   @Override public void showError(String message) {
@@ -107,7 +105,7 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
   }
 
   @Override public boolean isProcessing() {
-    return mProgressBar != null && mProgressBar.isShown();
+    return mProgressBar.isShown();
   }
 
   @Override public void onTokenInvalid() {
@@ -115,15 +113,11 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
   }
 
   @Override public void showMainView(boolean show) {
-    if (mSwipeContainer != null) {
-      mSwipeContainer.setVisibility(show ? VISIBLE : GONE);
-    }
+    mSwipeContainer.setVisibility(show ? VISIBLE : GONE);
   }
 
   @Override public void showProgress(boolean show) {
-    if (mProgressBar != null) {
-      mProgressBar.setVisibility(show ? VISIBLE : GONE);
-    }
+    mProgressBar.setVisibility(show ? VISIBLE : GONE);
   }
 
   @Override public void showRefresh(boolean refresh) {
