@@ -41,8 +41,8 @@ import retrofit2.Response;
     return mObjectMapper;
   }
 
-  public Single<Response<Object>> getHomeTimeline(String token, int count, int page, boolean isHot) {
-    return mApiServer.getTimeline(isHot ? "public" : "friends", token, count, page);
+  public Single<Response<Object>> getHomeTimeline(String token, int count, int page) {
+    return mApiServer.getTimeline("friends", token, count, page);
   }
 
   public Single<Response<Object>> getUserTimeline(String token, int count, int page) {
@@ -73,4 +73,9 @@ import retrofit2.Response;
   public Single<Response<Object>> unfollowFriend(String token, long uid) {
     return mApiServer.unfollowFriend(token, uid);
   }
+
+  public Single<Response<Object>> search(String token, String keywords,int count, int page) {
+    return mApiServer.search(token, keywords, count, page);
+  }
+
 }

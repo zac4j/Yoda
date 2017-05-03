@@ -107,6 +107,17 @@ public interface ApiServer {
   @GET("friendships/destroy.json") Single<Response<Object>> unfollowFriend(
       @Query("access_token") String token, @Query("uid") long uid);
 
+  /**
+   * Search proper topic weibo
+   * @param token user access token
+   * @param keywords keyword for search
+   * @param count weibo result count for each page
+   * @param page weibo result page
+   * @return weibo search result
+   */
+  @GET("search/topics.json") Single<Response<Object>> search(@Query("access_token") String token,
+      @Query("q") String keywords, @Query("count") int count, @Query("page") int page);
+
   class Factory {
     public static ApiServer create(Context context) {
 

@@ -20,7 +20,7 @@
   <item name="main_vp_container" type="id"/>
   <item name="main_fragment_container" type="id"/>
   <item name="main_nav_home" type="id"/>
-  <item name="main_nav_hot" type="id"/>
+  <item name="main_nav_search" type="id"/>
   <item name="main_nav_message" type="id"/>
   <item name="main_nav_notification" type="id"/>
   <item name="main_nav_user" type="id"/>
@@ -124,5 +124,9 @@
   <item name="user_detail_iv_background" type="id"/>
   <item name="user_detail_fab_avatar" type="id"/>
   <item name="weibo_list_item_tv_repost_media" type="id"/>
+
+  <!--Home Search-->
+  <item name="home_search_lv_trend_list" type="id"/>
+  <item name="home_search_tv_search_btn" type="id"/>
 
 </resources>

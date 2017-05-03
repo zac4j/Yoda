@@ -15,7 +15,7 @@ import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.home.message.MessengerFragment;
 import com.zac4j.yoda.ui.home.notification.NotificationFragment;
-import com.zac4j.yoda.ui.home.hot.HotTimelineFragment;
+import com.zac4j.yoda.ui.home.search.SearchFragment;
 import com.zac4j.yoda.ui.home.timeline.TimelineFragment;
 import com.zac4j.yoda.ui.home.user.UserFragment;
 import com.zac4j.yoda.ui.login.LoginActivity;
@@ -56,8 +56,8 @@ public class MainActivity extends BaseActivity {
             switch (item.getItemId()) {
               case R.id.main_nav_home:
                 break;
-              case R.id.main_nav_hot:
-                navigationFragment = HotTimelineFragment.newInstance();
+              case R.id.main_nav_search:
+                navigationFragment = SearchFragment.newInstance();
                 break;
               case R.id.main_nav_message:
                 navigationFragment = MessengerFragment.newInstance();

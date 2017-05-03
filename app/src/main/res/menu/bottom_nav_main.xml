@@ -10,18 +10,10 @@
       />
 
   <item
-      android:id="@id/main_nav_hot"
+      android:id="@id/main_nav_search"
       android:enabled="true"
-      android:icon="@drawable/ic_nav_hot"
-      android:title="@string/main_nav_hot"
-      app:showAsAction="ifRoom"
-      />
-
-  <item
-      android:id="@id/main_nav_message"
-      android:enabled="true"
-      android:icon="@drawable/ic_nav_message"
-      android:title="@string/main_nav_message"
+      android:icon="@drawable/ic_nav_search"
+      android:title="@string/main_nav_search"
       app:showAsAction="ifRoom"
       />
 
@@ -30,6 +22,14 @@
       android:enabled="true"
       android:icon="@drawable/ic_nav_notification"
       android:title="@string/main_nav_notification"
+      app:showAsAction="ifRoom"
+      />
+
+  <item
+      android:id="@id/main_nav_message"
+      android:enabled="true"
+      android:icon="@drawable/ic_nav_message"
+      android:title="@string/main_nav_message"
       app:showAsAction="ifRoom"
       />
 

@@ -7,6 +7,7 @@
 
   <!--Commons-->
   <string name="send">Send</string>
+  <string name="search">Search</string>
   <string name="weibo_send_content_input_hint">Ask a question&#8230;</string>
   <string name="ok">OK</string>
   <string name="error_check_network">Check Your Network Connection!</string>
@@ -15,7 +16,7 @@
 
   <!--Home Navigation-->
   <string name="main_nav_home">Home</string>
-  <string name="main_nav_hot">Hot</string>
+  <string name="main_nav_search">Search</string>
   <string name="main_nav_message">Message</string>
   <string name="main_nav_notification">Notification</string>
   <string name="main_nav_user">User</string>
@@ -38,5 +39,8 @@
   <string name="weibo_media_type_gif">Gif</string>
   <string name="weibo_media_type_video">视频</string>
   <string name="unfollow">取消关注</string>
+
+  <!--Current Trends-->
+  <string name="home_search_current_trends_title">当前热点</string>
 
 </resources>
