@@ -1,4 +1,4 @@
-package com.zac4j.yoda.ui.home.search;
+package com.zac4j.yoda.ui.home.hot;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,23 +13,24 @@ import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.base.BaseFragment;
 
 /**
- * UI for Search
+ * UI for hot trends
  * Created by zac on 17-5-3.
  */
 
-public class SearchFragment extends BaseFragment {
+public class HotFragment extends BaseFragment {
 
-  @BindView(R.id.home_search_lv_trend_list) ListView mTrendListView;
+  @BindView(R.id.home_search_lv_hot_tags) ListView mTrendListView;
   Unbinder unbinder;
 
-  public static SearchFragment newInstance() {
-    return new SearchFragment();
+  public static HotFragment newInstance() {
+    return new HotFragment();
   }
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_home_search, container, false);
+    setHasOptionsMenu(true);
+    return inflater.inflate(R.layout.fragment_home_hot, container, false);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

@@ -10,10 +10,10 @@
       />
 
   <item
-      android:id="@id/main_nav_search"
+      android:id="@id/main_nav_hot"
       android:enabled="true"
-      android:icon="@drawable/ic_nav_search"
-      android:title="@string/main_nav_search"
+      android:icon="@drawable/ic_nav_hot"
+      android:title="@string/main_nav_hot"
       app:showAsAction="ifRoom"
       />
 

@@ -388,4 +388,157 @@ public class Weibo {
   @JsonAnySetter public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
   }
+
+  @Override public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Weibo weibo = (Weibo) o;
+
+    if (createdAt != null ? !createdAt.equals(weibo.createdAt) : weibo.createdAt != null) {
+      return false;
+    }
+    if (id != null ? !id.equals(weibo.id) : weibo.id != null) return false;
+    if (mid != null ? !mid.equals(weibo.mid) : weibo.mid != null) return false;
+    if (idstr != null ? !idstr.equals(weibo.idstr) : weibo.idstr != null) return false;
+    if (text != null ? !text.equals(weibo.text) : weibo.text != null) return false;
+    if (textLength != null ? !textLength.equals(weibo.textLength) : weibo.textLength != null) {
+      return false;
+    }
+    if (sourceAllowclick != null ? !sourceAllowclick.equals(weibo.sourceAllowclick)
+        : weibo.sourceAllowclick != null) {
+      return false;
+    }
+    if (sourceType != null ? !sourceType.equals(weibo.sourceType) : weibo.sourceType != null) {
+      return false;
+    }
+    if (source != null ? !source.equals(weibo.source) : weibo.source != null) return false;
+    if (favorited != null ? !favorited.equals(weibo.favorited) : weibo.favorited != null) {
+      return false;
+    }
+    if (truncated != null ? !truncated.equals(weibo.truncated) : weibo.truncated != null) {
+      return false;
+    }
+    if (inReplyToStatusId != null ? !inReplyToStatusId.equals(weibo.inReplyToStatusId)
+        : weibo.inReplyToStatusId != null) {
+      return false;
+    }
+    if (inReplyToUserId != null ? !inReplyToUserId.equals(weibo.inReplyToUserId)
+        : weibo.inReplyToUserId != null) {
+      return false;
+    }
+    if (inReplyToScreenName != null ? !inReplyToScreenName.equals(weibo.inReplyToScreenName)
+        : weibo.inReplyToScreenName != null) {
+      return false;
+    }
+    if (picUrls != null ? !picUrls.equals(weibo.picUrls) : weibo.picUrls != null) return false;
+    if (thumbnailPic != null ? !thumbnailPic.equals(weibo.thumbnailPic)
+        : weibo.thumbnailPic != null) {
+      return false;
+    }
+    if (bmiddlePic != null ? !bmiddlePic.equals(weibo.bmiddlePic) : weibo.bmiddlePic != null) {
+      return false;
+    }
+    if (originalPic != null ? !originalPic.equals(weibo.originalPic) : weibo.originalPic != null) {
+      return false;
+    }
+    if (geo != null ? !geo.equals(weibo.geo) : weibo.geo != null) return false;
+    if (user != null ? !user.equals(weibo.user) : weibo.user != null) return false;
+    if (repostsCount != null ? !repostsCount.equals(weibo.repostsCount)
+        : weibo.repostsCount != null) {
+      return false;
+    }
+    if (commentsCount != null ? !commentsCount.equals(weibo.commentsCount)
+        : weibo.commentsCount != null) {
+      return false;
+    }
+    if (repostWeibo != null ? !repostWeibo.equals(weibo.repostWeibo) : weibo.repostWeibo != null) {
+      return false;
+    }
+    if (attitudesCount != null ? !attitudesCount.equals(weibo.attitudesCount)
+        : weibo.attitudesCount != null) {
+      return false;
+    }
+    if (isLongText != null ? !isLongText.equals(weibo.isLongText) : weibo.isLongText != null) {
+      return false;
+    }
+    if (mlevel != null ? !mlevel.equals(weibo.mlevel) : weibo.mlevel != null) return false;
+    if (visible != null ? !visible.equals(weibo.visible) : weibo.visible != null) return false;
+    if (bizFeature != null ? !bizFeature.equals(weibo.bizFeature) : weibo.bizFeature != null) {
+      return false;
+    }
+    if (pageType != null ? !pageType.equals(weibo.pageType) : weibo.pageType != null) return false;
+    if (hasActionTypeCard != null ? !hasActionTypeCard.equals(weibo.hasActionTypeCard)
+        : weibo.hasActionTypeCard != null) {
+      return false;
+    }
+    if (darwinTags != null ? !darwinTags.equals(weibo.darwinTags) : weibo.darwinTags != null) {
+      return false;
+    }
+    if (hotWeiboTags != null ? !hotWeiboTags.equals(weibo.hotWeiboTags)
+        : weibo.hotWeiboTags != null) {
+      return false;
+    }
+    if (textTagTips != null ? !textTagTips.equals(weibo.textTagTips) : weibo.textTagTips != null) {
+      return false;
+    }
+    if (rid != null ? !rid.equals(weibo.rid) : weibo.rid != null) return false;
+    if (userType != null ? !userType.equals(weibo.userType) : weibo.userType != null) return false;
+    if (cardid != null ? !cardid.equals(weibo.cardid) : weibo.cardid != null) return false;
+    if (positiveRecomFlag != null ? !positiveRecomFlag.equals(weibo.positiveRecomFlag)
+        : weibo.positiveRecomFlag != null) {
+      return false;
+    }
+    if (gifIds != null ? !gifIds.equals(weibo.gifIds) : weibo.gifIds != null) return false;
+    if (isShowBulletin != null ? !isShowBulletin.equals(weibo.isShowBulletin)
+        : weibo.isShowBulletin != null) {
+      return false;
+    }
+    return additionalProperties != null ? additionalProperties.equals(weibo.additionalProperties)
+        : weibo.additionalProperties == null;
+  }
+
+  @Override public int hashCode() {
+    int result = createdAt != null ? createdAt.hashCode() : 0;
+    result = 31 * result + (id != null ? id.hashCode() : 0);
+    result = 31 * result + (mid != null ? mid.hashCode() : 0);
+    result = 31 * result + (idstr != null ? idstr.hashCode() : 0);
+    result = 31 * result + (text != null ? text.hashCode() : 0);
+    result = 31 * result + (textLength != null ? textLength.hashCode() : 0);
+    result = 31 * result + (sourceAllowclick != null ? sourceAllowclick.hashCode() : 0);
+    result = 31 * result + (sourceType != null ? sourceType.hashCode() : 0);
+    result = 31 * result + (source != null ? source.hashCode() : 0);
+    result = 31 * result + (favorited != null ? favorited.hashCode() : 0);
+    result = 31 * result + (truncated != null ? truncated.hashCode() : 0);
+    result = 31 * result + (inReplyToStatusId != null ? inReplyToStatusId.hashCode() : 0);
+    result = 31 * result + (inReplyToUserId != null ? inReplyToUserId.hashCode() : 0);
+    result = 31 * result + (inReplyToScreenName != null ? inReplyToScreenName.hashCode() : 0);
+    result = 31 * result + (picUrls != null ? picUrls.hashCode() : 0);
+    result = 31 * result + (thumbnailPic != null ? thumbnailPic.hashCode() : 0);
+    result = 31 * result + (bmiddlePic != null ? bmiddlePic.hashCode() : 0);
+    result = 31 * result + (originalPic != null ? originalPic.hashCode() : 0);
+    result = 31 * result + (geo != null ? geo.hashCode() : 0);
+    result = 31 * result + (user != null ? user.hashCode() : 0);
+    result = 31 * result + (repostsCount != null ? repostsCount.hashCode() : 0);
+    result = 31 * result + (commentsCount != null ? commentsCount.hashCode() : 0);
+    result = 31 * result + (repostWeibo != null ? repostWeibo.hashCode() : 0);
+    result = 31 * result + (attitudesCount != null ? attitudesCount.hashCode() : 0);
+    result = 31 * result + (isLongText != null ? isLongText.hashCode() : 0);
+    result = 31 * result + (mlevel != null ? mlevel.hashCode() : 0);
+    result = 31 * result + (visible != null ? visible.hashCode() : 0);
+    result = 31 * result + (bizFeature != null ? bizFeature.hashCode() : 0);
+    result = 31 * result + (pageType != null ? pageType.hashCode() : 0);
+    result = 31 * result + (hasActionTypeCard != null ? hasActionTypeCard.hashCode() : 0);
+    result = 31 * result + (darwinTags != null ? darwinTags.hashCode() : 0);
+    result = 31 * result + (hotWeiboTags != null ? hotWeiboTags.hashCode() : 0);
+    result = 31 * result + (textTagTips != null ? textTagTips.hashCode() : 0);
+    result = 31 * result + (rid != null ? rid.hashCode() : 0);
+    result = 31 * result + (userType != null ? userType.hashCode() : 0);
+    result = 31 * result + (cardid != null ? cardid.hashCode() : 0);
+    result = 31 * result + (positiveRecomFlag != null ? positiveRecomFlag.hashCode() : 0);
+    result = 31 * result + (gifIds != null ? gifIds.hashCode() : 0);
+    result = 31 * result + (isShowBulletin != null ? isShowBulletin.hashCode() : 0);
+    result = 31 * result + (additionalProperties != null ? additionalProperties.hashCode() : 0);
+    return result;
+  }
 }

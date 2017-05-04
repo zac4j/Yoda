@@ -17,6 +17,7 @@
   <!--Home Navigation-->
   <string name="main_nav_home">Home</string>
   <string name="main_nav_search">Search</string>
+  <string name="main_nav_hot">Hot</string>
   <string name="main_nav_message">Message</string>
   <string name="main_nav_notification">Notification</string>
   <string name="main_nav_user">User</string>

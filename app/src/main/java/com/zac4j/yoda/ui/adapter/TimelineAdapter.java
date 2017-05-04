@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
@@ -18,8 +19,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.BitmapRequestBuilder;
-import com.bumptech.glide.BitmapTypeRequest;
-import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.GenericRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -59,7 +58,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
   }
 
   public void addWeiboList(List<Weibo> weiboList) {
-    if (weiboList == null || weiboList.isEmpty()) {
+    if (mWeiboList.containsAll(weiboList)) {
       return;
     }
     mWeiboList.addAll(weiboList);
@@ -316,6 +315,18 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         final BitmapRequestBuilder<String, Bitmap> bitmapRequestBuilder =
             Glide.with(context).load(mediaUrl).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL);
 
+        if (isMultiImage) {
+          mediaImageType.setText(R.string.weibo_media_type_multiple_image);
+          bitmapRequestBuilder.fitCenter().into(mediaImageView);
+          return;
+        }
+
+        if (mediaUrl.endsWith("gif")) {
+          mediaImageType.setText(R.string.weibo_media_type_gif);
+          bitmapRequestBuilder.fitCenter().into(mediaImageView);
+          return;
+        }
+
         // Request has DiskCacheStrategy.ALL
         GenericRequestBuilder builder =
             PhotoUtils.getNetworkImageSizeRequest(context).load(Uri.parse(mediaUrl));
@@ -332,16 +343,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             }
           }
         });
-
-        if (mediaUrl.endsWith("gif")) {
-          mediaImageType.setText(R.string.weibo_media_type_gif);
-          bitmapRequestBuilder.fitCenter().into(mediaImageView);
-        }
-
-        if (isMultiImage) {
-          mediaImageType.setText(R.string.weibo_media_type_multiple_image);
-          bitmapRequestBuilder.fitCenter().into(mediaImageView);
-        }
       }
     }
 

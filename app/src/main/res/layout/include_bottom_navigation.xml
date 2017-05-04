@@ -8,5 +8,5 @@
     app:itemBackground="@color/white"
     app:itemIconTint="@color/colorPrimary"
     app:itemTextColor="@color/colorPrimary"
-    app:menu="@menu/bottom_nav_main"
+    app:menu="@menu/bottom_navigation_menu"
     />

@@ -39,7 +39,7 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
       @Nullable Bundle savedInstanceState) {
     getFragmentComponent().inject(this);
 
-    View view = inflater.inflate(R.layout.fragment_home_notification_list, container, false);
+    View view = inflater.inflate(R.layout.fragment_home_notification, container, false);
 
     ButterKnife.bind(this, view);
     mPresenter.attach(this);
