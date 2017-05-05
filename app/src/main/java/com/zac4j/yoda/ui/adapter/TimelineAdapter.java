@@ -2,10 +2,12 @@ package com.zac4j.yoda.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -83,7 +85,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
   }
 
   @SuppressWarnings("deprecation") @Override
-  public void onBindViewHolder(ViewHolder holder, int position) {
+  public void onBindViewHolder(final ViewHolder holder, int position) {
     if (mWeiboList == null || mWeiboList.isEmpty()) {
       return;
     }

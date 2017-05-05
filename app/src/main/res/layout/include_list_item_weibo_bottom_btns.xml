@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/space.very_small"
+    >
+
+  <TextView
+      android:id="@id/weibo_list_item_tv_repost"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:drawablePadding="@dimen/space.very_small"
+      android:drawableStart="@drawable/ic_weibo_repost"
+      android:gravity="center"
+      android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+      tools:text="100"
+      />
+
+  <TextView
+      android:id="@id/weibo_list_item_tv_reply"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/space.large"
+      android:layout_marginStart="@dimen/space.large"
+      android:drawablePadding="@dimen/space.very_small"
+      android:drawableStart="@drawable/ic_weibo_reply"
+      android:gravity="center"
+      android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+      tools:text="110"
+      />
+
+  <TextView
+      android:id="@id/weibo_list_item_tv_like"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:drawablePadding="@dimen/space.very_small"
+      android:drawableStart="@drawable/ic_weibo_like"
+      android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+      tools:text="120"
+      />
+
+</LinearLayout>

@@ -45,6 +45,7 @@
   <item name="weibo_list_item_tv_content" type="id"/>
   <item name="weibo_list_item_tv_repost" type="id"/>
   <item name="weibo_list_item_tv_reply" type="id"/>
+  <item name="weibo_list_item_lav_like" type="id"/>
   <item name="weibo_list_item_tv_like" type="id"/>
 
   <!--Weibo List-->
