@@ -2,13 +2,10 @@ package com.zac4j.yoda.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
@@ -35,10 +32,17 @@ import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.ui.WebViewActivity;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
+import com.zac4j.yoda.util.RxUtils;
 import com.zac4j.yoda.util.TimeUtils;
 import com.zac4j.yoda.util.WeiboTextHelper;
 import com.zac4j.yoda.util.image.CircleTransformation;
 import com.zac4j.yoda.util.image.PhotoUtils;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -59,12 +63,31 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     mWeiboList = new ArrayList<>();
   }
 
-  public void addWeiboList(List<Weibo> weiboList) {
-    if (mWeiboList.containsAll(weiboList)) {
-      return;
-    }
-    mWeiboList.addAll(weiboList);
-    notifyDataSetChanged();
+  public void addWeiboList(final List<Weibo> weiboList) {
+    Observable.just(weiboList)
+        .map(new Function<List<Weibo>, List<Weibo>>() {
+          @Override public List<Weibo> apply(@NonNull List<Weibo> weibos) throws Exception {
+            if (mWeiboList.containsAll(weibos)) {
+              return mWeiboList;
+            }
+            mWeiboList.addAll(weibos);
+            return mWeiboList;
+          }
+        })
+        .compose(RxUtils.<List<Weibo>>applyObservableSchedulers())
+        .distinct()
+        .subscribeWith(new DisposableObserver<List<Weibo>>() {
+          @Override public void onNext(List<Weibo> weibos) {
+          }
+
+          @Override public void onError(Throwable throwable) {
+
+          }
+
+          @Override public void onComplete() {
+            notifyDataSetChanged();
+          }
+        });
   }
 
   public void clear() {

@@ -5,6 +5,9 @@ import android.util.JsonReader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.model.response.Error;
 import com.zac4j.yoda.ui.base.MvpView;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.SingleTransformer;
@@ -26,6 +29,14 @@ public class RxUtils {
   public static <T> SingleTransformer<T, T> applySchedulers() {
     return new SingleTransformer<T, T>() {
       @Override public SingleSource<T> apply(Single<T> upstream) {
+        return upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+      }
+    };
+  }
+
+  public static <T> ObservableTransformer<T, T> applyObservableSchedulers() {
+    return new ObservableTransformer<T, T>() {
+      @Override public ObservableSource<T> apply(Observable<T> upstream) {
         return upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
       }
     };
