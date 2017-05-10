@@ -43,5 +43,15 @@
 
   <!--Current Trends-->
   <string name="home_search_current_trends_title">当前热点</string>
+  <string name="user_detail_profile">个人资料</string>
+  <string name="user_detail_list">列表</string>
+  <string name="user_detail_recommend">推荐关注</string>
+  <string name="user_detail_night_mode">夜间模式</string>
+  <string name="user_detail_settings">隐私设置</string>
+  <string name="user_detail_support">帮助中心</string>
+  <string name="user_detail_quit">退出</string>
+  <string name="user_detail_data_saver">省流模式</string>
+  <string name="user_detail_following_title">正在关注</string>
+  <string name="user_detail_follower_title">关注者</string>
 
 </resources>

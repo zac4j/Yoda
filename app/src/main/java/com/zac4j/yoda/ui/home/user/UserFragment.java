@@ -2,17 +2,52 @@ package com.zac4j.yoda.ui.home.user;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import com.bumptech.glide.Glide;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
+import com.zac4j.yoda.R;
+import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.ui.base.BaseFragment;
+import com.zac4j.yoda.ui.main.MainActivity;
+import com.zac4j.yoda.util.image.CircleTransformation;
+import javax.inject.Inject;
 
 /**
  * User Page
  * Created by zac on 4/28/17.
  */
 
-public class UserFragment extends BaseFragment {
+public class UserFragment extends BaseFragment implements UserView {
+
+  @Inject UserPresenter mPresenter;
+
+  @BindView(R.id.root_layout) View mMainView;
+  @BindView(R.id.user_detail_iv_background) ImageView mBackgroundView;
+  @BindView(R.id.user_detail_iv_avatar) ImageView mAvatarView;
+  @BindView(R.id.user_detail_tv_nickname) TextView mNicknameView;
+  @BindView(R.id.user_detail_tv_description) TextView mDescriptionView;
+  @BindView(R.id.user_detail_tv_location) TextView mLocationView;
+  @BindView(R.id.user_detail_tv_link) TextView mLinkView;
+  @BindView(R.id.user_detail_tv_follower_count) TextView mFollowerCountView;
+  @BindView(R.id.user_detail_tv_following_count) TextView mFollowingCountView;
+  @BindView(R.id.user_detail_swc_night_mode) Switch mNightModeSwitch;
+  @BindView(R.id.user_detail_swc_data_saver) Switch mDataSaverSwitch;
+  @BindView(R.id.progress_bar) ProgressBar mProgressBar;
+
+  private Unbinder unbinder;
 
   public static UserFragment newInstance() {
     Bundle args = new Bundle();
@@ -24,18 +59,107 @@ public class UserFragment extends BaseFragment {
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return super.onCreateView(inflater, container, savedInstanceState);
+    return inflater.inflate(R.layout.fragment_home_user, container, false);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+
+    getFragmentComponent().inject(this);
+    mPresenter.attach(this);
+
+    unbinder = ButterKnife.bind(this, view);
   }
 
   @Override public void onResume() {
     super.onResume();
+
+    Oauth2AccessToken oa = AccessTokenKeeper.readAccessToken(getContext());
+    mPresenter.getUserProfile(oa.getToken(), oa.getUid());
   }
 
   @Override public void onPause() {
     super.onPause();
+    showProgress(false);
+  }
+
+  @Override public void showMainView(boolean show) {
+    mMainView.setVisibility(show ? View.VISIBLE : View.GONE);
+  }
+
+  @Override public void showProgress(boolean show) {
+    mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+  }
+
+  @Override public void showError(String message) {
+    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+  }
+
+  @Override public boolean isProcessing() {
+    return mProgressBar.isShown();
+  }
+
+  @Override public void onTokenInvalid() {
+    ((MainActivity) getActivity()).onTokenInvalid();
+  }
+
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    unbinder.unbind();
+  }
+
+  @OnClick({
+      R.id.user_detail_tv_profile, R.id.user_detail_tv_lists, R.id.user_detail_tv_recommends,
+      R.id.user_detail_tv_settings, R.id.user_detail_tv_support, R.id.user_detail_tv_quit
+  }) public void onViewClicked(View view) {
+    switch (view.getId()) {
+      case R.id.user_detail_tv_profile:
+        break;
+      case R.id.user_detail_tv_lists:
+        break;
+      case R.id.user_detail_tv_recommends:
+        break;
+      case R.id.user_detail_tv_settings:
+        break;
+      case R.id.user_detail_tv_support:
+        break;
+      case R.id.user_detail_tv_quit:
+        break;
+    }
+  }
+
+  @Override public void showUserProfile(User user) {
+    String avatarUrl = user.getAvatarLarge();
+    showAvatar(avatarUrl);
+
+    String nickname = user.getName();
+    showText(mNicknameView, nickname);
+
+    String description = user.getDescription();
+    showText(mDescriptionView, description);
+
+    String location = user.getLocation();
+    showText(mLocationView, location);
+
+    String profileUrl = user.getProfileUrl();
+
+    int followerCount = user.getFollowersCount();
+    showText(mFollowerCountView, String.valueOf(followerCount));
+
+    int followingCount = user.getFriendsCount();
+    showText(mFollowingCountView, String.valueOf(followingCount));
+  }
+
+  private void showAvatar(String avatar) {
+    Glide.with(getContext())
+        .load(avatar)
+        .transform(new CircleTransformation(getContext()))
+        .crossFade()
+        .fitCenter()
+        .into(mAvatarView);
+  }
+
+  private void showText(TextView textView, String text) {
+    textView.setText(TextUtils.isEmpty(text) ? "" : text);
   }
 }

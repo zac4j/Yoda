@@ -17,7 +17,6 @@ import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.home.message.MessengerFragment;
 import com.zac4j.yoda.ui.home.notification.NotificationFragment;
-import com.zac4j.yoda.ui.home.hot.HotFragment;
 import com.zac4j.yoda.ui.home.timeline.TimelineFragment;
 import com.zac4j.yoda.ui.home.user.UserFragment;
 import com.zac4j.yoda.ui.login.LoginActivity;
@@ -64,10 +63,7 @@ public class MainActivity extends BaseActivity {
             Fragment navigationFragment = TimelineFragment.newInstance();
             switch (item.getItemId()) {
               case R.id.main_nav_home:
-                break;
-              case R.id.main_nav_hot:
-                mActionBar.setTitle(R.string.main_nav_hot);
-                navigationFragment = HotFragment.newInstance();
+                mActionBar.setTitle(R.string.main_nav_home);
                 break;
               case R.id.main_nav_message:
                 mActionBar.setTitle(R.string.main_nav_message);
