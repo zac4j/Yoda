@@ -54,12 +54,11 @@
 
         <TextView
             android:id="@id/weibo_list_item_tv_post_time"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLength="16"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            tools:text="4min"
+            android:gravity="end"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            tools:text="4min ago"
             />
 
       </LinearLayout>

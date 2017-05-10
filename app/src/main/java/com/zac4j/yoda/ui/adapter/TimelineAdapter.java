@@ -38,10 +38,8 @@ import com.zac4j.yoda.util.WeiboTextHelper;
 import com.zac4j.yoda.util.image.CircleTransformation;
 import com.zac4j.yoda.util.image.PhotoUtils;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,10 +65,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     Observable.just(weiboList)
         .map(new Function<List<Weibo>, List<Weibo>>() {
           @Override public List<Weibo> apply(@NonNull List<Weibo> weibos) throws Exception {
-            if (mWeiboList.containsAll(weibos)) {
-              return mWeiboList;
+            for (Weibo weibo : weibos) {
+              if (!mWeiboList.contains(weibo)) {
+                mWeiboList.add(weibo);
+              }
             }
-            mWeiboList.addAll(weibos);
             return mWeiboList;
           }
         })
@@ -115,8 +114,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     final Weibo weibo = mWeiboList.get(position);
     // 发送时间
     String pattern = "E MMM dd HH:mm:ss Z yyyy";
-    String dateStr = TimeUtils.getDate(weibo.getCreatedAt(), pattern);
-    holder.setPostTime(dateStr);
+    String timeAgo = TimeUtils.getTimeAgo(weibo.getCreatedAt(), pattern);
+    holder.setPostTime(timeAgo);
     // 微博内容
     String content = weibo.getText();
     holder.setContent(content);
@@ -198,8 +197,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     }
     holder.setAvatar(mContext, user.getProfileImageUrl());
     holder.setNickname(user.getScreenName());
-    String username = "@" + user.getDomain();
-    holder.setUsername(username);
+    holder.setUsername(user.getDomain());
   }
 
   @Override public int getItemCount() {
@@ -251,6 +249,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       if (TextUtils.isEmpty(username)) {
         mUsernameView.setText("");
       } else {
+        username = "@" + username;
         mUsernameView.setText(username);
       }
     }
