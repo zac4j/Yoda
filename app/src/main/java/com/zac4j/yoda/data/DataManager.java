@@ -70,6 +70,10 @@ import retrofit2.Response;
     return mApiServer.getUserFriends(token, uid, count, cursor);
   }
 
+  public Single<Response<Object>> getUserNotification(String token, int count, int page) {
+    return mApiServer.getUserNotification(token, count, page);
+  }
+
   public Single<Response<Object>> unfollowFriend(String token, long uid) {
     return mApiServer.unfollowFriend(token, uid);
   }

@@ -109,6 +109,7 @@ public interface ApiServer {
 
   /**
    * Search proper topic weibo
+   *
    * @param token user access token
    * @param keywords keyword for search
    * @param count weibo result count for each page
@@ -117,6 +118,17 @@ public interface ApiServer {
    */
   @GET("search/topics.json") Single<Response<Object>> search(@Query("access_token") String token,
       @Query("q") String keywords, @Query("count") int count, @Query("page") int page);
+
+  /**
+   * Get @user notifications.
+   *
+   * @param token user access token
+   * @param count pagination count
+   * @param page pagination page
+   * @return @user notifications
+   */
+  @GET("comments/mentions.json") Single<Response<Object>> getUserNotification(
+      @Query("access_token") String token, @Query("count") int count, @Query("page") int page);
 
   class Factory {
     public static ApiServer create(Context context) {
