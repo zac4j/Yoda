@@ -6,6 +6,7 @@
   <string name="nav_drawer_my_friends">Friends</string>
 
   <!--Commons-->
+  <string name="from">来自:</string>
   <string name="send">Send</string>
   <string name="search">Search</string>
   <string name="weibo_send_content_input_hint">Ask a question&#8230;</string>
@@ -53,5 +54,11 @@
   <string name="user_detail_data_saver">省流模式</string>
   <string name="user_detail_following_title">正在关注</string>
   <string name="user_detail_follower_title">关注者</string>
+
+  <!--User Page-->
+  <string name="user_has_no_description">这个人虽然勤快,依然没有写个人简介</string>
+  <string name="user_has_no_location">China</string>
+  <string name="user_has_no_name">无名氏</string>
+  <string name="user_cover_image">user cover image</string>
 
 </resources>

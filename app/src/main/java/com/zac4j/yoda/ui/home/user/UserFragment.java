@@ -32,10 +32,12 @@ import javax.inject.Inject;
 
 public class UserFragment extends BaseFragment implements UserView {
 
+  public static final String USER_DOMAIN = "http://weibo.com/";
+
   @Inject UserPresenter mPresenter;
 
   @BindView(R.id.root_layout) View mMainView;
-  @BindView(R.id.user_detail_iv_background) ImageView mBackgroundView;
+  @BindView(R.id.user_detail_iv_cover) ImageView mCoverView;
   @BindView(R.id.user_detail_iv_avatar) ImageView mAvatarView;
   @BindView(R.id.user_detail_tv_nickname) TextView mNicknameView;
   @BindView(R.id.user_detail_tv_description) TextView mDescriptionView;
@@ -84,10 +86,16 @@ public class UserFragment extends BaseFragment implements UserView {
   }
 
   @Override public void showMainView(boolean show) {
+    if (mMainView == null) {
+      return;
+    }
     mMainView.setVisibility(show ? View.VISIBLE : View.GONE);
   }
 
   @Override public void showProgress(boolean show) {
+    if (mProgressBar == null) {
+      return;
+    }
     mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
   }
 
@@ -129,25 +137,63 @@ public class UserFragment extends BaseFragment implements UserView {
   }
 
   @Override public void showUserProfile(User user) {
+
+    String coverUrl = user.getCoverImage();
+    showCover(coverUrl);
+
     String avatarUrl = user.getAvatarLarge();
     showAvatar(avatarUrl);
 
     String nickname = user.getName();
-    showText(mNicknameView, nickname);
+    String gender = user.getGender();
+    showNicknameAndGender(nickname, gender);
 
     String description = user.getDescription();
-    showText(mDescriptionView, description);
+    showDescription(description);
 
     String location = user.getLocation();
-    showText(mLocationView, location);
+    showLocation(location);
 
     String profileUrl = user.getProfileUrl();
+    showUserLink(profileUrl);
 
     int followerCount = user.getFollowersCount();
-    showText(mFollowerCountView, String.valueOf(followerCount));
+    mFollowerCountView.setText(String.valueOf(followerCount));
 
     int followingCount = user.getFriendsCount();
-    showText(mFollowingCountView, String.valueOf(followingCount));
+    mFollowingCountView.setText(String.valueOf(followingCount));
+  }
+
+  private void showCover(String coverUrl) {
+    if (TextUtils.isEmpty(coverUrl)) {
+
+    }
+    Glide.with(getContext()).load(coverUrl).crossFade().centerCrop().into(mCoverView);
+  }
+
+  private void showUserLink(String profileUrl) {
+    if (TextUtils.isEmpty(profileUrl)) {
+      mLinkView.setText(USER_DOMAIN);
+    } else {
+      String link = USER_DOMAIN + profileUrl;
+      mLinkView.setText(link);
+    }
+  }
+
+  private void showLocation(String location) {
+    if (TextUtils.isEmpty(location)) {
+      mLocationView.setText(R.string.user_has_no_location);
+    } else {
+      mLocationView.setText(location);
+    }
+  }
+
+  private void showDescription(String description) {
+    if (TextUtils.isEmpty(description)) {
+      mDescriptionView.setText(R.string.user_has_no_description);
+    } else {
+      mDescriptionView.setText(description);
+    }
   }
 
   private void showAvatar(String avatar) {
@@ -159,7 +205,17 @@ public class UserFragment extends BaseFragment implements UserView {
         .into(mAvatarView);
   }
 
-  private void showText(TextView textView, String text) {
-    textView.setText(TextUtils.isEmpty(text) ? "" : text);
+  private void showNicknameAndGender(String nickname, String gender) {
+    if (TextUtils.isEmpty(nickname)) {
+      mNicknameView.setText(R.string.user_has_no_name);
+    } else {
+      mNicknameView.setText(nickname);
+    }
+
+    if (TextUtils.equals(gender, "f")) {
+      mNicknameView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_user_female, 0);
+    } else {
+      mNicknameView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_user_male, 0);
+    }
   }
 }

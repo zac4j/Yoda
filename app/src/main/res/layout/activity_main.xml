@@ -11,6 +11,7 @@
       android:id="@id/main_fragment_container"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:layout_marginBottom="@dimen/height.bottom_navigation"
       android:layout_marginTop="?android:actionBarSize"
       android:animateLayoutChanges="true"
       />

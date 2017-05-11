@@ -114,10 +114,16 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
   }
 
   @Override public void showMainView(boolean show) {
+    if (mSwipeContainer == null) {
+      return;
+    }
     mSwipeContainer.setVisibility(show ? VISIBLE : GONE);
   }
 
   @Override public void showProgress(boolean show) {
+    if (mProgressBar == null) {
+      return;
+    }
     mProgressBar.setVisibility(show ? VISIBLE : GONE);
   }
 

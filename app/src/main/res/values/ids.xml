@@ -44,7 +44,7 @@
   <item name="weibo_list_item_iv_repost_img" type="id"/>
   <item name="weibo_list_item_tv_content" type="id"/>
   <item name="weibo_list_item_tv_repost" type="id"/>
-  <item name="weibo_list_item_tv_reply" type="id"/>
+  <item name="weibo_list_item_tv_comment" type="id"/>
   <item name="weibo_list_item_lav_like" type="id"/>
   <item name="weibo_list_item_tv_like" type="id"/>
 
@@ -130,6 +130,7 @@
   <item name="home_search_lv_hot_tags" type="id"/>
   <item name="home_search_tv_search_btn" type="id"/>
   <item name="home_search" type="id"/>
+  <item name="user_detail_iv_cover" type="id"/>
   <item name="user_detail_iv_avatar" type="id"/>
   <item name="user_detail_swc_night_mode" type="id"/>
   <item name="user_detail_tv_profile" type="id"/>
@@ -141,5 +142,6 @@
   <item name="user_detail_tv_quit" type="id"/>
   <item name="user_detail_tv_follower_count" type="id"/>
   <item name="user_detail_tv_following_count" type="id"/>
+
 
 </resources>

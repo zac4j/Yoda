@@ -26,25 +26,31 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.ThumbUrl;
+import com.zac4j.yoda.data.model.Timeline;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.ui.WebViewActivity;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
+import com.zac4j.yoda.util.NumberUtils;
 import com.zac4j.yoda.util.RxUtils;
 import com.zac4j.yoda.util.TimeUtils;
 import com.zac4j.yoda.util.WeiboTextHelper;
 import com.zac4j.yoda.util.image.CircleTransformation;
 import com.zac4j.yoda.util.image.PhotoUtils;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Callable;
 import javax.inject.Inject;
+import org.w3c.dom.Comment;
 
 /**
  * Home Weibo List Adapter
@@ -62,29 +68,31 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
   }
 
   public void addWeiboList(final List<Weibo> weiboList) {
-    Observable.just(weiboList)
-        .map(new Function<List<Weibo>, List<Weibo>>() {
-          @Override public List<Weibo> apply(@NonNull List<Weibo> weibos) throws Exception {
-            for (Weibo weibo : weibos) {
-              if (!mWeiboList.contains(weibo)) {
-                mWeiboList.add(weibo);
-              }
-            }
-            return mWeiboList;
+    if (mWeiboList.isEmpty()) {
+      mWeiboList.addAll(weiboList);
+      notifyDataSetChanged();
+      return;
+    }
+
+    Observable.fromIterable(weiboList)
+        .filter(new Predicate<Weibo>() {
+          @Override public boolean test(@NonNull Weibo weibo) throws Exception {
+            // 为了去除重复的 weibo 请求结果, yep cuz of a bad server api.
+            return !mWeiboList.contains(weibo);
           }
         })
-        .compose(RxUtils.<List<Weibo>>applyObservableSchedulers())
-        .distinct()
-        .subscribeWith(new DisposableObserver<List<Weibo>>() {
-          @Override public void onNext(List<Weibo> weibos) {
+        .compose(RxUtils.<Weibo>applyObservableSchedulers())
+        .subscribeWith(new DisposableObserver<Weibo>() {
+          @Override public void onNext(Weibo weibo) {
+            mWeiboList.add(weibo);
           }
 
           @Override public void onError(Throwable throwable) {
-
+            System.out.println(throwable.getMessage());
           }
 
           @Override public void onComplete() {
-            notifyDataSetChanged();
+            TimelineAdapter.this.notifyDataSetChanged();
           }
         });
   }
@@ -128,8 +136,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     long repostCount = weibo.getRepostsCount();
     holder.setRepostNumber(repostCount);
     // 评论数
-    long commentCount = weibo.getCommentsCount();
-    holder.setReplyNumber(commentCount);
+    long commentsCount = weibo.getCommentsCount();
+    holder.setCommentsNumber(commentsCount);
     // 点赞数
     long likeCount = weibo.getAttitudesCount();
     holder.setLikeNumber(likeCount);
@@ -218,7 +226,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     @BindView(R.id.weibo_list_item_repost_container) View mRepostContentView;
     @BindView(R.id.weibo_list_item_iv_media) View mMediaView;
     @BindView(R.id.weibo_list_item_tv_repost) TextView mRepostBtn;
-    @BindView(R.id.weibo_list_item_tv_reply) TextView mReplyBtn;
+    @BindView(R.id.weibo_list_item_tv_comment) TextView mCommentBtn;
     @BindView(R.id.weibo_list_item_tv_like) TextView mLikeBtn;
 
     ViewHolder(View itemView) {
@@ -413,15 +421,15 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     }
 
     void setRepostNumber(long repostNumber) {
-      mRepostBtn.setText(String.format(Locale.getDefault(), "%d", repostNumber));
+      mRepostBtn.setText(NumberUtils.getRelativeNumberSpanString(repostNumber));
     }
 
-    void setReplyNumber(long replyNumber) {
-      mReplyBtn.setText(String.format(Locale.getDefault(), "%d", replyNumber));
+    void setCommentsNumber(long commentsNumber) {
+      mCommentBtn.setText(NumberUtils.getRelativeNumberSpanString(commentsNumber));
     }
 
     void setLikeNumber(long likeNumber) {
-      mLikeBtn.setText(String.format(Locale.getDefault(), "%d", likeNumber));
+      mLikeBtn.setText(NumberUtils.getRelativeNumberSpanString(likeNumber));
     }
   }
 }

@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             tools:text="4min ago"
             />
 
@@ -68,7 +68,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-          tools:text="from Weibo.com"
+          tools:text="Weibo.com"
           />
 
       <TextView
@@ -79,15 +79,16 @@
           />
 
       <include
+          layout="@layout/include_repost_container"
           android:id="@id/weibo_list_item_repost_container"
-          layout="@layout/include_repost_container"/>
+          />
 
       <include
           layout="@layout/include_media_container"
           android:id="@id/weibo_list_item_iv_media"
           />
 
-      <include layout="@layout/include_list_item_weibo_bottom_btns" />
+      <include layout="@layout/include_list_item_weibo_bottom_btns"/>
 
     </LinearLayout>
   </RelativeLayout>

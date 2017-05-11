@@ -96,7 +96,7 @@
               android:id="@id/user_detail_tv_location"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:drawableStart="@drawable/ic_weibo_location"
+              android:drawableStart="@drawable/ic_user_location"
               android:gravity="center_vertical"
               tools:text="BeiJing Haidian"
               />
@@ -105,7 +105,7 @@
               android:id="@id/user_detail_tv_link"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:drawableStart="@drawable/ic_weibo_link"
+              android:drawableStart="@drawable/ic_user_link"
               android:gravity="center_vertical"
               tools:text="http://www.leijun.com"
               />
