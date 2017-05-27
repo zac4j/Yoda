@@ -1,13 +1,9 @@
 package com.zac4j.yoda.data.remote;
 
 import android.content.Context;
-import android.os.Environment;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 import io.reactivex.Single;
 import java.util.Map;
-import okhttp3.Cache;
 import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.Retrofit;

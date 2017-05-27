@@ -212,10 +212,10 @@ public class UserFragment extends BaseFragment implements UserView {
       mNicknameView.setText(nickname);
     }
 
-    if (TextUtils.equals(gender, "f")) {
-      mNicknameView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_user_female, 0);
-    } else {
-      mNicknameView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_user_male, 0);
-    }
+    //if (TextUtils.equals(gender, "f")) {
+    //  mNicknameView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_user_female, 0);
+    //} else {
+    //  mNicknameView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_user_male, 0);
+    //}
   }
 }

@@ -47,7 +47,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space.small"
-            android:drawableEnd="@drawable/ic_user_male"
             android:drawablePadding="@dimen/space.small"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             tools:text="雷军"
@@ -83,7 +82,6 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginStart="@dimen/space.medium"
-              android:drawableStart="@drawable/ic_user_link"
               android:gravity="center_vertical"
               tools:text="http://weibo.com/leijun"
               />
