@@ -35,6 +35,9 @@ ext {
   // async job
   rxandroidVersion = "2.0.1"
   rxjavaVersion = "2.0.7"
+  rxrelayVersion = "2.0.0"
+  rxlifecycleVersion = "2.1.0"
+
   // google
   autovalueVersion = "1.4.1"
   // image
