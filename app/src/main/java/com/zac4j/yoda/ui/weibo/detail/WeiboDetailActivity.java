@@ -104,21 +104,12 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     }
   }
 
-  @Override public void showError(String message) {
+  @Override public void showErrorView(String message) {
     mErrorView.setVisibility(View.VISIBLE);
     if (TextUtils.isEmpty(message)) {
       return;
     }
     mErrorTextView.setText(message);
-  }
-
-  @Override public boolean isProcessing() {
-    return mProgressBar != null && mProgressBar.isShown();
-  }
-
-  @Override public void onTokenInvalid() {
-    AccessTokenKeeper.clear(this);
-    startActivity(new Intent(this, LoginActivity.class));
   }
 
   @Override public void showWeiboInfo(Weibo weibo) {
@@ -167,12 +158,6 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
       Glide.with(this).load(mediaUrl).into(mMediaView);
     }
     mMediaView.setVisibility(View.VISIBLE);
-  }
-
-  @Override public void showMainView(boolean show) {
-    if (mMainView != null) {
-      mMainView.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
   }
 
   private void setupPostTime(String postTime) {

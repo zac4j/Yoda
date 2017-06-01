@@ -85,13 +85,6 @@ public class UserFragment extends BaseFragment implements UserView {
     showProgress(false);
   }
 
-  @Override public void showMainView(boolean show) {
-    if (mMainView == null) {
-      return;
-    }
-    mMainView.setVisibility(show ? View.VISIBLE : View.GONE);
-  }
-
   @Override public void showProgress(boolean show) {
     if (mProgressBar == null) {
       return;
@@ -99,16 +92,8 @@ public class UserFragment extends BaseFragment implements UserView {
     mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
   }
 
-  @Override public void showError(String message) {
+  @Override public void showErrorView(String message) {
     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-  }
-
-  @Override public boolean isProcessing() {
-    return mProgressBar.isShown();
-  }
-
-  @Override public void onTokenInvalid() {
-    ((MainActivity) getActivity()).onTokenInvalid();
   }
 
   @Override public void onDestroyView() {
@@ -212,10 +197,10 @@ public class UserFragment extends BaseFragment implements UserView {
       mNicknameView.setText(nickname);
     }
 
-    //if (TextUtils.equals(gender, "f")) {
-    //  mNicknameView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_user_female, 0);
-    //} else {
-    //  mNicknameView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_user_male, 0);
-    //}
+    if (TextUtils.equals(gender, "f")) {
+      mNicknameView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_user_female, 0);
+    } else {
+      mNicknameView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_user_male, 0);
+    }
   }
 }

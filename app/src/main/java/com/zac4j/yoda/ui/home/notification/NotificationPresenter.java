@@ -37,30 +37,6 @@ import retrofit2.Response;
 
   public void getNotificationList(String token, int count, int page) {
     checkViewAttached();
-
-    if (isProcessing()) {
-      return;
-    }
-
-    if (!getMvpView().isRefreshing()) {
-      getMvpView().showProgress(true);
-    }
-
-    mDataManager.getUserNotification(token, count, page)
-        .compose(RxUtils.<Response<Object>>applySchedulers())
-        .compose(RxUtils.handleResponse(getMvpView()))
-        .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
-          @Override public void onSuccess(Response<Object> response) {
-            hideProgress();
-
-
-
-          }
-
-          @Override public void onError(Throwable throwable) {
-            hideProgress();
-          }
-        });
   }
 
   private void hideProgress() {

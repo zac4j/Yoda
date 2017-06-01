@@ -43,17 +43,10 @@ import timber.log.Timber;
 
   public void getWeibo(String token, long id) {
     checkViewAttached();
-    if (isProcessing()) {
-      return;
-    }
-    showProgress(true);
     mDataManager.getWeiboById(token, id)
         .compose(RxUtils.<Response<Object>>applySchedulers())
-        .compose(RxUtils.handleResponse(getMvpView()))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
-            showProgress(false);
-
             if (response.isSuccessful()) {
               Weibo weibo = null;
               Object data = response.body();
@@ -68,13 +61,11 @@ import timber.log.Timber;
               if (weibo == null) {
                 return;
               }
-              showMainView(true);
               getMvpView().showWeiboInfo(weibo);
             }
           }
 
           @Override public void onError(Throwable e) {
-            showProgress(false);
             Timber.e(e);
           }
         });

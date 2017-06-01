@@ -46,16 +46,10 @@ import timber.log.Timber;
 
   public void sendTextWeibo(Map<String, String> weiboMap) {
     checkViewAttached();
-    if (isProcessing()) {
-      return;
-    }
-    showProgress(true);
     mDisposable.add(mDataManager.sendTextWeibo(weiboMap)
         .compose(RxUtils.<Response<Object>>applySchedulers())
-        .compose(RxUtils.handleResponse(getMvpView()))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
-            showProgress(false);
             if (response.isSuccessful()) {
               Weibo weibo = null;
               Object data = response.body();
@@ -77,7 +71,6 @@ import timber.log.Timber;
           }
 
           @Override public void onError(Throwable e) {
-            showProgress(false);
             Timber.e(e);
           }
         }));
@@ -85,16 +78,10 @@ import timber.log.Timber;
 
   public void sendPictureWeibo(Map<String, RequestBody> weiboMap, MultipartBody.Part image) {
     checkViewAttached();
-    if (isProcessing()) {
-      return;
-    }
-    showProgress(true);
     mDisposable.add(mDataManager.sendPictureWeibo(weiboMap, image)
         .compose(RxUtils.<Response<Object>>applySchedulers())
-        .compose(RxUtils.handleResponse(getMvpView()))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
-            showProgress(false);
             if (response.isSuccessful()) {
               Weibo weibo = null;
               Object data = response.body();
@@ -116,7 +103,6 @@ import timber.log.Timber;
           }
 
           @Override public void onError(Throwable e) {
-            showProgress(false);
             Timber.e(e);
           }
         }));

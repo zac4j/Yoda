@@ -101,25 +101,6 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     mWeiboListView.removeOnScrollListener(mScrollListener);
   }
 
-  @Override public void showError(String message) {
-    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-  }
-
-  @Override public boolean isProcessing() {
-    return mProgressBar.isShown();
-  }
-
-  @Override public void onTokenInvalid() {
-    ((MainActivity) getActivity()).onTokenInvalid();
-  }
-
-  @Override public void showMainView(boolean show) {
-    if (mSwipeContainer == null) {
-      return;
-    }
-    mSwipeContainer.setVisibility(show ? VISIBLE : GONE);
-  }
-
   @Override public void showProgress(boolean show) {
     if (mProgressBar == null) {
       return;
@@ -127,19 +108,15 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     mProgressBar.setVisibility(show ? VISIBLE : GONE);
   }
 
+  @Override public void showErrorView(String error) {
+
+  }
+
   @Override public void showRefresh(boolean refresh) {
     mSwipeContainer.setRefreshing(refresh);
   }
 
-  @Override public boolean isRefreshing() {
-    return mSwipeContainer.isRefreshing();
-  }
-
-  @Override public boolean isProgressing() {
-    return mProgressBar.isShown();
-  }
-
-  @Override public void showEmpty(boolean show) {
+  @Override public void showEmptyView(boolean show) {
     mErrorView.setVisibility(show ? VISIBLE : GONE);
   }
 

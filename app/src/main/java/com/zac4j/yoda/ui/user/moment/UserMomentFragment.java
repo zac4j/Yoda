@@ -91,21 +91,9 @@ public class UserMomentFragment extends BaseFragment implements UserMomentView {
     return view;
   }
 
-  @Override public void showError(String message) {
+  @Override public void showErrorView(String message) {
     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     mErrorView.setVisibility(VISIBLE);
-  }
-
-  @Override public boolean isProcessing() {
-    return mProgressBar.isShown();
-  }
-
-  @Override public void onTokenInvalid() {
-    ((UserActivity) getActivity()).onTokenInvalid();
-  }
-
-  @Override public void showMainView(boolean show) {
-    mSwipeContainer.setVisibility(show ? VISIBLE : GONE);
   }
 
   @Override public void showProgress(boolean show) {

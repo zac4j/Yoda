@@ -1,7 +1,9 @@
 package com.zac4j.yoda.data.remote;
 
 import android.content.Context;
+import com.zac4j.yoda.data.model.HotTag;
 import io.reactivex.Single;
+import java.util.List;
 import java.util.Map;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -114,6 +116,15 @@ public interface ApiServer {
    */
   @GET("search/topics.json") Single<Response<Object>> search(@Query("access_token") String token,
       @Query("q") String keywords, @Query("count") int count, @Query("page") int page);
+
+  /**
+   * Get server suggest tags
+   *
+   * @param token use access token
+   * @return suggest tags
+   */
+  @GET("tags/suggestions.json") Single<Response<Object>> getHotTags(
+      @Query("access_token") String token);
 
   /**
    * Get @user notifications.

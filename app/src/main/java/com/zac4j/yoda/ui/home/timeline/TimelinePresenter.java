@@ -45,20 +45,12 @@ import timber.log.Timber;
   void getTimeline(String token, int count, int page) {
     checkViewAttached();
 
-    if (isProcessing()) {
-      return;
-    }
-
-    if (!getMvpView().isRefreshing()) {
-      getMvpView().showProgress(true);
-    }
     Disposable disposable = mDataManager.getHomeTimeline(token, count, page)
         .compose(RxUtils.<Response<Object>>applySchedulers())
-        .compose(RxUtils.handleResponse(getMvpView()))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
             hideProgress();
-            getMvpView().showEmpty(false);
+            getMvpView().showEmptyView(false);
             if (response.isSuccessful()) {
               Timeline timeline = null;
               Object data = response.body();
@@ -81,7 +73,7 @@ import timber.log.Timber;
 
           @Override public void onError(Throwable e) {
             hideProgress();
-            getMvpView().showEmpty(true);
+            getMvpView().showEmptyView(true);
             Timber.e(e);
           }
         });

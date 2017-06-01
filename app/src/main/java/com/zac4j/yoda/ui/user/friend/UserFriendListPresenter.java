@@ -44,15 +44,11 @@ import retrofit2.Response;
 
   public void getUserFriends(String token, String uid, int count, int cursor) {
     checkViewAttached();
-    if (isProcessing()) {
-      return;
-    }
     if (!getMvpView().isRefreshing()) {
       getMvpView().showProgress(true);
     }
     Disposable disposable = mDataManager.getUserFriends(token, Long.parseLong(uid), count, cursor)
         .compose(RxUtils.<Response<Object>>applySchedulers())
-        .compose(RxUtils.handleResponse(getMvpView()))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
             hideProgress();
@@ -68,9 +64,7 @@ import retrofit2.Response;
               }
 
               if (friend == null) {
-                showMainView(false);
               } else {
-                showMainView(true);
                 getMvpView().showFriendList(friend);
               }
             }
@@ -78,7 +72,7 @@ import retrofit2.Response;
 
           @Override public void onError(Throwable e) {
             hideProgress();
-            getMvpView().showError(Error.NETWORK);
+            getMvpView().showErrorView(Error.NETWORK);
           }
         });
 

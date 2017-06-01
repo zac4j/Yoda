@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
 
   <TextView
+      android:id="@id/home_search_tv_title"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:padding="@dimen/space.small"
@@ -17,6 +18,12 @@
       android:id="@id/home_search_lv_hot_tags"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:layout_below="@id/home_search_tv_title"
       />
 
-</LinearLayout>
+  <include
+      layout="@layout/include_progressbar"
+      android:id="@id/progress_bar"
+      />
+
+</RelativeLayout>

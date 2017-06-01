@@ -2,8 +2,10 @@ package com.zac4j.yoda.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.local.PreferencesHelper;
+import com.zac4j.yoda.data.model.HotTag;
 import com.zac4j.yoda.data.remote.ApiServer;
 import io.reactivex.Single;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -78,8 +80,11 @@ import retrofit2.Response;
     return mApiServer.unfollowFriend(token, uid);
   }
 
-  public Single<Response<Object>> search(String token, String keywords,int count, int page) {
+  public Single<Response<Object>> search(String token, String keywords, int count, int page) {
     return mApiServer.search(token, keywords, count, page);
   }
 
+  public Single<Response<Object>> getHotTags(String token) {
+    return mApiServer.getHotTags(token);
+  }
 }

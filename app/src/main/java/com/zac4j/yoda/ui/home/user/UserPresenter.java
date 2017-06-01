@@ -39,17 +39,10 @@ import retrofit2.Response;
 
   void getUserProfile(String token, String uid) {
     checkViewAttached();
-
-    if (isProcessing()) {
-      return;
-    }
-    showProgress(true);
     Disposable disposable = mDataManager.getUserProfile(token, uid)
         .compose(RxUtils.<Response<Object>>applySchedulers())
-        .compose(RxUtils.handleResponse(getMvpView()))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
-            showProgress(false);
             if (response.isSuccessful()) {
               Object data = response.body();
               ObjectMapper mapper = mDataManager.getObjectMapper();
@@ -62,17 +55,15 @@ import retrofit2.Response;
               }
 
               if (user == null) {
-                getMvpView().showMainView(false);
                 return;
               }
 
               getMvpView().showUserProfile(user);
-              getMvpView().showMainView(true);
             }
           }
 
           @Override public void onError(Throwable throwable) {
-            getMvpView().showMainView(false);
+
           }
         });
 

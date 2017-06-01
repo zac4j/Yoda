@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.base.BaseActivity;
+import com.zac4j.yoda.ui.home.hot.HotTagFragment;
 import com.zac4j.yoda.ui.home.message.MessengerFragment;
 import com.zac4j.yoda.ui.home.notification.NotificationFragment;
 import com.zac4j.yoda.ui.home.timeline.TimelineFragment;
@@ -64,6 +65,10 @@ public class MainActivity extends BaseActivity {
             switch (item.getItemId()) {
               case R.id.main_nav_home:
                 mActionBar.setTitle(R.string.main_nav_home);
+                break;
+              case R.id.main_nav_hot:
+                mActionBar.setTitle(R.string.main_nav_hot);
+                navigationFragment = HotTagFragment.newInstance();
                 break;
               case R.id.main_nav_message:
                 mActionBar.setTitle(R.string.main_nav_message);

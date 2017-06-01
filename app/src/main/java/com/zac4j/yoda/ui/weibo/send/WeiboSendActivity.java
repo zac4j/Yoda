@@ -128,7 +128,7 @@ public class WeiboSendActivity extends BaseActivity implements WeiboSendView {
       case R.id.weibo_send_tv_action_send:
         String weiboContent = mContentInput.getText().toString();
         if (TextUtils.isEmpty(weiboContent)) {
-          showError("Not allowed empty weibo content !");
+          showErrorView("Not allowed empty weibo content !");
           return;
         }
         setupWeiboContent(weiboContent);
@@ -220,30 +220,20 @@ public class WeiboSendActivity extends BaseActivity implements WeiboSendView {
     }
   }
 
-  @Override public void showMainView(boolean show) {
-    if (mMainView != null) {
-      mMainView.setVisibility(show ? VISIBLE : GONE);
-    }
-  }
-
   @Override public void showProgress(boolean show) {
     if (mProgressBar != null) {
       mProgressBar.setVisibility(show ? VISIBLE : GONE);
     }
   }
 
-  @Override public void showError(String message) {
+  @Override public void showErrorView(String message) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
   }
 
-  @Override public boolean isProcessing() {
-    return mProgressBar != null && mProgressBar.isShown();
-  }
-
-  @Override public void onTokenInvalid() {
-    AccessTokenKeeper.clear(this);
-    startActivity(new Intent(this, LoginActivity.class));
-  }
+  //@Override public void onTokenInvalid() {
+  //  AccessTokenKeeper.clear(this);
+  //  startActivity(new Intent(this, LoginActivity.class));
+  //}
 
   @Override public void showMessage(String message) {
     Snackbar.make(mRootView, message, Snackbar.LENGTH_SHORT).show();

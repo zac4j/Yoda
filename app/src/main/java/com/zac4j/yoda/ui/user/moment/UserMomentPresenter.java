@@ -44,12 +44,9 @@ import timber.log.Timber;
 
   public void getTimeline(String token, int count, int page) {
     checkViewAttached();
-    if (!getMvpView().isRefreshing()) {
-      showProgress(true);
-    }
+
     Disposable disposable = mDataManager.getUserTimeline(token, count, page)
         .compose(RxUtils.<Response<Object>>applySchedulers())
-        .compose(RxUtils.handleResponse(getMvpView()))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
             hideProgress();
@@ -86,6 +83,5 @@ import timber.log.Timber;
 
   private void hideProgress() {
     getMvpView().showRefresh(false);
-    showProgress(false);
   }
 }

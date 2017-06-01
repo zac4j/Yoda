@@ -66,23 +66,8 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
     unbinder.unbind();
   }
 
-  @Override public void showError(String message) {
+  @Override public void showErrorView(String message) {
     Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-  }
-
-  @Override public boolean isProcessing() {
-    return mProgressBar != null && mProgressBar.isShown();
-  }
-
-  @Override public void onTokenInvalid() {
-    ((MainActivity) getActivity()).onTokenInvalid();
-  }
-
-  @Override public void showMainView(boolean show) {
-    if (mSwipeContainer == null) {
-      return;
-    }
-    mSwipeContainer.setVisibility(show ? View.VISIBLE : View.GONE);
   }
 
   @Override public void showProgress(boolean show) {

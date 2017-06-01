@@ -142,6 +142,9 @@
   <item name="user_detail_tv_quit" type="id"/>
   <item name="user_detail_tv_follower_count" type="id"/>
   <item name="user_detail_tv_following_count" type="id"/>
+  <item name="home_search_tv_title" type="id"/>
+  <item name="home_search_list_tv_tag" type="id"/>
+  <item name="home_search_list_tv_tag_count" type="id"/>
 
 
 </resources>

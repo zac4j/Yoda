@@ -9,17 +9,13 @@ import java.util.List;
  * Created by zac on 3/17/2017.
  */
 
-public interface TimelineView extends MvpView {
+interface TimelineView extends MvpView {
 
   void showProgress(boolean show);
 
   void showRefresh(boolean refresh);
 
-  boolean isRefreshing();
-
-  boolean isProgressing();
-
-  void showEmpty(boolean show);
+  void showEmptyView(boolean show);
 
   void showTimeline(List<Weibo> weiboList);
 }

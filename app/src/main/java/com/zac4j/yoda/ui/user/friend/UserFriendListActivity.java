@@ -109,30 +109,15 @@ public class UserFriendListActivity extends BaseActivity implements UserFriendLi
     }
   }
 
-  @Override public void showMainView(boolean show) {
-    if (mSwipeContainer != null) {
-      mSwipeContainer.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-  }
-
   @Override public void showProgress(boolean show) {
     if (mProgressBar != null) {
       mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
   }
 
-  @Override public void showError(String message) {
+  @Override public void showErrorView(String message) {
     mErrorView.setVisibility(View.VISIBLE);
     mErrorTextView.setText(message);
-  }
-
-  @Override public boolean isProcessing() {
-    return mProgressBar != null && mProgressBar.isShown();
-  }
-
-  @Override public void onTokenInvalid() {
-    AccessTokenKeeper.clear(this);
-    startActivity(new Intent(this, LoginActivity.class));
   }
 
   @Override public boolean isRefreshing() {

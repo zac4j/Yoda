@@ -10,6 +10,14 @@
       />
 
   <item
+      android:id="@id/main_nav_hot"
+      android:enabled="true"
+      android:icon="@drawable/ic_nav_hot"
+      android:title="@string/main_nav_hot"
+      app:showAsAction="ifRoom"
+      />
+
+  <item
       android:id="@id/main_nav_notification"
       android:enabled="true"
       android:icon="@drawable/ic_nav_notification"

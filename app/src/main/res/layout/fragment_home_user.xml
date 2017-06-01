@@ -23,15 +23,16 @@
       <ImageView
           android:id="@id/user_detail_iv_cover"
           android:layout_width="match_parent"
-          android:layout_height="@dimen/height.very_large"
-          android:background="@drawable/user_cover_happy"
+          android:layout_height="@dimen/height.cover"
+          android:background="@drawable/bg_weibo_cover"
+          android:scaleType="centerCrop"
           android:contentDescription="@string/user_cover_image"
           />
 
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/height.medium"
+          android:layout_marginTop="@dimen/height.very_large"
           android:orientation="vertical"
           android:padding="@dimen/space.small"
           >
@@ -40,6 +41,7 @@
             android:id="@id/user_detail_iv_avatar"
             android:layout_width="@dimen/img.large"
             android:layout_height="@dimen/img.large"
+            android:src="@drawable/joanne"
             />
 
         <TextView
@@ -48,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space.small"
             android:drawablePadding="@dimen/space.small"
+            android:gravity="bottom"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             tools:text="雷军"
             />
@@ -82,6 +85,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginStart="@dimen/space.medium"
+              android:drawableStart="@drawable/ic_user_link"
               android:gravity="center_vertical"
               tools:text="http://weibo.com/leijun"
               />
