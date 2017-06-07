@@ -67,8 +67,8 @@ public class HotTagFragment extends BaseFragment implements HotTagView {
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    unbinder.unbind();
 
+    unbinder.unbind();
     mPresenter.detach();
   }
 

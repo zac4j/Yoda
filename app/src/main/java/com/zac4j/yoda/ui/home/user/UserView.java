@@ -10,5 +10,5 @@ import com.zac4j.yoda.ui.base.MvpView;
 
 public interface UserView extends MvpView {
 
-  void showUserProfile(User user);
+  void showProfile(User user);
 }

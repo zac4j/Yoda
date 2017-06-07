@@ -2,10 +2,8 @@ package com.zac4j.yoda.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.local.PreferencesHelper;
-import com.zac4j.yoda.data.model.HotTag;
 import com.zac4j.yoda.data.remote.ApiServer;
 import io.reactivex.Single;
-import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;

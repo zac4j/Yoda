@@ -92,6 +92,10 @@ public class UserFragment extends BaseFragment implements UserView {
     mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
   }
 
+  @Override public void showEmptyView(boolean show) {
+
+  }
+
   @Override public void showErrorView(String message) {
     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
   }
@@ -121,7 +125,7 @@ public class UserFragment extends BaseFragment implements UserView {
     }
   }
 
-  @Override public void showUserProfile(User user) {
+  @Override public void showProfile(User user) {
 
     String coverUrl = user.getCoverImage();
     showCover(coverUrl);

@@ -1,9 +1,7 @@
 package com.zac4j.yoda.data.remote;
 
 import android.content.Context;
-import com.zac4j.yoda.data.model.HotTag;
 import io.reactivex.Single;
-import java.util.List;
 import java.util.Map;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

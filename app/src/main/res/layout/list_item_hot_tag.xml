@@ -1,29 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/home_search_list_tv_tag"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/space.small"
-    android:paddingEnd="@dimen/space.medium"
-    android:paddingStart="@dimen/space.medium"
-    android:paddingTop="@dimen/space.small"
-    >
-
-  <TextView
-      android:id="@id/home_search_list_tv_tag"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textColor="@color/teal"
-      tools:text="fuck"
-      />
-
-  <TextView
-      android:id="@id/home_search_list_tv_tag_count"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-      tools:text="fuck"
-      />
-
-</LinearLayout>
+    android:padding="@dimen/space.medium"
+    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+    android:textColor="@color/teal"
+    tools:text="tag"
+    />

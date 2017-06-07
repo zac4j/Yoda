@@ -15,9 +15,9 @@ import retrofit2.Response;
 
 public class RxPresenter<T extends MvpView> extends BasePresenter<T> {
 
-  BehaviorRelay<RequestState> mRequestState = BehaviorRelay.createDefault(RequestState.IDLE);
-  BehaviorRelay<Response<Object>> mResponse = BehaviorRelay.create();
-  BehaviorRelay<Throwable> mErrors = BehaviorRelay.create();
+  private BehaviorRelay<RequestState> mRequestState = BehaviorRelay.createDefault(RequestState.IDLE);
+  protected BehaviorRelay<Response<Object>> mResponse = BehaviorRelay.create();
+  protected BehaviorRelay<Throwable> mErrors = BehaviorRelay.create();
 
   protected void publishRequestState(RequestState requestState) {
     Observable.just(requestState)

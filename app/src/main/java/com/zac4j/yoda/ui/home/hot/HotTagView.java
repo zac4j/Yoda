@@ -12,6 +12,4 @@ import java.util.List;
 public interface HotTagView extends MvpView {
 
   void showHotTags(List<Tag> tagList);
-
-  void showEmptyView(boolean show);
 }

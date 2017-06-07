@@ -1,44 +1,48 @@
 package com.zac4j.yoda.data.model;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Model for Tag
  * Created by zaccc on 6/1/2017.
  */
 
-public class Tag {
+@JsonInclude(JsonInclude.Include.NON_NULL) @JsonPropertyOrder({
+    "id", "value"
+}) public class Tag {
 
-  private String id;
-  private String value;
+  @JsonProperty("id") private String id;
+  @JsonProperty("value") private String value;
+  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-  public String getId() {
+  @JsonProperty("id") public String getId() {
     return id;
   }
 
-  public void setId(String id) {
+  @JsonProperty("id") public void setId(String id) {
     this.id = id;
   }
 
-  public String getValue() {
+  @JsonProperty("value") public String getValue() {
     return value;
   }
 
-  public void setValue(String value) {
+  @JsonProperty("value") public void setValue(String value) {
     this.value = value;
   }
 
-  @Override public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    Tag tag = (Tag) o;
-
-    if (id != null ? !id.equals(tag.id) : tag.id != null) return false;
-    return value != null ? value.equals(tag.value) : tag.value == null;
+  @JsonAnyGetter public Map<String, Object> getAdditionalProperties() {
+    return this.additionalProperties;
   }
 
-  @Override public int hashCode() {
-    int result = id != null ? id.hashCode() : 0;
-    result = 31 * result + (value != null ? value.hashCode() : 0);
-    return result;
+  @JsonAnySetter public void setAdditionalProperty(String name, Object value) {
+    this.additionalProperties.put(name, value);
   }
 }

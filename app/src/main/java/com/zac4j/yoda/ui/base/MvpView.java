@@ -9,5 +9,7 @@ public interface MvpView {
 
   void showProgress(boolean show);
 
+  void showEmptyView(boolean show);
+
   void showErrorView(String error);
 }

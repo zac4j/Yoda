@@ -1,9 +1,10 @@
 package com.zac4j.yoda.ui.home.hot;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
-import com.zac4j.yoda.data.model.HotTag;
 import com.zac4j.yoda.data.model.Tag;
+import com.zac4j.yoda.data.model.response.Error;
 import com.zac4j.yoda.data.remote.RequestState;
 import com.zac4j.yoda.di.PerConfig;
 import com.zac4j.yoda.ui.base.RxPresenter;
@@ -40,15 +41,13 @@ import retrofit2.Response;
 
   @Override public void detach() {
     super.detach();
-    if (mDisposable != null) {
-      mDisposable.clear();
-    }
+    mDisposable.clear();
   }
 
   public void getHotTags(String token) {
     checkViewAttached();
 
-    mDataManager.getHotTags(token)
+    mDisposable.add(mDataManager.getHotTags(token)
         .compose(RxUtils.<Response<Object>>applySchedulers())
         .doOnSubscribe(new Consumer<Disposable>() {
           @Override public void accept(@NonNull Disposable disposable) throws Exception {
@@ -73,41 +72,48 @@ import retrofit2.Response;
           @Override public void onError(@NonNull Throwable throwable) {
             publishErrors(throwable);
           }
-        });
+        }));
   }
 
   @Override protected void publishResponse(Response<Object> response) {
     super.publishResponse(response);
-    if (response.isSuccessful()) {
-      HotTag hotTag = null;
-      Object data = response.body();
-      ObjectMapper mapper = mDataManager.getObjectMapper();
-      try {
-        String value = mapper.writeValueAsString(data);
-        hotTag = mapper.readValue(value, HotTag.class);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
 
-      if (hotTag != null) {
-        List<Tag> tagList = hotTag.getTagList();
-        if (tagList == null || hotTag.getTagList().isEmpty()) {
-          getMvpView().showEmptyView(true);
-        } else {
-          getMvpView().showHotTags(tagList);
+    mDisposable.add(mResponse.subscribe(new Consumer<Response<Object>>() {
+      @Override public void accept(@NonNull Response<Object> response) throws Exception {
+        if (response.isSuccessful()) {
+          List<Tag> tagList = null;
+          Object data = response.body();
+          ObjectMapper mapper = mDataManager.getObjectMapper();
+          try {
+            String value = mapper.writeValueAsString(data);
+            tagList = mapper.readValue(value, new TypeReference<List<Tag>>() {
+            });
+          } catch (IOException e) {
+            e.printStackTrace();
+            getMvpView().showErrorView(e.getMessage());
+          }
+
+          if (tagList == null || tagList.isEmpty()) {
+            getMvpView().showEmptyView(true);
+          } else {
+            getMvpView().showHotTags(tagList);
+          }
         }
-      } else {
-        getMvpView().showEmptyView(true);
       }
-    }
+    }));
   }
 
   @Override protected void publishErrors(Throwable error) {
     super.publishErrors(error);
-    if (error instanceof HttpException) {
-      Response response = ((HttpException) error).response();
-      int responseCode = response.code();
-      System.out.println("request error: " + responseCode);
-    }
+
+    mDisposable.add(mErrors.subscribe(new Consumer<Throwable>() {
+      @Override public void accept(@NonNull Throwable throwable) throws Exception {
+        if (throwable instanceof HttpException) {
+          Response response = ((HttpException) throwable).response();
+          int responseCode = response.code();
+          getMvpView().showErrorView(Error.NETWORK);
+        }
+      }
+    }));
   }
 }
