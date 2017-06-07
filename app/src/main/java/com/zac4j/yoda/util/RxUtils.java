@@ -27,19 +27,13 @@ import timber.log.Timber;
 public class RxUtils {
 
   public static <T> SingleTransformer<T, T> applySchedulers() {
-    return new SingleTransformer<T, T>() {
-      @Override public SingleSource<T> apply(Single<T> upstream) {
-        return upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-      }
-    };
+    return upstream -> upstream.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread());
   }
 
   public static <T> ObservableTransformer<T, T> applyObservableSchedulers() {
-    return new ObservableTransformer<T, T>() {
-      @Override public ObservableSource<T> apply(Observable<T> upstream) {
-        return upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-      }
-    };
+    return upstream -> upstream.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread());
   }
 
   //public static SingleTransformer<Response<Object>, Response<Object>> handleResponse(

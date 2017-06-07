@@ -11,8 +11,6 @@ import com.zac4j.yoda.ui.base.RxPresenter;
 import com.zac4j.yoda.util.RxUtils;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import java.io.IOException;
 import java.util.List;
@@ -48,25 +46,13 @@ import retrofit2.Response;
     checkViewAttached();
 
     mDisposable.add(mDataManager.getHotTags(token)
-        .compose(RxUtils.<Response<Object>>applySchedulers())
-        .doOnSubscribe(new Consumer<Disposable>() {
-          @Override public void accept(@NonNull Disposable disposable) throws Exception {
-            publishRequestState(RequestState.LOADING);
-          }
-        })
-        .doOnError(new Consumer<Throwable>() {
-          @Override public void accept(@NonNull Throwable throwable) throws Exception {
-            publishRequestState(RequestState.ERROR);
-          }
-        })
-        .doOnSuccess(new Consumer<Response<Object>>() {
-          @Override public void accept(@NonNull Response<Object> objectResponse) throws Exception {
-            publishRequestState(RequestState.COMPLETE);
-          }
-        })
+        .compose(RxUtils.applySchedulers())
+        .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
+        .doOnError(throwable -> publishRequestState(RequestState.ERROR))
+        .doOnSuccess(objectResponse -> publishRequestState(RequestState.COMPLETE))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
-          @Override public void onSuccess(@NonNull Response<Object> objectResponse) {
-            publishResponse(objectResponse);
+          @Override public void onSuccess(@NonNull Response<Object> response) {
+            publishResponse(response);
           }
 
           @Override public void onError(@NonNull Throwable throwable) {
@@ -78,26 +64,24 @@ import retrofit2.Response;
   @Override protected void publishResponse(Response<Object> response) {
     super.publishResponse(response);
 
-    mDisposable.add(mResponse.subscribe(new Consumer<Response<Object>>() {
-      @Override public void accept(@NonNull Response<Object> response) throws Exception {
-        if (response.isSuccessful()) {
-          List<Tag> tagList = null;
-          Object data = response.body();
-          ObjectMapper mapper = mDataManager.getObjectMapper();
-          try {
-            String value = mapper.writeValueAsString(data);
-            tagList = mapper.readValue(value, new TypeReference<List<Tag>>() {
-            });
-          } catch (IOException e) {
-            e.printStackTrace();
-            getMvpView().showErrorView(e.getMessage());
-          }
+    mDisposable.add(mResponse.subscribe(response1 -> {
+      if (response1.isSuccessful()) {
+        List<Tag> tagList = null;
+        Object data = response1.body();
+        ObjectMapper mapper = mDataManager.getObjectMapper();
+        try {
+          String value = mapper.writeValueAsString(data);
+          tagList = mapper.readValue(value, new TypeReference<List<Tag>>() {
+          });
+        } catch (IOException e) {
+          e.printStackTrace();
+          getMvpView().showErrorView(e.getMessage());
+        }
 
-          if (tagList == null || tagList.isEmpty()) {
-            getMvpView().showEmptyView(true);
-          } else {
-            getMvpView().showHotTags(tagList);
-          }
+        if (tagList == null || tagList.isEmpty()) {
+          getMvpView().showEmptyView(true);
+        } else {
+          getMvpView().showHotTags(tagList);
         }
       }
     }));
@@ -106,13 +90,11 @@ import retrofit2.Response;
   @Override protected void publishErrors(Throwable error) {
     super.publishErrors(error);
 
-    mDisposable.add(mErrors.subscribe(new Consumer<Throwable>() {
-      @Override public void accept(@NonNull Throwable throwable) throws Exception {
-        if (throwable instanceof HttpException) {
-          Response response = ((HttpException) throwable).response();
-          int responseCode = response.code();
-          getMvpView().showErrorView(Error.NETWORK);
-        }
+    mDisposable.add(mErrors.subscribe(throwable -> {
+      if (throwable instanceof HttpException) {
+        Response response = ((HttpException) throwable).response();
+        int responseCode = response.code();
+        getMvpView().showErrorView(Error.NETWORK);
       }
     }));
   }

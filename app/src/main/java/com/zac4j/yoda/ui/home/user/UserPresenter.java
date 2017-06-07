@@ -44,22 +44,10 @@ import retrofit2.Response;
   void getUserProfile(String token, String uid) {
     checkViewAttached();
     mDisposable.add(mDataManager.getUserProfile(token, uid)
-        .compose(RxUtils.<Response<Object>>applySchedulers())
-        .doOnSubscribe(new Consumer<Disposable>() {
-          @Override public void accept(@NonNull Disposable disposable) throws Exception {
-            publishRequestState(RequestState.LOADING);
-          }
-        })
-        .doOnError(new Consumer<Throwable>() {
-          @Override public void accept(@NonNull Throwable throwable) throws Exception {
-            publishRequestState(RequestState.ERROR);
-          }
-        })
-        .doOnSuccess(new Consumer<Response<Object>>() {
-          @Override public void accept(@NonNull Response<Object> objectResponse) throws Exception {
-            publishRequestState(RequestState.COMPLETE);
-          }
-        })
+        .compose(RxUtils.applySchedulers())
+        .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
+        .doOnError(throwable -> publishRequestState(RequestState.ERROR))
+        .doOnSuccess(objectResponse -> publishRequestState(RequestState.COMPLETE))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
             publishResponse(response);
@@ -74,34 +62,31 @@ import retrofit2.Response;
   @Override protected void publishResponse(Response<Object> response) {
     super.publishResponse(response);
 
-    mDisposable.add(mResponse.subscribe(new Consumer<Response<Object>>() {
-      @Override public void accept(@NonNull Response<Object> response) throws Exception {
-        if (response.isSuccessful()) {
-          User user = null;
-          Object data = response.body();
-          ObjectMapper mapper = mDataManager.getObjectMapper();
-          try {
-            String value = mapper.writeValueAsString(data);
-            user = mapper.readValue(value, User.class);
-          } catch (IOException e) {
-            e.printStackTrace();
-            getMvpView().showErrorView(e.getMessage());
-          }
-
-          if (user == null) {
-            getMvpView().showEmptyView(true);
-          } else {
-            getMvpView().showProfile(user);
-          }
-        } else {
-          getMvpView().showErrorView(Error.NETWORK);
+    mDisposable.add(mResponse.subscribe(response1 -> {
+      if (response1.isSuccessful()) {
+        User user = null;
+        Object data = response1.body();
+        ObjectMapper mapper = mDataManager.getObjectMapper();
+        try {
+          String value = mapper.writeValueAsString(data);
+          user = mapper.readValue(value, User.class);
+        } catch (IOException e) {
+          e.printStackTrace();
+          getMvpView().showErrorView(e.getMessage());
         }
+
+        if (user == null) {
+          getMvpView().showEmptyView(true);
+        } else {
+          getMvpView().showProfile(user);
+        }
+      } else {
+        getMvpView().showErrorView(Error.NETWORK);
       }
     }));
   }
 
   @Override protected void publishErrors(Throwable throwable) {
     super.publishErrors(throwable);
-
   }
 }

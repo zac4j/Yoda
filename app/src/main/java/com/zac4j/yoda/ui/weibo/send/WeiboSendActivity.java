@@ -226,6 +226,10 @@ public class WeiboSendActivity extends BaseActivity implements WeiboSendView {
     }
   }
 
+  @Override public void showEmptyView(boolean show) {
+
+  }
+
   @Override public void showErrorView(String message) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
   }

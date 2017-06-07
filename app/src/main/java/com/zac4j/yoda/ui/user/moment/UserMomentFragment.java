@@ -100,6 +100,10 @@ public class UserMomentFragment extends BaseFragment implements UserMomentView {
     mProgressBar.setVisibility(show ? VISIBLE : GONE);
   }
 
+  @Override public void showEmptyView(boolean show) {
+
+  }
+
   @Override public void showRefresh(boolean refresh) {
     mSwipeContainer.setRefreshing(refresh);
   }

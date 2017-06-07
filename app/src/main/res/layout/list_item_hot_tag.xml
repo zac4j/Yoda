@@ -5,6 +5,7 @@
     android:id="@id/home_search_list_tv_tag"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_vertical"
     android:padding="@dimen/space.medium"
     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
     android:textColor="@color/teal"

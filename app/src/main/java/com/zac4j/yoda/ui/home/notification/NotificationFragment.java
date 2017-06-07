@@ -77,6 +77,10 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
     mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
   }
 
+  @Override public void showEmptyView(boolean show) {
+
+  }
+
   @Override public void showRefresh(boolean refresh) {
     mSwipeContainer.setRefreshing(refresh);
   }

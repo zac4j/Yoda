@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="@dimen/space.small"
     >
 
   <TextView
       android:id="@id/home_search_tv_title"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:padding="@dimen/space.small"
       android:text="@string/home_search_current_trends_title"
       android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
       />
@@ -19,6 +19,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_below="@id/home_search_tv_title"
+      android:scrollbars="none"
       />
 
   <include

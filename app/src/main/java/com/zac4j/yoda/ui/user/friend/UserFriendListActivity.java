@@ -115,6 +115,10 @@ public class UserFriendListActivity extends BaseActivity implements UserFriendLi
     }
   }
 
+  @Override public void showEmptyView(boolean show) {
+
+  }
+
   @Override public void showErrorView(String message) {
     mErrorView.setVisibility(View.VISIBLE);
     mErrorTextView.setText(message);

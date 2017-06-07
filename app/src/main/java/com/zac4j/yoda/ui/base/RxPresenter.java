@@ -4,8 +4,6 @@ import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.zac4j.yoda.data.remote.RequestState;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import retrofit2.Response;
 
 /**
@@ -15,7 +13,8 @@ import retrofit2.Response;
 
 public class RxPresenter<T extends MvpView> extends BasePresenter<T> {
 
-  private BehaviorRelay<RequestState> mRequestState = BehaviorRelay.createDefault(RequestState.IDLE);
+  private BehaviorRelay<RequestState> mRequestState =
+      BehaviorRelay.createDefault(RequestState.IDLE);
   protected BehaviorRelay<Response<Object>> mResponse = BehaviorRelay.create();
   protected BehaviorRelay<Throwable> mErrors = BehaviorRelay.create();
 
@@ -24,20 +23,18 @@ public class RxPresenter<T extends MvpView> extends BasePresenter<T> {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(mRequestState);
 
-    mRequestState.subscribe(new Consumer<RequestState>() {
-      @Override public void accept(@NonNull RequestState requestState) throws Exception {
-        switch (requestState) {
-          case IDLE:
-          case LOADING:
-            getMvpView().showProgress(true);
-            break;
-          case COMPLETE:
-            getMvpView().showProgress(false);
-            break;
-          case ERROR:
-            getMvpView().showProgress(false);
-            break;
-        }
+    mRequestState.subscribe(requestState1 -> {
+      switch (requestState1) {
+        case IDLE:
+        case LOADING:
+          getMvpView().showProgress(true);
+          break;
+        case COMPLETE:
+          getMvpView().showProgress(false);
+          break;
+        case ERROR:
+          getMvpView().showProgress(false);
+          break;
       }
     });
   }
