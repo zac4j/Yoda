@@ -5,12 +5,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
@@ -19,7 +17,6 @@ import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.adapter.TimelineAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
-import com.zac4j.yoda.ui.main.MainActivity;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -80,11 +77,8 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     };
     mWeiboListView.addOnScrollListener(mScrollListener);
 
-    mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-      @Override public void onRefresh() {
-        mPresenter.getTimeline(mToken, mRequestCount, mRequestPage);
-      }
-    });
+    mSwipeContainer.setOnRefreshListener(
+        () -> mPresenter.getTimeline(mToken, mRequestCount, mRequestPage));
 
     mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
         android.R.color.holo_green_light, android.R.color.holo_orange_light,

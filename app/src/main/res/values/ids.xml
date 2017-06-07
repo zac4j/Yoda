@@ -55,11 +55,10 @@
   <item name="error_view" type="id"/>
 
   <!--Notifications-->
-  <item name="home_swipe_notifications_container" type="id"/>
-  <item name="home_rv_notification_list" type="id"/>
-  <item name="notification_progress_bar" type="id"/>
-  <item name="notification_empty_view" type="id"/>
-  <item name="main_empty_view" type="id"/>
+  <item name="home_notif_follower_container" type="id"/>
+  <item name="home_notif_gv_at_me_avatars" type="id"/>
+  <item name="home_notif_tv_at_me_username" type="id"/>
+  <item name="home_notif_tv_at_me_count" type="id"/>
 
   <!--User -->
   <item name="user_fragment_container" type="id"/>
@@ -145,6 +144,14 @@
   <item name="home_search_tv_title" type="id"/>
   <item name="home_search_list_tv_tag" type="id"/>
   <item name="home_search_list_tv_tag_count" type="id"/>
+
+  <!--Comment-->
+  <item name="comment_list_item_iv_avatar" type="id"/>
+  <item name="comment_list_item_tv_nickname" type="id"/>
+  <item name="comment_list_item_tv_username" type="id"/>
+  <item name="comment_list_item_tv_post_time" type="id"/>
+  <item name="comment_list_item_tv_post_from" type="id"/>
+  <item name="comment_list_item_tv_content" type="id"/>
 
 
 </resources>

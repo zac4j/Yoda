@@ -1,6 +1,5 @@
 package com.zac4j.yoda.ui.weibo.detail;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,7 +22,6 @@ import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.base.BaseActivity;
-import com.zac4j.yoda.ui.login.LoginActivity;
 import com.zac4j.yoda.util.TimeUtils;
 import javax.inject.Inject;
 

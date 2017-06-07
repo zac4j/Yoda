@@ -17,7 +17,7 @@ import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.home.hot.HotTagFragment;
 import com.zac4j.yoda.ui.home.message.MessengerFragment;
-import com.zac4j.yoda.ui.home.notification.NotificationFragment;
+import com.zac4j.yoda.ui.home.notif.NotificationFragment;
 import com.zac4j.yoda.ui.home.timeline.TimelineFragment;
 import com.zac4j.yoda.ui.home.user.UserFragment;
 import com.zac4j.yoda.ui.login.LoginActivity;

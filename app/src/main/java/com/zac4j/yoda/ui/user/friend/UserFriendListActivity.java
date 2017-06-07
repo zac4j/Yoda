@@ -1,6 +1,5 @@
 package com.zac4j.yoda.ui.user.friend;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,18 +15,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Friend;
 import com.zac4j.yoda.data.model.User;
-import com.zac4j.yoda.data.model.response.Error;
 import com.zac4j.yoda.ui.adapter.FriendListAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
-import com.zac4j.yoda.ui.login.LoginActivity;
-import dagger.multibindings.ElementsIntoSet;
 import java.util.List;
 import javax.inject.Inject;
 

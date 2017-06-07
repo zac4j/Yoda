@@ -1,14 +1,14 @@
-package com.zac4j.yoda.ui.home.notification;
+package com.zac4j.yoda.ui.home.notif;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,7 +16,6 @@ import butterknife.Unbinder;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.adapter.NotificationAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
-import com.zac4j.yoda.ui.main.MainActivity;
 import javax.inject.Inject;
 
 /**
@@ -29,10 +28,16 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
   @Inject NotificationPresenter mPresenter;
   @Inject NotificationAdapter mAdapter;
 
-  @BindView(R.id.home_rv_notification_list) RecyclerView mListView;
-  @BindView(R.id.home_swipe_notifications_container) SwipeRefreshLayout mSwipeContainer;
-  @BindView(R.id.notification_progress_bar) ProgressBar mProgressBar;
-  @BindView(R.id.notification_empty_view) View mEmptyView;
+  @BindView(R.id.home_notif_gv_at_me_avatars) GridView mAvatarContainer;
+  @BindView(R.id.home_notif_tv_at_me_count) TextView mAtMeCountView;
+  @BindView(R.id.comment_list_item_iv_avatar) ImageView mCommentAvatarView;
+  @BindView(R.id.comment_list_item_tv_nickname) TextView mCommentNicknameView;
+  @BindView(R.id.comment_list_item_tv_username) TextView mCommentUsernameView;
+  @BindView(R.id.comment_list_item_tv_post_time) TextView mCommentPostTimeView;
+  @BindView(R.id.comment_list_item_tv_post_from) TextView mCommentPostFromView;
+  @BindView(R.id.comment_list_item_tv_content) TextView mCommentContentView;
+  @BindView(R.id.progress_bar) ProgressBar mProgressBar;
+
   private Unbinder unbinder;
 
   public static NotificationFragment newInstance() {
@@ -42,7 +47,9 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_home_notification, container, false);
+    View view = inflater.inflate(R.layout.fragment_home_notif, container, false);
+    unbinder = ButterKnife.bind(this, view);
+    return view;
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -51,20 +58,17 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
     getFragmentComponent().inject(this);
     unbinder = ButterKnife.bind(this, view);
     mPresenter.attach(this);
+  }
 
-    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-    mListView.setLayoutManager(layoutManager);
-    mListView.setAdapter(mAdapter);
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    unbinder.unbind();
   }
 
   @Override public void onResume() {
     super.onResume();
   }
 
-  @Override public void onDestroy() {
-    super.onDestroy();
-    unbinder.unbind();
-  }
 
   @Override public void showErrorView(String message) {
     Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
@@ -79,21 +83,5 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
 
   @Override public void showEmptyView(boolean show) {
 
-  }
-
-  @Override public void showRefresh(boolean refresh) {
-    mSwipeContainer.setRefreshing(refresh);
-  }
-
-  @Override public boolean isRefreshing() {
-    return mSwipeContainer.isRefreshing();
-  }
-
-  @Override public boolean isProgressing() {
-    return mProgressBar.isShown();
-  }
-
-  @Override public void showEmpty() {
-    mEmptyView.setVisibility(View.VISIBLE);
   }
 }

@@ -25,18 +25,13 @@ import com.bumptech.glide.Glide;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.base.BaseActivity;
-import com.zac4j.yoda.ui.login.LoginActivity;
 import com.zac4j.yoda.ui.main.MainActivity;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.util.PermissionHelper;
 import com.zac4j.yoda.util.RetrofitHelper;
 import com.zac4j.yoda.util.RxUtils;
 import com.zac4j.yoda.util.image.PhotoUtils;
-import io.reactivex.Observable;
-import io.reactivex.ObservableTransformer;
 import io.reactivex.Single;
-import io.reactivex.SingleObserver;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import java.util.HashMap;
 import java.util.Map;
@@ -199,12 +194,10 @@ public class WeiboSendActivity extends BaseActivity implements WeiboSendView {
         new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT);
     imageView.setLayoutParams(layoutParams);
-    imageView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        Intent intent = new Intent(WeiboSendActivity.this, WeiboImageActivity.class);
-        intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_URI, uri);
-        startActivity(intent);
-      }
+    imageView.setOnClickListener(v -> {
+      Intent intent = new Intent(WeiboSendActivity.this, WeiboImageActivity.class);
+      intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_URI, uri);
+      startActivity(intent);
     });
 
     Glide.with(imageView.getContext()).load(uri).centerCrop().into(imageView);

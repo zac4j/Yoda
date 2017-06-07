@@ -89,7 +89,7 @@ public interface ApiServer {
    * @param cursor get friends number cursor
    * @return friends
    */
-  @GET("friendships/friends.json") Single<Response<Object>> getUserFriends(
+  @GET("friendships/friends.json") Single<Response<Object>> getFriends(
       @Query("access_token") String token, @Query("uid") long uid, @Query("count") int count,
       @Query("cursor") int cursor);
 
@@ -125,15 +125,34 @@ public interface ApiServer {
       @Query("access_token") String token);
 
   /**
-   * Get @user notifications.
+   * Get @user comments.
    *
    * @param token user access token
    * @param count pagination count
    * @param page pagination page
-   * @return @user notifications
+   * @return @user comments
    */
-  @GET("comments/mentions.json") Single<Response<Object>> getUserNotification(
+  @GET("comments/mentions.json") Single<Response<Object>> getComments(
       @Query("access_token") String token, @Query("count") int count, @Query("page") int page);
+
+  /**
+   * Get lastest @user comment.
+   *
+   * @param token user access token
+   * @return @user lastest comment
+   */
+  @GET("comments/to_me.json") Single<Response<Object>> getLastestComment(
+      @Query("access_token") String token);
+
+  /**
+   * Get user followers
+   *
+   * @param token user access token
+   * @param uid user id
+   * @return user followers
+   */
+  @GET("friendships/followers.json") Single<Response<Object>> getFollowers(
+      @Query("access_token") String token, @Query("uid") long uid);
 
   class Factory {
     public static ApiServer create(Context context) {
