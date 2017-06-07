@@ -3,7 +3,6 @@ package com.zac4j.yoda.ui.home.notif;
 import com.zac4j.yoda.data.DataManager;
 import com.zac4j.yoda.data.remote.RequestState;
 import com.zac4j.yoda.di.PerConfig;
-import com.zac4j.yoda.ui.base.BasePresenter;
 import com.zac4j.yoda.ui.base.RxPresenter;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -37,7 +36,7 @@ import retrofit2.Response;
   public void getFollowers(String token, long uid) {
     checkViewAttached();
 
-    mDataManager.getFollowers(token, uid)
+    mDisposable.add(mDataManager.getFollowers(token, uid)
         .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
         .doOnError(throwable -> publishRequestState(RequestState.ERROR))
         .doOnSuccess(objectResponse -> publishRequestState(RequestState.COMPLETE))
@@ -47,15 +46,15 @@ import retrofit2.Response;
           }
 
           @Override public void onError(Throwable throwable) {
-
+            publishErrors(throwable);
           }
-        });
+        }));
   }
 
   public void getLastestComment(String token) {
     checkViewAttached();
 
-    mDataManager.getLastestComment(token)
+    mDisposable.add(mDataManager.getLastestComment(token)
         .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
         .doOnError(throwable -> publishRequestState(RequestState.ERROR))
         .doOnSuccess(objectResponse -> publishRequestState(RequestState.COMPLETE))
@@ -65,8 +64,16 @@ import retrofit2.Response;
           }
 
           @Override public void onError(Throwable throwable) {
-
+            publishErrors(throwable);
           }
-        });
+        }));
+  }
+
+  @Override protected void publishErrors(Throwable throwable) {
+    super.publishErrors(throwable);
+
+    mErrors.distinct().subscribe(throwable1 -> {
+
+    });
   }
 }

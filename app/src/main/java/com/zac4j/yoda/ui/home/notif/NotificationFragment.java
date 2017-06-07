@@ -78,6 +78,11 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
     if (mProgressBar == null) {
       return;
     }
+
+    if (show && mProgressBar.isShown()) {
+      return;
+    }
+
     mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
   }
 
