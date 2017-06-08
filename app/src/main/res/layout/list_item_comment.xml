@@ -64,7 +64,7 @@
       </LinearLayout>
 
       <TextView
-          android:id="@id/comment_list_item_tv_post_from"
+          android:id="@id/comment_list_item_tv_post_source"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:textAppearance="@style/TextAppearance.AppCompat.Caption"
@@ -72,7 +72,14 @@
           />
 
       <TextView
-          android:id="@id/comment_list_item_tv_content"
+          android:id="@id/comment_list_item_tv_comment_content"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          tools:text="Would you like to have a library of swatches at your fingertips in Sketch? Check out this plugin!http://buff.ly/2lErpKy "
+          />
+
+      <TextView
+          android:id="@id/comment_list_item_tv_weibo_content"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           tools:text="Would you like to have a library of swatches at your fingertips in Sketch? Check out this plugin!http://buff.ly/2lErpKy "

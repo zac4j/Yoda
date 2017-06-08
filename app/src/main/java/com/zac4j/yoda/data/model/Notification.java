@@ -16,10 +16,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
   @JsonProperty("comments") private List<Comment> comments = null;
   @JsonProperty("hasvisible") private Boolean hasvisible;
-  @JsonProperty("previous_cursor") private Integer previousCursor;
-  @JsonProperty("next_cursor") private Integer nextCursor;
-  @JsonProperty("total_number") private Integer totalNumber;
-  @JsonProperty("interval") private Integer interval;
+  @JsonProperty("previous_cursor") private Long previousCursor;
+  @JsonProperty("next_cursor") private Long nextCursor;
+  @JsonProperty("total_number") private Long totalNumber;
+  @JsonProperty("interval") private Long interval;
   @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<>();
 
   @JsonProperty("comments") public List<Comment> getComments() {
@@ -38,35 +38,35 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     this.hasvisible = hasvisible;
   }
 
-  @JsonProperty("previous_cursor") public Integer getPreviousCursor() {
+  @JsonProperty("previous_cursor") public Long getPreviousCursor() {
     return previousCursor;
   }
 
-  @JsonProperty("previous_cursor") public void setPreviousCursor(Integer previousCursor) {
+  @JsonProperty("previous_cursor") public void setPreviousCursor(Long previousCursor) {
     this.previousCursor = previousCursor;
   }
 
-  @JsonProperty("next_cursor") public Integer getNextCursor() {
+  @JsonProperty("next_cursor") public Long getNextCursor() {
     return nextCursor;
   }
 
-  @JsonProperty("next_cursor") public void setNextCursor(Integer nextCursor) {
+  @JsonProperty("next_cursor") public void setNextCursor(Long nextCursor) {
     this.nextCursor = nextCursor;
   }
 
-  @JsonProperty("total_number") public Integer getTotalNumber() {
+  @JsonProperty("total_number") public Long getTotalNumber() {
     return totalNumber;
   }
 
-  @JsonProperty("total_number") public void setTotalNumber(Integer totalNumber) {
+  @JsonProperty("total_number") public void setTotalNumber(Long totalNumber) {
     this.totalNumber = totalNumber;
   }
 
-  @JsonProperty("interval") public Integer getInterval() {
+  @JsonProperty("interval") public Long getInterval() {
     return interval;
   }
 
-  @JsonProperty("interval") public void setInterval(Integer interval) {
+  @JsonProperty("interval") public void setInterval(Long interval) {
     this.interval = interval;
   }
 

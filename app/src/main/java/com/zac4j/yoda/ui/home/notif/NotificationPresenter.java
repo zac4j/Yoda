@@ -1,11 +1,16 @@
 package com.zac4j.yoda.ui.home.notif;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
+import com.zac4j.yoda.data.model.Comment;
+import com.zac4j.yoda.data.model.Notification;
 import com.zac4j.yoda.data.remote.RequestState;
 import com.zac4j.yoda.di.PerConfig;
 import com.zac4j.yoda.ui.base.RxPresenter;
+import com.zac4j.yoda.util.RxUtils;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
+import java.io.IOException;
 import javax.inject.Inject;
 import retrofit2.Response;
 
@@ -51,16 +56,36 @@ import retrofit2.Response;
         }));
   }
 
-  public void getLastestComment(String token) {
+  public void getLatestComment(String token) {
     checkViewAttached();
 
-    mDisposable.add(mDataManager.getLastestComment(token)
+    mDisposable.add(mDataManager.getLatestComment(token)
+        .compose(RxUtils.applySchedulers())
         .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
         .doOnError(throwable -> publishRequestState(RequestState.ERROR))
         .doOnSuccess(objectResponse -> publishRequestState(RequestState.COMPLETE))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> objectResponse) {
+            if (objectResponse.isSuccessful()) {
+              Notification notification = null;
+              Object data = objectResponse.body();
+              ObjectMapper mapper = mDataManager.getObjectMapper();
+              try {
+                String value = mapper.writeValueAsString(data);
+                notification = mapper.readValue(value, Notification.class);
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
 
+              if (notification == null
+                  || notification.getComments() == null
+                  || notification.getComments().isEmpty()) {
+                getMvpView().showEmptyComment(true);
+              } else {
+                Comment latestComment = notification.getComments().get(0);
+                getMvpView().showComment(latestComment);
+              }
+            }
           }
 
           @Override public void onError(Throwable throwable) {

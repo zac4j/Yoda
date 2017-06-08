@@ -150,8 +150,11 @@
   <item name="comment_list_item_tv_nickname" type="id"/>
   <item name="comment_list_item_tv_username" type="id"/>
   <item name="comment_list_item_tv_post_time" type="id"/>
-  <item name="comment_list_item_tv_post_from" type="id"/>
+  <item name="comment_list_item_tv_post_source" type="id"/>
   <item name="comment_list_item_tv_content" type="id"/>
+  <item name="comment_list_item_tv_weibo_content" type="id"/>
+  <item name="comment_list_item_tv_comment_content" type="id"/>
+  <item name="home_notif_comment_container" type="id"/>
 
 
 </resources>

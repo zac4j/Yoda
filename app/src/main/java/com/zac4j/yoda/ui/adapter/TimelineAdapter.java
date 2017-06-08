@@ -5,10 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +23,6 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.ThumbUrl;
-import com.zac4j.yoda.data.model.Timeline;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
@@ -36,21 +32,17 @@ import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
 import com.zac4j.yoda.util.NumberUtils;
 import com.zac4j.yoda.util.RxUtils;
 import com.zac4j.yoda.util.TimeUtils;
-import com.zac4j.yoda.util.WeiboTextHelper;
+import com.zac4j.yoda.util.WeiboReader;
+import com.zac4j.yoda.util.WeiboContentParser;
 import com.zac4j.yoda.util.image.CircleTransformation;
 import com.zac4j.yoda.util.image.PhotoUtils;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.Callable;
 import javax.inject.Inject;
-import org.w3c.dom.Comment;
 
 /**
  * Home Weibo List Adapter
@@ -120,39 +112,29 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       return;
     }
     final Weibo weibo = mWeiboList.get(position);
+
     // 发送时间
-    String pattern = "E MMM dd HH:mm:ss Z yyyy";
-    String timeAgo = TimeUtils.getTimeAgo(weibo.getCreatedAt(), pattern);
-    holder.setPostTime(timeAgo);
+    WeiboReader.readPostTime(holder.mPostTimeView, weibo.getCreatedAt());
+
     // 微博内容
-    String content = weibo.getText();
-    holder.setContent(content);
+    WeiboReader.readContent(holder.mContentView, weibo.getText());
 
     // 微博转发内容
-    Weibo repostWeibo = weibo.getRepostWeibo();
-    holder.setRepostContent(mContext, repostWeibo);
+    holder.setRepostContent(mContext, weibo.getRepostWeibo());
 
     // 转发数
-    long repostCount = weibo.getRepostsCount();
-    holder.setRepostNumber(repostCount);
+    WeiboReader.readRepostNumber(holder.mRepostBtn, weibo.getRepostsCount());
     // 评论数
-    long commentsCount = weibo.getCommentsCount();
-    holder.setCommentsNumber(commentsCount);
+    WeiboReader.readCommentsNumber(holder.mCommentBtn, weibo.getCommentsCount());
     // 点赞数
-    long likeCount = weibo.getAttitudesCount();
-    holder.setLikeNumber(likeCount);
+    WeiboReader.readLikeState(holder.mLikeBtn, weibo.getFavorited());
+    WeiboReader.readLikeNumber(holder.mLikeBtn, weibo.getAttitudesCount());
 
     // 发送来源
-    String source = weibo.getSource();
-    if (!TextUtils.isEmpty(source)) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        holder.setPostSource(Html.fromHtml(source, Html.FROM_HTML_MODE_LEGACY));
-      } else {
-        holder.setPostSource(Html.fromHtml(source));
-      }
-    }
+    WeiboReader.readPostSource(holder.mPostSourceView, weibo.getSource());
+
     // 用户信息
-    setUserInfo(holder, weibo.getUser());
+    setupUserInfo(holder, weibo.getUser());
 
     // 多媒体消息
     String media = weibo.getBmiddlePic();
@@ -168,20 +150,12 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     }
     final Intent intent = new Intent(mContext, WeiboImageActivity.class);
     intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_LIST, imgUrlList);
-    holder.mMediaView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        mContext.startActivity(intent);
-      }
-    });
+    holder.mMediaView.setOnClickListener(v -> mContext.startActivity(intent));
 
-    holder.itemView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        goWeiboDetail(mContext, weibo);
-      }
-    });
+    holder.itemView.setOnClickListener(v -> startDetailPage(mContext, weibo));
   }
 
-  private void goWeiboDetail(Context context, Weibo weibo) {
+  private void startDetailPage(Context context, Weibo weibo) {
     if (weibo == null) {
       return;
     }
@@ -191,7 +165,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       Intent intent = new Intent(context, WeiboDetailActivity.class);
       intent.putExtra(WeiboDetailActivity.WEIBO_ID_EXTRA, weibo.getId());
       context.startActivity(intent);
-    } else {
+    } else { // 不是自己的微博目前没权限看详情
       Intent intent = new Intent(context, WebViewActivity.class);
       intent.putExtra(WebViewActivity.EXTRA_WEIBO_ID, weibo.getIdstr());
       intent.putExtra(WebViewActivity.EXTRA_UID, weiboUserId);
@@ -199,13 +173,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     }
   }
 
-  private void setUserInfo(ViewHolder holder, User user) {
+  private void setupUserInfo(ViewHolder holder, User user) {
     if (user == null) {
       return;
     }
-    holder.setAvatar(mContext, user.getProfileImageUrl());
-    holder.setNickname(user.getScreenName());
-    holder.setUsername(user.getDomain());
+
+    WeiboReader.readAvatar(mContext, holder.mAvatarView, user.getProfileImageUrl());
+    WeiboReader.readNickname(holder.mNicknameView, user.getScreenName());
+    WeiboReader.readUsername(holder.mUsernameView, user.getDomain());
   }
 
   @Override public int getItemCount() {
@@ -234,59 +209,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       ButterKnife.bind(ViewHolder.this, itemView);
     }
 
-    void setAvatar(Context context, String imageUrl) {
-      if (TextUtils.isEmpty(imageUrl)) {
-        Glide.clear(mAvatarView);
-      } else {
-        Glide.with(context)
-            .load(imageUrl)
-            .transform(new CircleTransformation(context))
-            .into(mAvatarView);
-      }
-    }
-
-    void setNickname(String nickname) {
-      if (TextUtils.isEmpty(nickname)) {
-        mNicknameView.setText("");
-      } else {
-        mNicknameView.setText(nickname);
-      }
-    }
-
-    void setUsername(String username) {
-      if (TextUtils.isEmpty(username)) {
-        mUsernameView.setText("");
-      } else {
-        username = "@" + username;
-        mUsernameView.setText(username);
-      }
-    }
-
-    void setPostTime(String postTime) {
-      if (TextUtils.isEmpty(postTime)) {
-        mPostTimeView.setText("");
-      } else {
-        mPostTimeView.setText(postTime);
-      }
-    }
-
-    void setPostSource(Spanned postSource) {
-      if (TextUtils.isEmpty(postSource)) {
-        mPostSourceView.setText("");
-      } else {
-        mPostSourceView.setText(postSource);
-      }
-    }
-
-    void setContent(String content) {
-      if (TextUtils.isEmpty(content)) {
-        mContentView.setText("");
-      } else {
-        WeiboTextHelper.setupText(mContentView, content);
-        //mContentView.setText(content);
-      }
-    }
-
+    // 没办法迁移，api 获取的数据跟翔一样
     void setRepostContent(Context context, Weibo repostWeibo) {
       final TextView repostTextView =
           (TextView) mRepostContentView.findViewById(R.id.weibo_list_item_tv_repost_content);
@@ -311,7 +234,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         }
 
         weiboContent = "@" + name + ": " + weiboContent;
-        WeiboTextHelper.setupText(repostTextView, weiboContent);
+        WeiboContentParser.setupText(repostTextView, weiboContent);
         mRepostContentView.setBackgroundResource(R.drawable.bg_gray_border);
 
         String imgUrl = repostWeibo.getBmiddlePic();
@@ -418,18 +341,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
           bitmapRequestBuilder.fitCenter().into(mediaImageView);
         }
       }
-    }
-
-    void setRepostNumber(long repostNumber) {
-      mRepostBtn.setText(NumberUtils.getRelativeNumberSpanString(repostNumber));
-    }
-
-    void setCommentsNumber(long commentsNumber) {
-      mCommentBtn.setText(NumberUtils.getRelativeNumberSpanString(commentsNumber));
-    }
-
-    void setLikeNumber(long likeNumber) {
-      mLikeBtn.setText(NumberUtils.getRelativeNumberSpanString(likeNumber));
     }
   }
 }

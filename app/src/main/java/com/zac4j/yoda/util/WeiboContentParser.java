@@ -12,7 +12,7 @@ import android.widget.TextView;
  * Created by zac on 4/10/2017.
  */
 
-public class WeiboTextHelper {
+public class WeiboContentParser {
 
   private static final int MAX_NICKNAME_LENGTH = 25;
 

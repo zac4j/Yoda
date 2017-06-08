@@ -1,5 +1,6 @@
 package com.zac4j.yoda.ui.home.notif;
 
+import com.zac4j.yoda.data.model.Comment;
 import com.zac4j.yoda.ui.base.MvpView;
 
 /**
@@ -8,5 +9,7 @@ import com.zac4j.yoda.ui.base.MvpView;
  */
 
 public interface NotificationView extends MvpView {
+  void showComment(Comment comment);
 
+  void showEmptyComment(boolean show);
 }

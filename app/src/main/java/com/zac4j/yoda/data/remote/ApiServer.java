@@ -141,7 +141,7 @@ public interface ApiServer {
    * @param token user access token
    * @return @user lastest comment
    */
-  @GET("comments/to_me.json") Single<Response<Object>> getLastestComment(
+  @GET("comments/to_me.json") Single<Response<Object>> getLatestComment(
       @Query("access_token") String token);
 
   /**

@@ -21,8 +21,8 @@ import java.util.Map;
 }) public class Comment {
 
   @JsonProperty("created_at") private String createdAt;
-  @JsonProperty("id") private Integer id;
-  @JsonProperty("rootid") private Integer rootid;
+  @JsonProperty("id") private Long id;
+  @JsonProperty("rootid") private Long rootid;
   @JsonProperty("floor_number") private Integer floorNumber;
   @JsonProperty("text") private String text;
   @JsonProperty("source_allowclick") private Integer sourceAllowclick;
@@ -32,8 +32,8 @@ import java.util.Map;
   @JsonProperty("mid") private String mid;
   @JsonProperty("idstr") private String idstr;
   @JsonProperty("status") private Weibo weibo;
-  @JsonProperty("like_count") private Integer likeCount;
-  @JsonProperty("reply_count") private Integer replyCount;
+  @JsonProperty("like_count") private Long likeCount;
+  @JsonProperty("reply_count") private Long replyCount;
   @JsonProperty("url_objects") private List<Object> urlObjects = null;
   @JsonProperty("liked") private Boolean liked;
   @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<>();
@@ -46,19 +46,19 @@ import java.util.Map;
     this.createdAt = createdAt;
   }
 
-  @JsonProperty("id") public Integer getId() {
+  @JsonProperty("id") public Long getId() {
     return id;
   }
 
-  @JsonProperty("id") public void setId(Integer id) {
+  @JsonProperty("id") public void setId(Long id) {
     this.id = id;
   }
 
-  @JsonProperty("rootid") public Integer getRootid() {
+  @JsonProperty("rootid") public Long getRootid() {
     return rootid;
   }
 
-  @JsonProperty("rootid") public void setRootid(Integer rootid) {
+  @JsonProperty("rootid") public void setRootid(Long rootid) {
     this.rootid = rootid;
   }
 
@@ -134,19 +134,19 @@ import java.util.Map;
     this.weibo = weibo;
   }
 
-  @JsonProperty("like_count") public Integer getLikeCount() {
+  @JsonProperty("like_count") public Long getLikeCount() {
     return likeCount;
   }
 
-  @JsonProperty("like_count") public void setLikeCount(Integer likeCount) {
+  @JsonProperty("like_count") public void setLikeCount(Long likeCount) {
     this.likeCount = likeCount;
   }
 
-  @JsonProperty("reply_count") public Integer getReplyCount() {
+  @JsonProperty("reply_count") public Long getReplyCount() {
     return replyCount;
   }
 
-  @JsonProperty("reply_count") public void setReplyCount(Integer replyCount) {
+  @JsonProperty("reply_count") public void setReplyCount(Long replyCount) {
     this.replyCount = replyCount;
   }
 

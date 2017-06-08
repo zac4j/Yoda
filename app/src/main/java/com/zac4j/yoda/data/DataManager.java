@@ -90,7 +90,7 @@ import retrofit2.Response;
     return mApiServer.getComments(token, count, page);
   }
 
-  public Single<Response<Object>> getLastestComment(String token) {
-    return mApiServer.getLastestComment(token);
+  public Single<Response<Object>> getLatestComment(String token) {
+    return mApiServer.getLatestComment(token);
   }
 }
