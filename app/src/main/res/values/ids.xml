@@ -59,6 +59,7 @@
   <item name="home_notif_gv_at_me_avatars" type="id"/>
   <item name="home_notif_tv_at_me_username" type="id"/>
   <item name="home_notif_tv_at_me_count" type="id"/>
+  <item name="home_notif_rv_comment_list" type="id"/>
 
   <!--User -->
   <item name="user_fragment_container" type="id"/>
@@ -154,7 +155,7 @@
   <item name="comment_list_item_tv_content" type="id"/>
   <item name="comment_list_item_tv_weibo_content" type="id"/>
   <item name="comment_list_item_tv_comment_content" type="id"/>
-  <item name="home_notif_comment_container" type="id"/>
+  <item name="comment_list_item_weibo_container" type="id"/>
 
 
 </resources>

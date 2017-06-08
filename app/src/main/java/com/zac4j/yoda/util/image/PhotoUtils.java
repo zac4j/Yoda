@@ -3,6 +3,7 @@ package com.zac4j.yoda.util.image;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
 import com.bumptech.glide.GenericRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -206,5 +208,17 @@ public class PhotoUtils {
    */
   public static String getImageFilePath(File file) {
     return "file:" + file.getAbsolutePath();
+  }
+
+  public static float pixelToDp(float px) {
+    DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+    float dp = px / (metrics.densityDpi / 160f);
+    return Math.round(dp);
+  }
+
+  public static float dpToPixel(float dp) {
+    DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+    float px = dp * (metrics.densityDpi / 160f);
+    return Math.round(px);
   }
 }

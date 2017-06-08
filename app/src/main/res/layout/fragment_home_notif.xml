@@ -7,7 +7,7 @@
 
   <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
       android:orientation="vertical"
       android:padding="@dimen/space.medium"
       >
@@ -16,7 +16,9 @@
         android:id="@id/home_notif_gv_at_me_avatars"
         android:layout_width="match_parent"
         android:layout_height="@dimen/img.medium"
+        android:columnWidth="@dimen/img.medium"
         android:horizontalSpacing="@dimen/space.small"
+        android:numColumns="auto_fit"
         />
 
     <TextView
@@ -24,6 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space.small"
+        android:drawableStart="@drawable/ic_friend_follower"
+        android:gravity="center_vertical"
         tools:text="@string/notif_follow_me"
         />
 
@@ -31,9 +35,11 @@
         style="@style/Divider"
         />
 
-    <include
-        android:id="@id/home_notif_comment_container"
-        layout="@layout/list_item_comment"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@id/home_notif_rv_comment_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 
   </LinearLayout>
 

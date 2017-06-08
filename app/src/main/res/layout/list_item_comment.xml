@@ -47,7 +47,7 @@
             android:layout_marginEnd="@dimen/space.small"
             android:layout_marginStart="@dimen/space.small"
             android:ellipsize="end"
-            android:maxLength="16"
+            android:maxLength="10"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             tools:text="wanquribao"
             />
@@ -56,7 +56,9 @@
             android:id="@id/comment_list_item_tv_post_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:gravity="end"
+            android:maxLines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             tools:text="4min ago"
             />
@@ -78,15 +80,22 @@
           tools:text="Would you like to have a library of swatches at your fingertips in Sketch? Check out this plugin!http://buff.ly/2lErpKy "
           />
 
-      <TextView
-          android:id="@id/comment_list_item_tv_weibo_content"
+      <LinearLayout
+          android:id="@id/comment_list_item_weibo_container"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          tools:text="Would you like to have a library of swatches at your fingertips in Sketch? Check out this plugin!http://buff.ly/2lErpKy "
-          />
+          android:orientation="vertical"
+          >
+        <TextView
+            android:id="@id/comment_list_item_tv_weibo_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Would you like to have a library of swatches at your fingertips in Sketch? Check out this plugin!http://buff.ly/2lErpKy "
+            />
 
-      <include layout="@layout/include_list_item_weibo_bottom_btns"/>
+        <include layout="@layout/include_list_item_weibo_bottom_btns"/>
 
+      </LinearLayout>
     </LinearLayout>
   </RelativeLayout>
 </android.support.v7.widget.CardView>

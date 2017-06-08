@@ -29,12 +29,9 @@ import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.ui.WebViewActivity;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
-import com.zac4j.yoda.util.NumberUtils;
 import com.zac4j.yoda.util.RxUtils;
-import com.zac4j.yoda.util.TimeUtils;
-import com.zac4j.yoda.util.WeiboReader;
 import com.zac4j.yoda.util.WeiboContentParser;
-import com.zac4j.yoda.util.image.CircleTransformation;
+import com.zac4j.yoda.util.WeiboReader;
 import com.zac4j.yoda.util.image.PhotoUtils;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
@@ -66,27 +63,22 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       return;
     }
 
-    Observable.fromIterable(weiboList)
-        .filter(new Predicate<Weibo>() {
-          @Override public boolean test(@NonNull Weibo weibo) throws Exception {
-            // 为了去除重复的 weibo 请求结果, yep cuz of a bad server api.
-            return !mWeiboList.contains(weibo);
-          }
-        })
-        .compose(RxUtils.<Weibo>applyObservableSchedulers())
-        .subscribeWith(new DisposableObserver<Weibo>() {
-          @Override public void onNext(Weibo weibo) {
-            mWeiboList.add(weibo);
-          }
+    Observable.fromIterable(weiboList).filter(weibo -> {
+      // 为了去除重复的 weibo 请求结果, yep cuz of a bad server api.
+      return !mWeiboList.contains(weibo);
+    }).compose(RxUtils.applyObservableSchedulers()).subscribeWith(new DisposableObserver<Weibo>() {
+      @Override public void onNext(Weibo weibo) {
+        mWeiboList.add(weibo);
+      }
 
-          @Override public void onError(Throwable throwable) {
-            System.out.println(throwable.getMessage());
-          }
+      @Override public void onError(Throwable throwable) {
+        System.out.println(throwable.getMessage());
+      }
 
-          @Override public void onComplete() {
-            TimelineAdapter.this.notifyDataSetChanged();
-          }
-        });
+      @Override public void onComplete() {
+        TimelineAdapter.this.notifyDataSetChanged();
+      }
+    });
   }
 
   public void clear() {

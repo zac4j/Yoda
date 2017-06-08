@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Weibo;
@@ -32,7 +33,7 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
 
   // WebService default weibo count is 20 as well.
   public static final int DEFAULT_WEIBO_COUNT = 6;
-  private int mRequestCount = DEFAULT_WEIBO_COUNT;
+  private final int mRequestCount = DEFAULT_WEIBO_COUNT;
   private int mRequestPage = 1;
 
   private String mToken; // user token
@@ -67,8 +68,9 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     mWeiboListView.setLayoutManager(layoutManager);
     mWeiboListView.setAdapter(mTimelineAdapter);
 
-    mToken = AccessTokenKeeper.readAccessToken(getContext()).getToken();
-    System.out.println("Token: " + mToken);
+    Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(getContext());
+    mToken = accessToken.getToken();
+    System.out.println("Token: " + mToken + "\r\n" + "UID: >> " + accessToken.getUid());
     mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
       @Override public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
         mRequestPage = page;
@@ -87,12 +89,16 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
 
   @Override public void onResume() {
     super.onResume();
-    mPresenter.getTimeline(mToken, mRequestCount, mRequestPage);
+
+    if (mTimelineAdapter.isEmpty()) {
+      mPresenter.getTimeline(mToken, mRequestCount, mRequestPage);
+    }
   }
 
-  @Override public void onDestroy() {
-    super.onDestroy();
+  @Override public void onDestroyView() {
+    super.onDestroyView();
     mWeiboListView.removeOnScrollListener(mScrollListener);
+    mPresenter.detach();
   }
 
   @Override public void showProgress(boolean show) {

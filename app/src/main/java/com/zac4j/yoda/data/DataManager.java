@@ -82,7 +82,7 @@ import retrofit2.Response;
     return mApiServer.getFriends(token, uid, count, cursor);
   }
 
-  public Single<Response<Object>> getFollowers(String token, long uid) {
+  public Single<Response<Object>> getFollowers(String token, String uid) {
     return mApiServer.getFollowers(token, uid);
   }
 
@@ -90,7 +90,7 @@ import retrofit2.Response;
     return mApiServer.getComments(token, count, page);
   }
 
-  public Single<Response<Object>> getLatestComment(String token) {
-    return mApiServer.getLatestComment(token);
+  public Single<Response<Object>> getLatestComments(String token) {
+    return mApiServer.getLatestComments(token);
   }
 }

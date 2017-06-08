@@ -2,7 +2,7 @@ package com.zac4j.yoda.ui.home.notif;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
-import com.zac4j.yoda.data.model.Comment;
+import com.zac4j.yoda.data.model.Friend;
 import com.zac4j.yoda.data.model.Notification;
 import com.zac4j.yoda.data.remote.RequestState;
 import com.zac4j.yoda.di.PerConfig;
@@ -38,16 +38,36 @@ import retrofit2.Response;
     mDisposable.clear();
   }
 
-  public void getFollowers(String token, long uid) {
+  public void getLatestFollowers(String token, String uid) {
     checkViewAttached();
 
     mDisposable.add(mDataManager.getFollowers(token, uid)
+        .compose(RxUtils.applySchedulers())
         .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
         .doOnError(throwable -> publishRequestState(RequestState.ERROR))
         .doOnSuccess(objectResponse -> publishRequestState(RequestState.COMPLETE))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> objectResponse) {
+            if (objectResponse.isSuccessful()) {
+              Friend friend = null;
+              Object data = objectResponse.body();
+              ObjectMapper mapper = mDataManager.getObjectMapper();
 
+              try {
+                String value = mapper.writeValueAsString(data);
+                friend = mapper.readValue(value, Friend.class);
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+
+              if (friend == null || friend.getUsers() == null || friend.getUsers().isEmpty()) {
+                getMvpView().showEmptyFollower();
+              } else {
+                getMvpView().showLatestFollowers(friend.getUsers());
+              }
+            } else {
+              getMvpView().showEmptyFollower();
+            }
           }
 
           @Override public void onError(Throwable throwable) {
@@ -56,10 +76,10 @@ import retrofit2.Response;
         }));
   }
 
-  public void getLatestComment(String token) {
+  public void getLatestComments(String token) {
     checkViewAttached();
 
-    mDisposable.add(mDataManager.getLatestComment(token)
+    mDisposable.add(mDataManager.getLatestComments(token)
         .compose(RxUtils.applySchedulers())
         .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
         .doOnError(throwable -> publishRequestState(RequestState.ERROR))
@@ -80,10 +100,9 @@ import retrofit2.Response;
               if (notification == null
                   || notification.getComments() == null
                   || notification.getComments().isEmpty()) {
-                getMvpView().showEmptyComment(true);
+                getMvpView().showEmptyComment();
               } else {
-                Comment latestComment = notification.getComments().get(0);
-                getMvpView().showComment(latestComment);
+                getMvpView().showComments(notification.getComments());
               }
             }
           }

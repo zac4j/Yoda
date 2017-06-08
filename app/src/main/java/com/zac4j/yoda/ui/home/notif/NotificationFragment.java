@@ -2,24 +2,28 @@ package com.zac4j.yoda.ui.home.notif;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Comment;
 import com.zac4j.yoda.data.model.User;
-import com.zac4j.yoda.ui.adapter.NotificationAdapter;
+import com.zac4j.yoda.ui.adapter.NotifCommentAdapter;
+import com.zac4j.yoda.ui.adapter.NotifFollowerAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
-import com.zac4j.yoda.util.WeiboReader;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -30,23 +34,13 @@ import javax.inject.Inject;
 public class NotificationFragment extends BaseFragment implements NotificationView {
 
   @Inject NotificationPresenter mPresenter;
-  @Inject NotificationAdapter mAdapter;
+  @Inject NotifCommentAdapter mCommentAdapter;
+  @Inject NotifFollowerAdapter mFollowerAdapter;
 
   @BindView(R.id.home_notif_gv_at_me_avatars) GridView mAvatarContainer;
   @BindView(R.id.home_notif_tv_at_me_count) TextView mAtMeCountView;
-  @BindView(R.id.home_notif_comment_container) View mCommentContainer;
-  @BindView(R.id.comment_list_item_iv_avatar) ImageView mCommentAvatarView;
-  @BindView(R.id.comment_list_item_tv_nickname) TextView mCommentNicknameView;
-  @BindView(R.id.comment_list_item_tv_username) TextView mCommentUsernameView;
-  @BindView(R.id.comment_list_item_tv_post_time) TextView mCommentPostTimeView;
-  @BindView(R.id.comment_list_item_tv_post_source) TextView mCommentPostSourceView;
-  @BindView(R.id.comment_list_item_tv_comment_content) TextView mCommentContentView;
-  @BindView(R.id.comment_list_item_tv_weibo_content) TextView mWeiboContentView;
-  @BindView(R.id.weibo_list_item_tv_repost) TextView mRepostBtn;
-  @BindView(R.id.weibo_list_item_tv_comment) TextView mCommentBtn;
-  @BindView(R.id.weibo_list_item_tv_like) TextView mLikeBtn;
+  @BindView(R.id.home_notif_rv_comment_list) RecyclerView mCommentContainer;
   @BindView(R.id.progress_bar) ProgressBar mProgressBar;
-  Unbinder unbinder1;
 
   private Unbinder unbinder;
 
@@ -57,9 +51,7 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_home_notif, container, false);
-    unbinder1 = ButterKnife.bind(this, view);
-    return view;
+    return inflater.inflate(R.layout.fragment_home_notif, container, false);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -68,6 +60,12 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
     getFragmentComponent().inject(this);
     unbinder = ButterKnife.bind(this, view);
     mPresenter.attach(this);
+
+    mAvatarContainer.setAdapter(mFollowerAdapter);
+
+    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+    mCommentContainer.setLayoutManager(layoutManager);
+    mCommentContainer.setAdapter(mCommentAdapter);
   }
 
   @Override public void onDestroyView() {
@@ -79,8 +77,15 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
   @Override public void onResume() {
     super.onResume();
 
-    String token = AccessTokenKeeper.readAccessToken(getContext()).getToken();
-    mPresenter.getLatestComment(token);
+    Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(getContext());
+
+    if (mFollowerAdapter.isEmpty()) {
+      mPresenter.getLatestFollowers(accessToken.getToken(), accessToken.getUid());
+    }
+
+    if (mCommentAdapter.isEmpty()) {
+      mPresenter.getLatestComments(accessToken.getToken());
+    }
   }
 
   @Override public void showErrorView(String message) {
@@ -91,7 +96,7 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
     if (mProgressBar == null) {
       return;
     }
-
+    // 因为有两个 stream 可以 dispatch progressbar
     if (show && mProgressBar.isShown()) {
       return;
     }
@@ -100,31 +105,34 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
   }
 
   @Override public void showEmptyView(boolean show) {
-
-  }
-
-  @Override public void showComment(Comment comment) {
-    showCommentUser(comment.getUser());
-
-    WeiboReader.readPostTime(mCommentPostTimeView, comment.getCreatedAt());
-    WeiboReader.readPostSource(mCommentPostSourceView, comment.getSource());
-    WeiboReader.readContent(mCommentContentView, comment.getText());
-    if (comment.getWeibo() != null) {
-      WeiboReader.readContent(mWeiboContentView, comment.getWeibo().getText());
+    if (show) {
+      showEmptyComment();
+      showEmptyFollower();
     }
-    WeiboReader.readLikeNumber(mLikeBtn, comment.getLikeCount());
   }
 
-  @Override public void showEmptyComment(boolean show) {
-    mCommentContainer.setVisibility(show ? View.GONE : View.VISIBLE);
+  @Override public void showComments(List<Comment> comments) {
+    mCommentAdapter.addCommentList(comments);
   }
 
-  private void showCommentUser(User user) {
-    if (user == null) {
-      return;
+  @Override public void showEmptyFollower() {
+    mAtMeCountView.setText(R.string.notif_no_latest_follows);
+  }
+
+  @Override public void showLatestFollowers(List<User> users) {
+    String nickname = users.get(0).getScreenName();
+
+    String atMeContent = getString(R.string.notif_follow_me, nickname, users.size() - 1);
+    mAtMeCountView.setText(atMeContent);
+
+    List<String> avatarUrlList = new ArrayList<>();
+    for (User user : users) {
+      avatarUrlList.add(user.getProfileImageUrl());
     }
-    WeiboReader.readAvatar(getContext(), mCommentAvatarView, user.getProfileImageUrl());
-    WeiboReader.readNickname(mCommentNicknameView, user.getScreenName());
-    WeiboReader.readUsername(mCommentUsernameView, user.getDomain());
+    mFollowerAdapter.addAvatarList(avatarUrlList);
+  }
+
+  @Override public void showEmptyComment() {
+    mCommentContainer.setVisibility(View.VISIBLE);
   }
 }

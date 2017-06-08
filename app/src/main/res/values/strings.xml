@@ -65,4 +65,7 @@
   <string name="user_has_no_name">无名氏</string>
   <string name="user_cover_image">user cover image</string>
 
+  <!--Notification-->
+  <string name="notif_no_latest_follows">最近没有关注你的人哦</string>
+
 </resources>

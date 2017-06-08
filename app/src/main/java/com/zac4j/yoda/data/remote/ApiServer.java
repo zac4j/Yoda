@@ -141,7 +141,7 @@ public interface ApiServer {
    * @param token user access token
    * @return @user lastest comment
    */
-  @GET("comments/to_me.json") Single<Response<Object>> getLatestComment(
+  @GET("comments/to_me.json") Single<Response<Object>> getLatestComments(
       @Query("access_token") String token);
 
   /**
@@ -152,7 +152,7 @@ public interface ApiServer {
    * @return user followers
    */
   @GET("friendships/followers.json") Single<Response<Object>> getFollowers(
-      @Query("access_token") String token, @Query("uid") long uid);
+      @Query("access_token") String token, @Query("uid") String uid);
 
   class Factory {
     public static ApiServer create(Context context) {
