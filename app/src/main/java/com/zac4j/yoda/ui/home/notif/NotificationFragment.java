@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,7 +19,9 @@ import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Comment;
+import com.zac4j.yoda.data.model.Friend;
 import com.zac4j.yoda.data.model.User;
+import com.zac4j.yoda.data.model.db.Profile;
 import com.zac4j.yoda.ui.adapter.NotifCommentAdapter;
 import com.zac4j.yoda.ui.adapter.NotifFollowerAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
@@ -62,6 +65,13 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
     mPresenter.attach(this);
 
     mAvatarContainer.setAdapter(mFollowerAdapter);
+    mAvatarContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        long userId = mFollowerAdapter.getItem(i).getId();
+
+        showProfileDialog();
+      }
+    });
 
     LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
     mCommentContainer.setLayoutManager(layoutManager);
@@ -125,11 +135,11 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
     String atMeContent = getString(R.string.notif_follow_me, nickname, users.size() - 1);
     mAtMeCountView.setText(atMeContent);
 
-    List<String> avatarUrlList = new ArrayList<>();
-    for (User user : users) {
-      avatarUrlList.add(user.getProfileImageUrl());
-    }
-    mFollowerAdapter.addAvatarList(avatarUrlList);
+    mFollowerAdapter.addAvatarList(users);
+  }
+
+  @Override public void showProfileDialog(Profile profile) {
+
   }
 
   @Override public void showEmptyComment() {

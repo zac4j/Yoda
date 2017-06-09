@@ -2,7 +2,6 @@ package com.zac4j.yoda.di.component;
 
 import android.content.Context;
 
-import android.database.sqlite.SQLiteOpenHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;

@@ -2,6 +2,7 @@ package com.zac4j.yoda.ui.home.notif;
 
 import com.zac4j.yoda.data.model.Comment;
 import com.zac4j.yoda.data.model.User;
+import com.zac4j.yoda.data.model.db.Profile;
 import com.zac4j.yoda.ui.base.MvpView;
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface NotificationView extends MvpView {
   void showEmptyFollower();
 
   void showLatestFollowers(List<User> users);
+
+  void showProfileDialog(Profile profile);
 }

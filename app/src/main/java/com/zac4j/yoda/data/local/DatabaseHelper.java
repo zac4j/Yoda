@@ -3,7 +3,7 @@ package com.zac4j.yoda.data.local;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.zac4j.yoda.data.model.db.Friend;
+import com.zac4j.yoda.data.model.db.Profile;
 import com.zac4j.yoda.di.ApplicationContext;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,29 +17,29 @@ import javax.inject.Singleton;
   private static final int VERSION = 1;
 
   private static final String CREATE_USER_PROFILE = "CREATE TABLE "
-      + Friend.TABLE
+      + Profile.TABLE
       + "("
-      + Friend.ID
+      + Profile.ID
       + " INTEGER NOT NULL PRIMARY KEY,"
-      + Friend.UID
+      + Profile.UID
       + " INTEGER NOT NULL DEFAULT 0,"
-      + Friend.NICKNAME
+      + Profile.NICKNAME
       + " TEXT NOT NULL,"
-      + Friend.USERNAME
+      + Profile.USERNAME
       + " TEXT NOT NULL,"
-      + Friend.DESCRIPTION
+      + Profile.DESCRIPTION
       + " TEXT NOT NULL,"
-      + Friend.AVATAR_URL
+      + Profile.AVATAR_URL
       + " TEXT NOT NULL,"
-      + Friend.BG_URL
+      + Profile.BG_URL
       + " TEXT NOT NULL,"
-      + Friend.LINK
+      + Profile.LINK
       + " TEXT NOT NULL,"
-      + Friend.LOCATION
+      + Profile.LOCATION
       + " TEXT NOT NULL,"
-      + Friend.FOLLOW
+      + Profile.FOLLOW
       + " INTEGER NOT NULL DEFAULT 0,"
-      + Friend.FOLLOWER
+      + Profile.FOLLOWER
       + " INTEGER NOT NULL DEFAULT 0,"
       + ")";
 
@@ -53,7 +53,7 @@ import javax.inject.Singleton;
 
   @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     if (oldVersion != newVersion) {
-      String sql = "DROP TABLE IF EXISTS " + Friend.TABLE;
+      String sql = "DROP TABLE IF EXISTS " + Profile.TABLE;
       db.execSQL(sql);
       onCreate(db);
     }

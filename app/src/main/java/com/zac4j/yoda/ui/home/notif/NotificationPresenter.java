@@ -4,13 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
 import com.zac4j.yoda.data.model.Friend;
 import com.zac4j.yoda.data.model.Notification;
+import com.zac4j.yoda.data.model.User;
+import com.zac4j.yoda.data.model.db.Profile;
 import com.zac4j.yoda.data.remote.RequestState;
 import com.zac4j.yoda.di.PerConfig;
 import com.zac4j.yoda.ui.base.RxPresenter;
 import com.zac4j.yoda.util.RxUtils;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import java.io.IOException;
+import java.util.List;
 import javax.inject.Inject;
 import retrofit2.Response;
 
@@ -21,6 +25,8 @@ import retrofit2.Response;
 
 @PerConfig public class NotificationPresenter extends RxPresenter<NotificationView> {
 
+  public static final String PROFILE_QUERY =
+      "SELECT * FROM " + Profile.TABLE + " WHERE " + Profile.UID + " = ? ";
   private final DataManager mDataManager;
   private CompositeDisposable mDisposable;
 
@@ -64,6 +70,7 @@ import retrofit2.Response;
                 getMvpView().showEmptyFollower();
               } else {
                 getMvpView().showLatestFollowers(friend.getUsers());
+                saveUsers(friend.getUsers());
               }
             } else {
               getMvpView().showEmptyFollower();
@@ -74,6 +81,28 @@ import retrofit2.Response;
             publishErrors(throwable);
           }
         }));
+  }
+
+  public void getProfile(long uid) {
+    mDataManager.getDatabase()
+        .createQuery(Profile.TABLE, PROFILE_QUERY, String.valueOf(uid))
+        .mapToOne(Profile.MAPPER)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe();
+  }
+
+  private void saveUsers(List<User> users) {
+    for (User user : users) {
+      mDataManager.getDatabase()
+          .insert(Profile.TABLE, new Profile.Builder().uid(user.getId())
+              .avatarUrl(user.getAvatarHd())
+              .nickname(user.getScreenName())
+              .description(user.getDescription())
+              .location(user.getLocation())
+              .follow(user.getFriendsCount())
+              .follower(user.getFollowersCount())
+              .build());
+    }
   }
 
   public void getLatestComments(String token) {

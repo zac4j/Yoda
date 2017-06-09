@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import com.zac4j.yoda.data.model.User;
+import com.zac4j.yoda.data.model.db.Profile;
 import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.util.WeiboReader;
 import com.zac4j.yoda.util.image.PhotoUtils;
@@ -21,39 +23,39 @@ import javax.inject.Inject;
 public class NotifFollowerAdapter extends BaseAdapter {
 
   private Context mContext;
-  private List<String> mAvatarUrlList;
+  private List<User> mUserList;
 
   @Inject public NotifFollowerAdapter(@ActivityContext Context context) {
     mContext = context;
-    mAvatarUrlList = new ArrayList<>();
+    mUserList = new ArrayList<>();
   }
 
-  public void addAvatarList(List<String> avatarUrlList) {
-    if (avatarUrlList == null || avatarUrlList.isEmpty()) {
+  public void addAvatarList(List<User> userList) {
+    if (userList == null || userList.isEmpty()) {
       return;
     }
 
-    mAvatarUrlList.addAll(avatarUrlList);
+    mUserList.addAll(userList);
     notifyDataSetChanged();
   }
 
   public boolean isEmpty() {
-    return mAvatarUrlList == null || mAvatarUrlList.isEmpty();
+    return mUserList == null || mUserList.isEmpty();
   }
 
   @Override public int getCount() {
-    if (mAvatarUrlList == null || mAvatarUrlList.isEmpty()) {
+    if (mUserList == null || mUserList.isEmpty()) {
       return 0;
     }
-    return mAvatarUrlList.size();
+    return mUserList.size();
   }
 
-  @Override public String getItem(int position) {
-    return mAvatarUrlList.get(position);
+  @Override public User getItem(int position) {
+    return mUserList.get(position);
   }
 
   @Override public long getItemId(int position) {
-    return position;
+    return mUserList.get(position).getId();
   }
 
   @Override public View getView(int position, View convertView, ViewGroup parent) {
@@ -65,7 +67,11 @@ public class NotifFollowerAdapter extends BaseAdapter {
     } else {
       imageView = (ImageView) convertView;
     }
-    WeiboReader.readAvatar(mContext, imageView, getItem(position));
+
+    User user = getItem(position);
+
+    WeiboReader.readAvatar(mContext, imageView, user.getProfileImageUrl());
+
     return imageView;
   }
 }

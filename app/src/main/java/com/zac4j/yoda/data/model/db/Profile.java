@@ -5,14 +5,13 @@ import android.database.Cursor;
 import android.os.Parcelable;
 import com.google.auto.value.AutoValue;
 import com.zac4j.yoda.data.local.Database;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 
 /**
  * User Profile
  * Created by zac on 4/25/2017.
  */
-@AutoValue public abstract class Friend implements Parcelable {
+@AutoValue public abstract class Profile implements Parcelable {
 
   // Table name
   public static final String TABLE = "profile";
@@ -52,22 +51,20 @@ import io.reactivex.functions.Function;
 
   public abstract long follower();
 
-  public static final Function<Cursor, Friend> MAPPER = new Function<Cursor, Friend>() {
-    @Override public Friend apply(@NonNull Cursor cursor) throws Exception {
-      long id = Database.getLong(cursor, ID);
-      long uid = Database.getLong(cursor, UID);
-      String nickname = Database.getString(cursor, NICKNAME);
-      String username = Database.getString(cursor, USERNAME);
-      String description = Database.getString(cursor, DESCRIPTION);
-      String avatarUrl = Database.getString(cursor, AVATAR_URL);
-      String backgroundUrl = Database.getString(cursor, BG_URL);
-      String link = Database.getString(cursor, LINK);
-      String location = Database.getString(cursor, LOCATION);
-      long follow = Database.getLong(cursor, FOLLOW);
-      long follower = Database.getLong(cursor, FOLLOWER);
-      return new AutoValue_Friend(id, uid, nickname, username, description, avatarUrl,
-          backgroundUrl, link, location, follow, follower);
-    }
+  public static final Function<Cursor, Profile> MAPPER = cursor -> {
+    long id = Database.getLong(cursor, ID);
+    long uid = Database.getLong(cursor, UID);
+    String nickname = Database.getString(cursor, NICKNAME);
+    String username = Database.getString(cursor, USERNAME);
+    String description = Database.getString(cursor, DESCRIPTION);
+    String avatarUrl = Database.getString(cursor, AVATAR_URL);
+    String backgroundUrl = Database.getString(cursor, BG_URL);
+    String link = Database.getString(cursor, LINK);
+    String location = Database.getString(cursor, LOCATION);
+    long follow = Database.getLong(cursor, FOLLOW);
+    long follower = Database.getLong(cursor, FOLLOWER);
+    return new AutoValue_Profile(id, uid, nickname, username, description, avatarUrl, backgroundUrl,
+        link, location, follow, follower);
   };
 
   public static final class Builder {

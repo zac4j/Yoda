@@ -1,6 +1,7 @@
 package com.zac4j.yoda.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squareup.sqlbrite.BriteDatabase;
 import com.zac4j.yoda.data.local.PreferencesHelper;
 import com.zac4j.yoda.data.remote.ApiServer;
 import io.reactivex.Single;
@@ -21,12 +22,15 @@ import retrofit2.Response;
   private ApiServer mApiServer;
   private PreferencesHelper mPrefsHelper;
   private ObjectMapper mObjectMapper;
+  private BriteDatabase mDatabase;
 
   @Inject
-  public DataManager(ApiServer apiServer, PreferencesHelper prefsHelper, ObjectMapper mapper) {
+  public DataManager(ApiServer apiServer, PreferencesHelper prefsHelper, ObjectMapper mapper,
+      BriteDatabase database) {
     mApiServer = apiServer;
     mPrefsHelper = prefsHelper;
     mObjectMapper = mapper;
+    mDatabase = database;
   }
 
   public PreferencesHelper getPrefsHelper() {
@@ -39,6 +43,10 @@ import retrofit2.Response;
 
   public ObjectMapper getObjectMapper() {
     return mObjectMapper;
+  }
+
+  public BriteDatabase getDatabase() {
+    return mDatabase;
   }
 
   public Single<Response<Object>> getHomeTimeline(String token, int count, int page) {

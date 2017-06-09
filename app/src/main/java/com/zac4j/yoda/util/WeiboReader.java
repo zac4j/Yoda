@@ -36,6 +36,14 @@ public class WeiboReader {
     usernameView.setText(TextUtils.isEmpty(username) ? "" : "@" + username);
   }
 
+  public static void readDescription(TextView descriptionView, String description) {
+    descriptionView.setText(TextUtils.isEmpty(description) ? "这个人虽然勤快，但还是懒得写简介。" : description);
+  }
+
+  public static void readLocation(TextView locationView, String location) {
+    locationView.setText(TextUtils.isEmpty(location) ? "Galactic Republic" : location);
+  }
+
   public static void readPostTime(TextView postTimeView, String postTime) {
     String pattern = "E MMM dd HH:mm:ss Z yyyy";
     String timeAgo = TimeUtils.getTimeAgo(postTime, pattern);
