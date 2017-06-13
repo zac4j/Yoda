@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -33,6 +35,7 @@ import com.zac4j.yoda.util.RxUtils;
 import com.zac4j.yoda.util.image.PhotoUtils;
 import io.reactivex.Single;
 import io.reactivex.observers.DisposableSingleObserver;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -71,6 +74,7 @@ public class WeiboSendActivity extends BaseActivity implements WeiboSendView {
   private boolean hasMultiPicture = false;
 
   private Uri mImageUri;
+  private String mImagePath;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -107,7 +111,8 @@ public class WeiboSendActivity extends BaseActivity implements WeiboSendView {
     switch (view.getId()) {
       case R.id.weibo_send_iv_action_camera:
         if (PermissionHelper.hasStoragePermission(WeiboSendActivity.this)) {
-          mImageUri = PhotoUtils.capturePhoto(WeiboSendActivity.this, REQUEST_CAPTURE_CODE);
+          getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+          mImagePath = PhotoUtils.capturePhoto(WeiboSendActivity.this, REQUEST_CAPTURE_CODE);
         } else {
           PermissionHelper.requestStoragePermission(WeiboSendActivity.this,
               REQUEST_STORAGE_PERMISSION_CODE);
@@ -178,6 +183,7 @@ public class WeiboSendActivity extends BaseActivity implements WeiboSendView {
         }
         break;
       case REQUEST_CAPTURE_CODE:
+        mImageUri = Uri.fromFile(new File(mImagePath));
         break;
     }
 
@@ -207,7 +213,8 @@ public class WeiboSendActivity extends BaseActivity implements WeiboSendView {
   @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
       @NonNull int[] grantResults) {
     if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-      mImageUri = PhotoUtils.capturePhoto(WeiboSendActivity.this, REQUEST_CAPTURE_CODE);
+      getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+      mImagePath = PhotoUtils.capturePhoto(WeiboSendActivity.this, REQUEST_CAPTURE_CODE);
     } else {
       showMessage("Bad permission request !");
     }

@@ -3,8 +3,10 @@ package com.zac4j.yoda.ui.weibo.send;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
 import com.zac4j.yoda.data.model.Weibo;
+import com.zac4j.yoda.data.remote.RequestState;
 import com.zac4j.yoda.di.PerConfig;
 import com.zac4j.yoda.ui.base.BasePresenter;
+import com.zac4j.yoda.ui.base.RxPresenter;
 import com.zac4j.yoda.util.RxUtils;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -21,7 +23,7 @@ import timber.log.Timber;
  * Created by zac on 3/27/2017.
  */
 
-@PerConfig public class WeiboSendPresenter extends BasePresenter<WeiboSendView> {
+@PerConfig public class WeiboSendPresenter extends RxPresenter<WeiboSendView> {
 
   private final DataManager mDataManager;
   private CompositeDisposable mDisposable;
@@ -47,7 +49,10 @@ import timber.log.Timber;
   public void sendTextWeibo(Map<String, String> weiboMap) {
     checkViewAttached();
     mDisposable.add(mDataManager.sendTextWeibo(weiboMap)
-        .compose(RxUtils.<Response<Object>>applySchedulers())
+        .compose(RxUtils.applySchedulers())
+        .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
+        .doOnError(throwable -> publishRequestState(RequestState.ERROR))
+        .doOnSuccess(objectResponse -> publishRequestState(RequestState.COMPLETE))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
             if (response.isSuccessful()) {
@@ -79,7 +84,10 @@ import timber.log.Timber;
   public void sendPictureWeibo(Map<String, RequestBody> weiboMap, MultipartBody.Part image) {
     checkViewAttached();
     mDisposable.add(mDataManager.sendPictureWeibo(weiboMap, image)
-        .compose(RxUtils.<Response<Object>>applySchedulers())
+        .compose(RxUtils.applySchedulers())
+        .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
+        .doOnError(throwable -> publishRequestState(RequestState.ERROR))
+        .doOnSuccess(objectResponse -> publishRequestState(RequestState.COMPLETE))
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
             if (response.isSuccessful()) {

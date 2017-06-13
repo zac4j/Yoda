@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.base.BaseFragment;
 import com.zac4j.yoda.ui.home.user.UserFragment;
 
@@ -15,9 +16,9 @@ import com.zac4j.yoda.ui.home.user.UserFragment;
 
 public class MessengerFragment extends BaseFragment {
 
-  public static UserFragment newInstance() {
+  public static MessengerFragment newInstance() {
     Bundle args = new Bundle();
-    UserFragment fragment = new UserFragment();
+    MessengerFragment fragment = new MessengerFragment();
     fragment.setArguments(args);
     return fragment;
   }
@@ -25,7 +26,7 @@ public class MessengerFragment extends BaseFragment {
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return super.onCreateView(inflater, container, savedInstanceState);
+    return inflater.inflate(R.layout.fragment_home_message, container, false);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -39,5 +40,4 @@ public class MessengerFragment extends BaseFragment {
   @Override public void onPause() {
     super.onPause();
   }
-
 }

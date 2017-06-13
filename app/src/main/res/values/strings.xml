@@ -9,7 +9,7 @@
   <string name="from">来自:</string>
   <string name="send">Send</string>
   <string name="search">Search</string>
-  <string name="weibo_send_content_input_hint">Ask a question&#8230;</string>
+  <string name="weibo_send_content_input_hint">What\'s news&#8230;</string>
   <string name="ok">OK</string>
   <string name="error_check_network">Check Your Network Connection!</string>
   <string name="error_no_weibo">You Have Not Post Weibo!</string>

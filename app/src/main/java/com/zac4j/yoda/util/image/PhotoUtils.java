@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.util.DisplayMetrics;
 import com.bumptech.glide.GenericRequestBuilder;
 import com.bumptech.glide.Glide;
@@ -48,22 +49,23 @@ public class PhotoUtils {
     activity.startActivityForResult(intent, requestCode);
   }
 
-  public static Uri capturePhoto(Activity activity, int requestCode) {
+  public static String capturePhoto(Activity activity, int requestCode) {
     File file = null;
-    Uri imageUri = null;
     try {
-      file = createImageFile();
+      file = createImageFile(activity);
+      if (isCanCapture(activity, file)) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        Uri imgUri =
+            FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileprovider", file);
+        System.out.println("file provider >> imgUri >> " + imgUri);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
+        activity.startActivityForResult(intent, requestCode);
+      }
     } catch (IOException e) {
       e.printStackTrace();
     }
-    if (isCanCapture(activity, file)) {
-      Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-      imageUri = Uri.fromFile(file);
-      intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-      activity.startActivityForResult(intent, requestCode);
-    }
-    return imageUri;
+    return file == null ? "" : file.getAbsolutePath();
   }
 
   /**
@@ -154,8 +156,8 @@ public class PhotoUtils {
    *
    * @return 临时文件
    */
-  public static File createImageFile() throws IOException {
-    File storageDir = Environment.getExternalStorageDirectory();
+  public static File createImageFile(Context context) throws IOException {
+    File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
     return File.createTempFile(getImageName(), /* prefix */
         ".jpg", /* suffix */
         storageDir /* directory */);

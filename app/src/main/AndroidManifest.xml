@@ -24,7 +24,9 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".ui.main.MainActivity"/>
+    <activity
+        android:name=".ui.main.MainActivity"
+        android:launchMode="singleTask"/>
     <activity android:name=".ui.user.UserActivity"/>
     <activity android:name=".ui.weibo.send.WeiboSendActivity"/>
     <activity android:name=".ui.weibo.WeiboImageActivity"/>
@@ -32,6 +34,18 @@
     <activity android:name=".ui.WebViewActivity"/>
     <activity android:name=".ui.user.friend.UserFriendListActivity"/>
     <activity android:name=".ui.user.detail.UserDetailActivity"/>
+
+    <provider
+        android:name="android.support.v4.content.FileProvider"
+        android:authorities="com.zac4j.yoda.fileprovider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/provider_paths"
+          />
+    </provider>
+
   </application>
 
 </manifest>

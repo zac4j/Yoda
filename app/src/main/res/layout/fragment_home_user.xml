@@ -41,7 +41,7 @@
             android:id="@id/user_detail_iv_avatar"
             android:layout_width="@dimen/img.large"
             android:layout_height="@dimen/img.large"
-            android:src="@drawable/joanne"
+            tools:src="@drawable/ic_default_avatar"
             />
 
         <TextView
