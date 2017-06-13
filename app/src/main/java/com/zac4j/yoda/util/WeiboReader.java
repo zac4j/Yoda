@@ -37,7 +37,7 @@ public class WeiboReader {
   }
 
   public static void readDescription(TextView descriptionView, String description) {
-    descriptionView.setText(TextUtils.isEmpty(description) ? "这个人虽然勤快，但还是懒得写简介。" : description);
+    descriptionView.setText(TextUtils.isEmpty(description) ? "这个人虽勤快，却懒得写简介。" : description);
   }
 
   public static void readLocation(TextView locationView, String location) {

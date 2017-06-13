@@ -18,6 +18,8 @@ import java.util.List;
 import javax.inject.Inject;
 import retrofit2.Response;
 
+import static android.database.sqlite.SQLiteDatabase.CONFLICT_IGNORE;
+
 /**
  * Presenter for Notification
  * Created by zac on 3/22/2017.
@@ -90,7 +92,7 @@ import retrofit2.Response;
         .observeOn(AndroidSchedulers.mainThread())
         .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
         .doOnError(throwable -> publishRequestState(RequestState.ERROR))
-        .doOnComplete(() -> publishRequestState(RequestState.COMPLETE))
+        .doOnNext(disposable -> publishRequestState(RequestState.COMPLETE))
         .subscribe(profile -> getMvpView().showProfileDialog(profile));
   }
 
@@ -101,11 +103,12 @@ import retrofit2.Response;
               .avatarUrl(user.getAvatarHd())
               .nickname(user.getScreenName())
               .username(user.getDomain())
+              .gender(user.getGender())
               .description(user.getDescription())
               .location(user.getLocation())
               .follow(user.getFriendsCount())
               .follower(user.getFollowersCount())
-              .build());
+              .build(), CONFLICT_IGNORE);
     }
   }
 

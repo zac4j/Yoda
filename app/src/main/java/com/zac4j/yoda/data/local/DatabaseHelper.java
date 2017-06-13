@@ -22,10 +22,12 @@ import javax.inject.Singleton;
       + Profile.ID
       + " INTEGER NOT NULL PRIMARY KEY,"
       + Profile.UID
-      + " INTEGER NOT NULL DEFAULT 0,"
+      + " INTEGER NOT NULL UNIQUE DEFAULT 0,"
       + Profile.NICKNAME
       + " TEXT NOT NULL,"
       + Profile.USERNAME
+      + " TEXT,"
+      + Profile.GENDER
       + " TEXT,"
       + Profile.DESCRIPTION
       + " TEXT,"

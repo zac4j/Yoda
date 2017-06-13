@@ -1,9 +1,6 @@
 package com.zac4j.yoda.ui.user.detail;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -49,7 +46,7 @@ public class UserDetailDialogFragment extends DialogFragment {
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.dialog_fragment_user_detail, container, false);
+    return inflater.inflate(R.layout.dialog_fragment_user_detail, container);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -64,21 +61,15 @@ public class UserDetailDialogFragment extends DialogFragment {
     }
     WeiboReader.readAvatar(getContext(), mAvatarView, friend.avatarUrl());
     WeiboReader.readNickname(mNicknameView, friend.nickname());
-    WeiboReader.readDescription(mDescriptionView, friend.description());
+
+    boolean isMale = "m".equals(friend.gender());
+    mNicknameView.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+        isMale ? R.drawable.ic_user_male : R.drawable.ic_user_female, 0);
+
     WeiboReader.readLocation(mLocationView, friend.location());
+    WeiboReader.readDescription(mDescriptionView, friend.description());
     mFollowerCountView.setText(String.valueOf(friend.follower()));
     mFollowingCountView.setText(String.valueOf(friend.follow()));
-  }
-
-  @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
-    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-    builder.setPositiveButton(R.string.ok_i_know, (dialog, i) -> {
-      if (dialog != null) {
-        dialog.dismiss();
-      }
-    });
-
-    return builder.create();
   }
 
   @Override public void onDestroyView() {

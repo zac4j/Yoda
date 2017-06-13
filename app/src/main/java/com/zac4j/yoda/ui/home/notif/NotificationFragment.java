@@ -66,11 +66,9 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
     mPresenter.attach(this);
 
     mAvatarContainer.setAdapter(mFollowerAdapter);
-    mAvatarContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        long userId = mFollowerAdapter.getItem(i).getId();
-        mPresenter.showProfile(userId);
-      }
+    mAvatarContainer.setOnItemClickListener((adapterView, view1, i, l) -> {
+      long userId = mFollowerAdapter.getItemId(i);
+      mPresenter.showProfile(userId);
     });
 
     LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

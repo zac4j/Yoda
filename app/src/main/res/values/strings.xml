@@ -61,7 +61,7 @@
   <string name="user_detail_follower_title">关注者</string>
 
   <!--User Page-->
-  <string name="user_has_no_description">这个人虽然勤快,依然没有写个人简介</string>
+  <string name="user_has_no_description">这个人虽勤快,依然没有写个人简介</string>
   <string name="user_has_no_location">China</string>
   <string name="user_has_no_name">无名氏</string>
   <string name="user_cover_image">user cover image</string>

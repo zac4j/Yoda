@@ -22,6 +22,7 @@ import io.reactivex.functions.Function;
   public static final String UID = "uid";
   public static final String NICKNAME = "nickname";
   public static final String USERNAME = "username";
+  public static final String GENDER = "gender";
   public static final String DESCRIPTION = "description";
   public static final String AVATAR_URL = "avatar_url";
   public static final String LINK = "link";
@@ -36,6 +37,8 @@ import io.reactivex.functions.Function;
   public abstract String nickname();
 
   @Nullable public abstract String username();
+
+  @Nullable public abstract String gender();
 
   @Nullable public abstract String description();
 
@@ -54,13 +57,14 @@ import io.reactivex.functions.Function;
     long uid = Database.getLong(cursor, UID);
     String nickname = Database.getString(cursor, NICKNAME);
     String username = Database.getString(cursor, USERNAME);
+    String gender = Database.getString(cursor, GENDER);
     String description = Database.getString(cursor, DESCRIPTION);
     String avatarUrl = Database.getString(cursor, AVATAR_URL);
     String link = Database.getString(cursor, LINK);
     String location = Database.getString(cursor, LOCATION);
     long follow = Database.getLong(cursor, FOLLOW);
     long follower = Database.getLong(cursor, FOLLOWER);
-    return new AutoValue_Profile(id, uid, nickname, username, description, avatarUrl, link,
+    return new AutoValue_Profile(id, uid, nickname, username, gender, description, avatarUrl, link,
         location, follow, follower);
   };
 
@@ -84,6 +88,11 @@ import io.reactivex.functions.Function;
 
     public Builder username(String username) {
       values.put(USERNAME, username);
+      return this;
+    }
+
+    public Builder gender(String gender) {
+      values.put(GENDER, gender);
       return this;
     }
 
