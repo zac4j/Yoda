@@ -26,22 +26,20 @@ import javax.inject.Singleton;
       + Profile.NICKNAME
       + " TEXT NOT NULL,"
       + Profile.USERNAME
-      + " TEXT NOT NULL,"
+      + " TEXT,"
       + Profile.DESCRIPTION
-      + " TEXT NOT NULL,"
+      + " TEXT,"
       + Profile.AVATAR_URL
       + " TEXT NOT NULL,"
-      + Profile.BG_URL
-      + " TEXT NOT NULL,"
       + Profile.LINK
-      + " TEXT NOT NULL,"
+      + " TEXT,"
       + Profile.LOCATION
-      + " TEXT NOT NULL,"
+      + " TEXT,"
       + Profile.FOLLOW
       + " INTEGER NOT NULL DEFAULT 0,"
       + Profile.FOLLOWER
-      + " INTEGER NOT NULL DEFAULT 0,"
-      + ")";
+      + " INTEGER NOT NULL DEFAULT 0"
+      + ");";
 
   @Inject public DatabaseHelper(@ApplicationContext Context context) {
     super(context, NAME, null, VERSION);

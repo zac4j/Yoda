@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.zac4j.yoda.util.WeiboReader;
 public class UserDetailDialogFragment extends DialogFragment {
 
   public static final String EXTRA_FRIEND_PROFILE = "extra_profile";
+  private static final String TAG = "UserDetailDialog";
 
   @BindView(R.id.user_detail_iv_avatar) ImageView mAvatarView;
   @BindView(R.id.user_detail_tv_nickname) TextView mNicknameView;
@@ -82,5 +84,9 @@ public class UserDetailDialogFragment extends DialogFragment {
   @Override public void onDestroyView() {
     super.onDestroyView();
     unbinder.unbind();
+  }
+
+  public void show(FragmentManager fragmentManager) {
+    this.show(fragmentManager, TAG);
   }
 }

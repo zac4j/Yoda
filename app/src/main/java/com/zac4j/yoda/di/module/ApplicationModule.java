@@ -2,17 +2,16 @@ package com.zac4j.yoda.di.module;
 
 import android.app.Application;
 import android.content.Context;
-import android.database.sqlite.SQLiteOpenHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.sqlbrite.BriteDatabase;
-import com.squareup.sqlbrite.SqlBrite;
+import com.squareup.sqlbrite2.BriteDatabase;
+import com.squareup.sqlbrite2.SqlBrite;
 import com.zac4j.yoda.data.local.DatabaseHelper;
 import com.zac4j.yoda.data.remote.ApiServer;
 import com.zac4j.yoda.di.ApplicationContext;
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.schedulers.Schedulers;
 import javax.inject.Singleton;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**

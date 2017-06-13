@@ -3,6 +3,7 @@ package com.zac4j.yoda.data.model.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import com.google.auto.value.AutoValue;
 import com.zac4j.yoda.data.local.Database;
 import io.reactivex.functions.Function;
@@ -23,7 +24,6 @@ import io.reactivex.functions.Function;
   public static final String USERNAME = "username";
   public static final String DESCRIPTION = "description";
   public static final String AVATAR_URL = "avatar_url";
-  public static final String BG_URL = "bg_url";
   public static final String LINK = "link";
   public static final String LOCATION = "location";
   public static final String FOLLOW = "follow";
@@ -35,17 +35,15 @@ import io.reactivex.functions.Function;
 
   public abstract String nickname();
 
-  public abstract String username();
+  @Nullable public abstract String username();
 
-  public abstract String description();
+  @Nullable public abstract String description();
 
   public abstract String avatarUrl();
 
-  public abstract String backgroundUrl();
+  @Nullable public abstract String link();
 
-  public abstract String link();
-
-  public abstract String location();
+  @Nullable public abstract String location();
 
   public abstract long follow();
 
@@ -58,13 +56,12 @@ import io.reactivex.functions.Function;
     String username = Database.getString(cursor, USERNAME);
     String description = Database.getString(cursor, DESCRIPTION);
     String avatarUrl = Database.getString(cursor, AVATAR_URL);
-    String backgroundUrl = Database.getString(cursor, BG_URL);
     String link = Database.getString(cursor, LINK);
     String location = Database.getString(cursor, LOCATION);
     long follow = Database.getLong(cursor, FOLLOW);
     long follower = Database.getLong(cursor, FOLLOWER);
-    return new AutoValue_Profile(id, uid, nickname, username, description, avatarUrl, backgroundUrl,
-        link, location, follow, follower);
+    return new AutoValue_Profile(id, uid, nickname, username, description, avatarUrl, link,
+        location, follow, follower);
   };
 
   public static final class Builder {
@@ -97,11 +94,6 @@ import io.reactivex.functions.Function;
 
     public Builder avatarUrl(String avatarUrl) {
       values.put(AVATAR_URL, avatarUrl);
-      return this;
-    }
-
-    public Builder backgroundUrl(String backgroundUrl) {
-      values.put(BG_URL, backgroundUrl);
       return this;
     }
 

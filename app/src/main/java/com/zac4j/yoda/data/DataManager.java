@@ -1,7 +1,7 @@
 package com.zac4j.yoda.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite2.BriteDatabase;
 import com.zac4j.yoda.data.local.PreferencesHelper;
 import com.zac4j.yoda.data.remote.ApiServer;
 import io.reactivex.Single;

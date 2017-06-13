@@ -83,12 +83,15 @@ import retrofit2.Response;
         }));
   }
 
-  public void getProfile(long uid) {
+  public void showProfile(long uid) {
     mDataManager.getDatabase()
         .createQuery(Profile.TABLE, PROFILE_QUERY, String.valueOf(uid))
         .mapToOne(Profile.MAPPER)
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe();
+        .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
+        .doOnError(throwable -> publishRequestState(RequestState.ERROR))
+        .doOnComplete(() -> publishRequestState(RequestState.COMPLETE))
+        .subscribe(profile -> getMvpView().showProfileDialog(profile));
   }
 
   private void saveUsers(List<User> users) {
@@ -97,6 +100,7 @@ import retrofit2.Response;
           .insert(Profile.TABLE, new Profile.Builder().uid(user.getId())
               .avatarUrl(user.getAvatarHd())
               .nickname(user.getScreenName())
+              .username(user.getDomain())
               .description(user.getDescription())
               .location(user.getLocation())
               .follow(user.getFriendsCount())

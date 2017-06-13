@@ -269,8 +269,6 @@ public class FileUtils {
         if ("primary".equalsIgnoreCase(type)) {
           return Environment.getExternalStorageDirectory() + "/" + split[1];
         }
-
-        // TODO handle non-primary volumes
       }
       // DownloadsProvider
       else if (isDownloadsDocument(uri)) {
@@ -430,7 +428,7 @@ public class FileUtils {
   }
 
   /**
-   * File and folder comparator. TODO Expose sorting option method
+   * File and folder comparator.
    *
    * @author paulburke
    */

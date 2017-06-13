@@ -25,6 +25,7 @@ import com.zac4j.yoda.data.model.db.Profile;
 import com.zac4j.yoda.ui.adapter.NotifCommentAdapter;
 import com.zac4j.yoda.ui.adapter.NotifFollowerAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
+import com.zac4j.yoda.ui.user.detail.UserDetailDialogFragment;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -68,8 +69,7 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
     mAvatarContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         long userId = mFollowerAdapter.getItem(i).getId();
-
-        showProfileDialog();
+        mPresenter.showProfile(userId);
       }
     });
 
@@ -139,7 +139,12 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
   }
 
   @Override public void showProfileDialog(Profile profile) {
+    if (profile == null) {
+      return;
+    }
 
+    UserDetailDialogFragment dialog = UserDetailDialogFragment.newInstance(profile);
+    dialog.show(getFragmentManager());
   }
 
   @Override public void showEmptyComment() {
