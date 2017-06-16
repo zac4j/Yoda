@@ -97,8 +97,8 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    mWeiboListView.removeOnScrollListener(mScrollListener);
     mPresenter.detach();
+    mWeiboListView.removeOnScrollListener(mScrollListener);
   }
 
   @Override public void showProgress(boolean show) {

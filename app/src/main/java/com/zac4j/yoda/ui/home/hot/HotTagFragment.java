@@ -1,12 +1,17 @@
 package com.zac4j.yoda.ui.home.hot;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -26,9 +31,11 @@ import static android.view.View.VISIBLE;
  * Created by zaccc on 6/1/2017.
  */
 
-public class HotTagFragment extends BaseFragment implements HotTagView {
+public class HotTagFragment extends BaseFragment
+    implements HotTagView, AdapterView.OnItemClickListener {
 
   @BindView(R.id.home_search_lv_hot_tags) ListView mTagListView;
+  @BindView(R.id.empty_view) ViewStub mEmptyView;
   @BindView(R.id.progress_bar) ProgressBar mProgressBar;
   Unbinder unbinder;
 
@@ -56,6 +63,7 @@ public class HotTagFragment extends BaseFragment implements HotTagView {
     mPresenter.attach(this);
 
     mTagListView.setAdapter(mAdapter);
+    mTagListView.setOnItemClickListener(this);
   }
 
   @Override public void onResume() {
@@ -79,7 +87,7 @@ public class HotTagFragment extends BaseFragment implements HotTagView {
   }
 
   @Override public void showErrorView(String error) {
-
+    Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
   }
 
   @Override public void showHotTags(List<Tag> tagList) {
@@ -87,6 +95,18 @@ public class HotTagFragment extends BaseFragment implements HotTagView {
   }
 
   @Override public void showEmptyView(boolean show) {
+    if (show) {
+      mEmptyView.inflate();
+    }
+  }
 
+  @Override public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+    AlertDialog.Builder builder =
+        new AlertDialog.Builder(getContext()).setMessage(R.string.request_permission)
+            .setIcon(R.drawable.ic_weibo)
+            .setTitle(R.string.main_nav_hot)
+            .setPositiveButton(R.string.ok_i_know,
+                (dialogInterface, i1) -> dialogInterface.dismiss());
+    builder.create().show();
   }
 }

@@ -27,15 +27,15 @@ import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.ui.WebViewActivity;
+import com.zac4j.yoda.ui.main.MainActivity;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
+import com.zac4j.yoda.ui.weibo.repost.WeiboRepostDialogFragment;
 import com.zac4j.yoda.util.RxUtils;
-import com.zac4j.yoda.util.WeiboContentParser;
+import com.zac4j.yoda.util.WeiboParser;
 import com.zac4j.yoda.util.WeiboReader;
 import com.zac4j.yoda.util.image.PhotoUtils;
 import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
 import java.util.List;
@@ -144,7 +144,15 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_LIST, imgUrlList);
     holder.mMediaView.setOnClickListener(v -> mContext.startActivity(intent));
 
-    holder.itemView.setOnClickListener(v -> startDetailPage(mContext, weibo));
+    holder.mContentView.setOnClickListener(v -> startDetailPage(mContext, weibo));
+
+    holder.mRepostBtn.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        WeiboRepostDialogFragment dialogFragment =
+            WeiboRepostDialogFragment.newInstance(weibo.getIdstr());
+        dialogFragment.show(((MainActivity) mContext).getSupportFragmentManager());
+      }
+    });
   }
 
   private void startDetailPage(Context context, Weibo weibo) {
@@ -226,7 +234,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         }
 
         weiboContent = "@" + name + ": " + weiboContent;
-        WeiboContentParser.setupText(repostTextView, weiboContent);
+        WeiboParser.setupText(repostTextView, weiboContent);
         mRepostContentView.setBackgroundResource(R.drawable.bg_gray_border);
 
         String imgUrl = repostWeibo.getBmiddlePic();

@@ -2,6 +2,7 @@ package com.zac4j.yoda.di.component;
 
 import com.zac4j.yoda.di.PerConfig;
 import com.zac4j.yoda.di.module.ActivityModule;
+import com.zac4j.yoda.di.module.DialogFragmentModule;
 import com.zac4j.yoda.di.module.FragmentModule;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import dagger.Component;
@@ -21,4 +22,6 @@ public interface PerConfigComponent {
   ActivityComponent activityComponent(ActivityModule activityModule);
 
   FragmentComponent fragmentComponent(FragmentModule fragmentModule);
+
+  DialogFragmentComponent dialogFragmentComponent(DialogFragmentModule dialogFragmentModule);
 }

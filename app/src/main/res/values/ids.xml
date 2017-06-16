@@ -78,6 +78,11 @@
   <item name="weibo_send_progressbar" type="id"/>
   <item name="weibo_send_media_container" type="id"/>
 
+  <!--Weibo Repost-->
+  <item name="weibo_repost_dialog_input_layout" type="id"/>
+  <item name="weibo_repost_dialog_et_comment" type="id"/>
+  <item name="weibo_repost_dialog_ckb_as_content" type="id"/>
+
   <!--Weibo Image-->
   <item name="weibo_image_iv_container" type="id"/>
   <item name="weibo_image_vp_container" type="id"/>
@@ -156,6 +161,6 @@
   <item name="comment_list_item_tv_weibo_content" type="id"/>
   <item name="comment_list_item_tv_comment_content" type="id"/>
   <item name="comment_list_item_weibo_container" type="id"/>
-
+  <item name="empty_view" type="id"/>
 
 </resources>

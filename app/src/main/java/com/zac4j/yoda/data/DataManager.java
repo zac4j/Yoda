@@ -74,6 +74,11 @@ import retrofit2.Response;
     return mApiServer.sendPictureWeibo(weibo, image);
   }
 
+  public Single<Response<Object>> repostWeibo(String token, String id, String status,
+      int asComment) {
+    return mApiServer.repostWeibo(token, id, status, asComment);
+  }
+
   public Single<Response<Object>> unfollowFriend(String token, long uid) {
     return mApiServer.unfollowFriend(token, uid);
   }

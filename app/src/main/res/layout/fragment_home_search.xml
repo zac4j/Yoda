@@ -27,4 +27,12 @@
       android:id="@id/progress_bar"
       />
 
+  <ViewStub
+      android:id="@id/empty_view"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:layout="@layout/empty_view_hot_tag"
+      />
+
 </RelativeLayout>

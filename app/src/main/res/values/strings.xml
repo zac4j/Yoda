@@ -11,6 +11,7 @@
   <string name="search">Search</string>
   <string name="weibo_send_content_input_hint">What\'s news&#8230;</string>
   <string name="ok">OK</string>
+  <string name="cancel">Cancel</string>
   <string name="error_check_network">Check Your Network Connection!</string>
   <string name="error_no_weibo">You Have Not Post Weibo!</string>
   <string name="error_no_friends">You don\'t have friends yet!</string>
@@ -68,5 +69,9 @@
 
   <!--Notification-->
   <string name="notif_no_latest_follows">最近没有关注你的人哦</string>
+  <string name="request_permission">高级权限接口申请中..</string>
+  <string name="empty_hot_tag">当前还没有热点呢</string>
+  <string name="weibo_repost">转发微博</string>
+  <string name="weibo_repost_as_comment">同时作为评论发表</string>
 
 </resources>

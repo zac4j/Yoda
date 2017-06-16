@@ -42,6 +42,19 @@ public interface ApiServer {
       @Query("page") int page);
 
   /**
+   * 转发微博
+   *
+   * @param token access token
+   * @param id weibo id
+   * @param status status content
+   * @param isComment if set status as weibo comment 0：否、1：评论给当前微博、2：评论给原微博、3：都评论，默认为0 。
+   * @return weibo content
+   */
+  @GET("statuses/repost.json") Single<Response<Object>> repostWeibo(
+      @Query("access_token") String token, @Query("id") String id, @Query("status") String status,
+      @Query("is_comment") int isComment);
+
+  /**
    * Get user profile
    *
    * @param token user access token

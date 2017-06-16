@@ -66,7 +66,7 @@ public class WeiboReader {
     if (TextUtils.isEmpty(content)) {
       contentView.setText("");
     } else {
-      WeiboContentParser.setupText(contentView, content);
+      WeiboParser.setupText(contentView, content);
     }
   }
 
