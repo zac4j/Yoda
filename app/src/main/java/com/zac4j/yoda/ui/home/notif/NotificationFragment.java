@@ -96,8 +96,8 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
     }
   }
 
-  @Override public void showErrorView(String message) {
-    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+  @Override public void showMessage(String msg) {
+    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
   }
 
   @Override public void showProgress(boolean show) {

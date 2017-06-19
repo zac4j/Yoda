@@ -69,7 +69,7 @@ import retrofit2.Response;
           user = mapper.readValue(value, User.class);
         } catch (IOException e) {
           e.printStackTrace();
-          getMvpView().showErrorView(e.getMessage());
+          getMvpView().showMessage(e.getMessage());
         }
 
         if (user == null) {
@@ -78,7 +78,7 @@ import retrofit2.Response;
           getMvpView().showProfile(user);
         }
       } else {
-        getMvpView().showErrorView(Error.NETWORK);
+        getMvpView().showMessage(Error.NETWORK);
       }
     }));
   }

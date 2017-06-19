@@ -91,7 +91,7 @@ public class UserMomentFragment extends BaseFragment implements UserMomentView {
     return view;
   }
 
-  @Override public void showErrorView(String message) {
+  @Override public void showMessage(String message) {
     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     mErrorView.setVisibility(VISIBLE);
   }

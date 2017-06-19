@@ -114,9 +114,9 @@ public class UserFriendListActivity extends BaseActivity implements UserFriendLi
 
   }
 
-  @Override public void showErrorView(String message) {
+  @Override public void showMessage(String msg) {
     mErrorView.setVisibility(View.VISIBLE);
-    mErrorTextView.setText(message);
+    mErrorTextView.setText(msg);
   }
 
   @Override public boolean isRefreshing() {

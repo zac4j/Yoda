@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ import com.zac4j.yoda.util.image.PhotoUtils;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -50,10 +52,16 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
   private Context mContext;
   private List<Weibo> mWeiboList;
+  private RecyclerView mRecyclerView;
 
   @Inject public TimelineAdapter(@ActivityContext Context context) {
     mContext = context;
     mWeiboList = new ArrayList<>();
+  }
+
+  @Override public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    super.onAttachedToRecyclerView(recyclerView);
+    mRecyclerView = recyclerView;
   }
 
   public void addWeiboList(final List<Weibo> weiboList) {
@@ -146,12 +154,21 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
     holder.mContentView.setOnClickListener(v -> startDetailPage(mContext, weibo));
 
-    holder.mRepostBtn.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
-        WeiboRepostDialogFragment dialogFragment =
-            WeiboRepostDialogFragment.newInstance(weibo.getIdstr());
-        dialogFragment.show(((MainActivity) mContext).getSupportFragmentManager());
-      }
+    holder.mRepostBtn.setOnClickListener(view -> {
+      WeiboRepostDialogFragment dialogFragment =
+          WeiboRepostDialogFragment.newInstance(weibo.getIdstr());
+      dialogFragment.show(((MainActivity) mContext).getSupportFragmentManager());
+      dialogFragment.setOnRepostListener(new WeiboRepostDialogFragment.OnRepostListener() {
+        @Override public void onSuccess(Weibo weibo1) {
+          mWeiboList.add(0, weibo1);
+          TimelineAdapter.this.notifyItemInserted(0);
+          mRecyclerView.scrollToPosition(0);
+        }
+
+        @Override public void onFailure() {
+          // Try to do something fun.
+        }
+      });
     });
   }
 

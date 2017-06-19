@@ -86,8 +86,8 @@ public class HotTagFragment extends BaseFragment
     }
   }
 
-  @Override public void showErrorView(String error) {
-    Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+  @Override public void showMessage(String msg) {
+    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
   }
 
   @Override public void showHotTags(List<Tag> tagList) {

@@ -96,8 +96,8 @@ public class UserFragment extends BaseFragment implements UserView {
 
   }
 
-  @Override public void showErrorView(String message) {
-    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+  @Override public void showMessage(String msg) {
+    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
   }
 
   @Override public void onDestroyView() {

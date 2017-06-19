@@ -75,7 +75,7 @@ import retrofit2.Response;
           });
         } catch (IOException e) {
           e.printStackTrace();
-          getMvpView().showErrorView(e.getMessage());
+          getMvpView().showMessage(e.getMessage());
         }
 
         if (tagList == null || tagList.isEmpty()) {
@@ -94,7 +94,7 @@ import retrofit2.Response;
       if (throwable instanceof HttpException) {
         Response response = ((HttpException) throwable).response();
         int responseCode = response.code();
-        getMvpView().showErrorView(Error.NETWORK);
+        getMvpView().showMessage(Error.NETWORK);
       }
     }));
   }

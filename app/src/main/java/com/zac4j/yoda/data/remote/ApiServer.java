@@ -9,6 +9,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -50,9 +51,9 @@ public interface ApiServer {
    * @param isComment if set status as weibo comment 0：否、1：评论给当前微博、2：评论给原微博、3：都评论，默认为0 。
    * @return weibo content
    */
-  @GET("statuses/repost.json") Single<Response<Object>> repostWeibo(
-      @Query("access_token") String token, @Query("id") String id, @Query("status") String status,
-      @Query("is_comment") int isComment);
+  @FormUrlEncoded @POST("statuses/repost.json") Single<Response<Object>> repostWeibo(
+      @Field("access_token") String token, @Field("id") String id, @Field("status") String status,
+      @Field("is_comment") int isComment);
 
   /**
    * Get user profile

@@ -11,5 +11,5 @@ public interface MvpView {
 
   void showEmptyView(boolean show);
 
-  void showErrorView(String error);
+  void showMessage(String msg);
 }

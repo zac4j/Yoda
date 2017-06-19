@@ -72,7 +72,7 @@ import retrofit2.Response;
 
           @Override public void onError(Throwable e) {
             hideProgress();
-            getMvpView().showErrorView(Error.NETWORK);
+            getMvpView().showMessage(Error.NETWORK);
           }
         });
 

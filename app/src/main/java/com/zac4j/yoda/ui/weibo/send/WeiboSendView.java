@@ -8,7 +8,5 @@ import com.zac4j.yoda.ui.base.MvpView;
  */
 
 public interface WeiboSendView extends MvpView {
-  void showMessage(String message);
-
   void finishPublish();
 }

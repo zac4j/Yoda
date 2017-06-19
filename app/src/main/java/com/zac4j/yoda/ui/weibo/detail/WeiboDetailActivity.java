@@ -106,7 +106,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
 
   }
 
-  @Override public void showErrorView(String message) {
+  @Override public void showMessage(String message) {
     mErrorView.setVisibility(View.VISIBLE);
     if (TextUtils.isEmpty(message)) {
       return;

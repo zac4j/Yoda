@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
@@ -108,8 +109,8 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     mProgressBar.setVisibility(show ? VISIBLE : GONE);
   }
 
-  @Override public void showErrorView(String error) {
-
+  @Override public void showMessage(String msg) {
+    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
   }
 
   @Override public void showRefresh(boolean refresh) {

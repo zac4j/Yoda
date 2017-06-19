@@ -69,7 +69,7 @@ import retrofit2.Response;
           timeline = mapper.readValue(value, Timeline.class);
         } catch (IOException e) {
           e.printStackTrace();
-          getMvpView().showErrorView(e.getMessage());
+          getMvpView().showMessage(e.getMessage());
         }
 
         if (timeline == null || timeline.getStatuses() == null || timeline.getStatuses()
