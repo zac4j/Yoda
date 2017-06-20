@@ -41,10 +41,10 @@ import timber.log.Timber;
     }
   }
 
-  public void getWeibo(String token, long id) {
+  public void getWeiboComments(String token, long id) {
     checkViewAttached();
     mDataManager.getWeiboById(token, id)
-        .compose(RxUtils.<Response<Object>>applySchedulers())
+        .compose(RxUtils.applySchedulers())
         .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
           @Override public void onSuccess(Response<Object> response) {
             if (response.isSuccessful()) {

@@ -1,5 +1,6 @@
 package com.zac4j.yoda.data.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -18,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "sexual_content"
 })
-public class Insecurity {
+public class Insecurity implements Serializable{
 
   @JsonProperty("sexual_content")
   private Boolean sexualContent;

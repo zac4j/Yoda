@@ -57,8 +57,9 @@
           android:id="@id/weibo_detail_tv_post_time"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_toEndOf="@id/weibo_detail_tv_username"
+          android:layout_alignParentEnd="true"
           android:ellipsize="end"
+          android:lines="1"
           android:maxLength="16"
           android:textAppearance="@style/TextAppearance.AppCompat.Caption"
           tools:text="4min"
@@ -82,13 +83,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="Would you like to have a library of swatches at your fingertips in Sketch? Check out this plugin!http://buff.ly/2lErpKy "
-        />
-
-    <ImageView
-        android:id="@id/weibo_detail_iv_media_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/weibo_media_height"
-        android:scaleType="fitStart"
         />
 
     <LinearLayout
@@ -116,7 +110,7 @@
           android:layout_marginEnd="@dimen/space.large"
           android:layout_marginStart="@dimen/space.large"
           android:drawablePadding="@dimen/space.very_small"
-          android:drawableStart="@drawable/ic_weibo_reply"
+          android:drawableStart="@drawable/ic_weibo_comment"
           android:gravity="center"
           android:textAppearance="@style/TextAppearance.AppCompat.Caption"
           tools:text="110"
@@ -146,11 +140,6 @@
   <include
       layout="@layout/include_progressbar"
       android:id="@id/progress_bar"
-      />
-
-  <include
-      layout="@layout/include_error_view"
-      android:id="@id/error_view"
       />
 
 </RelativeLayout>

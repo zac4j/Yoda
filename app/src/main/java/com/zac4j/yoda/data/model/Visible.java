@@ -1,6 +1,7 @@
 package com.zac4j.yoda.data.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -16,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL) @JsonPropertyOrder({
     "type", "list_id"
-}) public class Visible {
+}) public class Visible implements Serializable{
 
   @JsonProperty("type") private Integer type;
   @JsonProperty("list_id") private Integer listId;

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -21,17 +20,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.ThumbUrl;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
-import com.zac4j.yoda.ui.WebViewActivity;
-import com.zac4j.yoda.ui.main.MainActivity;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
-import com.zac4j.yoda.ui.weibo.repost.WeiboRepostDialogFragment;
 import com.zac4j.yoda.util.RxUtils;
 import com.zac4j.yoda.util.WeiboParser;
 import com.zac4j.yoda.util.WeiboReader;
@@ -39,7 +34,6 @@ import com.zac4j.yoda.util.image.PhotoUtils;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -136,10 +130,53 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     // 用户信息
     setupUserInfo(holder, weibo.getUser());
 
+    // 添加点击事件
+    addClickEvents(mContext, holder, weibo);
+  }
+
+  /**
+   * 添加点击事件逻辑
+   *
+   * @param context context
+   * @param holder view holder
+   * @param weibo weibo object
+   */
+  private void addClickEvents(Context context, ViewHolder holder, Weibo weibo) {
+    setMediaClickEvent(context, holder, weibo);
+    setContentClickEvent(context, holder, weibo);
+    //setRepostClickEvent(context, holder, weibo);
+  }
+
+  /**
+   * 转发按钮点击事件
+   */
+  //private void setRepostClickEvent(Context context, ViewHolder holder, Weibo weibo) {
+  //  holder.mRepostBtn.setOnClickListener(view -> {
+  //    WeiboRepostDialogFragment dialogFragment =
+  //        WeiboRepostDialogFragment.newInstance(weibo.getIdstr());
+  //    dialogFragment.show(((MainActivity) context).getSupportFragmentManager());
+  //    dialogFragment.setOnRepostListener(new WeiboRepostDialogFragment.OnRepostListener() {
+  //      @Override public void onSuccess(Weibo weibo1) {
+  //        mWeiboList.add(0, weibo1);
+  //        TimelineAdapter.this.notifyItemInserted(0);
+  //        mRecyclerView.scrollToPosition(0);
+  //      }
+  //
+  //      @Override public void onFailure() {
+  //        // Try to do something fun.
+  //      }
+  //    });
+  //  });
+  //}
+
+  /**
+   * 设置图片点击事件
+   */
+  private void setMediaClickEvent(Context context, ViewHolder holder, Weibo weibo) {
     // 多媒体消息
     String media = weibo.getBmiddlePic();
     boolean isMultiImages = weibo.getPicUrls().size() > 1;
-    holder.setMediaContent(mContext, media, isMultiImages);
+    holder.setMediaContent(context, media, isMultiImages);
     ArrayList<ThumbUrl> imgUrlList = new ArrayList<>();
     if (isMultiImages) {
       imgUrlList = (ArrayList<ThumbUrl>) weibo.getPicUrls();
@@ -148,46 +185,37 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       ThumbUrl thumbUrl = new ThumbUrl(imgUrl);
       imgUrlList.add(thumbUrl);
     }
-    final Intent intent = new Intent(mContext, WeiboImageActivity.class);
+    final Intent intent = new Intent(context, WeiboImageActivity.class);
     intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_LIST, imgUrlList);
-    holder.mMediaView.setOnClickListener(v -> mContext.startActivity(intent));
+    holder.mMediaView.setOnClickListener(view -> context.startActivity(intent));
+  }
 
-    holder.mContentView.setOnClickListener(v -> startDetailPage(mContext, weibo));
-
-    holder.mRepostBtn.setOnClickListener(view -> {
-      WeiboRepostDialogFragment dialogFragment =
-          WeiboRepostDialogFragment.newInstance(weibo.getIdstr());
-      dialogFragment.show(((MainActivity) mContext).getSupportFragmentManager());
-      dialogFragment.setOnRepostListener(new WeiboRepostDialogFragment.OnRepostListener() {
-        @Override public void onSuccess(Weibo weibo1) {
-          mWeiboList.add(0, weibo1);
-          TimelineAdapter.this.notifyItemInserted(0);
-          mRecyclerView.scrollToPosition(0);
-        }
-
-        @Override public void onFailure() {
-          // Try to do something fun.
-        }
-      });
-    });
+  /**
+   * 设置内容点击事件
+   */
+  private void setContentClickEvent(Context context, ViewHolder holder, Weibo weibo) {
+    holder.mContentView.setOnClickListener(v -> startDetailPage(context, weibo));
   }
 
   private void startDetailPage(Context context, Weibo weibo) {
     if (weibo == null) {
       return;
     }
-    final String uid = AccessTokenKeeper.readAccessToken(context).getUid();
-    final String weiboUserId = weibo.getUser().getIdstr();
-    if (uid.equals(weiboUserId)) { // 如果是自己发的微博
-      Intent intent = new Intent(context, WeiboDetailActivity.class);
-      intent.putExtra(WeiboDetailActivity.WEIBO_ID_EXTRA, weibo.getId());
-      context.startActivity(intent);
-    } else { // 不是自己的微博目前没权限看详情
-      Intent intent = new Intent(context, WebViewActivity.class);
-      intent.putExtra(WebViewActivity.EXTRA_WEIBO_ID, weibo.getIdstr());
-      intent.putExtra(WebViewActivity.EXTRA_UID, weiboUserId);
-      context.startActivity(intent);
-    }
+    Intent intent = new Intent(context, WeiboDetailActivity.class);
+    intent.putExtra(WeiboDetailActivity.EXTRA_WEIBO, weibo);
+    context.startActivity(intent);
+    //final String uid = AccessTokenKeeper.readAccessToken(context).getUid();
+    //final String weiboUserId = weibo.getUser().getIdstr();
+    //if (uid.equals(weiboUserId)) { // 如果是自己发的微博
+    //  Intent intent = new Intent(context, WeiboDetailActivity.class);
+    //  intent.putExtra(WeiboDetailActivity.WEIBO_ID_EXTRA, weibo.getId());
+    //  context.startActivity(intent);
+    //} else { // 不是自己的微博目前没权限看详情
+    //  Intent intent = new Intent(context, WebViewActivity.class);
+    //  intent.putExtra(WebViewActivity.EXTRA_WEIBO_ID, weibo.getIdstr());
+    //  intent.putExtra(WebViewActivity.EXTRA_UID, weiboUserId);
+    //  context.startActivity(intent);
+    //}
   }
 
   private void setupUserInfo(ViewHolder holder, User user) {

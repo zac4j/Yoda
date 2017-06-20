@@ -1,28 +1,29 @@
 package com.zac4j.yoda.ui.weibo.detail;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.bumptech.glide.Glide;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
+import com.zac4j.yoda.data.model.Comment;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.base.BaseActivity;
-import com.zac4j.yoda.util.TimeUtils;
+import com.zac4j.yoda.util.WeiboReader;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -32,22 +33,19 @@ import javax.inject.Inject;
 
 public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView {
 
-  public static final String WEIBO_ID_EXTRA = "weibo_id";
+  public static final String EXTRA_WEIBO = "weibo";
 
   @Inject WeiboDetailPresenter mPresenter;
 
   @BindView(R.id.weibo_detail_main_view) View mMainView;
   @BindView(R.id.toolbar) Toolbar mToolbar;
   @BindView(R.id.progress_bar) ProgressBar mProgressBar;
-  @BindView(R.id.error_view) View mErrorView;
-  @BindView(R.id.error_view_txt) TextView mErrorTextView;
   @BindView(R.id.weibo_detail_iv_avatar) ImageView mAvatarView;
   @BindView(R.id.weibo_detail_tv_nickname) TextView mNicknameView;
   @BindView(R.id.weibo_detail_tv_username) TextView mUsernameView;
   @BindView(R.id.weibo_detail_tv_post_time) TextView mPostTimeView;
   @BindView(R.id.weibo_detail_tv_post_from) TextView mPostFromView;
   @BindView(R.id.weibo_detail_tv_content) TextView mWeiboContentView;
-  @BindView(R.id.weibo_detail_iv_media_view) ImageView mMediaView;
   @BindView(R.id.weibo_detail_rv_comment_list) RecyclerView mCommentListView;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,10 +66,14 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
       actionBar.setTitle(R.string.weibo_detail);
     }
 
-    final long weiboId = getIntent().getLongExtra(WEIBO_ID_EXTRA, 0L);
-    if (weiboId != 0) {
+    Weibo weibo = (Weibo) getIntent().getSerializableExtra(EXTRA_WEIBO);
+    if (weibo != null) {
+      showWeiboInfo(weibo);
+
       String token = AccessTokenKeeper.readAccessToken(this).getToken();
-      mPresenter.getWeibo(token, weiboId);
+      //mPresenter.getWeiboComments(token, weibo.getId());
+    } else {
+      showEmptyView(true);
     }
   }
 
@@ -107,11 +109,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
   }
 
   @Override public void showMessage(String message) {
-    mErrorView.setVisibility(View.VISIBLE);
-    if (TextUtils.isEmpty(message)) {
-      return;
-    }
-    mErrorTextView.setText(message);
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
   }
 
   @Override public void showWeiboInfo(Weibo weibo) {
@@ -127,58 +125,25 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     }
 
     // set user avatar
-    String avatarUrl = user.getProfileImageUrl();
-    if (!TextUtils.isEmpty(avatarUrl)) {
-      Glide.with(this).load(avatarUrl).into(mAvatarView);
-    }
+    WeiboReader.readAvatar(this, mAvatarView, user.getProfileImageUrl());
 
     // set username
-    String username = user.getDomain();
-    if (!TextUtils.isEmpty(username)) {
-      mUsernameView.setText(user.getDomain());
-    }
+    WeiboReader.readUsername(mUsernameView, user.getDomain());
 
     // set nickname
-    String name = user.getName();
-    if (!TextUtils.isEmpty(name)) {
-      mNicknameView.setText(name);
-    }
+    WeiboReader.readNickname(mNicknameView, user.getName());
 
     // set post time
-    setupPostTime(weibo.getCreatedAt());
+    WeiboReader.readPostTime(mPostTimeView, weibo.getCreatedAt());
 
     // set post from
-    setupPostFrom(weibo.getSource());
+    WeiboReader.readPostSource(mPostFromView, weibo.getSource());
 
-    String content = weibo.getText();
-    if (!TextUtils.isEmpty(content)) {
-      mWeiboContentView.setText(content);
-    }
-
-    String mediaUrl = weibo.getBmiddlePic();
-    if (!TextUtils.isEmpty(mediaUrl)) {
-      Glide.with(this).load(mediaUrl).into(mMediaView);
-    }
-    mMediaView.setVisibility(View.VISIBLE);
+    // set weibo content
+    WeiboReader.readContent(mWeiboContentView, weibo.getText());
   }
 
-  private void setupPostTime(String postTime) {
-    if (TextUtils.isEmpty(postTime)) {
-      return;
-    }
-    String pattern = "E MMM dd HH:mm:ss Z yyyy";
-    String dateStr = TimeUtils.getDateAndTime(postTime, pattern);
-    mPostTimeView.setText(dateStr);
-  }
+  @Override public void showWeiboComments(List<Comment> commentList) {
 
-  private void setupPostFrom(String postFrom) {
-    if (TextUtils.isEmpty(postFrom)) {
-      return;
-    }
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      mPostFromView.setText(Html.fromHtml(postFrom, Html.FROM_HTML_MODE_LEGACY));
-    } else {
-      mPostFromView.setText(Html.fromHtml(postFrom));
-    }
   }
 }

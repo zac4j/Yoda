@@ -99,6 +99,10 @@ import retrofit2.Response;
     return mApiServer.getFollowers(token, uid);
   }
 
+  public Single<Response<Object>> commentWeibo(String token, String id, String comment) {
+    return mApiServer.commentWeibo(token, id, comment);
+  }
+
   public Single<Response<Object>> getComments(String token, int count, int page) {
     return mApiServer.getComments(token, count, page);
   }

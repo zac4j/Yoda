@@ -1,5 +1,6 @@
 package com.zac4j.yoda.data.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "type",
     "coordinates"
 })
-public class Geography {
+public class Geography implements Serializable{
 
   @JsonProperty("type")
   private String type;

@@ -1,5 +1,6 @@
 package com.zac4j.yoda.data.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -16,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL) @JsonPropertyOrder({
     "follow_action", "card_action"
-}) public class ActionLog {
+}) public class ActionLog implements Serializable{
 
   @JsonProperty("follow_action") private Action followAction;
   @JsonProperty("card_action") private Action cardAction;

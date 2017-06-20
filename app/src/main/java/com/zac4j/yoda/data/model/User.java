@@ -2,6 +2,7 @@ package com.zac4j.yoda.data.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "verified_contact_email", "verified_contact_mobile", "follow_me", "online_status",
     "bi_followers_count", "lang", "star", "mbtype", "mbrank", "block_word", "block_app",
     "credit_score", "user_ability", "cardid", "urank", "action_log"
-}) public class User {
+}) public class User implements Serializable{
 
   @JsonProperty("id") private Long id;
   @JsonProperty("idstr") private String idstr;

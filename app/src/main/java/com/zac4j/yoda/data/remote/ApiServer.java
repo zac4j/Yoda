@@ -48,12 +48,23 @@ public interface ApiServer {
    * @param token access token
    * @param id weibo id
    * @param status status content
-   * @param isComment if set status as weibo comment 0：否、1：评论给当前微博、2：评论给原微博、3：都评论，默认为0 。
+   * @param isComment 转发并评论 0：否、1：评论给当前微博、2：评论给原微博、3：都评论，默认为0 。
    * @return weibo content
    */
   @FormUrlEncoded @POST("statuses/repost.json") Single<Response<Object>> repostWeibo(
       @Field("access_token") String token, @Field("id") String id, @Field("status") String status,
       @Field("is_comment") int isComment);
+
+  /**
+   * 评论微博
+   *
+   * @param token access token
+   * @param id weibo id
+   * @param comment comment content
+   * @return weibo content
+   */
+  @FormUrlEncoded @POST("comments/create.json") Single<Response<Object>> commentWeibo(
+      @Field("access_token") String token, @Field("id") String id, @Field("comment") String comment);
 
   /**
    * Get user profile

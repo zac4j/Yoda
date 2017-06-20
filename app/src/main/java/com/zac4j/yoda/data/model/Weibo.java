@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ import java.util.Map;
     "gif_ids", "is_show_bulletin"
 })
 
-public class Weibo {
+public class Weibo implements Serializable {
   @JsonProperty("created_at") private String createdAt;
   @JsonProperty("id") private Long id;
   @JsonProperty("mid") private String mid;
