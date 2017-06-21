@@ -88,7 +88,9 @@
           android:id="@id/weibo_list_item_iv_media"
           />
 
-      <include layout="@layout/include_list_item_weibo_bottom_btns"/>
+      <include
+          android:id="@id/weibo_list_item_bottom_btns"
+          layout="@layout/include_list_item_weibo_bottom_btns"/>
 
     </LinearLayout>
   </RelativeLayout>

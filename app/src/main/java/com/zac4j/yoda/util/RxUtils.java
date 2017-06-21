@@ -1,23 +1,9 @@
 package com.zac4j.yoda.util;
 
-import android.text.TextUtils;
-import android.util.JsonReader;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zac4j.yoda.data.model.response.Error;
-import com.zac4j.yoda.ui.base.MvpView;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
-import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import io.reactivex.SingleTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import org.json.JSONObject;
-import retrofit2.Response;
-import timber.log.Timber;
 
 /**
  * ReactiveX Utilities

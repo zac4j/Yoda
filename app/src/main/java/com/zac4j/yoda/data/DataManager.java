@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.sqlbrite2.BriteDatabase;
 import com.zac4j.yoda.data.local.PreferencesHelper;
 import com.zac4j.yoda.data.remote.ApiServer;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import java.util.Map;
 import javax.inject.Inject;
