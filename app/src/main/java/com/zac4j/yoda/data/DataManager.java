@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.sqlbrite2.BriteDatabase;
 import com.zac4j.yoda.data.local.PreferencesHelper;
 import com.zac4j.yoda.data.remote.ApiServer;
-import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import java.util.Map;
 import javax.inject.Inject;
@@ -50,20 +50,16 @@ import retrofit2.Response;
     return mDatabase;
   }
 
-  public Single<Response<Object>> getHomeTimeline(String token, int count, int page) {
+  public Observable<Response<Object>> getHomeTimeline(String token, int count, int page) {
     return mApiServer.getTimeline("friends", token, count, page);
   }
 
-  public Single<Response<Object>> getUserTimeline(String token, int count, int page) {
-    return mApiServer.getTimeline("user", token, count, page);
-  }
-
-  public Single<Response<Object>> getUserProfile(String token, String uid) {
-    return mApiServer.getUserProfile(token, uid);
-  }
-
-  public Single<Response<Object>> getWeiboById(String token, long id) {
+  public Single<Response<Object>> getWeiboInfo(String token, long id) {
     return mApiServer.getWeiboInfo(token, id);
+  }
+
+  public Single<Response<Object>> getWeiboComments(String token, long id, int page, int count) {
+    return mApiServer.getWeiboComments(token, id, page, count);
   }
 
   public Single<Response<Object>> sendTextWeibo(Map<String, String> weibo) {
@@ -78,6 +74,10 @@ import retrofit2.Response;
   public Single<Response<Object>> repostWeibo(String token, String id, String status,
       int asComment) {
     return mApiServer.repostWeibo(token, id, status, asComment);
+  }
+
+  public Single<Response<Object>> commentWeibo(String token, String id, String comment) {
+    return mApiServer.commentWeibo(token, id, comment);
   }
 
   public Single<Response<Object>> unfollowFriend(String token, long uid) {
@@ -96,16 +96,20 @@ import retrofit2.Response;
     return mApiServer.getFriends(token, uid, count, cursor);
   }
 
+  public Observable<Response<Object>> getUserTimeline(String token, int count, int page) {
+    return mApiServer.getTimeline("user", token, count, page);
+  }
+
+  public Single<Response<Object>> getUserProfile(String token, String uid) {
+    return mApiServer.getUserProfile(token, uid);
+  }
+
   public Single<Response<Object>> getFollowers(String token, String uid) {
     return mApiServer.getFollowers(token, uid);
   }
 
-  public Single<Response<Object>> commentWeibo(String token, String id, String comment) {
-    return mApiServer.commentWeibo(token, id, comment);
-  }
-
-  public Single<Response<Object>> getComments(String token, int count, int page) {
-    return mApiServer.getComments(token, count, page);
+  public Single<Response<Object>> getUserComments(String token, int count, int page) {
+    return mApiServer.getUserComments(token, count, page);
   }
 
   public Single<Response<Object>> getLatestComments(String token) {

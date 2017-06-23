@@ -33,6 +33,7 @@ import static android.view.View.VISIBLE;
 public class TimelineFragment extends BaseFragment implements TimelineView {
 
   // WebService default weibo count is 20 as well.
+  public static final int DEFAULT_WEIBO_PAGE = 1;
   public static final int DEFAULT_WEIBO_COUNT = 6;
   private final int mRequestCount = DEFAULT_WEIBO_COUNT;
   private int mRequestPage = 1;
@@ -80,16 +81,18 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     };
     mWeiboListView.addOnScrollListener(mScrollListener);
 
-    mSwipeContainer.setOnRefreshListener(
-        () -> mPresenter.getTimeline(mToken, mRequestCount, mRequestPage));
+    mSwipeContainer.setOnRefreshListener(() -> {
+      mPresenter.getTimeline(mToken, DEFAULT_WEIBO_COUNT, DEFAULT_WEIBO_PAGE);
+      mRequestPage = 1;
+    });
 
     mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
         android.R.color.holo_green_light, android.R.color.holo_orange_light,
         android.R.color.holo_red_light);
   }
 
-  @Override public void onResume() {
-    super.onResume();
+  @Override public void onStart() {
+    super.onStart();
 
     if (mTimelineAdapter.isEmpty()) {
       mPresenter.getTimeline(mToken, mRequestCount, mRequestPage);
@@ -113,10 +116,6 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
   }
 
-  @Override public void showRefresh(boolean refresh) {
-    mSwipeContainer.setRefreshing(refresh);
-  }
-
   @Override public void showEmptyView(boolean show) {
     mErrorView.setVisibility(show ? VISIBLE : GONE);
   }
@@ -133,5 +132,15 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
 
     mSwipeContainer.setRefreshing(false);
     mWeiboListView.setVisibility(VISIBLE);
+  }
+
+  @Override public void showRefresh(boolean show) {
+    if (mSwipeContainer != null) {
+      mSwipeContainer.setRefreshing(show);
+    }
+  }
+
+  @Override public boolean isRefreshing() {
+    return mSwipeContainer != null && mSwipeContainer.isRefreshing();
   }
 }

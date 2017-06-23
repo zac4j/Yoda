@@ -163,6 +163,7 @@
   <item name="comment_list_item_tv_weibo_content" type="id"/>
   <item name="comment_list_item_tv_comment_content" type="id"/>
   <item name="comment_list_item_weibo_container" type="id"/>
+  <item name="comment_list_item_bottom_btns" type="id"/>
   <item name="empty_view" type="id"/>
 
 </resources>

@@ -11,12 +11,10 @@ import retrofit2.Response;
  * Created by zaccc on 6/1/2017.
  */
 
-public class RxPresenter<T extends MvpView> extends BasePresenter<T> {
+public abstract class RxPresenter<T extends MvpView> extends BasePresenter<T> {
 
   private BehaviorRelay<RequestState> mRequestState =
       BehaviorRelay.createDefault(RequestState.IDLE);
-  protected BehaviorRelay<Response<Object>> mResponse = BehaviorRelay.create();
-  protected BehaviorRelay<Throwable> mErrors = BehaviorRelay.create();
 
   protected void publishRequestState(RequestState requestState) {
     Observable.just(requestState)
@@ -39,11 +37,7 @@ public class RxPresenter<T extends MvpView> extends BasePresenter<T> {
     });
   }
 
-  protected void publishResponse(Response<Object> response) {
-    Observable.just(response).observeOn(AndroidSchedulers.mainThread()).subscribe(mResponse);
-  }
+  protected abstract void publishResponse(Response<Object> response);
 
-  protected void publishErrors(Throwable throwable) {
-    Observable.just(throwable).observeOn(AndroidSchedulers.mainThread()).subscribe(mErrors);
-  }
+  protected abstract void publishErrors(Throwable throwable);
 }

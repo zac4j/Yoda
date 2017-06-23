@@ -1,4 +1,4 @@
-package com.zac4j.yoda.ui.weibo;
+package com.zac4j.yoda.ui.weibo.delete;
 
 import com.zac4j.yoda.ui.base.BaseDialogFragment;
 

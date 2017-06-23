@@ -149,11 +149,11 @@ import static android.database.sqlite.SQLiteDatabase.CONFLICT_IGNORE;
         }));
   }
 
+  @Override protected void publishResponse(Response<Object> response) {
+
+  }
+
   @Override protected void publishErrors(Throwable throwable) {
-    super.publishErrors(throwable);
 
-    mErrors.distinct().subscribe(throwable1 -> {
-
-    });
   }
 }

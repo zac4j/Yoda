@@ -1,5 +1,6 @@
 package com.zac4j.yoda.ui.weibo.repost;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
 import com.zac4j.yoda.data.model.Weibo;
@@ -53,31 +54,30 @@ public class WeiboRepostPresenter extends RxPresenter<WeiboRepostView> {
   }
 
   @Override protected void publishResponse(Response<Object> response) {
-    super.publishResponse(response);
-    mDisposables.add(mResponse.subscribe(response1 -> {
-      if (response1.isSuccessful()) {
-        Object data = response1.body();
-        ObjectMapper mapper = mDataManager.getObjectMapper();
+    if (response.isSuccessful()) {
+      Object data = response.body();
+      ObjectMapper mapper = mDataManager.getObjectMapper();
 
+      Weibo weibo = null;
+      try {
         String value = mapper.writeValueAsString(data);
-        Weibo weibo = mapper.readValue(value, Weibo.class);
-
-        getMvpView().onRepostSuccess(weibo);
-        getMvpView().showMessage("转发成功！");
-        getMvpView().hide();
-      } else {
-        getMvpView().onRepostFailure();
-        getMvpView().showMessage("转发失败！请检查网络连接");
-        getMvpView().hide();
+        weibo = mapper.readValue(value, Weibo.class);
+      } catch (IOException e) {
+        e.printStackTrace();
       }
-    }));
+
+      getMvpView().onRepostSuccess(weibo);
+      getMvpView().showMessage("转发成功！");
+      getMvpView().hide();
+    } else {
+      getMvpView().onRepostFailure();
+      getMvpView().showMessage("转发失败！请检查网络连接");
+      getMvpView().hide();
+    }
   }
 
   @Override protected void publishErrors(Throwable throwable) {
-    super.publishErrors(throwable);
-    mDisposables.add(mErrors.subscribe(throwable1 -> {
-      getMvpView().showMessage("转发失败！请检查网络连接");
-      getMvpView().hide();
-    }));
+    getMvpView().showMessage("转发失败！请检查网络连接");
+    getMvpView().hide();
   }
 }

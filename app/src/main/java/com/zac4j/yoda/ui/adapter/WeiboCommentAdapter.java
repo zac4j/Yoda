@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.zac4j.yoda.R;
@@ -20,16 +19,16 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * Adapter for Home Notification
- * Created by zac on 17-5-11.
+ * Adapter for weibo comment
+ * Created by Zheng on 6/23/2017.
  */
 
-public class NotifCommentAdapter extends RecyclerView.Adapter<NotifCommentAdapter.ViewHolder> {
+public class WeiboCommentAdapter extends RecyclerView.Adapter<WeiboCommentAdapter.ViewHolder> {
 
   private Context mContext;
   private List<Comment> mCommentList;
 
-  @Inject public NotifCommentAdapter(@ActivityContext Context context) {
+  @Inject public WeiboCommentAdapter(@ActivityContext Context context) {
     mContext = context;
     mCommentList = new ArrayList<>();
   }
@@ -63,23 +62,6 @@ public class NotifCommentAdapter extends RecyclerView.Adapter<NotifCommentAdapte
     WeiboReader.readPostTime(holder.mPostTimeView, comment.getCreatedAt());
     WeiboReader.readPostSource(holder.mPostSourceView, comment.getSource());
     WeiboReader.readContent(holder.mCommentContentView, comment.getText());
-    if (comment.getWeibo() != null) {
-      holder.mWeiboContainer.setBackgroundResource(R.drawable.bg_gray_border);
-
-      // weibo pattern: @nickname:contents
-      String weiboContent =
-          "@" + comment.getWeibo().getUser().getScreenName() + "：" + comment.getWeibo().getText();
-      WeiboReader.readContent(holder.mWeiboContentView, weiboContent);
-
-      holder.mWeiboContainer.setVisibility(View.VISIBLE);
-
-      WeiboReader.readLikeNumber(holder.mWeiboLikeBtn, comment.getLikeCount());
-      WeiboReader.readRepostNumber(holder.mWeiboRepostBtn, comment.getWeibo().getRepostsCount());
-      WeiboReader.readCommentsNumber(holder.mWeiboCommentBtn, comment.getReplyCount());
-    } else {
-      holder.mWeiboContainer.setBackgroundResource(0);
-      holder.mWeiboContainer.setVisibility(View.GONE);
-    }
   }
 
   private void showCommentUser(ViewHolder holder, User user) {
@@ -106,12 +88,6 @@ public class NotifCommentAdapter extends RecyclerView.Adapter<NotifCommentAdapte
     @BindView(R.id.comment_list_item_tv_post_time) TextView mPostTimeView;
     @BindView(R.id.comment_list_item_tv_post_source) TextView mPostSourceView;
     @BindView(R.id.comment_list_item_tv_comment_content) TextView mCommentContentView;
-    @BindView(R.id.comment_list_item_weibo_container) View mWeiboContainer;
-    @BindView(R.id.comment_list_item_tv_weibo_content) TextView mWeiboContentView;
-    @BindView(R.id.comment_list_item_bottom_btns) View mBottomBtns;
-    @BindView(R.id.weibo_list_item_tv_repost) TextView mWeiboRepostBtn;
-    @BindView(R.id.weibo_list_item_tv_comment) TextView mWeiboCommentBtn;
-    @BindView(R.id.weibo_list_item_tv_like) TextView mWeiboLikeBtn;
 
     public ViewHolder(View itemView) {
       super(itemView);

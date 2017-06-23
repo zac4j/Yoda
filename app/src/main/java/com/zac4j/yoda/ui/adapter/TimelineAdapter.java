@@ -46,16 +46,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
   private Context mContext;
   private List<Weibo> mWeiboList;
-  private RecyclerView mRecyclerView;
 
   @Inject public TimelineAdapter(@ActivityContext Context context) {
     mContext = context;
     mWeiboList = new ArrayList<>();
-  }
-
-  @Override public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-    super.onAttachedToRecyclerView(recyclerView);
-    mRecyclerView = recyclerView;
   }
 
   public void addWeiboList(final List<Weibo> weiboList) {
@@ -144,30 +138,18 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
   private void addClickEvents(Context context, ViewHolder holder, Weibo weibo) {
     setMediaClickEvent(context, holder, weibo);
     setContentClickEvent(context, holder, weibo);
-    //setRepostClickEvent(context, holder, weibo);
+    setBottomBtnClickEvent(context, holder, weibo);
   }
 
   /**
-   * 转发按钮点击事件
+   * 底部三个按钮点击事件
+   * @param context context
+   * @param holder view holder
+   * @param weibo weibo object
    */
-  //private void setRepostClickEvent(Context context, ViewHolder holder, Weibo weibo) {
-  //  holder.mRepostBtn.setOnClickListener(view -> {
-  //    WeiboRepostDialogFragment dialogFragment =
-  //        WeiboRepostDialogFragment.newInstance(weibo.getIdstr());
-  //    dialogFragment.show(((MainActivity) context).getSupportFragmentManager());
-  //    dialogFragment.setOnRepostListener(new WeiboRepostDialogFragment.OnRepostListener() {
-  //      @Override public void onSuccess(Weibo weibo1) {
-  //        mWeiboList.add(0, weibo1);
-  //        TimelineAdapter.this.notifyItemInserted(0);
-  //        mRecyclerView.scrollToPosition(0);
-  //      }
-  //
-  //      @Override public void onFailure() {
-  //        // Try to do something fun.
-  //      }
-  //    });
-  //  });
-  //}
+  private void setBottomBtnClickEvent(Context context, ViewHolder holder, Weibo weibo) {
+    holder.mBottomBtns.setOnClickListener(view -> startWeiboDetailPage(context, weibo));
+  }
 
   /**
    * 设置图片点击事件
@@ -194,28 +176,16 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
    * 设置内容点击事件
    */
   private void setContentClickEvent(Context context, ViewHolder holder, Weibo weibo) {
-    holder.mContentView.setOnClickListener(v -> startDetailPage(context, weibo));
+    holder.mContentView.setOnClickListener(v -> startWeiboDetailPage(context, weibo));
   }
 
-  private void startDetailPage(Context context, Weibo weibo) {
+  private void startWeiboDetailPage(Context context, Weibo weibo) {
     if (weibo == null) {
       return;
     }
     Intent intent = new Intent(context, WeiboDetailActivity.class);
     intent.putExtra(WeiboDetailActivity.EXTRA_WEIBO, weibo);
     context.startActivity(intent);
-    //final String uid = AccessTokenKeeper.readAccessToken(context).getUid();
-    //final String weiboUserId = weibo.getUser().getIdstr();
-    //if (uid.equals(weiboUserId)) { // 如果是自己发的微博
-    //  Intent intent = new Intent(context, WeiboDetailActivity.class);
-    //  intent.putExtra(WeiboDetailActivity.WEIBO_ID_EXTRA, weibo.getId());
-    //  context.startActivity(intent);
-    //} else { // 不是自己的微博目前没权限看详情
-    //  Intent intent = new Intent(context, WebViewActivity.class);
-    //  intent.putExtra(WebViewActivity.EXTRA_WEIBO_ID, weibo.getIdstr());
-    //  intent.putExtra(WebViewActivity.EXTRA_UID, weiboUserId);
-    //  context.startActivity(intent);
-    //}
   }
 
   private void setupUserInfo(ViewHolder holder, User user) {
@@ -245,6 +215,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     @BindView(R.id.weibo_list_item_tv_content) TextView mContentView;
     @BindView(R.id.weibo_list_item_repost_container) View mRepostContentView;
     @BindView(R.id.weibo_list_item_iv_media) View mMediaView;
+    @BindView(R.id.weibo_list_item_bottom_btns) View mBottomBtns;
     @BindView(R.id.weibo_list_item_tv_repost) TextView mRepostBtn;
     @BindView(R.id.weibo_list_item_tv_comment) TextView mCommentBtn;
     @BindView(R.id.weibo_list_item_tv_like) TextView mLikeBtn;

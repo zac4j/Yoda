@@ -57,33 +57,29 @@ import retrofit2.Response;
   }
 
   @Override protected void publishResponse(Response<Object> response) {
-    super.publishResponse(response);
-
-    mDisposable.add(mResponse.subscribe(response1 -> {
-      if (response1.isSuccessful()) {
-        User user = null;
-        Object data = response1.body();
-        ObjectMapper mapper = mDataManager.getObjectMapper();
-        try {
-          String value = mapper.writeValueAsString(data);
-          user = mapper.readValue(value, User.class);
-        } catch (IOException e) {
-          e.printStackTrace();
-          getMvpView().showMessage(e.getMessage());
-        }
-
-        if (user == null) {
-          getMvpView().showEmptyView(true);
-        } else {
-          getMvpView().showProfile(user);
-        }
-      } else {
-        getMvpView().showMessage(Error.NETWORK);
+    if (response.isSuccessful()) {
+      User user = null;
+      Object data = response.body();
+      ObjectMapper mapper = mDataManager.getObjectMapper();
+      try {
+        String value = mapper.writeValueAsString(data);
+        user = mapper.readValue(value, User.class);
+      } catch (IOException e) {
+        e.printStackTrace();
+        getMvpView().showMessage(e.getMessage());
       }
-    }));
+
+      if (user == null) {
+        getMvpView().showEmptyView(true);
+      } else {
+        getMvpView().showProfile(user);
+      }
+    } else {
+      getMvpView().showMessage(Error.NETWORK);
+    }
   }
 
   @Override protected void publishErrors(Throwable throwable) {
-    super.publishErrors(throwable);
+
   }
 }

@@ -1,7 +1,7 @@
 package com.zac4j.yoda.data.remote;
 
 import android.content.Context;
-import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import java.util.Map;
 import okhttp3.MultipartBody;
@@ -39,7 +39,7 @@ public interface ApiServer {
    * @param page pagination page
    * @return time line
    */
-  @GET("statuses/{scope}_timeline.json") Single<Response<Object>> getTimeline(
+  @GET("statuses/{scope}_timeline.json") Observable<Response<Object>> getTimeline(
       @Path("scope") String scope, @Query("access_token") String token, @Query("count") int count,
       @Query("page") int page);
 
@@ -65,17 +65,8 @@ public interface ApiServer {
    * @return weibo content
    */
   @FormUrlEncoded @POST("comments/create.json") Single<Response<Object>> commentWeibo(
-      @Field("access_token") String token, @Field("id") String id, @Field("comment") String comment);
-
-  /**
-   * Get user profile
-   *
-   * @param token user access token
-   * @param uid user id
-   * @return user profile
-   */
-  @GET("users/show.json") Single<Response<Object>> getUserProfile(
-      @Query("access_token") String token, @Query("uid") String uid);
+      @Field("access_token") String token, @Field("id") String id,
+      @Field("comment") String comment);
 
   /**
    * Get single weibo info
@@ -86,6 +77,19 @@ public interface ApiServer {
    */
   @GET("statuses/show.json") Single<Response<Object>> getWeiboInfo(
       @Query("access_token") String token, @Query("id") long id);
+
+  /**
+   * Get weibo comments
+   *
+   * @param token user access token
+   * @param id weibo id
+   * @param page page number
+   * @param count comment count per page
+   * @return comments
+   */
+  @GET("comments/show.json") Single<Response<Object>> getWeiboComments(
+      @Query("access_token") String token, @Query("id") long id, @Query("page") int page,
+      @Query("count") int count);
 
   /**
    * Send Text Weibo
@@ -151,6 +155,16 @@ public interface ApiServer {
       @Query("access_token") String token);
 
   /**
+   * Get user profile
+   *
+   * @param token user access token
+   * @param uid user id
+   * @return user profile
+   */
+  @GET("users/show.json") Single<Response<Object>> getUserProfile(
+      @Query("access_token") String token, @Query("uid") String uid);
+
+  /**
    * Get @user comments.
    *
    * @param token user access token
@@ -158,7 +172,7 @@ public interface ApiServer {
    * @param page pagination page
    * @return @user comments
    */
-  @GET("comments/mentions.json") Single<Response<Object>> getComments(
+  @GET("comments/mentions.json") Single<Response<Object>> getUserComments(
       @Query("access_token") String token, @Query("count") int count, @Query("page") int page);
 
   /**

@@ -1,5 +1,6 @@
 package com.zac4j.yoda.ui.weibo.detail;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -21,7 +22,11 @@ import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Comment;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
+import com.zac4j.yoda.ui.adapter.TimelineAdapter;
+import com.zac4j.yoda.ui.adapter.WeiboCommentAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
+import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
+import com.zac4j.yoda.ui.weibo.repost.WeiboRepostDialogFragment;
 import com.zac4j.yoda.util.WeiboReader;
 import java.util.List;
 import javax.inject.Inject;
@@ -34,8 +39,14 @@ import javax.inject.Inject;
 public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView {
 
   public static final String EXTRA_WEIBO = "extra_weibo";
+  private static final int DEFAULT_COMMENT_PAGE = 1;
+  private static final int DEFAULT_COMMENT_COUNT = 10;
+  private int mCommentPage = DEFAULT_COMMENT_PAGE;
+  private long mWeiboId;
+  private String mToken;
 
   @Inject WeiboDetailPresenter mPresenter;
+  @Inject WeiboCommentAdapter mAdapter;
 
   @BindView(R.id.weibo_detail_main_view) View mMainView;
   @BindView(R.id.toolbar) Toolbar mToolbar;
@@ -69,20 +80,35 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
       actionBar.setTitle(R.string.weibo_detail);
     }
 
+    mToken = AccessTokenKeeper.readAccessToken(this).getToken();
+
     // Set up CommentView
     LinearLayoutManager layoutManager = new LinearLayoutManager(this);
     mCommentListView.setLayoutManager(layoutManager);
     mCommentListView.addItemDecoration(
         new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
+    mCommentListView.setAdapter(mAdapter);
+    mCommentListView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+      @Override public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+        mCommentPage = ++page;
+        mPresenter.getWeiboComments(mToken, mWeiboId, mCommentPage, DEFAULT_COMMENT_COUNT);
+      }
+    });
 
     Weibo weibo = (Weibo) getIntent().getSerializableExtra(EXTRA_WEIBO);
     if (weibo != null) {
       showWeiboInfo(weibo);
-
-      String token = AccessTokenKeeper.readAccessToken(this).getToken();
-      //mPresenter.getWeiboComments(token, weibo.getId());
+      mWeiboId = weibo.getId();
     } else {
       showEmptyView(true);
+    }
+  }
+
+  @Override protected void onStart() {
+    super.onStart();
+
+    if (mWeiboId != 0L) {
+      mPresenter.getWeiboComments(mToken, mWeiboId, DEFAULT_COMMENT_PAGE, DEFAULT_COMMENT_COUNT);
     }
   }
 
@@ -90,12 +116,30 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
   public void onViewClicked(View view) {
     switch (view.getId()) {
       case R.id.weibo_detail_tv_repost:
+        setRepostClickEvent(String.valueOf(mWeiboId));
         break;
       case R.id.weibo_detail_tv_reply:
         break;
       case R.id.weibo_detail_tv_like:
         break;
     }
+  }
+
+  /**
+   * 转发按钮点击事件
+   */
+  private void setRepostClickEvent(String weiboId) {
+    WeiboRepostDialogFragment dialogFragment = WeiboRepostDialogFragment.newInstance(weiboId);
+    dialogFragment.show(getSupportFragmentManager());
+    dialogFragment.setOnRepostListener(new WeiboRepostDialogFragment.OnRepostListener() {
+      @Override public void onSuccess(Weibo weibo1) {
+        WeiboDetailActivity.super.onStart();
+      }
+
+      @Override public void onFailure() {
+        // Try to do something fun.
+      }
+    });
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -133,31 +177,14 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
       return;
     }
 
-    // set user avatar
     WeiboReader.readAvatar(this, mAvatarView, user.getProfileImageUrl());
-
-    // set username
     WeiboReader.readUsername(mUsernameView, user.getDomain());
-
-    // set nickname
     WeiboReader.readNickname(mNicknameView, user.getName());
-
-    // set post time
     WeiboReader.readPostTime(mPostTimeView, weibo.getCreatedAt());
-
-    // set post from
     WeiboReader.readPostSource(mPostFromView, weibo.getSource());
-
-    // set weibo content
     WeiboReader.readContent(mWeiboContentView, weibo.getText());
-
-    // set weibo repost number
     WeiboReader.readRepostNumber(mRepostView, weibo.getRepostsCount());
-
-    // set weibo comment number
     WeiboReader.readCommentsNumber(mReplyView, weibo.getCommentsCount());
-
-    // set weibo like number
     WeiboReader.readLikeNumber(mLikeView, weibo.getAttitudesCount());
 
     // 设置自己是否赞过
@@ -165,6 +192,10 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
   }
 
   @Override public void showWeiboComments(List<Comment> commentList) {
+    mAdapter.addCommentList(commentList);
+  }
+
+  @Override public void showEmptyCommentView(boolean show) {
 
   }
 }

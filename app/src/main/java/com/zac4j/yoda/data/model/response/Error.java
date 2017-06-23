@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 }) public class Error {
 
   public static final String NETWORK = "Please check your network connection!";
+  public static final String LIMITED_REQUEST_RATE = "App的单日请求次数已达上限";
 
   @JsonProperty("error") private String error;
   @JsonProperty("error_code") private Integer errorCode;

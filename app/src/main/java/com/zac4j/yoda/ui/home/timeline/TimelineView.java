@@ -13,9 +13,11 @@ interface TimelineView extends MvpView {
 
   void showProgress(boolean show);
 
-  void showRefresh(boolean refresh);
-
   void showEmptyView(boolean show);
 
   void showTimeline(List<Weibo> weiboList);
+
+  void showRefresh(boolean show);
+
+  boolean isRefreshing();
 }

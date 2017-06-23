@@ -115,4 +115,12 @@ import timber.log.Timber;
           }
         }));
   }
+
+  @Override protected void publishResponse(Response<Object> response) {
+
+  }
+
+  @Override protected void publishErrors(Throwable throwable) {
+
+  }
 }

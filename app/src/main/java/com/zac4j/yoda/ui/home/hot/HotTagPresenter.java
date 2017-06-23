@@ -62,40 +62,32 @@ import retrofit2.Response;
   }
 
   @Override protected void publishResponse(Response<Object> response) {
-    super.publishResponse(response);
-
-    mDisposable.add(mResponse.subscribe(response1 -> {
-      if (response1.isSuccessful()) {
-        List<Tag> tagList = null;
-        Object data = response1.body();
-        ObjectMapper mapper = mDataManager.getObjectMapper();
-        try {
-          String value = mapper.writeValueAsString(data);
-          tagList = mapper.readValue(value, new TypeReference<List<Tag>>() {
-          });
-        } catch (IOException e) {
-          e.printStackTrace();
-          getMvpView().showMessage(e.getMessage());
-        }
-
-        if (tagList == null || tagList.isEmpty()) {
-          getMvpView().showEmptyView(true);
-        } else {
-          getMvpView().showHotTags(tagList);
-        }
+    if (response.isSuccessful()) {
+      List<Tag> tagList = null;
+      Object data = response.body();
+      ObjectMapper mapper = mDataManager.getObjectMapper();
+      try {
+        String value = mapper.writeValueAsString(data);
+        tagList = mapper.readValue(value, new TypeReference<List<Tag>>() {
+        });
+      } catch (IOException e) {
+        e.printStackTrace();
+        getMvpView().showMessage(e.getMessage());
       }
-    }));
+
+      if (tagList == null || tagList.isEmpty()) {
+        getMvpView().showEmptyView(true);
+      } else {
+        getMvpView().showHotTags(tagList);
+      }
+    }
   }
 
   @Override protected void publishErrors(Throwable error) {
-    super.publishErrors(error);
-
-    mDisposable.add(mErrors.subscribe(throwable -> {
-      if (throwable instanceof HttpException) {
-        Response response = ((HttpException) throwable).response();
-        int responseCode = response.code();
-        getMvpView().showMessage(Error.NETWORK);
-      }
-    }));
+    if (error instanceof HttpException) {
+      Response response = ((HttpException) error).response();
+      int responseCode = response.code();
+      getMvpView().showMessage(Error.NETWORK);
+    }
   }
 }
