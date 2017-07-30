@@ -74,121 +74,12 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     return new ViewHolder(view);
   }
 
-  @SuppressWarnings("deprecation") @Override
-  public void onBindViewHolder(final ViewHolder holder, int position) {
+  @Override public void onBindViewHolder(final ViewHolder holder, int position) {
     if (mWeiboList == null || mWeiboList.isEmpty()) {
       return;
     }
-    final Weibo weibo = mWeiboList.get(position);
-
-    // 发送时间
-    WeiboReader.readPostTime(holder.mPostTimeView, weibo.getCreatedAt());
-
-    // 微博内容
-    WeiboReader.readContent(holder.mContentView, weibo.getText());
-
-    // 微博转发内容
-    holder.setRepostContent(mContext, weibo.getRepostWeibo());
-
-    // 转发数
-    WeiboReader.readRepostNumber(holder.mRepostBtn, weibo.getRepostsCount());
-    // 评论数
-    WeiboReader.readCommentsNumber(holder.mCommentBtn, weibo.getCommentsCount());
-    // 点赞数
-    WeiboReader.readLikeState(holder.mLikeBtn, weibo.getFavorited());
-    WeiboReader.readLikeNumber(holder.mLikeBtn, weibo.getAttitudesCount());
-
-    // 发送来源
-    WeiboReader.readPostSource(holder.mPostSourceView, weibo.getSource());
-
-    // 用户信息
-    setupUserInfo(holder, weibo.getUser());
-
-    // 添加点击事件
-    addClickEvents(mContext, holder, weibo);
-  }
-
-  /**
-   * 添加点击事件逻辑
-   *
-   * @param context context
-   * @param holder view holder
-   * @param weibo weibo object
-   */
-  private void addClickEvents(Context context, ViewHolder holder, Weibo weibo) {
-    setMediaClickEvent(context, holder, weibo);
-    setContentClickEvent(context, holder, weibo);
-    setBottomBtnClickEvent(context, holder, weibo);
-  }
-
-  /**
-   * 底部三个按钮点击事件
-   *
-   * @param context context
-   * @param holder view holder
-   * @param weibo weibo object
-   */
-  private void setBottomBtnClickEvent(final Context context, ViewHolder holder, final Weibo weibo) {
-    holder.mBottomBtns.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        startWeiboDetailPage(context, weibo);
-      }
-    });
-  }
-
-  /**
-   * 设置图片点击事件
-   */
-  private void setMediaClickEvent(final Context context, ViewHolder holder, Weibo weibo) {
-    // 多媒体消息
-    String media = weibo.getBmiddlePic();
-    boolean isMultiImages = weibo.getPicUrls().size() > 1;
-    holder.setMediaContent(context, media, isMultiImages);
-    ArrayList<ThumbUrl> imgUrlList = new ArrayList<>();
-    if (isMultiImages) {
-      imgUrlList = (ArrayList<ThumbUrl>) weibo.getPicUrls();
-    } else {
-      final String imgUrl = weibo.getOriginalPic();
-      ThumbUrl thumbUrl = new ThumbUrl(imgUrl);
-      imgUrlList.add(thumbUrl);
-    }
-    final Intent intent = new Intent(context, WeiboImageActivity.class);
-    intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_LIST, imgUrlList);
-    holder.mMediaView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        context.startActivity(intent);
-      }
-    });
-  }
-
-  /**
-   * 设置内容点击事件
-   */
-  private void setContentClickEvent(final Context context, ViewHolder holder, final Weibo weibo) {
-    holder.mContentView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        startWeiboDetailPage(context, weibo);
-      }
-    });
-  }
-
-  private void startWeiboDetailPage(Context context, Weibo weibo) {
-    if (weibo == null) {
-      return;
-    }
-    Intent intent = new Intent(context, WeiboDetailActivity.class);
-    intent.putExtra(WeiboDetailActivity.EXTRA_WEIBO, weibo);
-    context.startActivity(intent);
-  }
-
-  private void setupUserInfo(ViewHolder holder, User user) {
-    if (user == null) {
-      return;
-    }
-
-    WeiboReader.readAvatar(mContext, holder.mAvatarView, user.getProfileImageUrl());
-    WeiboReader.readNickname(holder.mNicknameView, user.getScreenName());
-    WeiboReader.readUsername(holder.mUsernameView, user.getDomain());
+    // Happy view holder ?
+    holder.bindTo(mContext, mWeiboList.get(position));
   }
 
   @Override public int getItemCount() {
@@ -216,6 +107,34 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(ViewHolder.this, itemView);
+    }
+
+    void bindTo(Context context, Weibo weibo) {
+      // 发送时间
+      WeiboReader.readPostTime(mPostTimeView, weibo.getCreatedAt());
+
+      // 微博内容
+      WeiboReader.readContent(mContentView, weibo.getText());
+
+      // 微博转发内容
+      setRepostContent(context, weibo.getRepostWeibo());
+
+      // 转发数
+      WeiboReader.readRepostNumber(mRepostBtn, weibo.getRepostsCount());
+      // 评论数
+      WeiboReader.readCommentsNumber(mCommentBtn, weibo.getCommentsCount());
+      // 点赞数
+      WeiboReader.readLikeState(mLikeBtn, weibo.getFavorited());
+      WeiboReader.readLikeNumber(mLikeBtn, weibo.getAttitudesCount());
+
+      // 发送来源
+      WeiboReader.readPostSource(mPostSourceView, weibo.getSource());
+
+      // 用户信息
+      setupUserInfo(context, weibo.getUser());
+
+      // 添加点击事件
+      addClickEvents(context, weibo);
     }
 
     // 没办法迁移，api 获取的数据跟翔一样
@@ -350,6 +269,93 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
           bitmapRequestBuilder.fitCenter().into(mediaImageView);
         }
       }
+    }
+
+    private void setupUserInfo(Context context, User user) {
+      if (user == null) {
+        return;
+      }
+
+      WeiboReader.readAvatar(context, mAvatarView, user.getProfileImageUrl());
+      WeiboReader.readNickname(mNicknameView, user.getScreenName());
+      WeiboReader.readUsername(mUsernameView, user.getDomain());
+    }
+
+    /**
+     * 添加点击事件逻辑
+     *
+     * @param context context
+     * @param weibo weibo object
+     */
+    private void addClickEvents(Context context, Weibo weibo) {
+      setMediaClickEvent(context, weibo);
+      setContentClickEvent(context, weibo);
+      setBottomBtnClickEvent(context, weibo);
+    }
+
+    /**
+     * 底部三个按钮点击事件
+     *
+     * @param context context
+     * @param weibo weibo object
+     */
+    private void setBottomBtnClickEvent(final Context context, final Weibo weibo) {
+      mBottomBtns.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          jumpWeiboDetailPage(context, weibo);
+        }
+      });
+    }
+
+    /**
+     * 设置图片点击事件
+     */
+    private void setMediaClickEvent(final Context context, Weibo weibo) {
+      // 多媒体消息
+      String media = weibo.getBmiddlePic();
+      boolean isMultiImages = weibo.getPicUrls().size() > 1;
+      setMediaContent(context, media, isMultiImages);
+      ArrayList<ThumbUrl> imgUrlList = new ArrayList<>();
+      if (isMultiImages) {
+        imgUrlList = (ArrayList<ThumbUrl>) weibo.getPicUrls();
+      } else {
+        final String imgUrl = weibo.getOriginalPic();
+        ThumbUrl thumbUrl = new ThumbUrl(imgUrl);
+        imgUrlList.add(thumbUrl);
+      }
+      final Intent intent = new Intent(context, WeiboImageActivity.class);
+      intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_LIST, imgUrlList);
+      mMediaView.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          context.startActivity(intent);
+        }
+      });
+    }
+
+    /**
+     * 设置内容点击事件
+     */
+    private void setContentClickEvent(final Context context, final Weibo weibo) {
+      mContentView.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          jumpWeiboDetailPage(context, weibo);
+        }
+      });
+    }
+
+    /**
+     * 跳转到微博详情页
+     *
+     * @param context context
+     * @param weibo 微博实例
+     */
+    private void jumpWeiboDetailPage(Context context, Weibo weibo) {
+      if (weibo == null) {
+        return;
+      }
+      Intent intent = new Intent(context, WeiboDetailActivity.class);
+      intent.putExtra(WeiboDetailActivity.EXTRA_WEIBO, weibo);
+      context.startActivity(intent);
     }
   }
 }
