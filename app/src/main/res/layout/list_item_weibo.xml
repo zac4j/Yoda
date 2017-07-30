@@ -34,8 +34,10 @@
           >
         <TextView
             android:id="@id/weibo_list_item_tv_nickname"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/width_weibo_nickname"
             android:layout_height="wrap_content"
+            android:lines="1"
+            android:ellipsize="end"
             android:textAppearance="@style/TextAppearance.AppCompat"
             tools:text="湾区日报"
             />
@@ -89,8 +91,9 @@
           />
 
       <include
+          layout="@layout/include_list_item_weibo_bottom_btns"
           android:id="@id/weibo_list_item_bottom_btns"
-          layout="@layout/include_list_item_weibo_bottom_btns"/>
+          />
 
     </LinearLayout>
   </RelativeLayout>

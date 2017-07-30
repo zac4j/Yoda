@@ -5,7 +5,8 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.0.0-alpha4'
+    classpath 'com.android.tools.build:gradle:2.3.3'
+    classpath 'me.tatarka:gradle-retrolambda:3.7.0'
     // NOTE: Do not place your application dependencies here; they belong
     // in the individual module build.gradle files
   }
@@ -14,9 +15,9 @@ buildscript {
 allprojects {
   repositories {
     jcenter()
-    maven {
-      url 'https://maven.google.com'
-    }
+//    maven {
+//      url 'https://maven.google.com'
+//    }
     maven {
       url 'https://jitpack.io'
     }
@@ -30,7 +31,7 @@ task clean(type: Delete) {
 ext {
   compileSdkVersion = 25
   buildToolsVersion = "25.0.3"
-  supportLibVersion = "25.4.0"
+  supportLibVersion = "26.0.0-alpha1"
   testRunnerVersion = "0.5"
   // network
   retrofitVersion = "2.2.0"
@@ -43,6 +44,7 @@ ext {
   rxjavaVersion = "2.0.7"
   rxrelayVersion = "2.0.0"
   rxlifecycleVersion = "2.1.0"
+  sqlbriteVersion = "2.0.0"
 
   // google
   autovalueVersion = "1.4.1"
@@ -53,6 +55,4 @@ ext {
   photoviewVersion = "2.0.0"
   // log
   timberVersion = "4.5.1"
-  // sqlbrite
-  sqlbriteVersion = "1.1.1"
 }

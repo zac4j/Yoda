@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -27,12 +28,9 @@ import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
-import com.zac4j.yoda.util.RxUtils;
 import com.zac4j.yoda.util.WeiboParser;
 import com.zac4j.yoda.util.WeiboReader;
 import com.zac4j.yoda.util.image.PhotoUtils;
-import io.reactivex.Observable;
-import io.reactivex.observers.DisposableObserver;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -53,28 +51,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
   }
 
   public void addWeiboList(final List<Weibo> weiboList) {
-    if (mWeiboList.isEmpty()) {
-      mWeiboList.addAll(weiboList);
-      notifyDataSetChanged();
-      return;
-    }
-
-    Observable.fromIterable(weiboList).filter(weibo -> {
-      // 为了去除重复的 weibo 请求结果, yep cuz of a bad server api.
-      return !mWeiboList.contains(weibo);
-    }).compose(RxUtils.applyObservableSchedulers()).subscribeWith(new DisposableObserver<Weibo>() {
-      @Override public void onNext(Weibo weibo) {
-        mWeiboList.add(weibo);
-      }
-
-      @Override public void onError(Throwable throwable) {
-        System.out.println(throwable.getMessage());
-      }
-
-      @Override public void onComplete() {
-        TimelineAdapter.this.notifyDataSetChanged();
-      }
-    });
+    List<Weibo> oldWeiboList = new ArrayList<>(mWeiboList);
+    mWeiboList.addAll(weiboList);
+    DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldWeiboList, mWeiboList));
+    result.dispatchUpdatesTo(TimelineAdapter.this);
   }
 
   public void clear() {
@@ -143,18 +123,23 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
   /**
    * 底部三个按钮点击事件
+   *
    * @param context context
    * @param holder view holder
    * @param weibo weibo object
    */
-  private void setBottomBtnClickEvent(Context context, ViewHolder holder, Weibo weibo) {
-    holder.mBottomBtns.setOnClickListener(view -> startWeiboDetailPage(context, weibo));
+  private void setBottomBtnClickEvent(final Context context, ViewHolder holder, final Weibo weibo) {
+    holder.mBottomBtns.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        startWeiboDetailPage(context, weibo);
+      }
+    });
   }
 
   /**
    * 设置图片点击事件
    */
-  private void setMediaClickEvent(Context context, ViewHolder holder, Weibo weibo) {
+  private void setMediaClickEvent(final Context context, ViewHolder holder, Weibo weibo) {
     // 多媒体消息
     String media = weibo.getBmiddlePic();
     boolean isMultiImages = weibo.getPicUrls().size() > 1;
@@ -169,14 +154,22 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     }
     final Intent intent = new Intent(context, WeiboImageActivity.class);
     intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_LIST, imgUrlList);
-    holder.mMediaView.setOnClickListener(view -> context.startActivity(intent));
+    holder.mMediaView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        context.startActivity(intent);
+      }
+    });
   }
 
   /**
    * 设置内容点击事件
    */
-  private void setContentClickEvent(Context context, ViewHolder holder, Weibo weibo) {
-    holder.mContentView.setOnClickListener(v -> startWeiboDetailPage(context, weibo));
+  private void setContentClickEvent(final Context context, ViewHolder holder, final Weibo weibo) {
+    holder.mContentView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        startWeiboDetailPage(context, weibo);
+      }
+    });
   }
 
   private void startWeiboDetailPage(Context context, Weibo weibo) {
