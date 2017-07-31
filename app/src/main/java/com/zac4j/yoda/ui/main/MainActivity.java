@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import butterknife.BindView;
@@ -29,7 +30,14 @@ public class MainActivity extends BaseActivity {
   @BindView(R.id.main_fab_write) FloatingActionButton mWriteBtn;
   @BindView(R.id.main_bottom_navigation) BottomNavigationView mBottomNavigationView;
 
+  private int mPreviousPosition;
+
   private ActionBar mActionBar;
+  private SparseArray<Fragment> mHomePagers = new SparseArray<>(5);
+  private int[] mPagerTitles = {
+      R.string.main_nav_home, R.string.main_nav_hot, R.string.main_nav_message,
+      R.string.main_nav_notification, R.string.main_nav_user
+  };
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -45,6 +53,8 @@ public class MainActivity extends BaseActivity {
     Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_fragment_container);
     if (fragment == null) {
       fragment = TimelineFragment.newInstance();
+      mHomePagers.put(0, fragment);
+
       getSupportFragmentManager().beginTransaction()
           .add(R.id.main_fragment_container, fragment)
           .commit();
@@ -61,41 +71,68 @@ public class MainActivity extends BaseActivity {
     mBottomNavigationView.setOnNavigationItemSelectedListener(
         new BottomNavigationView.OnNavigationItemSelectedListener() {
           @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment navigationFragment = TimelineFragment.newInstance();
+            int position = 0;
             switch (item.getItemId()) {
               case R.id.main_nav_home:
-                mActionBar.setTitle(R.string.main_nav_home);
+                if (mHomePagers.get(position) == null) {
+                  mHomePagers.put(position, TimelineFragment.newInstance());
+                }
                 break;
               case R.id.main_nav_hot:
-                mActionBar.setTitle(R.string.main_nav_hot);
-                navigationFragment = HotTagFragment.newInstance();
+                position = 1;
+                if (mHomePagers.get(position) == null) {
+                  mHomePagers.put(position, HotTagFragment.newInstance());
+                }
                 break;
               case R.id.main_nav_message:
-                mActionBar.setTitle(R.string.main_nav_message);
-                navigationFragment = MessengerFragment.newInstance();
+                position = 2;
+                if (mHomePagers.get(position) == null) {
+                  mHomePagers.put(position, MessengerFragment.newInstance());
+                }
                 break;
               case R.id.main_nav_notification:
-                mActionBar.setTitle(R.string.main_nav_notification);
-                navigationFragment = NotificationFragment.newInstance();
+                position = 3;
+                if (mHomePagers.get(position) == null) {
+                  mHomePagers.put(position, NotificationFragment.newInstance());
+                }
                 break;
               case R.id.main_nav_user:
-                mActionBar.setTitle(R.string.main_nav_user);
-                navigationFragment = UserFragment.newInstance();
+                position = 4;
+                if (mHomePagers.get(position) == null) {
+                  mHomePagers.put(position, UserFragment.newInstance());
+                }
                 break;
             }
 
-            Fragment currentFragment =
-                getSupportFragmentManager().findFragmentById(R.id.main_fragment_container);
-            if (currentFragment == navigationFragment) {
+            if (mPreviousPosition == position) {
               return true;
             }
 
+            updatePagerTitle(position);
+
             getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_fragment_container, navigationFragment)
+                .replace(R.id.main_fragment_container, mHomePagers.get(position))
                 .commit();
+
+            // Why not work ?
+            //getSupportFragmentManager().beginTransaction()
+            //    .hide(mHomePagers.get(mPreviousPosition))
+            //    .show(mHomePagers.get(position))
+            //    .commit();
+
+            mPreviousPosition = position;
             return true;
           }
         });
+  }
+
+  /**
+   * Update pager title
+   *
+   * @param position position for current pager
+   */
+  private void updatePagerTitle(int position) {
+    mActionBar.setTitle(mPagerTitles[position]);
   }
 
   public void onTokenInvalid() {
