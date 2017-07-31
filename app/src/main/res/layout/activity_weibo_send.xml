@@ -19,15 +19,14 @@
     <EditText
         android:id="@id/weibo_send_et_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/weibo_send_action_container"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:gravity="top|start"
         android:hint="@string/weibo_send_content_input_hint"
         android:inputType="textMultiLine"
         android:lines="8"
         android:maxLength="140"
-        android:maxLines="10"
+        android:maxLines="4"
         android:padding="@dimen/space.small"
         android:scrollbars="vertical"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -35,9 +34,10 @@
 
     <FrameLayout
         android:id="@id/weibo_send_media_container"
-        android:layout_width="@dimen/img.large"
-        android:layout_height="@dimen/img.large"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@id/weibo_send_action_container"
+        android:layout_below="@id/weibo_send_et_content"
         android:padding="@dimen/space.small"
         />
 
@@ -47,6 +47,7 @@
         android:layout_height="@dimen/height.medium"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="@dimen/space.small"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:weightSum="5"
         >
@@ -98,9 +99,10 @@
           android:layout_gravity="center_vertical"
           android:layout_weight="1"
           android:gravity="center"
-          android:text="@string/send"
-          android:textAppearance="@style/TextAppearance.AppCompat.Small"
+          android:text="@string/app_name"
+          android:textAppearance="@style/TextAppearance.AppCompat.Body1"
           android:textColor="@color/blue_light"
+          android:textStyle="bold"
           />
 
     </LinearLayout>

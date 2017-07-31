@@ -198,10 +198,12 @@ public class WeiboSendActivity extends BaseActivity implements WeiboSendView {
         new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT);
     imageView.setLayoutParams(layoutParams);
-    imageView.setOnClickListener(v -> {
-      Intent intent = new Intent(WeiboSendActivity.this, WeiboImageActivity.class);
-      intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_URI, uri);
-      startActivity(intent);
+    imageView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        Intent intent = new Intent(WeiboSendActivity.this, WeiboImageActivity.class);
+        intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_URI, uri);
+        startActivity(intent);
+      }
     });
 
     Glide.with(imageView.getContext()).load(uri).centerCrop().into(imageView);
