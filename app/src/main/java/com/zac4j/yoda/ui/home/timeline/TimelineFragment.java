@@ -1,5 +1,7 @@
 package com.zac4j.yoda.ui.home.timeline;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,6 +21,7 @@ import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.adapter.TimelineAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
+import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -69,6 +72,11 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
     mWeiboListView.setLayoutManager(layoutManager);
     mWeiboListView.setAdapter(mTimelineAdapter);
+    mTimelineAdapter.setOnItemClickListener(new TimelineAdapter.OnItemClickListener() {
+      @Override public void onClick(Weibo weibo) {
+        jumpToWeiboDetail(getContext(), weibo);
+      }
+    });
 
     Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(getContext());
     mToken = accessToken.getToken();
@@ -81,9 +89,11 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     };
     mWeiboListView.addOnScrollListener(mScrollListener);
 
-    mSwipeContainer.setOnRefreshListener(() -> {
-      mPresenter.getTimeline(mToken, DEFAULT_WEIBO_COUNT, DEFAULT_WEIBO_PAGE);
-      mRequestPage = 1;
+    mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+      @Override public void onRefresh() {
+        mPresenter.getTimeline(mToken, DEFAULT_WEIBO_COUNT, DEFAULT_WEIBO_PAGE);
+        mRequestPage = 1;
+      }
     });
 
     mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
@@ -142,5 +152,20 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
 
   @Override public boolean isRefreshing() {
     return mSwipeContainer != null && mSwipeContainer.isRefreshing();
+  }
+
+  /**
+   * 跳转到微博详情页
+   *
+   * @param context context
+   * @param weibo 微博实例
+   */
+  private void jumpToWeiboDetail(Context context, Weibo weibo) {
+    if (weibo == null) {
+      return;
+    }
+    Intent intent = new Intent(context, WeiboDetailActivity.class);
+    intent.putExtra(WeiboDetailActivity.EXTRA_WEIBO, weibo);
+    context.startActivity(intent);
   }
 }

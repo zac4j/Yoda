@@ -27,7 +27,6 @@ import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
-import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
 import com.zac4j.yoda.util.WeiboParser;
 import com.zac4j.yoda.util.WeiboReader;
 import com.zac4j.yoda.util.image.PhotoUtils;
@@ -42,12 +41,22 @@ import javax.inject.Inject;
 
 public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHolder> {
 
+  public interface OnItemClickListener {
+    void onClick(Weibo weibo);
+  }
+
+  private OnItemClickListener mItemClickListener;
+
   private Context mContext;
   private List<Weibo> mWeiboList;
 
   @Inject public TimelineAdapter(@ActivityContext Context context) {
     mContext = context;
     mWeiboList = new ArrayList<>();
+  }
+
+  public void setOnItemClickListener(OnItemClickListener itemClickListener) {
+    mItemClickListener = itemClickListener;
   }
 
   public void addWeiboList(final List<Weibo> weiboList) {
@@ -71,14 +80,24 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     LayoutInflater inflater = LayoutInflater.from(parent.getContext());
     View view = inflater.inflate(R.layout.list_item_weibo, parent, false);
-    return new ViewHolder(view);
+
+    // Add view holder item click listener
+    final ViewHolder holder = new ViewHolder(view);
+    holder.itemView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        int position = holder.getAdapterPosition();
+        mItemClickListener.onClick(mWeiboList.get(position));
+      }
+    });
+
+    return holder;
   }
 
   @Override public void onBindViewHolder(final ViewHolder holder, int position) {
     if (mWeiboList == null || mWeiboList.isEmpty()) {
       return;
     }
-    // Happy view holder ?
+    // Happy view holder by Yigit Boyar
     holder.bindTo(mContext, mWeiboList.get(position));
   }
 
@@ -134,7 +153,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       setupUserInfo(context, weibo.getUser());
 
       // 添加点击事件
-      addClickEvents(context, weibo);
+      addMediaClickEvent(context, weibo);
     }
 
     // 没办法迁移，api 获取的数据跟翔一样
@@ -282,35 +301,9 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     }
 
     /**
-     * 添加点击事件逻辑
-     *
-     * @param context context
-     * @param weibo weibo object
-     */
-    private void addClickEvents(Context context, Weibo weibo) {
-      setMediaClickEvent(context, weibo);
-      setContentClickEvent(context, weibo);
-      setBottomBtnClickEvent(context, weibo);
-    }
-
-    /**
-     * 底部三个按钮点击事件
-     *
-     * @param context context
-     * @param weibo weibo object
-     */
-    private void setBottomBtnClickEvent(final Context context, final Weibo weibo) {
-      mBottomBtns.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-          jumpWeiboDetailPage(context, weibo);
-        }
-      });
-    }
-
-    /**
      * 设置图片点击事件
      */
-    private void setMediaClickEvent(final Context context, Weibo weibo) {
+    private void addMediaClickEvent(final Context context, Weibo weibo) {
       // 多媒体消息
       String media = weibo.getBmiddlePic();
       boolean isMultiImages = weibo.getPicUrls().size() > 1;
@@ -330,32 +323,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
           context.startActivity(intent);
         }
       });
-    }
-
-    /**
-     * 设置内容点击事件
-     */
-    private void setContentClickEvent(final Context context, final Weibo weibo) {
-      mContentView.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-          jumpWeiboDetailPage(context, weibo);
-        }
-      });
-    }
-
-    /**
-     * 跳转到微博详情页
-     *
-     * @param context context
-     * @param weibo 微博实例
-     */
-    private void jumpWeiboDetailPage(Context context, Weibo weibo) {
-      if (weibo == null) {
-        return;
-      }
-      Intent intent = new Intent(context, WeiboDetailActivity.class);
-      intent.putExtra(WeiboDetailActivity.EXTRA_WEIBO, weibo);
-      context.startActivity(intent);
     }
   }
 }
