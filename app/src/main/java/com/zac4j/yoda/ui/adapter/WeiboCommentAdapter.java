@@ -56,21 +56,7 @@ public class WeiboCommentAdapter extends RecyclerView.Adapter<WeiboCommentAdapte
       return;
     }
 
-    Comment comment = mCommentList.get(position);
-    showCommentUser(holder, comment.getUser());
-
-    WeiboReader.readPostTime(holder.mPostTimeView, comment.getCreatedAt());
-    WeiboReader.readPostSource(holder.mPostSourceView, comment.getSource());
-    WeiboReader.readContent(holder.mCommentContentView, comment.getText());
-  }
-
-  private void showCommentUser(ViewHolder holder, User user) {
-    if (user == null) {
-      return;
-    }
-    WeiboReader.readAvatar(mContext, holder.mAvatarView, user.getProfileImageUrl());
-    WeiboReader.readNickname(holder.mNicknameView, user.getScreenName());
-    WeiboReader.readUsername(holder.mUsernameView, user.getDomain());
+    holder.bindTo(mContext, mCommentList.get(position));
   }
 
   @Override public int getItemCount() {
@@ -92,6 +78,23 @@ public class WeiboCommentAdapter extends RecyclerView.Adapter<WeiboCommentAdapte
     public ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
+    }
+
+    void bindTo(Context context, Comment comment) {
+      WeiboReader.readPostTime(mPostTimeView, comment.getCreatedAt());
+      WeiboReader.readPostSource(mPostSourceView, comment.getSource());
+      WeiboReader.readContent(mCommentContentView, comment.getText());
+
+      showCommentUser(context, comment.getUser());
+    }
+
+    private void showCommentUser(Context context, User user) {
+      if (user == null) {
+        return;
+      }
+      WeiboReader.readAvatar(context, mAvatarView, user.getProfileImageUrl());
+      WeiboReader.readNickname(mNicknameView, user.getScreenName());
+      WeiboReader.readUsername(mUsernameView, user.getDomain());
     }
   }
 }

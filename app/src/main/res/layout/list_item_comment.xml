@@ -1,104 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardUseCompatPadding="true"
+    android:background="@color/white"
+    android:padding="@dimen/space.small"
     >
-  <RelativeLayout
+
+  <ImageView
+      android:id="@id/comment_list_item_iv_avatar"
+      android:layout_width="@dimen/img.small"
+      android:layout_height="@dimen/img.small"
+      tools:src="@drawable/ic_avatar"
+      />
+
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:padding="@dimen/space.small"
+      android:layout_marginStart="@dimen/space.small"
+      android:layout_toEndOf="@id/comment_list_item_iv_avatar"
+      android:orientation="vertical"
       >
-
-    <ImageView
-        android:id="@id/comment_list_item_iv_avatar"
-        android:layout_width="@dimen/img.small"
-        android:layout_height="@dimen/img.small"
-        tools:src="@drawable/ic_avatar"
-        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space.small"
-        android:layout_toEndOf="@id/comment_list_item_iv_avatar"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         >
-
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal"
-          >
-        <TextView
-            android:id="@id/comment_list_item_tv_nickname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            tools:text="湾区日报"
-            />
-
-        <TextView
-            android:id="@id/comment_list_item_tv_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/space.small"
-            android:layout_marginStart="@dimen/space.small"
-            android:ellipsize="end"
-            android:maxLength="10"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            tools:text="wanquribao"
-            />
-
-        <TextView
-            android:id="@id/comment_list_item_tv_post_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:gravity="end"
-            android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            tools:text="4min ago"
-            />
-
-      </LinearLayout>
-
       <TextView
-          android:id="@id/comment_list_item_tv_post_source"
+          android:id="@id/comment_list_item_tv_nickname"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-          tools:text="Weibo.com"
+          android:textAppearance="@style/TextAppearance.AppCompat"
+          tools:text="湾区日报"
           />
 
       <TextView
-          android:id="@id/comment_list_item_tv_comment_content"
+          android:id="@id/comment_list_item_tv_username"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="@dimen/space.small"
+          android:layout_marginStart="@dimen/space.small"
+          android:ellipsize="end"
+          android:maxLength="10"
+          android:textAppearance="@style/TextAppearance.AppCompat.Small"
+          tools:text="wanquribao"
+          />
+
+      <TextView
+          android:id="@id/comment_list_item_tv_post_time"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:gravity="end"
+          android:maxLines="1"
+          android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+          tools:text="4min ago"
+          />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@id/comment_list_item_tv_post_source"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        tools:text="Weibo.com"
+        />
+
+    <TextView
+        android:id="@id/comment_list_item_tv_comment_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Would you like to have a library of swatches at your fingertips in Sketch? Check out this plugin!http://buff.ly/2lErpKy "
+        />
+
+    <LinearLayout
+        android:id="@id/comment_list_item_weibo_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+      <TextView
+          android:id="@id/comment_list_item_tv_weibo_content"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           tools:text="Would you like to have a library of swatches at your fingertips in Sketch? Check out this plugin!http://buff.ly/2lErpKy "
           />
 
-      <LinearLayout
-          android:id="@id/comment_list_item_weibo_container"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="vertical"
-          android:visibility="gone"
-          >
-        <TextView
-            android:id="@id/comment_list_item_tv_weibo_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Would you like to have a library of swatches at your fingertips in Sketch? Check out this plugin!http://buff.ly/2lErpKy "
-            />
+      <include
+          layout="@layout/include_list_item_weibo_bottom_btns"
+          />
 
-        <include
-            layout="@layout/include_list_item_weibo_bottom_btns"
-            />
-
-      </LinearLayout>
     </LinearLayout>
-  </RelativeLayout>
-</android.support.v7.widget.CardView>
+  </LinearLayout>
+</RelativeLayout>

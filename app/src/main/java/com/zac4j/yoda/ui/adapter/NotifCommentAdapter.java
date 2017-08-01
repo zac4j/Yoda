@@ -56,39 +56,7 @@ public class NotifCommentAdapter extends RecyclerView.Adapter<NotifCommentAdapte
     if (mCommentList.isEmpty()) {
       return;
     }
-
-    Comment comment = mCommentList.get(position);
-    showCommentUser(holder, comment.getUser());
-
-    WeiboReader.readPostTime(holder.mPostTimeView, comment.getCreatedAt());
-    WeiboReader.readPostSource(holder.mPostSourceView, comment.getSource());
-    WeiboReader.readContent(holder.mCommentContentView, comment.getText());
-    if (comment.getWeibo() != null) {
-      holder.mWeiboContainer.setBackgroundResource(R.drawable.bg_gray_border);
-
-      // weibo pattern: @nickname:contents
-      String weiboContent =
-          "@" + comment.getWeibo().getUser().getScreenName() + "：" + comment.getWeibo().getText();
-      WeiboReader.readContent(holder.mWeiboContentView, weiboContent);
-
-      holder.mWeiboContainer.setVisibility(View.VISIBLE);
-
-      WeiboReader.readLikeNumber(holder.mWeiboLikeBtn, comment.getLikeCount());
-      WeiboReader.readRepostNumber(holder.mWeiboRepostBtn, comment.getWeibo().getRepostsCount());
-      WeiboReader.readCommentsNumber(holder.mWeiboCommentBtn, comment.getReplyCount());
-    } else {
-      holder.mWeiboContainer.setBackgroundResource(0);
-      holder.mWeiboContainer.setVisibility(View.GONE);
-    }
-  }
-
-  private void showCommentUser(ViewHolder holder, User user) {
-    if (user == null) {
-      return;
-    }
-    WeiboReader.readAvatar(mContext, holder.mAvatarView, user.getProfileImageUrl());
-    WeiboReader.readNickname(holder.mNicknameView, user.getScreenName());
-    WeiboReader.readUsername(holder.mUsernameView, user.getDomain());
+    holder.bindTo(mCommentList.get(position));
   }
 
   @Override public int getItemCount() {
@@ -108,14 +76,47 @@ public class NotifCommentAdapter extends RecyclerView.Adapter<NotifCommentAdapte
     @BindView(R.id.comment_list_item_tv_comment_content) TextView mCommentContentView;
     @BindView(R.id.comment_list_item_weibo_container) View mWeiboContainer;
     @BindView(R.id.comment_list_item_tv_weibo_content) TextView mWeiboContentView;
-    @BindView(R.id.comment_list_item_bottom_btns) View mBottomBtns;
     @BindView(R.id.weibo_list_item_tv_repost) TextView mWeiboRepostBtn;
     @BindView(R.id.weibo_list_item_tv_comment) TextView mWeiboCommentBtn;
     @BindView(R.id.weibo_list_item_tv_like) TextView mWeiboLikeBtn;
 
-    public ViewHolder(View itemView) {
+    ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
+    }
+
+    void bindTo(Comment comment) {
+      showCommentUser(comment.getUser());
+
+      WeiboReader.readPostTime(mPostTimeView, comment.getCreatedAt());
+      WeiboReader.readPostSource(mPostSourceView, comment.getSource());
+      WeiboReader.readContent(mCommentContentView, comment.getText());
+      if (comment.getWeibo() != null) {
+        mWeiboContainer.setBackgroundResource(R.drawable.bg_gray_border);
+
+        // weibo pattern: @nickname:contents
+        String weiboContent =
+            "@" + comment.getWeibo().getUser().getScreenName() + "：" + comment.getWeibo().getText();
+        WeiboReader.readContent(mWeiboContentView, weiboContent);
+
+        mWeiboContainer.setVisibility(View.VISIBLE);
+
+        WeiboReader.readLikeNumber(mWeiboLikeBtn, comment.getLikeCount());
+        WeiboReader.readRepostNumber(mWeiboRepostBtn, comment.getWeibo().getRepostsCount());
+        WeiboReader.readCommentsNumber(mWeiboCommentBtn, comment.getReplyCount());
+      } else {
+        mWeiboContainer.setBackgroundResource(0);
+        mWeiboContainer.setVisibility(View.GONE);
+      }
+    }
+
+    private void showCommentUser(User user) {
+      if (user == null) {
+        return;
+      }
+      WeiboReader.readAvatar(mContext, mAvatarView, user.getProfileImageUrl());
+      WeiboReader.readNickname(mNicknameView, user.getScreenName());
+      WeiboReader.readUsername(mUsernameView, user.getDomain());
     }
   }
 }

@@ -1,6 +1,5 @@
 package com.zac4j.yoda.ui.weibo.detail;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -22,7 +21,6 @@ import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Comment;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
-import com.zac4j.yoda.ui.adapter.TimelineAdapter;
 import com.zac4j.yoda.ui.adapter.WeiboCommentAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
@@ -86,7 +84,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     LinearLayoutManager layoutManager = new LinearLayoutManager(this);
     mCommentListView.setLayoutManager(layoutManager);
     mCommentListView.addItemDecoration(
-        new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
+        new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     mCommentListView.setAdapter(mAdapter);
     mCommentListView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
       @Override public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
