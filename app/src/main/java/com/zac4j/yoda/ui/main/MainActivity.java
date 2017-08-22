@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
@@ -15,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
+import com.zac4j.yoda.ui.adapter.MainPagerAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.home.hot.HotTagFragment;
 import com.zac4j.yoda.ui.home.message.MessengerFragment;
@@ -28,6 +30,7 @@ public class MainActivity extends BaseActivity {
 
   @BindView(R.id.toolbar) Toolbar mToolbar;
   @BindView(R.id.main_fab_write) FloatingActionButton mWriteBtn;
+  @BindView(R.id.main_fragment_container) ViewPager mMainContainer;
   @BindView(R.id.main_bottom_navigation) BottomNavigationView mBottomNavigationView;
 
   private int mPreviousPosition;
@@ -37,6 +40,10 @@ public class MainActivity extends BaseActivity {
   private int[] mPagerTitles = {
       R.string.main_nav_home, R.string.main_nav_hot, R.string.main_nav_message,
       R.string.main_nav_notification, R.string.main_nav_user
+  };
+  private int[] mBottomNavIds = {
+      R.id.main_nav_home, R.id.main_nav_hot, R.id.main_nav_message, R.id.main_nav_notification,
+      R.id.main_nav_user
   };
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -114,16 +121,24 @@ public class MainActivity extends BaseActivity {
                 .replace(R.id.main_fragment_container, mHomePagers.get(position))
                 .commit();
 
-            // Why not work ?
-            //getSupportFragmentManager().beginTransaction()
-            //    .hide(mHomePagers.get(mPreviousPosition))
-            //    .show(mHomePagers.get(position))
-            //    .commit();
-
             mPreviousPosition = position;
             return true;
           }
         });
+
+    mMainContainer.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+    mMainContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+      @Override
+      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+      }
+
+      @Override public void onPageSelected(int position) {
+        mBottomNavigationView.setSelectedItemId(mBottomNavIds[position]);
+      }
+
+      @Override public void onPageScrollStateChanged(int state) {
+      }
+    });
   }
 
   /**

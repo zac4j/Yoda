@@ -7,7 +7,7 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 /**
- * Main Pager Adapter will cache all active fragments and manages tje fragment life cycle.
+ * Main Pager Adapter will cache all active fragments and manages the fragment lifecycle.
  * Created by zac on 3/16/2017.
  */
 
@@ -37,5 +37,4 @@ abstract class SmartPagerAdapter extends FragmentStatePagerAdapter {
   public Fragment getFragment(int position) {
     return mFragments.get(position);
   }
-
 }

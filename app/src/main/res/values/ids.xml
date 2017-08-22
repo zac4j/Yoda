@@ -165,5 +165,6 @@
   <item name="comment_list_item_weibo_container" type="id"/>
   <item name="comment_list_item_bottom_btns" type="id"/>
   <item name="empty_view" type="id"/>
+  <item name="weibo_list_item_root_layout" type="id"/>
 
 </resources>
