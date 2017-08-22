@@ -54,12 +54,6 @@ dependencies {
   compile "io.reactivex.rxjava2:rxjava:${rxjavaVersion}"
   compile "com.squareup.sqlbrite2:sqlbrite:${sqlbriteVersion}"
   compile "com.jakewharton.rxrelay2:rxrelay:${rxrelayVersion}"
-//  compile "com.trello.rxlifecycle2:rxlifecycle:${rxlifecycleVersion}"
-//  // If you want to bind to Android-specific lifecycles
-//  compile "com.trello.rxlifecycle2:rxlifecycle-android:${rxlifecycleVersion}"
-//
-//  // If you want pre-written Activities and Fragments you can subclass as providers
-//  compile "com.trello.rxlifecycle2:rxlifecycle-components:${rxlifecycleVersion}"
   // Dagger2
   compile "com.google.dagger:dagger:${daggerVersion}"
   annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
