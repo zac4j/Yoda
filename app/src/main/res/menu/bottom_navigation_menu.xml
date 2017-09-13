@@ -6,7 +6,6 @@
       android:enabled="true"
       android:icon="@drawable/ic_nav_home"
       android:title="@string/main_nav_home"
-      app:showAsAction="ifRoom"
       />
 
   <item
@@ -14,7 +13,6 @@
       android:enabled="true"
       android:icon="@drawable/ic_nav_hot"
       android:title="@string/main_nav_hot"
-      app:showAsAction="ifRoom"
       />
 
   <item
@@ -22,7 +20,6 @@
       android:enabled="true"
       android:icon="@drawable/ic_nav_notification"
       android:title="@string/main_nav_notification"
-      app:showAsAction="ifRoom"
       />
 
   <item
@@ -30,7 +27,6 @@
       android:enabled="true"
       android:icon="@drawable/ic_nav_message"
       android:title="@string/main_nav_message"
-      app:showAsAction="ifRoom"
       />
 
   <item
@@ -38,7 +34,6 @@
       android:enabled="true"
       android:icon="@drawable/ic_nav_user"
       android:title="@string/main_nav_user"
-      app:showAsAction="ifRoom"
       />
 
 </menu>

@@ -142,38 +142,38 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@id/user_detail_tv_profile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space.medium"
-        android:background="@color/white"
-        android:padding="@dimen/space.small"
-        android:text="@string/user_detail_profile"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        />
+    <!--<TextView-->
+        <!--android:id="@id/user_detail_tv_profile"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/space.medium"-->
+        <!--android:background="@color/white"-->
+        <!--android:padding="@dimen/space.small"-->
+        <!--android:text="@string/user_detail_profile"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat"-->
+        <!--/>-->
 
-    <TextView
-        android:id="@id/user_detail_tv_lists"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space.divider"
-        android:background="@color/white"
-        android:padding="@dimen/space.small"
-        android:text="@string/user_detail_list"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        />
+    <!--<TextView-->
+        <!--android:id="@id/user_detail_tv_lists"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/space.divider"-->
+        <!--android:background="@color/white"-->
+        <!--android:padding="@dimen/space.small"-->
+        <!--android:text="@string/user_detail_list"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat"-->
+        <!--/>-->
 
-    <TextView
-        android:id="@id/user_detail_tv_recommends"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space.divider"
-        android:background="@color/white"
-        android:padding="@dimen/space.small"
-        android:text="@string/user_detail_recommend"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        />
+    <!--<TextView-->
+        <!--android:id="@id/user_detail_tv_recommends"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/space.divider"-->
+        <!--android:background="@color/white"-->
+        <!--android:padding="@dimen/space.small"-->
+        <!--android:text="@string/user_detail_recommend"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat"-->
+        <!--/>-->
 
     <RelativeLayout
         android:layout_width="match_parent"
