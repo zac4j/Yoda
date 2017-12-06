@@ -3,8 +3,8 @@ package com.zac4j.yoda.di.module;
 import android.app.Application;
 import android.content.Context;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.sqlbrite2.BriteDatabase;
-import com.squareup.sqlbrite2.SqlBrite;
+import com.squareup.sqlbrite3.BriteDatabase;
+import com.squareup.sqlbrite3.SqlBrite;
 import com.zac4j.yoda.data.local.DatabaseHelper;
 import com.zac4j.yoda.data.remote.ApiServer;
 import com.zac4j.yoda.di.ApplicationContext;
@@ -41,19 +41,5 @@ import timber.log.Timber;
 
   @Provides @Singleton ApiServer provideWebService() {
     return ApiServer.Factory.create(mApplication);
-  }
-
-  @Provides @Singleton SqlBrite provideSqlBrite() {
-    return new SqlBrite.Builder().logger(new SqlBrite.Logger() {
-      @Override public void log(String message) {
-        Timber.tag("Database").v(message);
-      }
-    }).build();
-  }
-
-  @Provides @Singleton BriteDatabase provideDatabase(SqlBrite sqlBrite, DatabaseHelper helper) {
-    BriteDatabase database = sqlBrite.wrapDatabaseHelper(helper, Schedulers.io());
-    database.setLoggingEnabled(true);
-    return database;
   }
 }

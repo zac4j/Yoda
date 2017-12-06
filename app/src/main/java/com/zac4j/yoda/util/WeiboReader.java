@@ -6,9 +6,9 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.bumptech.glide.Glide;
 import com.zac4j.yoda.R;
-import com.zac4j.yoda.util.image.CircleTransformation;
+import com.zac4j.yoda.util.image.GlideApp;
+import com.zac4j.yoda.util.image.GlideCircleTransformation;
 
 /**
  * Weibo content read helper
@@ -19,11 +19,11 @@ public class WeiboReader {
 
   public static void readAvatar(Context context, ImageView avatarView, String avatarUrl) {
     if (TextUtils.isEmpty(avatarUrl)) {
-      Glide.clear(avatarView);
+      GlideApp.with(context).clear(avatarView);
     } else {
-      Glide.with(context)
+      GlideApp.with(context)
           .load(avatarUrl)
-          .transform(new CircleTransformation(context))
+          .transform(new GlideCircleTransformation())
           .into(avatarView);
     }
   }

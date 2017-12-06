@@ -7,10 +7,8 @@ import android.support.v4.util.LongSparseArray;
 import com.zac4j.yoda.App;
 import com.zac4j.yoda.di.component.DaggerPerConfigComponent;
 import com.zac4j.yoda.di.component.DialogFragmentComponent;
-import com.zac4j.yoda.di.component.FragmentComponent;
 import com.zac4j.yoda.di.component.PerConfigComponent;
 import com.zac4j.yoda.di.module.DialogFragmentModule;
-import com.zac4j.yoda.di.module.FragmentModule;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**

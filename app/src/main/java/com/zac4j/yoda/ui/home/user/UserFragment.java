@@ -1,6 +1,7 @@
 package com.zac4j.yoda.ui.home.user;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,13 +17,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.ui.base.BaseFragment;
-import com.zac4j.yoda.ui.main.MainActivity;
-import com.zac4j.yoda.util.image.CircleTransformation;
 import javax.inject.Inject;
 
 /**
@@ -59,12 +59,12 @@ public class UserFragment extends BaseFragment implements UserView {
   }
 
   @Nullable @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_home_user, container, false);
   }
 
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+  @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
     getFragmentComponent().inject(this);
@@ -106,7 +106,6 @@ public class UserFragment extends BaseFragment implements UserView {
   }
 
   @OnClick({
-      R.id.user_detail_tv_profile, R.id.user_detail_tv_lists, R.id.user_detail_tv_recommends,
       R.id.user_detail_tv_settings, R.id.user_detail_tv_support, R.id.user_detail_tv_quit
   }) public void onViewClicked(View view) {
     switch (view.getId()) {
@@ -155,9 +154,12 @@ public class UserFragment extends BaseFragment implements UserView {
 
   private void showCover(String coverUrl) {
     if (TextUtils.isEmpty(coverUrl)) {
-
+      // TODO set a default cover background
     }
-    Glide.with(getContext()).load(coverUrl).crossFade().centerCrop().into(mCoverView);
+    Glide.with(UserFragment.this)
+        .load(coverUrl)
+        .apply(new RequestOptions().centerCrop())
+        .into(mCoverView);
   }
 
   private void showUserLink(String profileUrl) {
@@ -186,11 +188,9 @@ public class UserFragment extends BaseFragment implements UserView {
   }
 
   private void showAvatar(String avatar) {
-    Glide.with(getContext())
+    Glide.with(UserFragment.this)
         .load(avatar)
-        .transform(new CircleTransformation(getContext()))
-        .crossFade()
-        .fitCenter()
+        .apply(new RequestOptions().fitCenter())
         .into(mAvatarView);
   }
 

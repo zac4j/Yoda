@@ -1,5 +1,6 @@
 package com.zac4j.yoda.ui.home.user;
 
+import android.support.annotation.NonNull;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.data.DataManager;
 import com.zac4j.yoda.data.model.User;
@@ -38,7 +39,7 @@ import retrofit2.Response;
     mDisposable.clear();
   }
 
-  void getUserProfile(String token, String uid) {
+  void getUserProfile(@NonNull String token, String uid) {
     checkViewAttached();
     mDisposable.add(mDataManager.getUserProfile(token, uid)
         .compose(RxUtils.applySchedulers())

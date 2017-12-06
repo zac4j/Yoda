@@ -2,9 +2,6 @@ package com.zac4j.yoda.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -15,12 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.bumptech.glide.BitmapRequestBuilder;
-import com.bumptech.glide.GenericRequestBuilder;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.ThumbUrl;
 import com.zac4j.yoda.data.model.User;
@@ -29,7 +21,6 @@ import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.util.WeiboParser;
 import com.zac4j.yoda.util.WeiboReader;
-import com.zac4j.yoda.util.image.PhotoUtils;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -108,7 +99,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     return mWeiboList.size();
   }
 
-  static class ViewHolder extends RecyclerView.ViewHolder {
+  class ViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.weibo_list_item_iv_avatar) ImageView mAvatarView;
     @BindView(R.id.weibo_list_item_tv_nickname) TextView mNicknameView;
@@ -159,14 +150,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     // 没办法迁移，api 获取的数据跟翔一样
     void setRepostContent(Context context, Weibo repostWeibo) {
       final TextView repostTextView =
-          (TextView) mRepostContentView.findViewById(R.id.weibo_list_item_tv_repost_content);
+          mRepostContentView.findViewById(R.id.weibo_list_item_tv_repost_content);
       // 转发微博多媒体内容的容器
       final View mediaContainer =
           mRepostContentView.findViewById(R.id.weibo_list_item_tv_repost_media);
       final ImageView mediaImageView =
-          (ImageView) mRepostContentView.findViewById(R.id.weibo_list_item_iv_repost_img);
+          mRepostContentView.findViewById(R.id.weibo_list_item_iv_repost_img);
       final TextView mediaImageType =
-          (TextView) mRepostContentView.findViewById(R.id.weibo_list_item_tv_repost_type);
+          mRepostContentView.findViewById(R.id.weibo_list_item_tv_repost_type);
 
       if (repostWeibo == null) {
         clearWeiboContainer(mRepostContentView, repostTextView, mediaImageView, mediaImageType);
@@ -187,8 +178,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         String imgUrl = repostWeibo.getBmiddlePic();
         boolean isMultiImages = repostWeibo.getPicUrls().size() > 1;
 
-        setRepostMediaContent(context, imgUrl, isMultiImages, mediaImageView, mediaImageType,
-            mediaContainer);
+        //setRepostMediaContent(context, imgUrl, isMultiImages, mediaImageView, mediaImageType,
+        //    mediaContainer);
       }
     }
 
@@ -197,98 +188,100 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       containerView.setBackgroundResource(0);
       containerView.setPadding(0, 0, 0, 0);
       weiboTextView.setText("");
-      // 我费尽千辛万苦终于发现你躺在这里 >>
+      // 我费尽千辛万苦终于发现你在这里 >>
       weiboTextView.setVisibility(View.GONE);
-      Glide.clear(weiboMediaView);
+      Glide.with(mContext).clear(weiboMediaView);
       weiboMediaTypeView.setText("");
     }
 
-    void setRepostMediaContent(final Context context, final String mediaUrl,
-        final boolean isMultiImage, final ImageView mediaImageView, final TextView mediaImageType,
-        final View mediaContainer) {
-
-      if (TextUtils.isEmpty(mediaUrl)) {
-        Glide.clear(mediaImageView);
-        mediaImageType.setText("");
-        mediaContainer.setVisibility(View.GONE);
-      } else {
-        mediaContainer.setVisibility(View.VISIBLE);
-
-        final BitmapRequestBuilder<String, Bitmap> bitmapRequestBuilder =
-            Glide.with(context).load(mediaUrl).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL);
-
-        if (isMultiImage) {
-          mediaImageType.setText(R.string.weibo_media_type_multiple_image);
-          bitmapRequestBuilder.fitCenter().into(mediaImageView);
-          return;
-        }
-
-        if (mediaUrl.endsWith("gif")) {
-          mediaImageType.setText(R.string.weibo_media_type_gif);
-          bitmapRequestBuilder.fitCenter().into(mediaImageView);
-          return;
-        }
-
-        // Request has DiskCacheStrategy.ALL
-        GenericRequestBuilder builder =
-            PhotoUtils.getNetworkImageSizeRequest(context).load(Uri.parse(mediaUrl));
-        builder.into(new SimpleTarget<BitmapFactory.Options>() {
-          @Override public void onResourceReady(BitmapFactory.Options resource,
-              GlideAnimation<? super BitmapFactory.Options> glideAnimation) {
-            int imageHeight = resource.outHeight;
-            if (imageHeight >= PhotoUtils.LONG_IMAGE_LENGTH) {
-              mediaImageType.setText(R.string.weibo_media_type_long_image);
-              bitmapRequestBuilder.centerCrop().into(mediaImageView);
-            } else {
-              mediaImageType.setText("");
-              bitmapRequestBuilder.fitCenter().into(mediaImageView);
-            }
-          }
-        });
-      }
-    }
-
-    void setMediaContent(final Context context, final String mediaUrl, final boolean isMultiImage) {
-      final ImageView mediaImageView = (ImageView) mMediaView.findViewById(R.id.weibo_media_iv_img);
-      final TextView mediaImageType = (TextView) mMediaView.findViewById(R.id.weibo_media_tv_type);
-      if (TextUtils.isEmpty(mediaUrl)) {
-        Glide.clear(mediaImageView);
-        mediaImageType.setText("");
-        mMediaView.setVisibility(View.GONE);
-      } else {
-        mMediaView.setVisibility(View.VISIBLE);
-
-        final BitmapRequestBuilder<String, Bitmap> bitmapRequestBuilder =
-            Glide.with(context).load(mediaUrl).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL);
-
-        // Request has DiskCacheStrategy.ALL
-        GenericRequestBuilder builder =
-            PhotoUtils.getNetworkImageSizeRequest(context).load(Uri.parse(mediaUrl));
-        builder.into(new SimpleTarget<BitmapFactory.Options>() {
-          @Override public void onResourceReady(BitmapFactory.Options resource,
-              GlideAnimation<? super BitmapFactory.Options> glideAnimation) {
-            int imageHeight = resource.outHeight;
-            if (imageHeight >= PhotoUtils.LONG_IMAGE_LENGTH) {
-              mediaImageType.setText(R.string.weibo_media_type_long_image);
-              bitmapRequestBuilder.centerCrop().into(mediaImageView);
-            } else {
-              mediaImageType.setText("");
-              bitmapRequestBuilder.fitCenter().into(mediaImageView);
-            }
-          }
-        });
-
-        if (mediaUrl.endsWith("gif")) {
-          mediaImageType.setText(R.string.weibo_media_type_gif);
-          bitmapRequestBuilder.fitCenter().into(mediaImageView);
-        }
-
-        if (isMultiImage) {
-          mediaImageType.setText(R.string.weibo_media_type_multiple_image);
-          bitmapRequestBuilder.fitCenter().into(mediaImageView);
-        }
-      }
-    }
+    //void setRepostMediaContent(final Context context, final String mediaUrl,
+    //    final boolean isMultiImage, final ImageView mediaImageView, final TextView mediaImageType,
+    //    final View mediaContainer) {
+    //
+    //  if (TextUtils.isEmpty(mediaUrl)) {
+    //    Glide.with(mContext).clear(mediaImageView);
+    //    mediaImageType.setText("");
+    //    mediaContainer.setVisibility(View.GONE);
+    //  } else {
+    //    mediaContainer.setVisibility(View.VISIBLE);
+    //
+    //    final RequestBuilder<Bitmap> bitmapRequestBuilder = Glide.with(context)
+    //        .asBitmap()
+    //        .load(mediaUrl)
+    //        .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter());
+    //
+    //    if (isMultiImage) {
+    //      mediaImageType.setText(R.string.weibo_media_type_multiple_image);
+    //      bitmapRequestBuilder.into(mediaImageView);
+    //      return;
+    //    }
+    //
+    //    if (mediaUrl.endsWith("gif")) {
+    //      mediaImageType.setText(R.string.weibo_media_type_gif);
+    //      bitmapRequestBuilder.into(mediaImageView);
+    //      return;
+    //    }
+    //
+    //    // Request has DiskCacheStrategy.ALL
+    //    RequestBuilder builder =
+    //        PhotoUtils.getNetworkImageSizeRequest(context).load(Uri.parse(mediaUrl));
+    //    builder.into(new SimpleTarget<BitmapFactory.Options>() {
+    //      @Override public void onResourceReady(BitmapFactory.Options resource,
+    //          GlideAnimation<? super BitmapFactory.Options> glideAnimation) {
+    //        int imageHeight = resource.outHeight;
+    //        if (imageHeight >= PhotoUtils.LONG_IMAGE_LENGTH) {
+    //          mediaImageType.setText(R.string.weibo_media_type_long_image);
+    //          bitmapRequestBuilder.centerCrop().into(mediaImageView);
+    //        } else {
+    //          mediaImageType.setText("");
+    //          bitmapRequestBuilder.fitCenter().into(mediaImageView);
+    //        }
+    //      }
+    //    });
+    //  }
+    //}
+    //
+    //void setMediaContent(final Context context, final String mediaUrl, final boolean isMultiImage) {
+    //  final ImageView mediaImageView = (ImageView) mMediaView.findViewById(R.id.weibo_media_iv_img);
+    //  final TextView mediaImageType = (TextView) mMediaView.findViewById(R.id.weibo_media_tv_type);
+    //  if (TextUtils.isEmpty(mediaUrl)) {
+    //    Glide.clear(mediaImageView);
+    //    mediaImageType.setText("");
+    //    mMediaView.setVisibility(View.GONE);
+    //  } else {
+    //    mMediaView.setVisibility(View.VISIBLE);
+    //
+    //    final BitmapRequestBuilder<String, Bitmap> bitmapRequestBuilder =
+    //        Glide.with(context).load(mediaUrl).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL);
+    //
+    //    // Request has DiskCacheStrategy.ALL
+    //    GenericRequestBuilder builder =
+    //        PhotoUtils.getNetworkImageSizeRequest(context).load(Uri.parse(mediaUrl));
+    //    builder.into(new SimpleTarget<BitmapFactory.Options>() {
+    //      @Override public void onResourceReady(BitmapFactory.Options resource,
+    //          GlideAnimation<? super BitmapFactory.Options> glideAnimation) {
+    //        int imageHeight = resource.outHeight;
+    //        if (imageHeight >= PhotoUtils.LONG_IMAGE_LENGTH) {
+    //          mediaImageType.setText(R.string.weibo_media_type_long_image);
+    //          bitmapRequestBuilder.centerCrop().into(mediaImageView);
+    //        } else {
+    //          mediaImageType.setText("");
+    //          bitmapRequestBuilder.fitCenter().into(mediaImageView);
+    //        }
+    //      }
+    //    });
+    //
+    //    if (mediaUrl.endsWith("gif")) {
+    //      mediaImageType.setText(R.string.weibo_media_type_gif);
+    //      bitmapRequestBuilder.fitCenter().into(mediaImageView);
+    //    }
+    //
+    //    if (isMultiImage) {
+    //      mediaImageType.setText(R.string.weibo_media_type_multiple_image);
+    //      bitmapRequestBuilder.fitCenter().into(mediaImageView);
+    //    }
+    //  }
+    //}
 
     private void setupUserInfo(Context context, User user) {
       if (user == null) {
@@ -307,7 +300,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       // 多媒体消息
       String media = weibo.getBmiddlePic();
       boolean isMultiImages = weibo.getPicUrls().size() > 1;
-      setMediaContent(context, media, isMultiImages);
+      //setMediaContent(context, media, isMultiImages);
       ArrayList<ThumbUrl> imgUrlList = new ArrayList<>();
       if (isMultiImages) {
         imgUrlList = (ArrayList<ThumbUrl>) weibo.getPicUrls();

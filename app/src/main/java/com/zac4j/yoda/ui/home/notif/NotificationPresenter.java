@@ -10,15 +10,12 @@ import com.zac4j.yoda.data.remote.RequestState;
 import com.zac4j.yoda.di.PerConfig;
 import com.zac4j.yoda.ui.base.RxPresenter;
 import com.zac4j.yoda.util.RxUtils;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import java.io.IOException;
 import java.util.List;
 import javax.inject.Inject;
 import retrofit2.Response;
-
-import static android.database.sqlite.SQLiteDatabase.CONFLICT_IGNORE;
 
 /**
  * Presenter for Notification
@@ -86,30 +83,10 @@ import static android.database.sqlite.SQLiteDatabase.CONFLICT_IGNORE;
   }
 
   public void showProfile(long uid) {
-    mDataManager.getDatabase()
-        .createQuery(Profile.TABLE, PROFILE_QUERY, String.valueOf(uid))
-        .mapToOne(Profile.MAPPER)
-        .observeOn(AndroidSchedulers.mainThread())
-        .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
-        .doOnError(throwable -> publishRequestState(RequestState.ERROR))
-        .doOnNext(disposable -> publishRequestState(RequestState.COMPLETE))
-        .subscribe(profile -> getMvpView().showProfileDialog(profile));
+
   }
 
   private void saveUsers(List<User> users) {
-    for (User user : users) {
-      mDataManager.getDatabase()
-          .insert(Profile.TABLE, new Profile.Builder().uid(user.getId())
-              .avatarUrl(user.getAvatarHd())
-              .nickname(user.getScreenName())
-              .username(user.getDomain())
-              .gender(user.getGender())
-              .description(user.getDescription())
-              .location(user.getLocation())
-              .follow(user.getFriendsCount())
-              .follower(user.getFollowersCount())
-              .build(), CONFLICT_IGNORE);
-    }
   }
 
   public void getLatestComments(String token) {

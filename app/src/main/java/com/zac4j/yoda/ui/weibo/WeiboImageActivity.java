@@ -1,5 +1,6 @@
 package com.zac4j.yoda.ui.weibo;
 
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +14,8 @@ import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -61,15 +63,16 @@ public class WeiboImageActivity extends BaseActivity {
     Uri imgUri = getIntent().getParcelableExtra(EXTRA_IMAGE_URI);
     if (imgUri != null) {
       mProgressBar.setVisibility(View.VISIBLE);
-      Glide.with(this).load(imgUri).listener(new RequestListener<Uri, GlideDrawable>() {
-        @Override public boolean onException(Exception e, Uri model, Target<GlideDrawable> target,
-            boolean isFirstResource) {
+      Glide.with(this).load(imgUri).listener(new RequestListener<Drawable>() {
+        @Override public boolean onLoadFailed(@Nullable GlideException e, Object model,
+            Target<Drawable> target, boolean isFirstResource) {
           mProgressBar.setVisibility(View.GONE);
           return false;
         }
 
-        @Override public boolean onResourceReady(GlideDrawable resource, Uri model,
-            Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+        @Override
+        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
+            DataSource dataSource, boolean isFirstResource) {
           mProgressBar.setVisibility(View.GONE);
           return false;
         }

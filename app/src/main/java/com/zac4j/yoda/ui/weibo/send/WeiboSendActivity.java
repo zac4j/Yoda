@@ -22,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.base.BaseActivity;
@@ -206,7 +207,10 @@ public class WeiboSendActivity extends BaseActivity implements WeiboSendView {
       }
     });
 
-    Glide.with(imageView.getContext()).load(uri).centerCrop().into(imageView);
+    Glide.with(imageView.getContext())
+        .load(uri)
+        .apply(new RequestOptions().centerCrop())
+        .into(imageView);
     mMediaContainer.addView(imageView);
   }
 

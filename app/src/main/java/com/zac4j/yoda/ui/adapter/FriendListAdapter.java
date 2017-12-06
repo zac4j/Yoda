@@ -13,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.di.ActivityContext;
@@ -116,9 +117,12 @@ public class FriendListAdapter
 
     void setAvatar(Context context, String avatarUrl) {
       if (TextUtils.isEmpty(avatarUrl)) {
-        Glide.clear(mAvatarView);
+        Glide.with(context).clear(mAvatarView);
       } else {
-        Glide.with(context).load(avatarUrl).fitCenter().into(mAvatarView);
+        Glide.with(context)
+            .load(avatarUrl)
+            .apply(new RequestOptions().fitCenter())
+            .into(mAvatarView);
       }
     }
 

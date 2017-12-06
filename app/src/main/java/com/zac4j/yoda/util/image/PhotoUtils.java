@@ -6,22 +6,17 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.DisplayMetrics;
-import com.bumptech.glide.GenericRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.StreamEncoder;
-import com.bumptech.glide.load.model.stream.StreamUriLoader;
-import com.zac4j.yoda.R;
 import com.zac4j.yoda.util.FileUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -106,25 +101,6 @@ public class PhotoUtils {
     // Create RequestBody instance from file
     RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), compressedFile);
     return MultipartBody.Part.createFormData(partName, file.getName(), requestBody);
-  }
-
-  /**
-   * 高效的获取网络图片的尺寸
-   *
-   * @param context context
-   * @return Generic Image Request
-   */
-  public static GenericRequestBuilder<Uri, InputStream, BitmapFactory.Options, BitmapFactory.Options> getNetworkImageSizeRequest(
-      Context context) {
-    return Glide // cache for effectiveness (re-use in lists for example) and readability at usage
-        .with(context)
-        .using(new StreamUriLoader(context), InputStream.class)
-        .from(Uri.class)
-        .as(BitmapFactory.Options.class)
-        .sourceEncoder(new StreamEncoder())
-        .cacheDecoder(new BitmapSizeDecoder())
-        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-        .listener(new ImageLoggingListener<Uri, BitmapFactory.Options>());
   }
 
   /**
