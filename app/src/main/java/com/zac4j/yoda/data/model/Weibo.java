@@ -403,4 +403,103 @@ public class Weibo implements Serializable {
     result = 31 * result + (idstr != null ? idstr.hashCode() : 0);
     return result;
   }
+
+  @Override public String toString() {
+    return "Weibo{"
+        + "createdAt='"
+        + createdAt
+        + '\''
+        + ", id="
+        + id
+        + ", mid='"
+        + mid
+        + '\''
+        + ", idstr='"
+        + idstr
+        + '\''
+        + ", text='"
+        + text
+        + '\''
+        + ", textLength="
+        + textLength
+        + ", sourceAllowclick="
+        + sourceAllowclick
+        + ", sourceType="
+        + sourceType
+        + ", source='"
+        + source
+        + '\''
+        + ", favorited="
+        + favorited
+        + ", truncated="
+        + truncated
+        + ", inReplyToStatusId='"
+        + inReplyToStatusId
+        + '\''
+        + ", inReplyToUserId='"
+        + inReplyToUserId
+        + '\''
+        + ", inReplyToScreenName='"
+        + inReplyToScreenName
+        + '\''
+        + ", picUrls="
+        + picUrls
+        + ", thumbnailPic='"
+        + thumbnailPic
+        + '\''
+        + ", bmiddlePic='"
+        + bmiddlePic
+        + '\''
+        + ", originalPic='"
+        + originalPic
+        + '\''
+        + ", geo="
+        + geo
+        + ", user="
+        + user
+        + ", repostsCount="
+        + repostsCount
+        + ", commentsCount="
+        + commentsCount
+        + ", repostWeibo="
+        + repostWeibo
+        + ", attitudesCount="
+        + attitudesCount
+        + ", isLongText="
+        + isLongText
+        + ", mlevel="
+        + mlevel
+        + ", visible="
+        + visible
+        + ", bizFeature="
+        + bizFeature
+        + ", pageType="
+        + pageType
+        + ", hasActionTypeCard="
+        + hasActionTypeCard
+        + ", darwinTags="
+        + darwinTags
+        + ", hotWeiboTags="
+        + hotWeiboTags
+        + ", textTagTips="
+        + textTagTips
+        + ", rid='"
+        + rid
+        + '\''
+        + ", userType="
+        + userType
+        + ", cardid='"
+        + cardid
+        + '\''
+        + ", positiveRecomFlag="
+        + positiveRecomFlag
+        + ", gifIds='"
+        + gifIds
+        + '\''
+        + ", isShowBulletin="
+        + isShowBulletin
+        + ", additionalProperties="
+        + additionalProperties
+        + '}';
+  }
 }

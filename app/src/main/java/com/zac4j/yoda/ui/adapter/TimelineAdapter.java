@@ -19,8 +19,10 @@ import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
+import com.zac4j.yoda.util.WeiboImageReader;
 import com.zac4j.yoda.util.WeiboParser;
 import com.zac4j.yoda.util.WeiboReader;
+import com.zac4j.yoda.util.image.GlideApp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -120,11 +122,15 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     }
 
     void bindTo(Context context, Weibo weibo) {
+      System.out.println("weibo >>> " + weibo);
       // 发送时间
       WeiboReader.readPostTime(mPostTimeView, weibo.getCreatedAt());
 
       // 微博内容
       WeiboReader.readContent(mContentView, weibo.getText());
+
+      // todo set media content
+      setupMediaContent(context, weibo.getBmiddlePic(), weibo.getPicUrls().size() >= 2);
 
       // 微博转发内容
       setRepostContent(context, weibo.getRepostWeibo());
@@ -145,6 +151,24 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
       // 添加点击事件
       addMediaClickEvent(context, weibo);
+    }
+
+    void setupMediaContent(Context context, String mediaUrl, boolean isMultipleMedia) {
+      final ImageView imageHolder = mMediaView.findViewById(R.id.weibo_media_iv_img);
+      final TextView imageTypeView = mMediaView.findViewById(R.id.weibo_media_tv_type);
+
+      if (TextUtils.isEmpty(mediaUrl)) {
+        GlideApp.with(context).clear(imageHolder);
+        imageTypeView.setText("");
+        mMediaView.setVisibility(View.GONE);
+      } else {
+        mMediaView.setVisibility(View.VISIBLE);
+        if (isMultipleMedia) {
+          // todo load multiple media
+        } else {
+          WeiboImageReader.readSingleImage(context, imageHolder, mediaUrl);
+        }
+      }
     }
 
     // 没办法迁移，api 获取的数据跟翔一样
@@ -281,7 +305,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     //      bitmapRequestBuilder.fitCenter().into(mediaImageView);
     //    }
     //  }
-    //}
+    //}mediaImageView
 
     private void setupUserInfo(Context context, User user) {
       if (user == null) {
