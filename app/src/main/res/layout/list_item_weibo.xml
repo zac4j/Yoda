@@ -36,8 +36,8 @@
             android:id="@id/weibo_list_item_tv_nickname"
             android:layout_width="@dimen/width_weibo_nickname"
             android:layout_height="wrap_content"
-            android:lines="1"
             android:ellipsize="end"
+            android:lines="1"
             android:textAppearance="@style/TextAppearance.AppCompat"
             tools:text="湾区日报"
             />
@@ -85,9 +85,11 @@
           android:id="@id/weibo_list_item_repost_container"
           />
 
-      <include
-          layout="@layout/include_media_container"
-          android:id="@id/weibo_list_item_iv_media"
+      <FrameLayout
+          android:id="@id/weibo_list_item_media_container"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/weibo_media_height"
+          android:visibility="gone"
           />
 
       <include

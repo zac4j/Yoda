@@ -19,7 +19,7 @@ import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
-import com.zac4j.yoda.util.WeiboImageReader;
+import com.zac4j.yoda.util.WeiboImageLoader;
 import com.zac4j.yoda.util.WeiboParser;
 import com.zac4j.yoda.util.WeiboReader;
 import com.zac4j.yoda.util.image.GlideApp;
@@ -42,9 +42,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
   private Context mContext;
   private List<Weibo> mWeiboList;
+  private LayoutInflater mLayoutInflater;
 
   @Inject public TimelineAdapter(@ActivityContext Context context) {
     mContext = context;
+    mLayoutInflater = LayoutInflater.from(context);
     mWeiboList = new ArrayList<>();
   }
 
@@ -110,7 +112,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     @BindView(R.id.weibo_list_item_tv_post_from) TextView mPostSourceView;
     @BindView(R.id.weibo_list_item_tv_content) TextView mContentView;
     @BindView(R.id.weibo_list_item_repost_container) View mRepostContentView;
-    @BindView(R.id.weibo_list_item_iv_media) View mMediaView;
+    @BindView(R.id.weibo_list_item_media_container) ViewGroup mMediaContainer;
     @BindView(R.id.weibo_list_item_bottom_btns) View mBottomBtns;
     @BindView(R.id.weibo_list_item_tv_repost) TextView mRepostBtn;
     @BindView(R.id.weibo_list_item_tv_comment) TextView mCommentBtn;
@@ -154,21 +156,24 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     }
 
     void setupMediaContent(Context context, String mediaUrl, boolean isMultipleMedia) {
-      final ImageView imageHolder = mMediaView.findViewById(R.id.weibo_media_iv_img);
-      final TextView imageTypeView = mMediaView.findViewById(R.id.weibo_media_tv_type);
+
+      View singleImageContainer =
+          mLayoutInflater.inflate(R.layout.layout_weibo_single_image, mMediaContainer, false);
+      final ImageView imageHolder = singleImageContainer.findViewById(R.id.weibo_media_iv_img);
+      final TextView imageTypeView = singleImageContainer.findViewById(R.id.weibo_media_tv_type);
 
       if (TextUtils.isEmpty(mediaUrl)) {
         GlideApp.with(context).clear(imageHolder);
         imageTypeView.setText("");
-        mMediaView.setVisibility(View.GONE);
       } else {
-        mMediaView.setVisibility(View.VISIBLE);
         if (isMultipleMedia) {
           // todo load multiple media
         } else {
-          WeiboImageReader.readSingleImage(context, imageHolder, mediaUrl);
+          WeiboImageLoader.loadSingleImage(context, imageHolder, mediaUrl);
         }
       }
+
+      mMediaContainer.addView(singleImageContainer);
     }
 
     // 没办法迁移，api 获取的数据跟翔一样
@@ -335,11 +340,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
       }
       final Intent intent = new Intent(context, WeiboImageActivity.class);
       intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_LIST, imgUrlList);
-      mMediaView.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-          context.startActivity(intent);
-        }
-      });
+      mMediaContainer.setOnClickListener(v -> context.startActivity(intent));
     }
   }
 }
