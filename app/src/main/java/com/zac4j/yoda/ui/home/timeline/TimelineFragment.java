@@ -72,11 +72,7 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
     mWeiboListView.setLayoutManager(layoutManager);
     mWeiboListView.setAdapter(mTimelineAdapter);
-    mTimelineAdapter.setOnItemClickListener(new TimelineAdapter.OnItemClickListener() {
-      @Override public void onClick(Weibo weibo) {
-        jumpToWeiboDetail(getContext(), weibo);
-      }
-    });
+    mTimelineAdapter.setOnItemClickListener(weibo -> jumpToWeiboDetail(getContext(), weibo));
 
     Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(getContext());
     mToken = accessToken.getToken();
@@ -89,11 +85,9 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     };
     mWeiboListView.addOnScrollListener(mScrollListener);
 
-    mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-      @Override public void onRefresh() {
-        mPresenter.getTimeline(mToken, DEFAULT_WEIBO_COUNT, DEFAULT_WEIBO_PAGE);
-        mRequestPage = 1;
-      }
+    mSwipeContainer.setOnRefreshListener(() -> {
+      mPresenter.getTimeline(mToken, DEFAULT_WEIBO_COUNT, DEFAULT_WEIBO_PAGE);
+      mRequestPage = 1;
     });
 
     mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,

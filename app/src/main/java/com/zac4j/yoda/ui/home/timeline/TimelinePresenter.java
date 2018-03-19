@@ -138,6 +138,7 @@ import retrofit2.http.HTTP;
     if (timeline == null || timeline.getStatuses() == null || timeline.getStatuses().isEmpty()) {
       getMvpView().showEmptyView(true);
     } else {
+      System.out.println("zaccc都几次了");
       getMvpView().showTimeline(timeline.getStatuses());
     }
   }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,11 +79,9 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
     // Add view holder item click listener
     final ViewHolder holder = new ViewHolder(view);
-    holder.itemView.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        int position = holder.getAdapterPosition();
-        mItemClickListener.onClick(mWeiboList.get(position));
-      }
+    holder.itemView.setOnClickListener(v -> {
+      int position = holder.getAdapterPosition();
+      mItemClickListener.onClick(mWeiboList.get(position));
     });
 
     return holder;
@@ -105,6 +104,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
   class ViewHolder extends RecyclerView.ViewHolder {
 
+    @BindView(R.id.weibo_list_item_root_container) RelativeLayout mRootLayout;
     @BindView(R.id.weibo_list_item_iv_avatar) ImageView mAvatarView;
     @BindView(R.id.weibo_list_item_tv_nickname) TextView mNicknameView;
     @BindView(R.id.weibo_list_item_tv_username) TextView mUsernameView;
@@ -124,14 +124,12 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     }
 
     void bindTo(Context context, Weibo weibo) {
-      System.out.println("weibo >>> " + weibo);
       // 发送时间
       WeiboReader.readPostTime(mPostTimeView, weibo.getCreatedAt());
 
       // 微博内容
       WeiboReader.readContent(mContentView, weibo.getText());
 
-      // todo set media content
       setupMediaContent(context, weibo.getBmiddlePic(), weibo.getPicUrls().size() >= 2);
 
       // 微博转发内容
@@ -156,24 +154,24 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     }
 
     void setupMediaContent(Context context, String mediaUrl, boolean isMultipleMedia) {
-
-      View singleImageContainer =
-          mLayoutInflater.inflate(R.layout.layout_weibo_single_image, mMediaContainer, false);
-      final ImageView imageHolder = singleImageContainer.findViewById(R.id.weibo_media_iv_img);
-      final TextView imageTypeView = singleImageContainer.findViewById(R.id.weibo_media_tv_type);
-
       if (TextUtils.isEmpty(mediaUrl)) {
-        GlideApp.with(context).clear(imageHolder);
-        imageTypeView.setText("");
+        mMediaContainer.removeAllViews();
+        mMediaContainer.setVisibility(View.GONE);
+        mRootLayout.removeView(mMediaContainer);
       } else {
         if (isMultipleMedia) {
-          // todo load multiple media
+          // todo process multiple media
+          mMediaContainer.removeAllViews();
+          mMediaContainer.setVisibility(View.GONE);
+          mRootLayout.removeView(mMediaContainer);
         } else {
+          View singleImageContainer = mLayoutInflater.inflate(R.layout.layout_weibo_single_image, null);
+          final ImageView imageHolder = singleImageContainer.findViewById(R.id.weibo_media_iv_img);
           WeiboImageLoader.loadSingleImage(context, imageHolder, mediaUrl);
+          mMediaContainer.addView(singleImageContainer);
+          mMediaContainer.setVisibility(View.VISIBLE);
         }
       }
-
-      mMediaContainer.addView(singleImageContainer);
     }
 
     // 没办法迁移，api 获取的数据跟翔一样

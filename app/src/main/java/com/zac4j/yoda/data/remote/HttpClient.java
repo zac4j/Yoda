@@ -27,8 +27,8 @@ public class HttpClient {
       OkHttpClient.Builder builder = new OkHttpClient.Builder();
       builder.cache(new Cache(mContext.getCacheDir(), CACHE_SIZE_BYTES));
       builder.addNetworkInterceptor(new StethoInterceptor());
-      builder.addInterceptor(
-          new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+      //builder.addInterceptor(
+      //    new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
       mHttpClient = builder.build();
     }
     return mHttpClient;

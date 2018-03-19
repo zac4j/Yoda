@@ -21,7 +21,6 @@ import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.adapter.TimelineAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
-import com.zac4j.yoda.ui.user.UserActivity;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -76,11 +75,8 @@ public class UserMomentFragment extends BaseFragment implements UserMomentView {
     };
     mWeiboListView.addOnScrollListener(mScrollListener);
 
-    mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-      @Override public void onRefresh() {
-        mPresenter.getTimeline(token, mRequestCount, mRequestPage);
-      }
-    });
+    //mSwipeContainer.setOnRefreshListener(
+    //    () -> mPresenter.getTimeline(token, mRequestCount, mRequestPage));
 
     mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
         android.R.color.holo_green_light, android.R.color.holo_orange_light,

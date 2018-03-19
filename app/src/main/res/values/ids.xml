@@ -32,6 +32,7 @@
   <item name="nav_drawer_my_friends" type="id"/>
 
   <!--Weibo List Item-->
+  <item name="weibo_list_item_root_container" type="id"/>
   <item name="weibo_list_item_tv_nickname" type="id"/>
   <item name="weibo_list_item_tv_username" type="id"/>
   <item name="weibo_list_item_tv_post_from" type="id"/>

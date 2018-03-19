@@ -21,10 +21,11 @@ public class WeiboImageLoader {
    */
   public static void loadSingleImage(Context context, ImageView holder, String url) {
     if (TextUtils.isEmpty(url)) {
-      GlideApp.with(context).clear(holder);
+      //GlideApp.with(context).clear(holder);
     } else {
       GlideApp.with(context)
           .load(url)
+          .centerInside()
           .into(holder);
     }
   }
