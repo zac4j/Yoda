@@ -11,11 +11,11 @@ import java.util.List;
 
 public interface UserMomentView extends MvpView {
 
-  void showRefresh(boolean refresh);
+    void showRefresh(boolean refresh);
 
-  boolean isRefreshing();
+    boolean isRefreshing();
 
-  void showEmpty(boolean show);
+    void showEmpty(boolean show);
 
-  void showTimeline(List<Weibo> weiboList);
+    void showTimeline(List<Weibo> weiboList);
 }

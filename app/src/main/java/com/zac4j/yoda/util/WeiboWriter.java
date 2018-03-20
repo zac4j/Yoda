@@ -7,8 +7,7 @@ package com.zac4j.yoda.util;
 
 public class WeiboWriter {
 
-  public static void repostWeibo(String content, int contentAsComment) {
+    public static void repostWeibo(String content, int contentAsComment) {
 
-  }
-
+    }
 }

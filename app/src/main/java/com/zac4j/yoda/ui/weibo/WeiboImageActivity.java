@@ -33,75 +33,84 @@ import javax.inject.Inject;
 
 public class WeiboImageActivity extends BaseActivity {
 
-  public static final String EXTRA_IMAGE_LIST = "img_list_uri";
-  public static final String EXTRA_IMAGE_URI = "img_uri";
+    public static final String EXTRA_IMAGE_LIST = "img_list_uri";
+    public static final String EXTRA_IMAGE_URI = "img_uri";
 
-  @Inject ImagePagerAdapter mImagePagerAdapter;
+    @Inject
+    ImagePagerAdapter mImagePagerAdapter;
 
-  @BindView(R.id.toolbar) Toolbar mToolbar;
-  @BindView(R.id.weibo_image_vp_container) ViewPager mImageContainer;
-  @BindView(R.id.progress_bar) ProgressBar mProgressBar;
-  @BindView(R.id.photo_view) PhotoView mPhotoView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.weibo_image_vp_container)
+    ViewPager mImageContainer;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.photo_view)
+    PhotoView mPhotoView;
 
-  @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_weibo_image);
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_weibo_image);
 
-    getActivityComponent().inject(this);
-    ButterKnife.bind(this);
+        getActivityComponent().inject(this);
+        ButterKnife.bind(this);
 
-    if (mToolbar != null) {
-      setSupportActionBar(mToolbar);
-    }
-
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(true);
-    }
-
-    // Single image to display.
-    Uri imgUri = getIntent().getParcelableExtra(EXTRA_IMAGE_URI);
-    if (imgUri != null) {
-      mProgressBar.setVisibility(View.VISIBLE);
-      Glide.with(this).load(imgUri).listener(new RequestListener<Drawable>() {
-        @Override public boolean onLoadFailed(@Nullable GlideException e, Object model,
-            Target<Drawable> target, boolean isFirstResource) {
-          mProgressBar.setVisibility(View.GONE);
-          return false;
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
         }
 
-        @Override
-        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
-            DataSource dataSource, boolean isFirstResource) {
-          mProgressBar.setVisibility(View.GONE);
-          return false;
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
-      }).into(mPhotoView);
-      mImageContainer.setVisibility(View.GONE);
-      mPhotoView.setVisibility(View.VISIBLE);
-      mPhotoView.setBackgroundColor(ContextCompat.getColor(WeiboImageActivity.this, R.color.black));
-      return;
-    } else {
-      mPhotoView.setVisibility(View.GONE);
-      mImageContainer.setVisibility(View.VISIBLE);
+
+        // Single image to display.
+        Uri imgUri = getIntent().getParcelableExtra(EXTRA_IMAGE_URI);
+        if (imgUri != null) {
+            mProgressBar.setVisibility(View.VISIBLE);
+            Glide.with(this).load(imgUri).listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                    Target<Drawable> target, boolean isFirstResource) {
+                    mProgressBar.setVisibility(View.GONE);
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model,
+                    Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    mProgressBar.setVisibility(View.GONE);
+                    return false;
+                }
+            }).into(mPhotoView);
+            mImageContainer.setVisibility(View.GONE);
+            mPhotoView.setVisibility(View.VISIBLE);
+            mPhotoView.setBackgroundColor(
+                ContextCompat.getColor(WeiboImageActivity.this, R.color.black));
+            return;
+        } else {
+            mPhotoView.setVisibility(View.GONE);
+            mImageContainer.setVisibility(View.VISIBLE);
+        }
+
+        // An images array to display.
+        ArrayList<ThumbUrl> imgUrlList =
+            (ArrayList<ThumbUrl>) getIntent().getSerializableExtra(EXTRA_IMAGE_LIST);
+        if (imgUrlList == null || imgUrlList.isEmpty()) {
+            return;
+        }
+        mImageContainer.setAdapter(mImagePagerAdapter);
+        mImagePagerAdapter.addImageUrlList(imgUrlList);
     }
 
-    // An images array to display.
-    ArrayList<ThumbUrl> imgUrlList =
-        (ArrayList<ThumbUrl>) getIntent().getSerializableExtra(EXTRA_IMAGE_LIST);
-    if (imgUrlList == null || imgUrlList.isEmpty()) {
-      return;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
-    mImageContainer.setAdapter(mImagePagerAdapter);
-    mImagePagerAdapter.addImageUrlList(imgUrlList);
-  }
-
-  @Override public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case android.R.id.home:
-        onBackPressed();
-        break;
-    }
-    return super.onOptionsItemSelected(item);
-  }
 }

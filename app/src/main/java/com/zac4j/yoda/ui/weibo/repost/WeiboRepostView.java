@@ -11,11 +11,11 @@ import com.zac4j.yoda.ui.base.MvpView;
 
 public interface WeiboRepostView extends MvpView {
 
-  void hide();
+    void hide();
 
-  void show(FragmentManager fragmentManager);
+    void show(FragmentManager fragmentManager);
 
-  void onRepostSuccess(Weibo weibo);
+    void onRepostSuccess(Weibo weibo);
 
-  void onRepostFailure();
+    void onRepostFailure();
 }

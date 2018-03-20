@@ -29,7 +29,7 @@ import okhttp3.RequestBody;
  * Created by zac on 3/29/2017.
  */
 
-public class PhotoUtils {
+public class ImageUtil {
 
     public static final int LONG_IMAGE_LENGTH = 980;
 

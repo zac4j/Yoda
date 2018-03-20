@@ -13,22 +13,23 @@ import javax.inject.Singleton;
 
 @Singleton public class PreferencesHelper {
 
-  private static final String PREFS_FILENAME = "prefs_file";
+    private static final String PREFS_FILENAME = "prefs_file";
 
-  private SharedPreferences mPrefs;
+    private SharedPreferences mPrefs;
 
-  @Inject public PreferencesHelper(@ApplicationContext Context context) {
-    mPrefs = context.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE);
-  }
-
-  public SharedPreferences getPrefs() {
-    if (mPrefs == null) {
-      throw new IllegalStateException("PreferencesHelper had not initialized!");
+    @Inject
+    public PreferencesHelper(@ApplicationContext Context context) {
+        mPrefs = context.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE);
     }
-    return mPrefs;
-  }
 
-  public void clear() {
-    mPrefs.edit().clear().apply();
-  }
+    public SharedPreferences getPrefs() {
+        if (mPrefs == null) {
+            throw new IllegalStateException("PreferencesHelper had not initialized!");
+        }
+        return mPrefs;
+    }
+
+    public void clear() {
+        mPrefs.edit().clear().apply();
+    }
 }

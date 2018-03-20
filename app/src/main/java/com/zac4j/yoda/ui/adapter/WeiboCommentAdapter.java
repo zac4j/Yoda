@@ -25,76 +25,87 @@ import javax.inject.Inject;
 
 public class WeiboCommentAdapter extends RecyclerView.Adapter<WeiboCommentAdapter.ViewHolder> {
 
-  private Context mContext;
-  private List<Comment> mCommentList;
+    private Context mContext;
+    private List<Comment> mCommentList;
 
-  @Inject public WeiboCommentAdapter(@ActivityContext Context context) {
-    mContext = context;
-    mCommentList = new ArrayList<>();
-  }
-
-  public void addCommentList(List<Comment> comments) {
-    if (comments == null || comments.isEmpty()) {
-      return;
+    @Inject
+    public WeiboCommentAdapter(@ActivityContext Context context) {
+        mContext = context;
+        mCommentList = new ArrayList<>();
     }
 
-    mCommentList.addAll(comments);
-    notifyDataSetChanged();
-  }
+    public void addCommentList(List<Comment> comments) {
+        if (comments == null || comments.isEmpty()) {
+            return;
+        }
 
-  public boolean isEmpty() {
-    return mCommentList == null || mCommentList.isEmpty();
-  }
-
-  @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View view = LayoutInflater.from(mContext).inflate(R.layout.list_item_comment, parent, false);
-    return new ViewHolder(view);
-  }
-
-  @Override public void onBindViewHolder(ViewHolder holder, int position) {
-    if (mCommentList.isEmpty()) {
-      return;
+        mCommentList.addAll(comments);
+        notifyDataSetChanged();
     }
 
-    holder.bindTo(mContext, mCommentList.get(position));
-  }
-
-  @Override public int getItemCount() {
-    if (mCommentList == null || mCommentList.isEmpty()) {
-      return 0;
-    }
-    return mCommentList.size();
-  }
-
-  class ViewHolder extends RecyclerView.ViewHolder {
-
-    @BindView(R.id.comment_list_item_iv_avatar) ImageView mAvatarView;
-    @BindView(R.id.comment_list_item_tv_nickname) TextView mNicknameView;
-    @BindView(R.id.comment_list_item_tv_username) TextView mUsernameView;
-    @BindView(R.id.comment_list_item_tv_post_time) TextView mPostTimeView;
-    @BindView(R.id.comment_list_item_tv_post_source) TextView mPostSourceView;
-    @BindView(R.id.comment_list_item_tv_comment_content) TextView mCommentContentView;
-
-    public ViewHolder(View itemView) {
-      super(itemView);
-      ButterKnife.bind(this, itemView);
+    public boolean isEmpty() {
+        return mCommentList == null || mCommentList.isEmpty();
     }
 
-    void bindTo(Context context, Comment comment) {
-      WeiboReader.readPostTime(mPostTimeView, comment.getCreatedAt());
-      WeiboReader.readPostSource(mPostSourceView, comment.getSource());
-      WeiboReader.readContent(mCommentContentView, comment.getText());
-
-      showCommentUser(context, comment.getUser());
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view =
+            LayoutInflater.from(mContext).inflate(R.layout.list_item_comment, parent, false);
+        return new ViewHolder(view);
     }
 
-    private void showCommentUser(Context context, User user) {
-      if (user == null) {
-        return;
-      }
-      WeiboReader.readAvatar(context, mAvatarView, user.getProfileImageUrl());
-      WeiboReader.readNickname(mNicknameView, user.getScreenName());
-      WeiboReader.readUsername(mUsernameView, user.getDomain());
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        if (mCommentList.isEmpty()) {
+            return;
+        }
+
+        holder.bindTo(mContext, mCommentList.get(position));
     }
-  }
+
+    @Override
+    public int getItemCount() {
+        if (mCommentList == null || mCommentList.isEmpty()) {
+            return 0;
+        }
+        return mCommentList.size();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.comment_list_item_iv_avatar)
+        ImageView mAvatarView;
+        @BindView(R.id.comment_list_item_tv_nickname)
+        TextView mNicknameView;
+        @BindView(R.id.comment_list_item_tv_username)
+        TextView mUsernameView;
+        @BindView(R.id.comment_list_item_tv_post_time)
+        TextView mPostTimeView;
+        @BindView(R.id.comment_list_item_tv_post_source)
+        TextView mPostSourceView;
+        @BindView(R.id.comment_list_item_tv_comment_content)
+        TextView mCommentContentView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        void bindTo(Context context, Comment comment) {
+            WeiboReader.readPostTime(mPostTimeView, comment.getCreatedAt());
+            WeiboReader.readPostSource(mPostSourceView, comment.getSource());
+            WeiboReader.readContent(mCommentContentView, comment.getText());
+
+            showCommentUser(context, comment.getUser());
+        }
+
+        private void showCommentUser(Context context, User user) {
+            if (user == null) {
+                return;
+            }
+            WeiboReader.readAvatar(context, mAvatarView, user.getProfileImageUrl());
+            WeiboReader.readNickname(mNicknameView, user.getScreenName());
+            WeiboReader.readUsername(mUsernameView, user.getDomain());
+        }
+    }
 }

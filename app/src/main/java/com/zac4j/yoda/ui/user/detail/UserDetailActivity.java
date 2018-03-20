@@ -21,34 +21,45 @@ import com.zac4j.yoda.ui.base.BaseActivity;
 
 public class UserDetailActivity extends BaseActivity {
 
-  public static final String EXTRA_UID = "extra_uid";
+    public static final String EXTRA_UID = "extra_uid";
 
-  @BindView(R.id.user_detail_iv_background) ImageView mUserDetailBgView;
-  @BindView(R.id.toolbar) Toolbar mToolbar;
-  @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbar;
-  @BindView(R.id.user_detail_fab_avatar) FloatingActionButton mAvatarBtn;
-  @BindView(R.id.user_detail_tv_nickname) TextView mNicknameView;
-  @BindView(R.id.user_detail_tv_username) TextView mUsernameView;
-  @BindView(R.id.user_detail_tv_description) TextView mDescriptionView;
-  @BindView(R.id.user_detail_tv_location) TextView mLocationView;
-  @BindView(R.id.user_detail_tv_link) TextView mLinkView;
-  @BindView(R.id.user_detail_vp_media_container) ViewPager mMediaContainer;
+    @BindView(R.id.user_detail_iv_background)
+    ImageView mUserDetailBgView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout mCollapsingToolbar;
+    @BindView(R.id.user_detail_fab_avatar)
+    FloatingActionButton mAvatarBtn;
+    @BindView(R.id.user_detail_tv_nickname)
+    TextView mNicknameView;
+    @BindView(R.id.user_detail_tv_username)
+    TextView mUsernameView;
+    @BindView(R.id.user_detail_tv_description)
+    TextView mDescriptionView;
+    @BindView(R.id.user_detail_tv_location)
+    TextView mLocationView;
+    @BindView(R.id.user_detail_tv_link)
+    TextView mLinkView;
+    @BindView(R.id.user_detail_vp_media_container)
+    ViewPager mMediaContainer;
 
-  @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_user_detail);
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user_detail);
 
-    ButterKnife.bind(this);
+        ButterKnife.bind(this);
 
-    setSupportActionBar(mToolbar);
+        setSupportActionBar(mToolbar);
 
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        // mCollapsingToolbar.setTitle();
+
+        long uid = getIntent().getLongExtra(EXTRA_UID, 0L);
     }
-
-    // mCollapsingToolbar.setTitle();
-
-    long uid = getIntent().getLongExtra(EXTRA_UID, 0L);
-  }
 }

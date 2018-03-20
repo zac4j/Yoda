@@ -7,6 +7,6 @@ package com.zac4j.yoda.data.remote;
 
 public enum RequestState {
 
-  IDLE, LOADING, COMPLETE, ERROR
+    IDLE, LOADING, COMPLETE, ERROR
 
 }

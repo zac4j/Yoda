@@ -22,65 +22,72 @@ import retrofit2.Response;
 
 @PerConfig public class UserPresenter extends RxPresenter<UserView> {
 
-  private final DataManager mDataManager;
-  private CompositeDisposable mDisposable;
+    private final DataManager mDataManager;
+    private CompositeDisposable mDisposable;
 
-  @Inject public UserPresenter(DataManager dataManager) {
-    mDataManager = dataManager;
-  }
-
-  @Override public void attach(UserView mvpView) {
-    super.attach(mvpView);
-    mDisposable = new CompositeDisposable();
-  }
-
-  @Override public void detach() {
-    super.detach();
-    mDisposable.clear();
-  }
-
-  void getUserProfile(@NonNull String token, String uid) {
-    checkViewAttached();
-    mDisposable.add(mDataManager.getUserProfile(token, uid)
-        .compose(RxUtils.applySchedulers())
-        .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
-        .doOnError(throwable -> publishRequestState(RequestState.ERROR))
-        .doOnSuccess(objectResponse -> publishRequestState(RequestState.COMPLETE))
-        .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
-          @Override public void onSuccess(Response<Object> response) {
-            publishResponse(response);
-          }
-
-          @Override public void onError(Throwable throwable) {
-            publishErrors(throwable);
-          }
-        }));
-  }
-
-  @Override protected void publishResponse(Response<Object> response) {
-    if (response.isSuccessful()) {
-      User user = null;
-      Object data = response.body();
-      ObjectMapper mapper = mDataManager.getObjectMapper();
-      try {
-        String value = mapper.writeValueAsString(data);
-        user = mapper.readValue(value, User.class);
-      } catch (IOException e) {
-        e.printStackTrace();
-        getMvpView().showMessage(e.getMessage());
-      }
-
-      if (user == null) {
-        getMvpView().showEmptyView(true);
-      } else {
-        getMvpView().showProfile(user);
-      }
-    } else {
-      getMvpView().showMessage(Error.NETWORK);
+    @Inject
+    public UserPresenter(DataManager dataManager) {
+        mDataManager = dataManager;
     }
-  }
 
-  @Override protected void publishErrors(Throwable throwable) {
+    @Override
+    public void attach(UserView mvpView) {
+        super.attach(mvpView);
+        mDisposable = new CompositeDisposable();
+    }
 
-  }
+    @Override
+    public void detach() {
+        super.detach();
+        mDisposable.clear();
+    }
+
+    void getUserProfile(@NonNull String token, String uid) {
+        checkViewAttached();
+        mDisposable.add(mDataManager.getUserProfile(token, uid)
+            .compose(RxUtils.applySchedulers())
+            .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
+            .doOnError(throwable -> publishRequestState(RequestState.ERROR))
+            .doOnSuccess(objectResponse -> publishRequestState(RequestState.COMPLETE))
+            .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
+                @Override
+                public void onSuccess(Response<Object> response) {
+                    publishResponse(response);
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    publishErrors(throwable);
+                }
+            }));
+    }
+
+    @Override
+    protected void publishResponse(Response<Object> response) {
+        if (response.isSuccessful()) {
+            User user = null;
+            Object data = response.body();
+            ObjectMapper mapper = mDataManager.getObjectMapper();
+            try {
+                String value = mapper.writeValueAsString(data);
+                user = mapper.readValue(value, User.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+                getMvpView().showMessage(e.getMessage());
+            }
+
+            if (user == null) {
+                getMvpView().showEmptyView(true);
+            } else {
+                getMvpView().showProfile(user);
+            }
+        } else {
+            getMvpView().showMessage(Error.NETWORK);
+        }
+    }
+
+    @Override
+    protected void publishErrors(Throwable throwable) {
+
+    }
 }

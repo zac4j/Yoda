@@ -3,8 +3,8 @@ package com.zac4j.yoda.di.component;
 import com.zac4j.yoda.di.PerFragment;
 import com.zac4j.yoda.di.module.FragmentModule;
 import com.zac4j.yoda.ui.base.BaseFragment;
-import com.zac4j.yoda.ui.home.notif.NotificationFragment;
 import com.zac4j.yoda.ui.home.hot.HotTagFragment;
+import com.zac4j.yoda.ui.home.notif.NotificationFragment;
 import com.zac4j.yoda.ui.home.timeline.TimelineFragment;
 import com.zac4j.yoda.ui.home.user.UserFragment;
 import com.zac4j.yoda.ui.user.moment.UserMomentFragment;
@@ -16,15 +16,15 @@ import dagger.Subcomponent;
  */
 @PerFragment @Subcomponent(modules = FragmentModule.class) public interface FragmentComponent {
 
-  void inject(BaseFragment baseFragment);
+    void inject(BaseFragment baseFragment);
 
-  void inject(TimelineFragment timelineFragment);
+    void inject(TimelineFragment timelineFragment);
 
-  void inject(HotTagFragment hotTagFragment);
+    void inject(HotTagFragment hotTagFragment);
 
-  void inject(UserFragment userFragment);
+    void inject(UserFragment userFragment);
 
-  void inject(NotificationFragment notificationFragment);
+    void inject(NotificationFragment notificationFragment);
 
-  void inject(UserMomentFragment userTimelineFragment);
+    void inject(UserMomentFragment userTimelineFragment);
 }

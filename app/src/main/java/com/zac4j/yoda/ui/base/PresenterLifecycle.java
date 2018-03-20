@@ -6,6 +6,5 @@ package com.zac4j.yoda.ui.base;
  */
 
 public enum PresenterLifecycle {
-  STOPPED,
-  STARTED
+    STOPPED, STARTED
 }

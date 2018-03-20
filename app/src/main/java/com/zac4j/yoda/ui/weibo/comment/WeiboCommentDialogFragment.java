@@ -9,6 +9,4 @@ import com.zac4j.yoda.ui.base.BaseDialogFragment;
 
 public class WeiboCommentDialogFragment extends BaseDialogFragment {
 
-
-
 }

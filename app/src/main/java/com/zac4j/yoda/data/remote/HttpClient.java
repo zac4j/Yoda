@@ -4,7 +4,6 @@ import android.content.Context;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * HttpClient
@@ -13,24 +12,24 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 public class HttpClient {
 
-  private static final int CACHE_SIZE_BYTES = 1024 * 1024 * 2;
+    private static final int CACHE_SIZE_BYTES = 1024 * 1024 * 2;
 
-  private Context mContext;
-  private OkHttpClient mHttpClient;
+    private Context mContext;
+    private OkHttpClient mHttpClient;
 
-  public HttpClient(Context context) {
-    mContext = context;
-  }
-
-  public OkHttpClient getHttpClient() {
-    if (mHttpClient == null) {
-      OkHttpClient.Builder builder = new OkHttpClient.Builder();
-      builder.cache(new Cache(mContext.getCacheDir(), CACHE_SIZE_BYTES));
-      builder.addNetworkInterceptor(new StethoInterceptor());
-      //builder.addInterceptor(
-      //    new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
-      mHttpClient = builder.build();
+    public HttpClient(Context context) {
+        mContext = context;
     }
-    return mHttpClient;
-  }
+
+    public OkHttpClient getHttpClient() {
+        if (mHttpClient == null) {
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            builder.cache(new Cache(mContext.getCacheDir(), CACHE_SIZE_BYTES));
+            builder.addNetworkInterceptor(new StethoInterceptor());
+            //builder.addInterceptor(
+            //    new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+            mHttpClient = builder.build();
+        }
+        return mHttpClient;
+    }
 }

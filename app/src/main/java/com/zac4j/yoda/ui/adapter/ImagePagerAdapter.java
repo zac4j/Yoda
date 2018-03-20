@@ -22,54 +22,59 @@ import javax.inject.Inject;
 
 public class ImagePagerAdapter extends PagerAdapter {
 
-  private Context mContext;
-  private List<ThumbUrl> mImageUrlList;
+    private Context mContext;
+    private List<ThumbUrl> mImageUrlList;
 
-  @Inject public ImagePagerAdapter(@ActivityContext Context context) {
-    mContext = context;
-    mImageUrlList = new ArrayList<>();
-  }
-
-  public void addImageUrlList(List<ThumbUrl> imageUrlList) {
-    if (imageUrlList == null || imageUrlList.isEmpty()) {
-      return;
+    @Inject
+    public ImagePagerAdapter(@ActivityContext Context context) {
+        mContext = context;
+        mImageUrlList = new ArrayList<>();
     }
-    mImageUrlList.addAll(imageUrlList);
-    notifyDataSetChanged();
-  }
 
-  @Override public int getCount() {
-    if (mImageUrlList == null || mImageUrlList.isEmpty()) {
-      return 0;
+    public void addImageUrlList(List<ThumbUrl> imageUrlList) {
+        if (imageUrlList == null || imageUrlList.isEmpty()) {
+            return;
+        }
+        mImageUrlList.addAll(imageUrlList);
+        notifyDataSetChanged();
     }
-    return mImageUrlList.size();
-  }
 
-  @Override public boolean isViewFromObject(View view, Object object) {
-    return view == object;
-  }
+    @Override
+    public int getCount() {
+        if (mImageUrlList == null || mImageUrlList.isEmpty()) {
+            return 0;
+        }
+        return mImageUrlList.size();
+    }
 
-  @Override public Object instantiateItem(ViewGroup container, int position) {
+    @Override
+    public boolean isViewFromObject(View view, Object object) {
+        return view == object;
+    }
 
-    PhotoView photoView = new PhotoView(mContext);
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
 
-    final String imgUrl =
-        mImageUrlList.get(position).getThumbnailPic().replaceAll("thumbnail", "large");
+        PhotoView photoView = new PhotoView(mContext);
 
-    Glide.with(mContext)
-        .load(imgUrl)
-        .apply(
-            new RequestOptions().placeholder(android.R.drawable.progress_indeterminate_horizontal))
-        .into(photoView);
+        final String imgUrl =
+            mImageUrlList.get(position).getThumbnailPic().replaceAll("thumbnail", "large");
 
-    photoView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.black));
+        Glide.with(mContext)
+            .load(imgUrl)
+            .apply(new RequestOptions().placeholder(
+                android.R.drawable.progress_indeterminate_horizontal))
+            .into(photoView);
 
-    container.addView(photoView, ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.MATCH_PARENT);
-    return photoView;
-  }
+        photoView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.black));
 
-  @Override public void destroyItem(ViewGroup container, int position, Object object) {
-    container.removeView((View) object);
-  }
+        container.addView(photoView, ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT);
+        return photoView;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        container.removeView((View) object);
+    }
 }

@@ -14,13 +14,13 @@ import android.support.v4.content.ContextCompat;
 
 public class PermissionHelper {
 
-  public static boolean hasStoragePermission(Context context) {
-    return ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        == PackageManager.PERMISSION_GRANTED;
-  }
+    public static boolean hasStoragePermission(Context context) {
+        return ContextCompat.checkSelfPermission(context,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
 
-  public static void requestStoragePermission(Activity activity, int requestCode) {
-    ActivityCompat.requestPermissions(activity,
-        new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE }, requestCode);
-  }
+    public static void requestStoragePermission(Activity activity, int requestCode) {
+        ActivityCompat.requestPermissions(activity,
+            new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE }, requestCode);
+    }
 }

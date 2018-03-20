@@ -14,7 +14,7 @@ import dagger.Subcomponent;
 @PerFragment @Subcomponent(modules = DialogFragmentModule.class)
 public interface DialogFragmentComponent {
 
-  void inject(BaseDialogFragment baseDialog);
+    void inject(BaseDialogFragment baseDialog);
 
-  void inject(WeiboRepostDialogFragment repostDialog);
+    void inject(WeiboRepostDialogFragment repostDialog);
 }

@@ -28,182 +28,193 @@ import retrofit2.http.Query;
 
 public interface ApiServer {
 
-  String BASE_URL = "https://api.weibo.com/2/";
+    String BASE_URL = "https://api.weibo.com/2/";
 
-  /**
-   * Get time line
-   *
-   * @param scope home: home timeline, user: user timeline
-   * @param token user access token
-   * @param count pagination count
-   * @param page pagination page
-   * @return time line
-   */
-  @GET("statuses/{scope}_timeline.json") Observable<Response<Object>> getTimeline(
-      @Path("scope") String scope, @Query("access_token") String token, @Query("count") int count,
-      @Query("page") int page);
+    /**
+     * Get time line
+     *
+     * @param scope home: home timeline, user: user timeline
+     * @param token user access token
+     * @param count pagination count
+     * @param page pagination page
+     * @return time line
+     */
+    @GET("statuses/{scope}_timeline.json")
+    Observable<Response<Object>> getTimeline(@Path("scope") String scope,
+        @Query("access_token") String token, @Query("count") int count, @Query("page") int page);
 
-  /**
-   * 转发微博
-   *
-   * @param token access token
-   * @param id weibo id
-   * @param status status content
-   * @param isComment 转发并评论 0：否、1：评论给当前微博、2：评论给原微博、3：都评论，默认为0 。
-   * @return weibo content
-   */
-  @FormUrlEncoded @POST("statuses/repost.json") Single<Response<Object>> repostWeibo(
-      @Field("access_token") String token, @Field("id") String id, @Field("status") String status,
-      @Field("is_comment") int isComment);
+    /**
+     * 转发微博
+     *
+     * @param token access token
+     * @param id weibo id
+     * @param status status content
+     * @param isComment 转发并评论 0：否、1：评论给当前微博、2：评论给原微博、3：都评论，默认为0 。
+     * @return weibo content
+     */
+    @FormUrlEncoded
+    @POST("statuses/repost.json")
+    Single<Response<Object>> repostWeibo(@Field("access_token") String token,
+        @Field("id") String id, @Field("status") String status, @Field("is_comment") int isComment);
 
-  /**
-   * 评论微博
-   *
-   * @param token access token
-   * @param id weibo id
-   * @param comment comment content
-   * @return weibo content
-   */
-  @FormUrlEncoded @POST("comments/create.json") Single<Response<Object>> commentWeibo(
-      @Field("access_token") String token, @Field("id") String id,
-      @Field("comment") String comment);
+    /**
+     * 评论微博
+     *
+     * @param token access token
+     * @param id weibo id
+     * @param comment comment content
+     * @return weibo content
+     */
+    @FormUrlEncoded
+    @POST("comments/create.json")
+    Single<Response<Object>> commentWeibo(@Field("access_token") String token,
+        @Field("id") String id, @Field("comment") String comment);
 
-  /**
-   * Get single weibo info
-   *
-   * @param token user access token
-   * @param id weibo id
-   * @return single weibo info
-   */
-  @GET("statuses/show.json") Single<Response<Object>> getWeiboInfo(
-      @Query("access_token") String token, @Query("id") long id);
+    /**
+     * Get single weibo info
+     *
+     * @param token user access token
+     * @param id weibo id
+     * @return single weibo info
+     */
+    @GET("statuses/show.json")
+    Single<Response<Object>> getWeiboInfo(@Query("access_token") String token,
+        @Query("id") long id);
 
-  /**
-   * Get weibo comments
-   *
-   * @param token user access token
-   * @param id weibo id
-   * @param page page number
-   * @param count comment count per page
-   * @return comments
-   */
-  @GET("comments/show.json") Single<Response<Object>> getWeiboComments(
-      @Query("access_token") String token, @Query("id") long id, @Query("page") int page,
-      @Query("count") int count);
+    /**
+     * Get weibo comments
+     *
+     * @param token user access token
+     * @param id weibo id
+     * @param page page number
+     * @param count comment count per page
+     * @return comments
+     */
+    @GET("comments/show.json")
+    Single<Response<Object>> getWeiboComments(@Query("access_token") String token,
+        @Query("id") long id, @Query("page") int page, @Query("count") int count);
 
-  /**
-   * Send Text Weibo
-   *
-   * @param weibo weibo form contents
-   * @return weibo
-   */
-  @FormUrlEncoded @POST("statuses/update.json") Single<Response<Object>> sendTextWeibo(
-      @FieldMap Map<String, String> weibo);
+    /**
+     * Send Text Weibo
+     *
+     * @param weibo weibo form contents
+     * @return weibo
+     */
+    @FormUrlEncoded
+    @POST("statuses/update.json")
+    Single<Response<Object>> sendTextWeibo(@FieldMap Map<String, String> weibo);
 
-  /**
-   * Send Picture Weibo
-   *
-   * @param weiboMap weibo form data
-   * @param image image for weibo
-   * @return weibo
-   */
-  @Multipart @POST("statuses/upload.json") Single<Response<Object>> sendPictureWeibo(
-      @PartMap Map<String, RequestBody> weiboMap, @Part MultipartBody.Part image);
+    /**
+     * Send Picture Weibo
+     *
+     * @param weiboMap weibo form data
+     * @param image image for weibo
+     * @return weibo
+     */
+    @Multipart
+    @POST("statuses/upload.json")
+    Single<Response<Object>> sendPictureWeibo(@PartMap Map<String, RequestBody> weiboMap,
+        @Part MultipartBody.Part image);
 
-  /**
-   * Get User Friends
-   *
-   * @param token user access token
-   * @param uid user id
-   * @param count get friends count each request
-   * @param cursor get friends number cursor
-   * @return friends
-   */
-  @GET("friendships/friends.json") Single<Response<Object>> getFriends(
-      @Query("access_token") String token, @Query("uid") long uid, @Query("count") int count,
-      @Query("cursor") int cursor);
+    /**
+     * Get User Friends
+     *
+     * @param token user access token
+     * @param uid user id
+     * @param count get friends count each request
+     * @param cursor get friends number cursor
+     * @return friends
+     */
+    @GET("friendships/friends.json")
+    Single<Response<Object>> getFriends(@Query("access_token") String token, @Query("uid") long uid,
+        @Query("count") int count, @Query("cursor") int cursor);
 
-  /**
-   * Unfollow friends
-   *
-   * @param token access token
-   * @param uid friend id
-   * @return user info
-   */
-  @GET("friendships/destroy.json") Single<Response<Object>> unfollowFriend(
-      @Query("access_token") String token, @Query("uid") long uid);
+    /**
+     * Unfollow friends
+     *
+     * @param token access token
+     * @param uid friend id
+     * @return user info
+     */
+    @GET("friendships/destroy.json")
+    Single<Response<Object>> unfollowFriend(@Query("access_token") String token,
+        @Query("uid") long uid);
 
-  /**
-   * Search proper topic weibo
-   *
-   * @param token user access token
-   * @param keywords keyword for search
-   * @param count weibo result count for each page
-   * @param page weibo result page
-   * @return weibo search result
-   */
-  @GET("search/topics.json") Single<Response<Object>> search(@Query("access_token") String token,
-      @Query("q") String keywords, @Query("count") int count, @Query("page") int page);
+    /**
+     * Search proper topic weibo
+     *
+     * @param token user access token
+     * @param keywords keyword for search
+     * @param count weibo result count for each page
+     * @param page weibo result page
+     * @return weibo search result
+     */
+    @GET("search/topics.json")
+    Single<Response<Object>> search(@Query("access_token") String token,
+        @Query("q") String keywords, @Query("count") int count, @Query("page") int page);
 
-  /**
-   * Get server suggest tags
-   *
-   * @param token use access token
-   * @return suggest tags
-   */
-  @GET("tags/suggestions.json") Single<Response<Object>> getHotTags(
-      @Query("access_token") String token);
+    /**
+     * Get server suggest tags
+     *
+     * @param token use access token
+     * @return suggest tags
+     */
+    @GET("tags/suggestions.json")
+    Single<Response<Object>> getHotTags(@Query("access_token") String token);
 
-  /**
-   * Get user profile
-   *
-   * @param token user access token
-   * @param uid user id
-   * @return user profile
-   */
-  @GET("users/show.json") Single<Response<Object>> getUserProfile(
-      @Query("access_token") String token, @Query("uid") String uid);
+    /**
+     * Get user profile
+     *
+     * @param token user access token
+     * @param uid user id
+     * @return user profile
+     */
+    @GET("users/show.json")
+    Single<Response<Object>> getUserProfile(@Query("access_token") String token,
+        @Query("uid") String uid);
 
-  /**
-   * Get @user comments.
-   *
-   * @param token user access token
-   * @param count pagination count
-   * @param page pagination page
-   * @return @user comments
-   */
-  @GET("comments/mentions.json") Single<Response<Object>> getUserComments(
-      @Query("access_token") String token, @Query("count") int count, @Query("page") int page);
+    /**
+     * Get @user comments.
+     *
+     * @param token user access token
+     * @param count pagination count
+     * @param page pagination page
+     * @return @user comments
+     */
+    @GET("comments/mentions.json")
+    Single<Response<Object>> getUserComments(@Query("access_token") String token,
+        @Query("count") int count, @Query("page") int page);
 
-  /**
-   * Get lastest @user comment.
-   *
-   * @param token user access token
-   * @return @user lastest comment
-   */
-  @GET("comments/to_me.json") Single<Response<Object>> getLatestComments(
-      @Query("access_token") String token);
+    /**
+     * Get lastest @user comment.
+     *
+     * @param token user access token
+     * @return @user lastest comment
+     */
+    @GET("comments/to_me.json")
+    Single<Response<Object>> getLatestComments(@Query("access_token") String token);
 
-  /**
-   * Get user followers
-   *
-   * @param token user access token
-   * @param uid user id
-   * @return user followers
-   */
-  @GET("friendships/followers.json") Single<Response<Object>> getFollowers(
-      @Query("access_token") String token, @Query("uid") String uid);
+    /**
+     * Get user followers
+     *
+     * @param token user access token
+     * @param uid user id
+     * @return user followers
+     */
+    @GET("friendships/followers.json")
+    Single<Response<Object>> getFollowers(@Query("access_token") String token,
+        @Query("uid") String uid);
 
-  class Factory {
-    public static ApiServer create(Context context) {
+    class Factory {
+        public static ApiServer create(Context context) {
 
-      Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-          .client(new HttpClient(context).getHttpClient())
-          .addConverterFactory(JacksonConverterFactory.create())
-          .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-          .build();
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+                .client(new HttpClient(context).getHttpClient())
+                .addConverterFactory(JacksonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
 
-      return retrofit.create(ApiServer.class);
+            return retrofit.create(ApiServer.class);
+        }
     }
-  }
 }

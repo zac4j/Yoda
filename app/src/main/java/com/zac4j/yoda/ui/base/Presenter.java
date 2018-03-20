@@ -7,7 +7,7 @@ package com.zac4j.yoda.ui.base;
 
 public interface Presenter<T extends MvpView> {
 
-  void attach(T mvpView);
+    void attach(T mvpView);
 
-  void detach();
+    void detach();
 }

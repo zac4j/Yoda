@@ -13,13 +13,13 @@ import java.util.List;
 
 public interface NotificationView extends MvpView {
 
-  void showEmptyComment();
+    void showEmptyComment();
 
-  void showComments(List<Comment> comments);
+    void showComments(List<Comment> comments);
 
-  void showEmptyFollower();
+    void showEmptyFollower();
 
-  void showLatestFollowers(List<User> users);
+    void showLatestFollowers(List<User> users);
 
-  void showProfileDialog(Profile profile);
+    void showProfileDialog(Profile profile);
 }

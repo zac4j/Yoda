@@ -10,7 +10,7 @@ import okhttp3.RequestBody;
 
 public class RetrofitHelper {
 
-  public static RequestBody createPartFromString(String text) {
-    return RequestBody.create(MediaType.parse("text/plain"), text);
-  }
+    public static RequestBody createPartFromString(String text) {
+        return RequestBody.create(MediaType.parse("text/plain"), text);
+    }
 }

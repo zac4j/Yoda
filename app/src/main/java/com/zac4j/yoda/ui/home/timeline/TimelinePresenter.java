@@ -9,22 +9,12 @@ import com.zac4j.yoda.di.PerConfig;
 import com.zac4j.yoda.ui.base.RxPresenter;
 import com.zac4j.yoda.util.RxUtils;
 import io.reactivex.Observable;
-import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
-import io.reactivex.observers.DisposableSingleObserver;
 import java.io.IOException;
 import javax.inject.Inject;
-import okhttp3.internal.http.HttpCodec;
 import retrofit2.HttpException;
 import retrofit2.Response;
-import retrofit2.http.HTTP;
 
 /**
  * Timeline Presenter
@@ -33,119 +23,131 @@ import retrofit2.http.HTTP;
 
 @PerConfig public class TimelinePresenter extends RxPresenter<TimelineView> {
 
-  private final DataManager mDataManager;
-  private CompositeDisposable mDisposable;
+    private final DataManager mDataManager;
+    private CompositeDisposable mDisposable;
 
-  @Inject public TimelinePresenter(DataManager dataManager) {
-    mDataManager = dataManager;
-  }
-
-  @Override public void attach(TimelineView mvpView) {
-    super.attach(mvpView);
-    mDisposable = new CompositeDisposable();
-  }
-
-  @Override public void detach() {
-    super.detach();
-    mDisposable.clear();
-  }
-
-  void getTimeline(String token, int count, int page) {
-    checkViewAttached();
-
-    Observable<Response<Object>> responseObservable =
-        mDataManager.getHomeTimeline(token, count, page)
-            .compose(RxUtils.applyObservableSchedulers())
-            .doOnSubscribe(disposable -> {
-              if (getMvpView().isRefreshing()) {
-                publishRequestState(RequestState.LOADING);
-              }
-            })
-            .doOnError(throwable -> publishRequestState(RequestState.ERROR))
-            .doOnComplete(() -> {
-              if (getMvpView().isRefreshing()) {
-                getMvpView().showRefresh(false);
-              }
-              publishRequestState(RequestState.COMPLETE);
-            })
-            .share();
-
-    // 处理正常情况
-    responseObservable.filter(Response::isSuccessful)
-        .subscribeWith(new DisposableObserver<Response<Object>>() {
-          @Override public void onNext(Response<Object> objectResponse) {
-            publishResponse(objectResponse);
-          }
-
-          @Override public void onError(Throwable throwable) {
-            publishErrors(throwable);
-          }
-
-          @Override public void onComplete() {
-
-          }
-        });
-
-    // 处理 403 的情况
-    responseObservable.filter(objectResponse -> objectResponse.code() == 403)
-        .subscribeWith(new DisposableObserver<Response<Object>>() {
-          @Override public void onNext(Response<Object> response) {
-            Error error = null;
-            Object data = response.body();
-            ObjectMapper mapper = mDataManager.getObjectMapper();
-            try {
-              String value = mapper.writeValueAsString(data);
-              error = mapper.readValue(value, Error.class);
-            } catch (IOException e) {
-              e.printStackTrace();
-              getMvpView().showMessage(e.getMessage());
-            }
-
-            if (error == null) {
-              return;
-            }
-
-            switch (error.getErrorCode()) {
-              // 请求次数已达上限
-              case 10023:
-                getMvpView().showMessage(Error.LIMITED_REQUEST_RATE);
-                break;
-            }
-          }
-
-          @Override public void onError(Throwable throwable) {
-            publishErrors(throwable);
-          }
-
-          @Override public void onComplete() {
-
-          }
-        });
-  }
-
-  @Override protected void publishResponse(Response<Object> response) {
-    Timeline timeline = null;
-    Object data = response.body();
-    ObjectMapper mapper = mDataManager.getObjectMapper();
-    try {
-      String value = mapper.writeValueAsString(data);
-      timeline = mapper.readValue(value, Timeline.class);
-    } catch (IOException e) {
-      e.printStackTrace();
-      getMvpView().showMessage(e.getMessage());
+    @Inject
+    public TimelinePresenter(DataManager dataManager) {
+        mDataManager = dataManager;
     }
 
-    if (timeline == null || timeline.getStatuses() == null || timeline.getStatuses().isEmpty()) {
-      getMvpView().showEmptyView(true);
-    } else {
-      System.out.println("zaccc都几次了");
-      getMvpView().showTimeline(timeline.getStatuses());
+    @Override
+    public void attach(TimelineView mvpView) {
+        super.attach(mvpView);
+        mDisposable = new CompositeDisposable();
     }
-  }
 
-  @Override protected void publishErrors(Throwable throwable) {
-    if (throwable instanceof HttpException) {
-      System.out.println("error >> here");
+    @Override
+    public void detach() {
+        super.detach();
+        mDisposable.clear();
     }
-  }
+
+    void getTimeline(String token, int count, int page) {
+        checkViewAttached();
+
+        Observable<Response<Object>> responseObservable =
+            mDataManager.getHomeTimeline(token, count, page)
+                .compose(RxUtils.applyObservableSchedulers())
+                .doOnSubscribe(disposable -> {
+                    if (!getMvpView().isRefreshing()) {
+                        publishRequestState(RequestState.LOADING);
+                    }
+                })
+                .doOnError(throwable -> {
+                    getMvpView().showRefresh(false);
+                    publishRequestState(RequestState.ERROR);
+                })
+                .doOnComplete(() -> {
+                    getMvpView().showRefresh(false);
+                    publishRequestState(RequestState.COMPLETE);
+                })
+                .share();
+
+        // 处理正常情况
+        responseObservable.filter(Response::isSuccessful)
+            .subscribeWith(new DisposableObserver<Response<Object>>() {
+                @Override
+                public void onNext(Response<Object> objectResponse) {
+                    publishResponse(objectResponse);
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    publishErrors(throwable);
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            });
+
+        // 处理 403 的情况
+        responseObservable.filter(objectResponse -> objectResponse.code() == 403)
+            .subscribeWith(new DisposableObserver<Response<Object>>() {
+                @Override
+                public void onNext(Response<Object> response) {
+                    Error error = null;
+                    Object data = response.body();
+                    ObjectMapper mapper = mDataManager.getObjectMapper();
+                    try {
+                        String value = mapper.writeValueAsString(data);
+                        error = mapper.readValue(value, Error.class);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        getMvpView().showMessage(e.getMessage());
+                    }
+
+                    if (error == null) {
+                        return;
+                    }
+
+                    switch (error.getErrorCode()) {
+                        // 请求次数已达上限
+                        case 10023:
+                            getMvpView().showMessage(Error.LIMITED_REQUEST_RATE);
+                            break;
+                    }
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    publishErrors(throwable);
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            });
+    }
+
+    @Override
+    protected void publishResponse(Response<Object> response) {
+        Timeline timeline = null;
+        Object data = response.body();
+        ObjectMapper mapper = mDataManager.getObjectMapper();
+        try {
+            String value = mapper.writeValueAsString(data);
+            timeline = mapper.readValue(value, Timeline.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            getMvpView().showMessage(e.getMessage());
+        }
+
+        if (timeline == null || timeline.getStatuses() == null || timeline.getStatuses()
+            .isEmpty()) {
+            getMvpView().showEmptyView(true);
+        } else {
+            getMvpView().showTimeline(timeline.getStatuses());
+        }
+    }
+
+    @Override
+    protected void publishErrors(Throwable throwable) {
+        if (throwable instanceof HttpException) {
+
+        }
+    }
 }

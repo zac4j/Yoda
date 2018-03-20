@@ -12,9 +12,9 @@ import java.util.List;
 
 public interface WeiboDetailView extends MvpView {
 
-  void showWeiboInfo(Weibo weibo);
+    void showWeiboInfo(Weibo weibo);
 
-  void showWeiboComments(List<Comment> commentList);
+    void showWeiboComments(List<Comment> commentList);
 
-  void showEmptyCommentView(boolean show);
+    void showEmptyCommentView(boolean show);
 }

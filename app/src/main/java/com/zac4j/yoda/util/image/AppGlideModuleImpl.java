@@ -8,7 +8,6 @@ import com.bumptech.glide.module.AppGlideModule;
  * Created by Zaccc on 2017/12/6.
  */
 
-@GlideModule
-public class AppGlideModuleImpl extends AppGlideModule {
+@GlideModule public class AppGlideModuleImpl extends AppGlideModule {
 
 }

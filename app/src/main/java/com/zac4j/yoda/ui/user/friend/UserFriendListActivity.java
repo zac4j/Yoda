@@ -33,141 +33,161 @@ import javax.inject.Inject;
 
 public class UserFriendListActivity extends BaseActivity implements UserFriendListView {
 
-  public static final int REQUEST_FRIENDS_COUNT = 20;
+    public static final int REQUEST_FRIENDS_COUNT = 20;
 
-  @BindView(R.id.toolbar) Toolbar mToolbar;
-  @BindView(R.id.user_friend_list_view) RecyclerView mFriendListView;
-  @BindView(R.id.user_friend_list_swipe_container) SwipeRefreshLayout mSwipeContainer;
-  @BindView(R.id.progress_bar) ProgressBar mProgressBar;
-  @BindView(R.id.error_view) View mErrorView;
-  @BindView(R.id.error_view_img) AppCompatImageView mErrorImgView;
-  @BindView(R.id.error_view_txt) TextView mErrorTextView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.user_friend_list_view)
+    RecyclerView mFriendListView;
+    @BindView(R.id.user_friend_list_swipe_container)
+    SwipeRefreshLayout mSwipeContainer;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.error_view)
+    View mErrorView;
+    @BindView(R.id.error_view_img)
+    AppCompatImageView mErrorImgView;
+    @BindView(R.id.error_view_txt)
+    TextView mErrorTextView;
+    @Inject
+    FriendListAdapter mAdapter;
+    @Inject
+    UserFriendListPresenter mPresenter;
+    private int mCount = REQUEST_FRIENDS_COUNT;
+    private int mCursor;
+    private EndlessRecyclerViewScrollListener mScrollListener;
 
-  private int mCount = REQUEST_FRIENDS_COUNT;
-  private int mCursor;
-  private EndlessRecyclerViewScrollListener mScrollListener;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user_friend_list);
 
-  @Inject FriendListAdapter mAdapter;
-  @Inject UserFriendListPresenter mPresenter;
+        getActivityComponent().inject(this);
+        ButterKnife.bind(this);
+        mPresenter.attach(this);
 
-  @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_user_friend_list);
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+        }
 
-    getActivityComponent().inject(this);
-    ButterKnife.bind(this);
-    mPresenter.attach(this);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.nav_drawer_my_friends);
+        }
 
-    if (mToolbar != null) {
-      setSupportActionBar(mToolbar);
-    }
+        final Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(this);
 
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(true);
-      actionBar.setTitle(R.string.nav_drawer_my_friends);
-    }
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mFriendListView.setLayoutManager(layoutManager);
+        mFriendListView.addItemDecoration(
+            new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        mFriendListView.setAdapter(mAdapter);
 
-    final Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(this);
+        mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                mPresenter.getUserFriends(accessToken.getToken(), accessToken.getUid(), mCount,
+                    mCursor);
+            }
+        };
+        mFriendListView.addOnScrollListener(mScrollListener);
 
-    LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-    mFriendListView.setLayoutManager(layoutManager);
-    mFriendListView.addItemDecoration(
-        new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-    mFriendListView.setAdapter(mAdapter);
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPresenter.getUserFriends(accessToken.getToken(), accessToken.getUid(),
+                    REQUEST_FRIENDS_COUNT, 0);
+            }
+        });
 
-    mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
-      @Override public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+        mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light, android.R.color.holo_orange_light,
+            android.R.color.holo_red_light);
+
         mPresenter.getUserFriends(accessToken.getToken(), accessToken.getUid(), mCount, mCursor);
-      }
-    };
-    mFriendListView.addOnScrollListener(mScrollListener);
-
-    mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-      @Override public void onRefresh() {
-        mPresenter.getUserFriends(accessToken.getToken(), accessToken.getUid(),
-            REQUEST_FRIENDS_COUNT, 0);
-      }
-    });
-
-    mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-        android.R.color.holo_green_light, android.R.color.holo_orange_light,
-        android.R.color.holo_red_light);
-
-    mPresenter.getUserFriends(accessToken.getToken(), accessToken.getUid(), mCount, mCursor);
-  }
-
-  @Override protected void onDestroy() {
-    super.onDestroy();
-    if (mFriendListView != null) {
-      mFriendListView.removeOnScrollListener(mScrollListener);
-    }
-  }
-
-  @Override public void showProgress(boolean show) {
-    if (mProgressBar != null) {
-      mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-  }
-
-  @Override public void showEmptyView(boolean show) {
-
-  }
-
-  @Override public void showMessage(String msg) {
-    mErrorView.setVisibility(View.VISIBLE);
-    mErrorTextView.setText(msg);
-  }
-
-  @Override public boolean isRefreshing() {
-    return mSwipeContainer != null && mSwipeContainer.isRefreshing();
-  }
-
-  @Override public void showRefresh(boolean show) {
-    if (mSwipeContainer != null) {
-      mSwipeContainer.setRefreshing(show);
-    }
-  }
-
-  @Override public void showEmpty(boolean show) {
-    if (show) {
-      mErrorView.setVisibility(View.VISIBLE);
-      mErrorTextView.setText(getString(R.string.error_no_friends));
-    } else {
-      mErrorView.setVisibility(View.GONE);
-      mErrorTextView.setText("");
-    }
-  }
-
-  @Override public void showFriendList(Friend friend) {
-
-    if (mCursor == 0) {
-      if (mScrollListener != null) {
-        mScrollListener.resetState();
-      }
-      mAdapter.clear();
     }
 
-    mCursor = friend.getNextCursor();
-
-    List<User> userList = friend.getUsers();
-
-    if (userList == null || userList.isEmpty()) {
-      showEmpty(mAdapter.isEmpty());
-      return;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mFriendListView != null) {
+            mFriendListView.removeOnScrollListener(mScrollListener);
+        }
     }
 
-    mAdapter.addFriendList(userList);
-    mSwipeContainer.setRefreshing(false);
-    mFriendListView.setVisibility(View.VISIBLE);
-  }
-
-  @Override public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case android.R.id.home:
-        onBackPressed();
-        break;
+    @Override
+    public void showProgress(boolean show) {
+        if (mProgressBar != null) {
+            mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
     }
-    return true;
-  }
+
+    @Override
+    public void showEmptyView(boolean show) {
+
+    }
+
+    @Override
+    public void showMessage(String msg) {
+        mErrorView.setVisibility(View.VISIBLE);
+        mErrorTextView.setText(msg);
+    }
+
+    @Override
+    public boolean isRefreshing() {
+        return mSwipeContainer != null && mSwipeContainer.isRefreshing();
+    }
+
+    @Override
+    public void showRefresh(boolean show) {
+        if (mSwipeContainer != null) {
+            mSwipeContainer.setRefreshing(show);
+        }
+    }
+
+    @Override
+    public void showEmpty(boolean show) {
+        if (show) {
+            mErrorView.setVisibility(View.VISIBLE);
+            mErrorTextView.setText(getString(R.string.error_no_friends));
+        } else {
+            mErrorView.setVisibility(View.GONE);
+            mErrorTextView.setText("");
+        }
+    }
+
+    @Override
+    public void showFriendList(Friend friend) {
+
+        if (mCursor == 0) {
+            if (mScrollListener != null) {
+                mScrollListener.resetState();
+            }
+            mAdapter.clear();
+        }
+
+        mCursor = friend.getNextCursor();
+
+        List<User> userList = friend.getUsers();
+
+        if (userList == null || userList.isEmpty()) {
+            showEmpty(mAdapter.isEmpty());
+            return;
+        }
+
+        mAdapter.addFriendList(userList);
+        mSwipeContainer.setRefreshing(false);
+        mFriendListView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return true;
+    }
 }

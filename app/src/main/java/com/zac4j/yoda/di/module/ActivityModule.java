@@ -13,20 +13,23 @@ import dagger.Provides;
 
 @Module public class ActivityModule {
 
-  private Activity mActivity;
+    private Activity mActivity;
 
-  public ActivityModule(Activity activity) {
-    mActivity = activity;
-  }
-
-  @Provides Activity provideActivity() {
-    return mActivity;
-  }
-
-  @Provides @ActivityContext Context provideContext() {
-    if (mActivity == null) {
-      throw new IllegalStateException("ActivityModule had not initialized!");
+    public ActivityModule(Activity activity) {
+        mActivity = activity;
     }
-    return mActivity;
-  }
+
+    @Provides
+    Activity provideActivity() {
+        return mActivity;
+    }
+
+    @Provides
+    @ActivityContext
+    Context provideContext() {
+        if (mActivity == null) {
+            throw new IllegalStateException("ActivityModule had not initialized!");
+        }
+        return mActivity;
+    }
 }

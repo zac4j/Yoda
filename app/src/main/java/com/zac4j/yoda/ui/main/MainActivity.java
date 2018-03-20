@@ -21,104 +21,114 @@ import com.zac4j.yoda.ui.weibo.send.WeiboSendActivity;
 
 public class MainActivity extends BaseActivity {
 
-  @BindView(R.id.toolbar) Toolbar mToolbar;
-  @BindView(R.id.main_fab_write) FloatingActionButton mWriteBtn;
-  @BindView(R.id.main_fragment_container) ViewPager mMainContainer;
-  @BindView(R.id.main_bottom_navigation) BottomNavigationView mBottomNavigationView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.main_fab_write)
+    FloatingActionButton mWriteBtn;
+    @BindView(R.id.main_fragment_container)
+    ViewPager mMainContainer;
+    @BindView(R.id.main_bottom_navigation)
+    BottomNavigationView mBottomNavigationView;
 
-  private int mPreviousPosition;
+    private int mPreviousPosition;
 
-  private ActionBar mActionBar;
-  private int[] mPagerTitles = {
-      R.string.main_nav_home, R.string.main_nav_hot, R.string.main_nav_notification,
-      R.string.main_nav_message, R.string.main_nav_user
-  };
-  private int[] mBottomNavIds = {
-      R.id.main_nav_home, R.id.main_nav_hot, R.id.main_nav_notification, R.id.main_nav_message,
-      R.id.main_nav_user
-  };
+    private ActionBar mActionBar;
+    private int[] mPagerTitles = {
+        R.string.main_nav_home, R.string.main_nav_hot, R.string.main_nav_notification,
+        R.string.main_nav_message, R.string.main_nav_user
+    };
+    private int[] mBottomNavIds = {
+        R.id.main_nav_home, R.id.main_nav_hot, R.id.main_nav_notification, R.id.main_nav_message,
+        R.id.main_nav_user
+    };
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-    getActivityComponent().inject(this);
-    ButterKnife.bind(this);
+        getActivityComponent().inject(this);
+        ButterKnife.bind(this);
 
-    setSupportActionBar(mToolbar);
+        setSupportActionBar(mToolbar);
 
-    mActionBar = getSupportActionBar();
+        mActionBar = getSupportActionBar();
 
-    if (mWriteBtn != null) {
-      mWriteBtn.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-          startActivity(new Intent(MainActivity.this, WeiboSendActivity.class));
+        if (mWriteBtn != null) {
+            mWriteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MainActivity.this, WeiboSendActivity.class));
+                }
+            });
         }
-      });
+
+        mMainContainer.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+
+        mBottomNavigationView.setOnNavigationItemSelectedListener(
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    int position = 0;
+                    switch (item.getItemId()) {
+                        case R.id.main_nav_home:
+                            break;
+                        case R.id.main_nav_hot:
+                            position = 1;
+                            break;
+                        case R.id.main_nav_notification:
+                            position = 2;
+                            break;
+                        case R.id.main_nav_message:
+                            position = 3;
+                            break;
+                        case R.id.main_nav_user:
+                            position = 4;
+                            break;
+                    }
+
+                    if (mPreviousPosition == position) {
+                        return true;
+                    }
+
+                    updatePagerTitle(position);
+
+                    mMainContainer.setCurrentItem(position);
+
+                    mPreviousPosition = position;
+                    return true;
+                }
+            });
+
+        mMainContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mPreviousPosition = position;
+                mBottomNavigationView.setSelectedItemId(mBottomNavIds[position]);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
-    mMainContainer.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+    /**
+     * Update pager title
+     *
+     * @param position position for current pager
+     */
+    private void updatePagerTitle(int position) {
+        mActionBar.setTitle(mPagerTitles[position]);
+    }
 
-    mBottomNavigationView.setOnNavigationItemSelectedListener(
-        new BottomNavigationView.OnNavigationItemSelectedListener() {
-          @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            int position = 0;
-            switch (item.getItemId()) {
-              case R.id.main_nav_home:
-                break;
-              case R.id.main_nav_hot:
-                position = 1;
-                break;
-              case R.id.main_nav_notification:
-                position = 2;
-                break;
-              case R.id.main_nav_message:
-                position = 3;
-                break;
-              case R.id.main_nav_user:
-                position = 4;
-                break;
-            }
-
-            if (mPreviousPosition == position) {
-              return true;
-            }
-
-            updatePagerTitle(position);
-
-            mMainContainer.setCurrentItem(position);
-
-            mPreviousPosition = position;
-            return true;
-          }
-        });
-
-    mMainContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-      @Override
-      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-      }
-
-      @Override public void onPageSelected(int position) {
-        mPreviousPosition = position;
-        mBottomNavigationView.setSelectedItemId(mBottomNavIds[position]);
-      }
-
-      @Override public void onPageScrollStateChanged(int state) {
-      }
-    });
-  }
-
-  /**
-   * Update pager title
-   *
-   * @param position position for current pager
-   */
-  private void updatePagerTitle(int position) {
-    mActionBar.setTitle(mPagerTitles[position]);
-  }
-
-  public void onTokenInvalid() {
-    AccessTokenKeeper.clear(this);
-    startActivity(new Intent(this, LoginActivity.class));
-  }
+    public void onTokenInvalid() {
+        AccessTokenKeeper.clear(this);
+        startActivity(new Intent(this, LoginActivity.class));
+    }
 }

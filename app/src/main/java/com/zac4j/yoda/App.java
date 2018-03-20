@@ -16,27 +16,28 @@ import timber.log.Timber;
 
 public class App extends Application {
 
-  private ApplicationComponent mApplicationComponent;
+    private ApplicationComponent mApplicationComponent;
 
-  @Override public void onCreate() {
-    super.onCreate();
-
-    if (BuildConfig.DEBUG) {
-      Stetho.initializeWithDefaults(this);
-      Timber.plant(new Timber.DebugTree());
+    public static App get(@ActivityContext Context context) {
+        return (App) context.getApplicationContext();
     }
-  }
 
-  public static App get(@ActivityContext Context context) {
-    return (App) context.getApplicationContext();
-  }
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
-  public ApplicationComponent getApplicationComponent() {
-    if (mApplicationComponent == null) {
-      mApplicationComponent = DaggerApplicationComponent.builder()
-          .applicationModule(new ApplicationModule(this))
-          .build();
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this);
+            Timber.plant(new Timber.DebugTree());
+        }
     }
-    return mApplicationComponent;
-  }
+
+    public ApplicationComponent getApplicationComponent() {
+        if (mApplicationComponent == null) {
+            mApplicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule(this))
+                .build();
+        }
+        return mApplicationComponent;
+    }
 }

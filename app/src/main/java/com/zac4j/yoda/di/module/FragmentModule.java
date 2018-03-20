@@ -13,21 +13,25 @@ import dagger.Provides;
  */
 @Module public class FragmentModule {
 
-  private Fragment mFragment;
+    private Fragment mFragment;
 
-  public FragmentModule(Fragment fragment) {
-    mFragment = fragment;
-  }
+    public FragmentModule(Fragment fragment) {
+        mFragment = fragment;
+    }
 
-  @Provides Fragment provideFragment() {
-    return mFragment;
-  }
+    @Provides
+    Fragment provideFragment() {
+        return mFragment;
+    }
 
-  @Provides Activity provideActivity() {
-    return mFragment.getActivity();
-  }
+    @Provides
+    Activity provideActivity() {
+        return mFragment.getActivity();
+    }
 
-  @Provides @ActivityContext Context provideContext() {
-    return mFragment.getActivity();
-  }
+    @Provides
+    @ActivityContext
+    Context provideContext() {
+        return mFragment.getActivity();
+    }
 }

@@ -16,13 +16,14 @@ import javax.inject.Singleton;
  */
 
 @Singleton @Component(modules = ApplicationModule.class) public interface ApplicationComponent {
-  @ApplicationContext Context context();
+    @ApplicationContext
+    Context context();
 
-  PreferencesHelper prefsHelper();
+    PreferencesHelper prefsHelper();
 
-  ObjectMapper mapper();
+    ObjectMapper mapper();
 
-  ApiServer webService();
+    ApiServer webService();
 
-  DataManager dataManager();
+    DataManager dataManager();
 }

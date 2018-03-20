@@ -10,5 +10,6 @@ import android.arch.persistence.room.PrimaryKey;
 // Create a table named users
 
 @Entity(tableName = "users") public class User {
-  @PrimaryKey public int id;
+    @PrimaryKey
+    public int id;
 }

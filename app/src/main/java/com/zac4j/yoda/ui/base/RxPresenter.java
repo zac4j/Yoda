@@ -13,31 +13,31 @@ import retrofit2.Response;
 
 public abstract class RxPresenter<T extends MvpView> extends BasePresenter<T> {
 
-  private BehaviorRelay<RequestState> mRequestState =
-      BehaviorRelay.createDefault(RequestState.IDLE);
+    private BehaviorRelay<RequestState> mRequestState =
+        BehaviorRelay.createDefault(RequestState.IDLE);
 
-  protected void publishRequestState(RequestState requestState) {
-    Observable.just(requestState)
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(mRequestState);
+    protected void publishRequestState(RequestState requestState) {
+        Observable.just(requestState)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(mRequestState);
 
-    mRequestState.subscribe(requestState1 -> {
-      switch (requestState1) {
-        case IDLE:
-        case LOADING:
-          getMvpView().showProgress(true);
-          break;
-        case COMPLETE:
-          getMvpView().showProgress(false);
-          break;
-        case ERROR:
-          getMvpView().showProgress(false);
-          break;
-      }
-    });
-  }
+        mRequestState.subscribe(requestState1 -> {
+            switch (requestState1) {
+                case IDLE:
+                case LOADING:
+                    getMvpView().showProgress(true);
+                    break;
+                case COMPLETE:
+                    getMvpView().showProgress(false);
+                    break;
+                case ERROR:
+                    getMvpView().showProgress(false);
+                    break;
+            }
+        });
+    }
 
-  protected abstract void publishResponse(Response<Object> response);
+    protected abstract void publishResponse(Response<Object> response);
 
-  protected abstract void publishErrors(Throwable throwable);
+    protected abstract void publishErrors(Throwable throwable);
 }

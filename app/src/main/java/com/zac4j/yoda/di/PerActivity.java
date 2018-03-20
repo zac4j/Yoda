@@ -9,7 +9,5 @@ import javax.inject.Scope;
  * Created by zac on 16-7-3.
  */
 
-@Scope
-@Retention(RetentionPolicy.RUNTIME)
-public @interface PerActivity {
+@Scope @Retention(RetentionPolicy.RUNTIME) public @interface PerActivity {
 }

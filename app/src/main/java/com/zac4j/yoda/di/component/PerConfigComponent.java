@@ -19,9 +19,9 @@ import dagger.Component;
 
 @PerConfig @Component(dependencies = ApplicationComponent.class)
 public interface PerConfigComponent {
-  ActivityComponent activityComponent(ActivityModule activityModule);
+    ActivityComponent activityComponent(ActivityModule activityModule);
 
-  FragmentComponent fragmentComponent(FragmentModule fragmentModule);
+    FragmentComponent fragmentComponent(FragmentModule fragmentModule);
 
-  DialogFragmentComponent dialogFragmentComponent(DialogFragmentModule dialogFragmentModule);
+    DialogFragmentComponent dialogFragmentComponent(DialogFragmentModule dialogFragmentModule);
 }

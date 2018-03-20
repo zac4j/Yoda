@@ -7,9 +7,9 @@ package com.zac4j.yoda.ui.base;
 
 public interface MvpView {
 
-  void showProgress(boolean show);
+    void showProgress(boolean show);
 
-  void showEmptyView(boolean show);
+    void showEmptyView(boolean show);
 
-  void showMessage(String msg);
+    void showMessage(String msg);
 }

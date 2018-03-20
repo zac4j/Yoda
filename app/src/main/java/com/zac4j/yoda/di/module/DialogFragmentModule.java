@@ -14,21 +14,25 @@ import dagger.Provides;
 
 @Module public class DialogFragmentModule {
 
-  private DialogFragment mDialogFragment;
+    private DialogFragment mDialogFragment;
 
-  public DialogFragmentModule(DialogFragment dialogFragment) {
-    mDialogFragment = dialogFragment;
-  }
+    public DialogFragmentModule(DialogFragment dialogFragment) {
+        mDialogFragment = dialogFragment;
+    }
 
-  @Provides DialogFragment provideDialogFragment() {
-    return mDialogFragment;
-  }
+    @Provides
+    DialogFragment provideDialogFragment() {
+        return mDialogFragment;
+    }
 
-  @Provides Activity provideActivity() {
-    return mDialogFragment.getActivity();
-  }
+    @Provides
+    Activity provideActivity() {
+        return mDialogFragment.getActivity();
+    }
 
-  @Provides @ActivityContext Context provideContext() {
-    return mDialogFragment.getActivity();
-  }
+    @Provides
+    @ActivityContext
+    Context provideContext() {
+        return mDialogFragment.getActivity();
+    }
 }

@@ -14,60 +14,64 @@ import android.widget.TextView;
 
 public class WeiboParser {
 
-  private static final int MAX_NICKNAME_LENGTH = 25;
+    private static final int MAX_NICKNAME_LENGTH = 25;
 
-  public static void setupText(TextView textView, String content) {
-    SpannableString spannableString = new SpannableString(content);
+    public static void setupText(TextView textView, String content) {
+        SpannableString spannableString = new SpannableString(content);
 
-    int startNameIndex = 0;
-    int startTopicIndex = 0;
+        int startNameIndex = 0;
+        int startTopicIndex = 0;
 
-    boolean hasAtSignal = false; // if has @Name signal
-    boolean hasSharpSignal = false;// if has #Topic# signal
+        boolean hasAtSignal = false; // if has @Name signal
+        boolean hasSharpSignal = false;// if has #Topic# signal
 
-    textView.setVisibility(View.VISIBLE);
+        textView.setVisibility(View.VISIBLE);
 
-    for (int i = 0; i < content.length(); i++) {
-      if (content.charAt(i) == '@') {
-        startNameIndex = i;
-        hasAtSignal = true;
-      }
+        for (int i = 0; i < content.length(); i++) {
+            if (content.charAt(i) == '@') {
+                startNameIndex = i;
+                hasAtSignal = true;
+            }
 
-      if (hasAtSignal && i > startNameIndex && i < content.length() - 1) {
-        if (content.charAt(i) == ' ' || content.charAt(i) == ':' || content.charAt(i) == '：') {
-          setClickableSpan(spannableString, startNameIndex, i);
-          hasAtSignal = false;
+            if (hasAtSignal && i > startNameIndex && i < content.length() - 1) {
+                if (content.charAt(i) == ' '
+                    || content.charAt(i) == ':'
+                    || content.charAt(i) == '：') {
+                    setClickableSpan(spannableString, startNameIndex, i);
+                    hasAtSignal = false;
+                }
+            }
+
+            if (!hasSharpSignal && content.charAt(i) == '#') {
+                startTopicIndex = i;
+                // System.out.println("start sharp index: " + startTopicIndex);
+                hasSharpSignal = true;
+            }
+
+            if (hasSharpSignal && i > startTopicIndex && i < content.length() - 1) {
+                if (content.charAt(i) == '#') {
+                    setClickableSpan(spannableString, startTopicIndex, i + 1);
+                    hasSharpSignal = false;
+                }
+            }
+            textView.setText(spannableString);
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
         }
-      }
+    }
 
-      if (!hasSharpSignal && content.charAt(i) == '#') {
-        startTopicIndex = i;
-        // System.out.println("start sharp index: " + startTopicIndex);
-        hasSharpSignal = true;
-      }
-
-      if (hasSharpSignal && i > startTopicIndex && i < content.length() - 1) {
-        if (content.charAt(i) == '#') {
-          setClickableSpan(spannableString, startTopicIndex, i + 1);
-          hasSharpSignal = false;
+    private static void setClickableSpan(SpannableString spannableString, int startIndex,
+        int endIndex) {
+        if (startIndex >= endIndex || endIndex - startIndex > MAX_NICKNAME_LENGTH) {
+            return;
         }
-      }
-      textView.setText(spannableString);
-      textView.setMovementMethod(LinkMovementMethod.getInstance());
+        // System.out.println("startIndex: " + startIndex + " : " + "endIndex: " + endIndex);
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                // Click Event
+            }
+        };
+        spannableString.setSpan(clickableSpan, startIndex, endIndex,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
-  }
-
-  private static void setClickableSpan(SpannableString spannableString, int startIndex,
-      int endIndex) {
-    if (startIndex >= endIndex || endIndex - startIndex > MAX_NICKNAME_LENGTH) {
-      return;
-    }
-    // System.out.println("startIndex: " + startIndex + " : " + "endIndex: " + endIndex);
-    ClickableSpan clickableSpan = new ClickableSpan() {
-      @Override public void onClick(View widget) {
-        // Click Event
-      }
-    };
-    spannableString.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-  }
 }

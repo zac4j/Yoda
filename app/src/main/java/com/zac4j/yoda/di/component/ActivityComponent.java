@@ -5,7 +5,6 @@ import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.di.PerActivity;
 import com.zac4j.yoda.di.module.ActivityModule;
 import com.zac4j.yoda.ui.base.BaseActivity;
-import com.zac4j.yoda.ui.main.MainActivity;
 import com.zac4j.yoda.ui.user.friend.UserFriendListActivity;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
@@ -18,15 +17,16 @@ import dagger.Subcomponent;
  */
 
 @PerActivity @Subcomponent(modules = ActivityModule.class) public interface ActivityComponent {
-  @ActivityContext Context context();
+    @ActivityContext
+    Context context();
 
-  void inject(BaseActivity baseActivity);
+    void inject(BaseActivity baseActivity);
 
-  void inject(WeiboSendActivity sendWeiboActivity);
+    void inject(WeiboSendActivity sendWeiboActivity);
 
-  void inject(WeiboDetailActivity weiboDetailActivity);
+    void inject(WeiboDetailActivity weiboDetailActivity);
 
-  void inject(WeiboImageActivity weiboImageActivity);
+    void inject(WeiboImageActivity weiboImageActivity);
 
-  void inject(UserFriendListActivity friendListActivity);
+    void inject(UserFriendListActivity friendListActivity);
 }

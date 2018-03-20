@@ -25,69 +25,76 @@ import retrofit2.Response;
 
 @PerConfig public class HotTagPresenter extends RxPresenter<HotTagView> {
 
-  private final DataManager mDataManager;
-  private CompositeDisposable mDisposable;
+    private final DataManager mDataManager;
+    private CompositeDisposable mDisposable;
 
-  @Inject public HotTagPresenter(DataManager dataManager) {
-    mDataManager = dataManager;
-  }
-
-  @Override public void attach(HotTagView mvpView) {
-    super.attach(mvpView);
-    mDisposable = new CompositeDisposable();
-  }
-
-  @Override public void detach() {
-    super.detach();
-    mDisposable.clear();
-  }
-
-  public void getHotTags(String token) {
-    checkViewAttached();
-
-    mDisposable.add(mDataManager.getHotTags(token)
-        .compose(RxUtils.applySchedulers())
-        .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
-        .doOnError(throwable -> publishRequestState(RequestState.ERROR))
-        .doOnSuccess(objectResponse -> publishRequestState(RequestState.COMPLETE))
-        .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
-          @Override public void onSuccess(@NonNull Response<Object> response) {
-            publishResponse(response);
-          }
-
-          @Override public void onError(@NonNull Throwable throwable) {
-            publishErrors(throwable);
-          }
-        }));
-  }
-
-  @Override protected void publishResponse(Response<Object> response) {
-    if (response.isSuccessful()) {
-      List<Tag> tagList = null;
-      Object data = response.body();
-      ObjectMapper mapper = mDataManager.getObjectMapper();
-      try {
-        String value = mapper.writeValueAsString(data);
-        tagList = mapper.readValue(value, new TypeReference<List<Tag>>() {
-        });
-      } catch (IOException e) {
-        e.printStackTrace();
-        getMvpView().showMessage(e.getMessage());
-      }
-
-      if (tagList == null || tagList.isEmpty()) {
-        getMvpView().showEmptyView(true);
-      } else {
-        getMvpView().showHotTags(tagList);
-      }
+    @Inject
+    public HotTagPresenter(DataManager dataManager) {
+        mDataManager = dataManager;
     }
-  }
 
-  @Override protected void publishErrors(Throwable error) {
-    if (error instanceof HttpException) {
-      Response response = ((HttpException) error).response();
-      int responseCode = response.code();
-      getMvpView().showMessage(Error.NETWORK);
+    @Override
+    public void attach(HotTagView mvpView) {
+        super.attach(mvpView);
+        mDisposable = new CompositeDisposable();
     }
-  }
+
+    @Override
+    public void detach() {
+        super.detach();
+        mDisposable.clear();
+    }
+
+    public void getHotTags(String token) {
+        checkViewAttached();
+
+        mDisposable.add(mDataManager.getHotTags(token)
+            .compose(RxUtils.applySchedulers())
+            .doOnSubscribe(disposable -> publishRequestState(RequestState.LOADING))
+            .doOnError(throwable -> publishRequestState(RequestState.ERROR))
+            .doOnSuccess(objectResponse -> publishRequestState(RequestState.COMPLETE))
+            .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
+                @Override
+                public void onSuccess(@NonNull Response<Object> response) {
+                    publishResponse(response);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable throwable) {
+                    publishErrors(throwable);
+                }
+            }));
+    }
+
+    @Override
+    protected void publishResponse(Response<Object> response) {
+        if (response.isSuccessful()) {
+            List<Tag> tagList = null;
+            Object data = response.body();
+            ObjectMapper mapper = mDataManager.getObjectMapper();
+            try {
+                String value = mapper.writeValueAsString(data);
+                tagList = mapper.readValue(value, new TypeReference<List<Tag>>() {
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+                getMvpView().showMessage(e.getMessage());
+            }
+
+            if (tagList == null || tagList.isEmpty()) {
+                getMvpView().showEmptyView(true);
+            } else {
+                getMvpView().showHotTags(tagList);
+            }
+        }
+    }
+
+    @Override
+    protected void publishErrors(Throwable error) {
+        if (error instanceof HttpException) {
+            Response response = ((HttpException) error).response();
+            int responseCode = response.code();
+            getMvpView().showMessage(Error.NETWORK);
+        }
+    }
 }

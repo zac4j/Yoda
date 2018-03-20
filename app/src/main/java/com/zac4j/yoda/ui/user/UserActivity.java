@@ -23,40 +23,43 @@ import com.zac4j.yoda.ui.user.moment.UserMomentFragment;
 
 public class UserActivity extends BaseActivity {
 
-  @BindView(R.id.user_toolbar) Toolbar mToolbar;
+    @BindView(R.id.user_toolbar)
+    Toolbar mToolbar;
 
-  @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_user);
-    ButterKnife.bind(this);
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user);
+        ButterKnife.bind(this);
 
-    setSupportActionBar(mToolbar);
+        setSupportActionBar(mToolbar);
 
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(true);
-      actionBar.setTitle(R.string.nav_drawer_my_moments);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.nav_drawer_my_moments);
+        }
+
+        FragmentManager fragmentMgr = getSupportFragmentManager();
+        Fragment fragment = fragmentMgr.findFragmentById(R.id.user_fragment_container);
+        if (fragment == null) {
+            fragment = new UserMomentFragment();
+            fragmentMgr.beginTransaction().add(R.id.user_fragment_container, fragment).commit();
+        }
     }
 
-    FragmentManager fragmentMgr = getSupportFragmentManager();
-    Fragment fragment = fragmentMgr.findFragmentById(R.id.user_fragment_container);
-    if (fragment == null) {
-      fragment = new UserMomentFragment();
-      fragmentMgr.beginTransaction().add(R.id.user_fragment_container, fragment).commit();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return true;
     }
-  }
 
-  @Override public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case android.R.id.home:
-        onBackPressed();
-        break;
+    public void onTokenInvalid() {
+        AccessTokenKeeper.clear(this);
+        startActivity(new Intent(this, LoginActivity.class));
     }
-    return true;
-  }
-
-  public void onTokenInvalid() {
-    AccessTokenKeeper.clear(this);
-    startActivity(new Intent(this, LoginActivity.class));
-  }
 }

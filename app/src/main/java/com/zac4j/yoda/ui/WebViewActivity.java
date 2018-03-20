@@ -27,83 +27,91 @@ import com.zac4j.yoda.R;
 
 public class WebViewActivity extends AppCompatActivity {
 
-  public static final String WEIBO_DOMAIN = "api.weibo.com";
-  public static final String EXTRA_WEIBO_ID = "extra_weibo_id";
-  public static final String EXTRA_UID = "extra_uid";
+    public static final String WEIBO_DOMAIN = "api.weibo.com";
+    public static final String EXTRA_WEIBO_ID = "extra_weibo_id";
+    public static final String EXTRA_UID = "extra_uid";
 
-  @BindView(R.id.toolbar) Toolbar mToolbar;
-  @BindView(R.id.progress_bar) ProgressBar mProgressBar;
-  @BindView(R.id.web_view) WebView mWebView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.web_view)
+    WebView mWebView;
 
-  @SuppressLint("SetJavaScriptEnabled") @Override
-  protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_webview);
-    ButterKnife.bind(this);
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_webview);
+        ButterKnife.bind(this);
 
-    if (mToolbar != null) {
-      setSupportActionBar(mToolbar);
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+        }
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(getString(R.string.weibo_detail));
+        }
+
+        String token = AccessTokenKeeper.readAccessToken(this).getToken();
+        String weiboId = getIntent().getStringExtra(EXTRA_WEIBO_ID);
+        String uid = getIntent().getStringExtra(EXTRA_UID);
+
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("https")
+            .authority(WEIBO_DOMAIN)
+            .appendPath("2")
+            .appendPath("statuses")
+            .appendPath("go")
+            .appendQueryParameter("access_token", token)
+            .appendQueryParameter("id", weiboId)
+            .appendQueryParameter("uid", uid);
+
+        String url = builder.build().toString();
+
+        if (mWebView == null) {
+            return;
+        }
+
+        if (mProgressBar != null) {
+            mProgressBar.setMax(100);
+        }
+
+        mWebView.getSettings().setJavaScriptEnabled(true);
+
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                view.loadUrl(request.getUrl().toString());
+                return true;
+            }
+        });
+
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                mProgressBar.setProgress(newProgress);
+            }
+        });
+        mWebView.loadUrl(url);
     }
 
-    ActionBar actionBar = getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setDisplayHomeAsUpEnabled(true);
-      actionBar.setTitle(getString(R.string.weibo_detail));
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
-
-    String token = AccessTokenKeeper.readAccessToken(this).getToken();
-    String weiboId = getIntent().getStringExtra(EXTRA_WEIBO_ID);
-    String uid = getIntent().getStringExtra(EXTRA_UID);
-
-    Uri.Builder builder = new Uri.Builder();
-    builder.scheme("https")
-        .authority(WEIBO_DOMAIN)
-        .appendPath("2")
-        .appendPath("statuses")
-        .appendPath("go")
-        .appendQueryParameter("access_token", token)
-        .appendQueryParameter("id", weiboId)
-        .appendQueryParameter("uid", uid);
-
-    String url = builder.build().toString();
-
-    if (mWebView == null) {
-      return;
-    }
-
-    if (mProgressBar != null) {
-      mProgressBar.setMax(100);
-    }
-
-    mWebView.getSettings().setJavaScriptEnabled(true);
-
-    mWebView.setWebViewClient(new WebViewClient() {
-      @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        view.loadUrl(url);
-        return true;
-      }
-
-      @TargetApi(Build.VERSION_CODES.LOLLIPOP) @Override
-      public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-        view.loadUrl(request.getUrl().toString());
-        return true;
-      }
-    });
-
-    mWebView.setWebChromeClient(new WebChromeClient() {
-      @Override public void onProgressChanged(WebView view, int newProgress) {
-        mProgressBar.setProgress(newProgress);
-      }
-    });
-    mWebView.loadUrl(url);
-  }
-
-  @Override public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case android.R.id.home:
-        onBackPressed();
-        break;
-    }
-    return super.onOptionsItemSelected(item);
-  }
 }

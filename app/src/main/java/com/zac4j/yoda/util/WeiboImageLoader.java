@@ -12,21 +12,18 @@ import com.zac4j.yoda.util.image.GlideApp;
 
 public class WeiboImageLoader {
 
-  /**
-   * Helper method for load and display single image
-   *
-   * @param context activity context
-   * @param holder image holder
-   * @param url image link url
-   */
-  public static void loadSingleImage(Context context, ImageView holder, String url) {
-    if (TextUtils.isEmpty(url)) {
-      //GlideApp.with(context).clear(holder);
-    } else {
-      GlideApp.with(context)
-          .load(url)
-          .centerInside()
-          .into(holder);
+    /**
+     * Helper method for load and display single image
+     *
+     * @param context activity context
+     * @param holder image holder
+     * @param url image link url
+     */
+    public static void loadSingleImage(Context context, ImageView holder, String url) {
+        if (TextUtils.isEmpty(url)) {
+            //GlideApp.with(context).clear(holder);
+        } else {
+            GlideApp.with(context).load(url).centerInside().into(holder);
+        }
     }
-  }
 }

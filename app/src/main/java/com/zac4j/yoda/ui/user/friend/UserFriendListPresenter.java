@@ -21,66 +21,72 @@ import retrofit2.Response;
 
 @PerConfig public class UserFriendListPresenter extends BasePresenter<UserFriendListView> {
 
-  private CompositeDisposable mDisposable;
-  private DataManager mDataManager;
+    private CompositeDisposable mDisposable;
+    private DataManager mDataManager;
 
-  @Inject public UserFriendListPresenter(DataManager dataManager) {
-    mDataManager = dataManager;
-  }
-
-  @Override public void attach(UserFriendListView mvpView) {
-    super.attach(mvpView);
-    if (mDisposable == null) {
-      mDisposable = new CompositeDisposable();
+    @Inject
+    public UserFriendListPresenter(DataManager dataManager) {
+        mDataManager = dataManager;
     }
-  }
 
-  @Override public void detach() {
-    super.detach();
-    if (mDisposable != null) {
-      mDisposable.clear();
+    @Override
+    public void attach(UserFriendListView mvpView) {
+        super.attach(mvpView);
+        if (mDisposable == null) {
+            mDisposable = new CompositeDisposable();
+        }
     }
-  }
 
-  public void getUserFriends(String token, String uid, int count, int cursor) {
-    checkViewAttached();
-    if (!getMvpView().isRefreshing()) {
-      getMvpView().showProgress(true);
+    @Override
+    public void detach() {
+        super.detach();
+        if (mDisposable != null) {
+            mDisposable.clear();
+        }
     }
-    Disposable disposable = mDataManager.getUserFriends(token, Long.parseLong(uid), count, cursor)
-        .compose(RxUtils.<Response<Object>>applySchedulers())
-        .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
-          @Override public void onSuccess(Response<Object> response) {
-            hideProgress();
-            if (response.isSuccessful()) {
-              Friend friend = null;
-              Object data = response.body();
-              ObjectMapper mapper = mDataManager.getObjectMapper();
-              try {
-                String value = mapper.writeValueAsString(data);
-                friend = mapper.readValue(value, Friend.class);
-              } catch (IOException e) {
-                e.printStackTrace();
-              }
 
-              if (friend == null) {
-              } else {
-                getMvpView().showFriendList(friend);
-              }
-            }
-          }
+    public void getUserFriends(String token, String uid, int count, int cursor) {
+        checkViewAttached();
+        if (!getMvpView().isRefreshing()) {
+            getMvpView().showProgress(true);
+        }
+        Disposable disposable =
+            mDataManager.getUserFriends(token, Long.parseLong(uid), count, cursor)
+                .compose(RxUtils.applySchedulers())
+                .subscribeWith(new DisposableSingleObserver<Response<Object>>() {
+                    @Override
+                    public void onSuccess(Response<Object> response) {
+                        hideProgress();
+                        if (response.isSuccessful()) {
+                            Friend friend = null;
+                            Object data = response.body();
+                            ObjectMapper mapper = mDataManager.getObjectMapper();
+                            try {
+                                String value = mapper.writeValueAsString(data);
+                                friend = mapper.readValue(value, Friend.class);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
-          @Override public void onError(Throwable e) {
-            hideProgress();
-            getMvpView().showMessage(Error.NETWORK);
-          }
-        });
+                            if (friend == null) {
+                            } else {
+                                getMvpView().showFriendList(friend);
+                            }
+                        }
+                    }
 
-    mDisposable.add(disposable);
-  }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideProgress();
+                        getMvpView().showMessage(Error.NETWORK);
+                    }
+                });
 
-  private void hideProgress() {
-    getMvpView().showProgress(false);
-    getMvpView().showRefresh(false);
-  }
+        mDisposable.add(disposable);
+    }
+
+    private void hideProgress() {
+        getMvpView().showProgress(false);
+        getMvpView().showRefresh(false);
+    }
 }

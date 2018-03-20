@@ -34,106 +34,121 @@ import static android.view.View.VISIBLE;
 
 public class UserMomentFragment extends BaseFragment implements UserMomentView {
 
-  // Server default weibo count is 20 as well.
-  public static final int DEFAULT_WEIBO_COUNT = 6;
-  private int mRequestCount = DEFAULT_WEIBO_COUNT;
-  private int mRequestPage = 1;
-  private EndlessRecyclerViewScrollListener mScrollListener;
+    // Server default weibo count is 20 as well.
+    public static final int DEFAULT_WEIBO_COUNT = 6;
+    @Inject
+    UserMomentPresenter mPresenter;
+    @Inject
+    TimelineAdapter mTimelineAdapter;
+    @BindView(R.id.swipe_weibo_list_container)
+    SwipeRefreshLayout mSwipeContainer;
+    @BindView(R.id.recycler_weibo_list)
+    RecyclerView mWeiboListView;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.error_view)
+    View mErrorView;
+    @BindView(R.id.error_view_img)
+    AppCompatImageView mErrorViewImg;
+    @BindView(R.id.error_view_txt)
+    TextView mErrorViewText;
+    private int mRequestCount = DEFAULT_WEIBO_COUNT;
+    private int mRequestPage = 1;
+    private EndlessRecyclerViewScrollListener mScrollListener;
 
-  @Inject UserMomentPresenter mPresenter;
-  @Inject TimelineAdapter mTimelineAdapter;
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+        @Nullable Bundle savedInstanceState) {
+        getFragmentComponent().inject(this);
 
-  @BindView(R.id.swipe_weibo_list_container) SwipeRefreshLayout mSwipeContainer;
-  @BindView(R.id.recycler_weibo_list) RecyclerView mWeiboListView;
-  @BindView(R.id.progress_bar) ProgressBar mProgressBar;
-  @BindView(R.id.error_view) View mErrorView;
-  @BindView(R.id.error_view_img) AppCompatImageView mErrorViewImg;
-  @BindView(R.id.error_view_txt) TextView mErrorViewText;
+        View view = inflater.inflate(R.layout.fragment_weibo_list, container, false);
+        ButterKnife.bind(this, view);
+        mPresenter.attach(this);
 
-  @Nullable @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
-    getFragmentComponent().inject(this);
+        final String token = AccessTokenKeeper.readAccessToken(getContext()).getToken();
 
-    View view = inflater.inflate(R.layout.fragment_weibo_list, container, false);
-    ButterKnife.bind(this, view);
-    mPresenter.attach(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mWeiboListView.setLayoutManager(layoutManager);
+        mWeiboListView.addItemDecoration(
+            new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        mWeiboListView.setAdapter(mTimelineAdapter);
 
-    final String token = AccessTokenKeeper.readAccessToken(getContext()).getToken();
+        mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                mRequestPage = page;
+                mPresenter.getTimeline(token, mRequestCount, mRequestPage);
+            }
+        };
+        mWeiboListView.addOnScrollListener(mScrollListener);
 
-    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-    mWeiboListView.setLayoutManager(layoutManager);
-    mWeiboListView.addItemDecoration(
-        new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-    mWeiboListView.setAdapter(mTimelineAdapter);
+        //mSwipeContainer.setOnRefreshListener(
+        //    () -> mPresenter.getTimeline(token, mRequestCount, mRequestPage));
 
-    mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
-      @Override public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-        mRequestPage = page;
+        mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light, android.R.color.holo_orange_light,
+            android.R.color.holo_red_light);
+
         mPresenter.getTimeline(token, mRequestCount, mRequestPage);
-      }
-    };
-    mWeiboListView.addOnScrollListener(mScrollListener);
 
-    //mSwipeContainer.setOnRefreshListener(
-    //    () -> mPresenter.getTimeline(token, mRequestCount, mRequestPage));
-
-    mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-        android.R.color.holo_green_light, android.R.color.holo_orange_light,
-        android.R.color.holo_red_light);
-
-    mPresenter.getTimeline(token, mRequestCount, mRequestPage);
-
-    return view;
-  }
-
-  @Override public void showMessage(String message) {
-    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    mErrorView.setVisibility(VISIBLE);
-  }
-
-  @Override public void showProgress(boolean show) {
-    mProgressBar.setVisibility(show ? VISIBLE : GONE);
-  }
-
-  @Override public void showEmptyView(boolean show) {
-
-  }
-
-  @Override public void showRefresh(boolean refresh) {
-    mSwipeContainer.setRefreshing(refresh);
-  }
-
-  @Override public boolean isRefreshing() {
-    return mSwipeContainer.isRefreshing();
-  }
-
-  @Override public void showEmpty(boolean show) {
-    if (show) {
-      mErrorView.setVisibility(VISIBLE);
-      mErrorViewImg.setImageResource(R.drawable.ic_weibo);
-      mErrorViewText.setText(R.string.error_no_weibo);
-    } else {
-      mErrorView.setVisibility(GONE);
-    }
-  }
-
-  @Override public void showTimeline(List<Weibo> weiboList) {
-    if (mRequestPage == 1) { // while refresh the list.
-      if (mScrollListener != null) {
-        mScrollListener.resetState();
-      }
-      mTimelineAdapter.clear();
+        return view;
     }
 
-    if (weiboList == null || weiboList.isEmpty()) {
-      showEmpty(mTimelineAdapter.isEmpty());
-      return;
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        mErrorView.setVisibility(VISIBLE);
     }
 
-    mTimelineAdapter.addWeiboList(weiboList);
+    @Override
+    public void showProgress(boolean show) {
+        mProgressBar.setVisibility(show ? VISIBLE : GONE);
+    }
 
-    mSwipeContainer.setRefreshing(false);
-    mWeiboListView.setVisibility(VISIBLE);
-  }
+    @Override
+    public void showEmptyView(boolean show) {
+
+    }
+
+    @Override
+    public void showRefresh(boolean refresh) {
+        mSwipeContainer.setRefreshing(refresh);
+    }
+
+    @Override
+    public boolean isRefreshing() {
+        return mSwipeContainer.isRefreshing();
+    }
+
+    @Override
+    public void showEmpty(boolean show) {
+        if (show) {
+            mErrorView.setVisibility(VISIBLE);
+            mErrorViewImg.setImageResource(R.drawable.ic_weibo);
+            mErrorViewText.setText(R.string.error_no_weibo);
+        } else {
+            mErrorView.setVisibility(GONE);
+        }
+    }
+
+    @Override
+    public void showTimeline(List<Weibo> weiboList) {
+        if (mRequestPage == 1) { // while refresh the list.
+            if (mScrollListener != null) {
+                mScrollListener.resetState();
+            }
+            mTimelineAdapter.clear();
+        }
+
+        if (weiboList == null || weiboList.isEmpty()) {
+            showEmpty(mTimelineAdapter.isEmpty());
+            return;
+        }
+
+        mTimelineAdapter.addWeiboList(weiboList);
+
+        mSwipeContainer.setRefreshing(false);
+        mWeiboListView.setVisibility(VISIBLE);
+    }
 }

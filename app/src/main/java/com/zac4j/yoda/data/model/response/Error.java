@@ -1,13 +1,13 @@
 package com.zac4j.yoda.data.model.response;
 
-import java.util.HashMap;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Server Error Response.
@@ -18,43 +18,55 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "error", "error_code", "request"
 }) public class Error {
 
-  public static final String NETWORK = "Please check your network connection!";
-  public static final String LIMITED_REQUEST_RATE = "App的单日请求次数已达上限";
+    public static final String NETWORK = "Please check your network connection!";
+    public static final String LIMITED_REQUEST_RATE = "App的单日请求次数已达上限";
 
-  @JsonProperty("error") private String error;
-  @JsonProperty("error_code") private Integer errorCode;
-  @JsonProperty("request") private String request;
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<>();
+    @JsonProperty("error")
+    private String error;
+    @JsonProperty("error_code")
+    private Integer errorCode;
+    @JsonProperty("request")
+    private String request;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
-  @JsonProperty("error") public String getError() {
-    return error;
-  }
+    @JsonProperty("error")
+    public String getError() {
+        return error;
+    }
 
-  @JsonProperty("error") public void setError(String error) {
-    this.error = error;
-  }
+    @JsonProperty("error")
+    public void setError(String error) {
+        this.error = error;
+    }
 
-  @JsonProperty("error_code") public Integer getErrorCode() {
-    return errorCode;
-  }
+    @JsonProperty("error_code")
+    public Integer getErrorCode() {
+        return errorCode;
+    }
 
-  @JsonProperty("error_code") public void setErrorCode(Integer errorCode) {
-    this.errorCode = errorCode;
-  }
+    @JsonProperty("error_code")
+    public void setErrorCode(Integer errorCode) {
+        this.errorCode = errorCode;
+    }
 
-  @JsonProperty("request") public String getRequest() {
-    return request;
-  }
+    @JsonProperty("request")
+    public String getRequest() {
+        return request;
+    }
 
-  @JsonProperty("request") public void setRequest(String request) {
-    this.request = request;
-  }
+    @JsonProperty("request")
+    public void setRequest(String request) {
+        this.request = request;
+    }
 
-  @JsonAnyGetter public Map<String, Object> getAdditionalProperties() {
-    return this.additionalProperties;
-  }
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
 
-  @JsonAnySetter public void setAdditionalProperty(String name, Object value) {
-    this.additionalProperties.put(name, value);
-  }
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
 }

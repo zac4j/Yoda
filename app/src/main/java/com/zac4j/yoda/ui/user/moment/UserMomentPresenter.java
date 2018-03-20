@@ -13,30 +13,33 @@ import javax.inject.Inject;
 
 @PerConfig public class UserMomentPresenter extends BasePresenter<UserMomentView> {
 
-  private final DataManager mDataManager;
-  private CompositeDisposable mDisposable;
+    private final DataManager mDataManager;
+    private CompositeDisposable mDisposable;
 
-  @Inject public UserMomentPresenter(DataManager dataManager) {
-    mDataManager = dataManager;
-  }
-
-  @Override public void attach(UserMomentView mvpView) {
-    super.attach(mvpView);
-    mDisposable = new CompositeDisposable();
-  }
-
-  @Override public void detach() {
-    super.detach();
-    if (mDisposable != null) {
-      mDisposable.clear();
+    @Inject
+    public UserMomentPresenter(DataManager dataManager) {
+        mDataManager = dataManager;
     }
-  }
 
-  public void getTimeline(String token, int count, int page) {
-    checkViewAttached();
-  }
+    @Override
+    public void attach(UserMomentView mvpView) {
+        super.attach(mvpView);
+        mDisposable = new CompositeDisposable();
+    }
 
-  private void hideProgress() {
-    getMvpView().showRefresh(false);
-  }
+    @Override
+    public void detach() {
+        super.detach();
+        if (mDisposable != null) {
+            mDisposable.clear();
+        }
+    }
+
+    public void getTimeline(String token, int count, int page) {
+        checkViewAttached();
+    }
+
+    private void hideProgress() {
+        getMvpView().showRefresh(false);
+    }
 }
