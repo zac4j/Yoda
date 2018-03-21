@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.bumptech.glide.Glide;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.ThumbUrl;
 import com.zac4j.yoda.data.model.User;
@@ -38,6 +37,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     private Context mContext;
     private List<Weibo> mWeiboList;
     private LayoutInflater mLayoutInflater;
+
     @Inject
     public TimelineAdapter(@ActivityContext Context context) {
         mContext = context;
@@ -121,7 +121,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         @BindView(R.id.weibo_list_item_tv_content)
         TextView mContentView;
         @BindView(R.id.weibo_list_item_repost_container)
-        View mRepostContentView;
+        ViewGroup mRepostContainer;
         @BindView(R.id.weibo_list_item_media_container)
         ViewGroup mMediaContainer;
         @BindView(R.id.weibo_list_item_bottom_btns)
@@ -145,10 +145,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             // 微博内容
             WeiboReader.readContent(mContentView, weibo.getText());
 
-            setupMediaContent(context, weibo.getBmiddlePic(), weibo.getPicUrls().size() >= 2);
+            // 转发内容
+            setupMediaContent(mMediaContainer, weibo.getBmiddlePic());
 
             // 微博转发内容
-            setRepostContent(context, weibo.getRepostWeibo());
+            setupRepostContent(weibo.getRepostWeibo());
 
             // 转发数
             WeiboReader.readRepostNumber(mRepostBtn, weibo.getRepostsCount());
@@ -168,166 +169,58 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             addMediaClickEvent(context, weibo);
         }
 
-        void setupMediaContent(Context context, String mediaUrl, boolean isMultipleMedia) {
+        private void setupMediaContent(ViewGroup mediaContainer, String mediaUrl) {
+            if (mediaContainer.getChildCount() > 0) {
+                mediaContainer.removeAllViews();
+            }
+
             if (TextUtils.isEmpty(mediaUrl)) {
-                mMediaContainer.removeAllViews();
-                mMediaContainer.setVisibility(View.GONE);
-                mRootLayout.removeView(mMediaContainer);
-            } else {
-                if (isMultipleMedia) {
-                    // todo process multiple media
-                    mMediaContainer.removeAllViews();
-                    mMediaContainer.setVisibility(View.GONE);
-                    mRootLayout.removeView(mMediaContainer);
-                } else {
-                    View singleImageContainer =
-                        mLayoutInflater.inflate(R.layout.layout_weibo_single_image, null);
-                    final ImageView imageHolder =
-                        singleImageContainer.findViewById(R.id.weibo_media_iv_img);
-                    WeiboImageLoader.loadSingleImage(context, imageHolder, mediaUrl);
-                    mMediaContainer.addView(singleImageContainer);
-                    mMediaContainer.setVisibility(View.VISIBLE);
-                }
+                return;
+            }
+
+            if (!TextUtils.isEmpty(mediaUrl)) {
+                View singleImageContainer =
+                    mLayoutInflater.inflate(R.layout.layout_weibo_single_image, mMediaContainer,
+                        false);
+                final ImageView imageHolder =
+                    singleImageContainer.findViewById(R.id.weibo_media_iv_img);
+                WeiboImageLoader.loadSingleImage(mContext, imageHolder, mediaUrl);
+                mediaContainer.addView(singleImageContainer);
             }
         }
 
-        // 没办法迁移，api 获取的数据跟翔一样
-        void setRepostContent(Context context, Weibo repostWeibo) {
-            final TextView repostTextView =
-                mRepostContentView.findViewById(R.id.weibo_list_item_tv_repost_content);
-            // 转发微博多媒体内容的容器
-            final View mediaContainer =
-                mRepostContentView.findViewById(R.id.weibo_list_item_tv_repost_media);
-            final ImageView mediaImageView =
-                mRepostContentView.findViewById(R.id.weibo_list_item_iv_repost_img);
-            final TextView mediaImageType =
-                mRepostContentView.findViewById(R.id.weibo_list_item_tv_repost_type);
+        private void setupRepostContent(Weibo repostWeibo) {
+
+            if (mRepostContainer.getChildCount() > 0) {
+                mRepostContainer.removeAllViews();
+            }
 
             if (repostWeibo == null) {
-                clearWeiboContainer(mRepostContentView, repostTextView, mediaImageView,
-                    mediaImageType);
-                mediaContainer.setVisibility(View.GONE);
-            } else {
-                String weiboContent = repostWeibo.getText();
-                String name = repostWeibo.getUser().getScreenName();
-
-                if (TextUtils.isEmpty(weiboContent)) {
-                    clearWeiboContainer(mRepostContentView, repostTextView, mediaImageView,
-                        mediaImageType);
-                    return;
-                }
-
-                weiboContent = "@" + name + ": " + weiboContent;
-                WeiboParser.setupText(repostTextView, weiboContent);
-                mRepostContentView.setBackgroundResource(R.drawable.bg_gray_border);
-
-                String imgUrl = repostWeibo.getBmiddlePic();
-                boolean isMultiImages = repostWeibo.getPicUrls().size() > 1;
-
-                //setRepostMediaContent(context, imgUrl, isMultiImages, mediaImageView, mediaImageType,
-                //    mediaContainer);
+                return;
             }
-        }
 
-        void clearWeiboContainer(View containerView, TextView weiboTextView,
-            ImageView weiboMediaView, TextView weiboMediaTypeView) {
-            containerView.setBackgroundResource(0);
-            containerView.setPadding(0, 0, 0, 0);
-            weiboTextView.setText("");
-            // 我费尽千辛万苦终于发现你在这里 >>
-            weiboTextView.setVisibility(View.GONE);
-            Glide.with(mContext).clear(weiboMediaView);
-            weiboMediaTypeView.setText("");
-        }
+            View repostContentView =
+                mLayoutInflater.inflate(R.layout.layout_repost_content, mRepostContainer, false);
+            final TextView textContainer =
+                repostContentView.findViewById(R.id.weibo_list_item_repost_text_container);
+            final ViewGroup mediaContainer =
+                repostContentView.findViewById(R.id.weibo_list_item_repost_media_container);
 
-        //void setRepostMediaContent(final Context context, final String mediaUrl,
-        //    final boolean isMultiImage, final ImageView mediaImageView, final TextView mediaImageType,
-        //    final View mediaContainer) {
-        //
-        //  if (TextUtils.isEmpty(mediaUrl)) {
-        //    Glide.with(mContext).clear(mediaImageView);
-        //    mediaImageType.setText("");
-        //    mediaContainer.setVisibility(View.GONE);
-        //  } else {
-        //    mediaContainer.setVisibility(View.VISIBLE);
-        //
-        //    final RequestBuilder<Bitmap> bitmapRequestBuilder = Glide.with(context)
-        //        .asBitmap()
-        //        .load(mediaUrl)
-        //        .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter());
-        //
-        //    if (isMultiImage) {
-        //      mediaImageType.setText(R.string.weibo_media_type_multiple_image);
-        //      bitmapRequestBuilder.into(mediaImageView);
-        //      return;
-        //    }
-        //
-        //    if (mediaUrl.endsWith("gif")) {
-        //      mediaImageType.setText(R.string.weibo_media_type_gif);
-        //      bitmapRequestBuilder.into(mediaImageView);
-        //      return;
-        //    }
-        //
-        //    // Request has DiskCacheStrategy.ALL
-        //    RequestBuilder builder =
-        //        PhotoUtils.getNetworkImageSizeRequest(context).load(Uri.parse(mediaUrl));
-        //    builder.into(new SimpleTarget<BitmapFactory.Options>() {
-        //      @Override public void onResourceReady(BitmapFactory.Options resource,
-        //          GlideAnimation<? super BitmapFactory.Options> glideAnimation) {
-        //        int imageHeight = resource.outHeight;
-        //        if (imageHeight >= PhotoUtils.LONG_IMAGE_LENGTH) {
-        //          mediaImageType.setText(R.string.weibo_media_type_long_image);
-        //          bitmapRequestBuilder.centerCrop().into(mediaImageView);
-        //        } else {
-        //          mediaImageType.setText("");
-        //          bitmapRequestBuilder.fitCenter().into(mediaImageView);
-        //        }
-        //      }
-        //    });
-        //  }
-        //}
-        //
-        //void setMediaContent(final Context context, final String mediaUrl, final boolean isMultiImage) {
-        //  final ImageView mediaImageView = (ImageView) mMediaView.findViewById(R.id.weibo_media_iv_img);
-        //  final TextView mediaImageType = (TextView) mMediaView.findViewById(R.id.weibo_media_tv_type);
-        //  if (TextUtils.isEmpty(mediaUrl)) {
-        //    Glide.clear(mediaImageView);
-        //    mediaImageType.setText("");
-        //    mMediaView.setVisibility(View.GONE);
-        //  } else {
-        //    mMediaView.setVisibility(View.VISIBLE);
-        //
-        //    final BitmapRequestBuilder<String, Bitmap> bitmapRequestBuilder =
-        //        Glide.with(context).load(mediaUrl).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL);
-        //
-        //    // Request has DiskCacheStrategy.ALL
-        //    GenericRequestBuilder builder =
-        //        PhotoUtils.getNetworkImageSizeRequest(context).load(Uri.parse(mediaUrl));
-        //    builder.into(new SimpleTarget<BitmapFactory.Options>() {
-        //      @Override public void onResourceReady(BitmapFactory.Options resource,
-        //          GlideAnimation<? super BitmapFactory.Options> glideAnimation) {
-        //        int imageHeight = resource.outHeight;
-        //        if (imageHeight >= PhotoUtils.LONG_IMAGE_LENGTH) {
-        //          mediaImageType.setText(R.string.weibo_media_type_long_image);
-        //          bitmapRequestBuilder.centerCrop().into(mediaImageView);
-        //        } else {
-        //          mediaImageType.setText("");
-        //          bitmapRequestBuilder.fitCenter().into(mediaImageView);
-        //        }
-        //      }
-        //    });
-        //
-        //    if (mediaUrl.endsWith("gif")) {
-        //      mediaImageType.setText(R.string.weibo_media_type_gif);
-        //      bitmapRequestBuilder.fitCenter().into(mediaImageView);
-        //    }
-        //
-        //    if (isMultiImage) {
-        //      mediaImageType.setText(R.string.weibo_media_type_multiple_image);
-        //      bitmapRequestBuilder.fitCenter().into(mediaImageView);
-        //    }
-        //  }
-        //}mediaImageView
+            String weiboContent = repostWeibo.getText();
+
+            if (TextUtils.isEmpty(weiboContent)) {
+                textContainer.setText("");
+            } else {
+                String name = repostWeibo.getUser().getScreenName();
+                weiboContent = "@" + name + ": " + weiboContent;
+                WeiboParser.setupText(textContainer, weiboContent);
+            }
+
+            setupMediaContent(mediaContainer, repostWeibo.getBmiddlePic());
+
+            repostContentView.setBackgroundResource(R.drawable.bg_gray_border);
+            mRepostContainer.addView(repostContentView);
+        }
 
         private void setupUserInfo(Context context, User user) {
             if (user == null) {
@@ -344,9 +237,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
          */
         private void addMediaClickEvent(final Context context, Weibo weibo) {
             // 多媒体消息
-            String media = weibo.getBmiddlePic();
             boolean isMultiImages = weibo.getPicUrls().size() > 1;
-            //setMediaContent(context, media, isMultiImages);
             ArrayList<ThumbUrl> imgUrlList = new ArrayList<>();
             if (isMultiImages) {
                 imgUrlList = (ArrayList<ThumbUrl>) weibo.getPicUrls();

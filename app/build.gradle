@@ -49,6 +49,7 @@ dependencies {
   implementation rootProject.ext.supportDesign
   implementation rootProject.ext.supportV13
   implementation rootProject.ext.supportAnnotations
+  implementation rootProject.ext.constraintLayout
 
   implementation rootProject.ext.lifecycle
   annotationProcessor rootProject.ext.lifecycleCompiler

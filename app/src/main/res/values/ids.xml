@@ -40,15 +40,14 @@
   <item name="weibo_list_item_iv_media" type="id"/>
   <item name="weibo_list_item_media_container" type="id"/>
   <item name="weibo_list_item_iv_avatar" type="id"/>
-  <item name="weibo_list_item_repost_container" type="id"/>
-  <item name="weibo_list_item_tv_repost_content" type="id"/>
-  <item name="weibo_list_item_tv_repost_type" type="id"/>
-  <item name="weibo_list_item_iv_repost_img" type="id"/>
   <item name="weibo_list_item_tv_content" type="id"/>
   <item name="weibo_list_item_bottom_btns" type="id"/>
   <item name="weibo_list_item_tv_repost" type="id"/>
   <item name="weibo_list_item_tv_comment" type="id"/>
   <item name="weibo_list_item_tv_like" type="id"/>
+  <item name="weibo_list_item_repost_container" type="id"/>
+  <item name="weibo_list_item_repost_text_container" type="id"/>
+  <item name="weibo_list_item_repost_media_container" type="id"/>
 
   <!--Weibo List-->
   <item name="recycler_weibo_list" type="id"/>
@@ -133,7 +132,6 @@
   <item name="user_detail_vp_media_container" type="id"/>
   <item name="user_detail_iv_background" type="id"/>
   <item name="user_detail_fab_avatar" type="id"/>
-  <item name="weibo_list_item_tv_repost_media" type="id"/>
 
   <!--Home Search-->
   <item name="home_search_lv_hot_tags" type="id"/>

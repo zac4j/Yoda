@@ -38,7 +38,7 @@ import static android.view.View.VISIBLE;
 public class TimelineFragment extends BaseFragment implements TimelineView {
 
     // WebService default weibo count is 20 as well.
-    public static final int DEFAULT_WEIBO_COUNT = 20;
+    public static final int DEFAULT_WEIBO_COUNT = 8;
     private final int mRequestCount = DEFAULT_WEIBO_COUNT;
     @Inject
     TimelinePresenter mPresenter;
@@ -97,12 +97,7 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
         mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
             android.R.color.holo_green_light, android.R.color.holo_orange_light,
             android.R.color.holo_red_light);
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mSwipeContainer.setRefreshing(true);
         refreshPage();
     }
 

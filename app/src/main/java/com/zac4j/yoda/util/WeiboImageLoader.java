@@ -20,10 +20,6 @@ public class WeiboImageLoader {
      * @param url image link url
      */
     public static void loadSingleImage(Context context, ImageView holder, String url) {
-        if (TextUtils.isEmpty(url)) {
-            //GlideApp.with(context).clear(holder);
-        } else {
-            GlideApp.with(context).load(url).centerInside().into(holder);
-        }
+        GlideApp.with(context).load(url).into(holder);
     }
 }
