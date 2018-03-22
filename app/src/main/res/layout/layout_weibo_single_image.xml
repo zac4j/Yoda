@@ -16,15 +16,17 @@
       />
 
   <TextView
-      android:id="@id/weibo_media_tv_type"
+      android:id="@id/weibo_media_tv_desc"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:padding="@dimen/space.very_small"
       android:layout_gravity="end|bottom"
-      android:background="@color/colorPrimary"
+      android:background="@drawable/bg_img_desc"
+      android:paddingBottom="@dimen/space.very_small"
+      android:paddingLeft="@dimen/space.medium"
+      android:paddingRight="@dimen/space.medium"
+      android:paddingTop="@dimen/space.very_small"
       android:textAppearance="@style/TextAppearance.AppCompat.Small"
       android:textColor="@color/white"
-      android:visibility="gone"
       tools:text="长图"
       />
 

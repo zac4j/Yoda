@@ -13,13 +13,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.zac4j.yoda.R;
+import com.zac4j.yoda.data.model.Size;
 import com.zac4j.yoda.data.model.ThumbUrl;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
-import com.zac4j.yoda.util.WeiboImageLoader;
+import com.zac4j.yoda.util.image.ImageSize;
+import com.zac4j.yoda.util.image.WeiboImageManager;
+import com.zac4j.yoda.util.loader.WeiboImageLoader;
 import com.zac4j.yoda.util.WeiboParser;
 import com.zac4j.yoda.util.WeiboReader;
 import java.util.ArrayList;
@@ -179,14 +185,36 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             }
 
             if (!TextUtils.isEmpty(mediaUrl)) {
-                View singleImageContainer =
-                    mLayoutInflater.inflate(R.layout.layout_weibo_single_image, mMediaContainer,
+                View singleImageContainer = mLayoutInflater.inflate(R.layout.layout_weibo_single_image, mMediaContainer,
                         false);
-                final ImageView imageHolder =
-                    singleImageContainer.findViewById(R.id.weibo_media_iv_img);
-                WeiboImageLoader.loadSingleImage(mContext, imageHolder, mediaUrl);
+                final ImageView imageHolder = singleImageContainer.findViewById(R.id.weibo_media_iv_img);
+                final TextView imageDescView = singleImageContainer.findViewById(R.id.weibo_media_tv_desc);
+
+                updateImageContainer(imageHolder, imageDescView, mediaUrl);
+
                 mediaContainer.addView(singleImageContainer);
             }
+        }
+
+        private void updateImageContainer(ImageView imageView, TextView descriptionView, String imageUrl) {
+            WeiboImageManager.decodeNetworkImageSize(mContext, imageUrl)
+                .into(new SimpleTarget<Size>() {
+                    @Override
+                    public void onResourceReady(Size imageSize, Transition<? super Size> transition) {
+                        int width = imageSize.getWidth();
+                        int height = imageSize.getHeight();
+
+                        if (height >= ImageSize.LONG_IMAGE) {
+                            descriptionView.setText(R.string.weibo_media_type_long_image);
+                            RequestOptions options = RequestOptions.centerCropTransform();
+                            WeiboImageLoader.loadSingleImage(imageView, options, imageUrl);
+                        } else {
+                            RequestOptions options = RequestOptions.fitCenterTransform();
+                            WeiboImageLoader.loadSingleImage(imageView, options, imageUrl);
+                        }
+                    }
+
+                });
         }
 
         private void setupRepostContent(Weibo repostWeibo) {

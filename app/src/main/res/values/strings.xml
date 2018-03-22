@@ -17,6 +17,7 @@
   <string name="error_no_friends">You don\'t have friends yet!</string>
   <string name="hot_tag_item">#%1$s#</string>
   <string name="ok_i_know">朕知道了</string>
+  <string name="unfollow">取消关注</string>
 
   <!--Home Navigation-->
   <string name="main_nav_home">Home</string>
@@ -43,7 +44,6 @@
   <string name="weibo_media_type_multiple_image">多图</string>
   <string name="weibo_media_type_gif">Gif</string>
   <string name="weibo_media_type_video">视频</string>
-  <string name="unfollow">取消关注</string>
 
   <!--Comments-->
   <string name="notif_follow_me">%1$s 及另外 %2$d 人关注了你</string>

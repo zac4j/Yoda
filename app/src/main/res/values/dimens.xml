@@ -26,6 +26,7 @@
   <dimen name="space.medium">16dp</dimen>
   <dimen name="space.small">8dp</dimen>
   <dimen name="space.very_small">4dp</dimen>
+  <dimen name="space.corner_radius">0.1dp</dimen>
   <dimen name="space.radius">2dp</dimen>
   <dimen name="space.divider">1dp</dimen>
 
@@ -50,6 +51,7 @@
 
   <!--modified width -->
   <dimen name="width_weibo_nickname">96dp</dimen>
+  <dimen name="width_text_border_stroke">2dp</dimen>
 
 
 </resources>

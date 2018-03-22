@@ -10,7 +10,7 @@
   <item name="photo_view" type="id"/>
   <item name="weibo_media_container" type="id"/>
   <item name="weibo_media_type" type="id"/>
-  <item name="weibo_media_tv_type" type="id"/>
+  <item name="weibo_media_tv_desc" type="id"/>
   <item name="weibo_media_iv_img" type="id"/>
 
   <!--Main page-->
