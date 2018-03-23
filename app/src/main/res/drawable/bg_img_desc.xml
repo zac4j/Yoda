@@ -9,10 +9,6 @@
       android:topLeftRadius="@dimen/space.very_small"
       android:topRightRadius="@dimen/space.very_small"/>
 
-  <solid android:color="@color/cyan"/>
-
-  <stroke
-      android:color="@color/teal"
-      android:width="@dimen/width_text_border_stroke"/>
+  <solid android:color="@color/gray_light"/>
 
 </shape>

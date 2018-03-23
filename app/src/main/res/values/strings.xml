@@ -40,8 +40,10 @@
   <string name="weibo_detail">Weibo Detail</string>
   <string name="avatar">avatar</string>
   <string name="weibo_media">weiboMedia</string>
+  <string name="weibo_media_type_large_image">大图</string>
   <string name="weibo_media_type_long_image">长图</string>
   <string name="weibo_media_type_multiple_image">多图</string>
+  <string name="weibo_media_type_single_image">单图</string>
   <string name="weibo_media_type_gif">Gif</string>
   <string name="weibo_media_type_video">视频</string>
 

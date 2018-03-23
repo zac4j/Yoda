@@ -9,4 +9,6 @@ public class ImageSize {
 
     public static final int LONG_IMAGE = 720;
 
+    public static final int LARGE_IMAGE = 460;
+
 }

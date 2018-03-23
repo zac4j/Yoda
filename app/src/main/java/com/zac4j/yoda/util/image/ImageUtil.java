@@ -23,6 +23,7 @@ import java.util.Locale;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import timber.log.Timber;
 
 /**
  * Photo Utilities
@@ -30,8 +31,6 @@ import okhttp3.RequestBody;
  */
 
 public class ImageUtil {
-
-    public static final int LONG_IMAGE_LENGTH = 980;
 
     public static void pickPhoto(Activity activity, int requestCode) {
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -48,12 +47,11 @@ public class ImageUtil {
 
                 Uri imgUri = FileProvider.getUriForFile(activity,
                     activity.getPackageName() + ".fileprovider", file);
-                System.out.println("file provider >> imgUri >> " + imgUri);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
                 activity.startActivityForResult(intent, requestCode);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Timber.e(e, "Capture photo met error");
         }
         return file == null ? "" : file.getAbsolutePath();
     }
@@ -156,7 +154,7 @@ public class ImageUtil {
                     break;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Timber.e(e, "Compress image met error");
         }
         return degree;
     }

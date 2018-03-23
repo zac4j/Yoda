@@ -16,7 +16,8 @@ import java.util.Map;
  * Created by zac on 3/21/2017.
  */
 
-@JsonInclude(JsonInclude.Include.NON_NULL) @JsonPropertyOrder({
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
     "created_at", "id", "mid", "idstr", "text", "textLength", "source_allowclick", "source_type",
     "source", "favorited", "truncated", "in_reply_to_status_id", "in_reply_to_user_id",
     "in_reply_to_screen_name", "pic_urls", "thumbnail_pic", "bmiddle_pic", "original_pic", "geo",
@@ -506,6 +507,10 @@ public class Weibo implements Serializable {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    public boolean hasMultipleImage() {
+        return getPicUrls() != null && getPicUrls().size() > 1;
     }
 
     @Override
