@@ -48,6 +48,7 @@
   <dimen name="height.very_large">96dp</dimen>
   <dimen name="height.bottom_navigation">56dp</dimen>
   <dimen name="height.cover">133dp</dimen>
+  <dimen name="height.weibo_detail">360dp</dimen>
 
   <!--modified width -->
   <dimen name="width_weibo_nickname">96dp</dimen>

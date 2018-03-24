@@ -2,6 +2,7 @@
 <resources>
   <!--Commons-->
   <item name="appbar" type="id"/>
+  <item name="collapsing_toolbar" type="id"/>
   <item name="toolbar" type="id"/>
   <item name="root_layout" type="id"/>
   <item name="error_view_img" type="id"/>
@@ -101,6 +102,7 @@
   <item name="weibo_detail_tv_repost" type="id"/>
   <item name="weibo_detail_tv_reply" type="id"/>
   <item name="weibo_detail_tv_like" type="id"/>
+  <item name="weibo_detail_fab_discuss" type="id"/>
   <item name="weibo_detail_rv_comment_list" type="id"/>
   <item name="weibo_detail_main_view" type="id"/>
   <item name="weibo_send_main_view" type="id"/>
@@ -120,7 +122,6 @@
   <item name="user_friends_list_tv_description" type="id"/>
   <item name="user_friends_list_tv_follow" type="id"/>
   <item name="user_friends_list_btn_follow" type="id"/>
-  <item name="collapsing_toolbar" type="id"/>
 
   <!--User Detail-->
   <item name="user_detail_tv_nickname" type="id"/>

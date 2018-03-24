@@ -92,7 +92,7 @@ public class WeiboRepostDialogFragment extends BaseDialogFragment implements Wei
 
     @Override
     public void hide() {
-        mAlertDialog.hide();
+        mAlertDialog.dismiss();
     }
 
     @Override

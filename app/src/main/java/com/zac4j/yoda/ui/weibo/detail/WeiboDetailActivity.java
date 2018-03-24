@@ -149,7 +149,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
         dialogFragment.setOnRepostListener(new WeiboRepostDialogFragment.OnRepostListener() {
             @Override
             public void onSuccess(Weibo weibo1) {
-                WeiboDetailActivity.super.onStart();
+                WeiboDetailActivity.this.onStart();
             }
 
             @Override
