@@ -32,12 +32,11 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom"
-      android:background="?android:attr/colorBackground"
-      android:elevation="4dp"
+      android:elevation="16dp"
       android:theme="@style/ThemeOverlay.AppCompat.Light"
-      app:itemBackground="@color/white"
-      app:itemIconTint="@color/colorPrimary"
-      app:itemTextColor="@color/colorPrimary"
+      android:background="@android:color/white"
+      app:itemIconTint="@drawable/selector_bottom_nav_item"
+      app:itemTextColor="@drawable/selector_bottom_nav_item"
       app:menu="@menu/bottom_navigation_menu"
       />
 

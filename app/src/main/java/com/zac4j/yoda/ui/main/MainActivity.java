@@ -2,14 +2,11 @@ package com.zac4j.yoda.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
@@ -18,6 +15,7 @@ import com.zac4j.yoda.ui.adapter.MainPagerAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.login.LoginActivity;
 import com.zac4j.yoda.ui.weibo.send.WeiboSendActivity;
+import com.zac4j.yoda.util.BottomNavigationHelper;
 
 public class MainActivity extends BaseActivity {
 
@@ -55,50 +53,42 @@ public class MainActivity extends BaseActivity {
         mActionBar = getSupportActionBar();
 
         if (mWriteBtn != null) {
-            mWriteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(MainActivity.this, WeiboSendActivity.class));
-                }
-            });
+            mWriteBtn.setOnClickListener(
+                v -> startActivity(new Intent(MainActivity.this, WeiboSendActivity.class)));
         }
 
         mMainContainer.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+        BottomNavigationHelper.disableShiftMode(mBottomNavigationView);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            int position = 0;
+            switch (item.getItemId()) {
+                case R.id.main_nav_home:
+                    break;
+                case R.id.main_nav_hot:
+                    position = 1;
+                    break;
+                case R.id.main_nav_notification:
+                    position = 2;
+                    break;
+                case R.id.main_nav_message:
+                    position = 3;
+                    break;
+                case R.id.main_nav_user:
+                    position = 4;
+                    break;
+            }
 
-        mBottomNavigationView.setOnNavigationItemSelectedListener(
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    int position = 0;
-                    switch (item.getItemId()) {
-                        case R.id.main_nav_home:
-                            break;
-                        case R.id.main_nav_hot:
-                            position = 1;
-                            break;
-                        case R.id.main_nav_notification:
-                            position = 2;
-                            break;
-                        case R.id.main_nav_message:
-                            position = 3;
-                            break;
-                        case R.id.main_nav_user:
-                            position = 4;
-                            break;
-                    }
+            if (mPreviousPosition == position) {
+                return true;
+            }
 
-                    if (mPreviousPosition == position) {
-                        return true;
-                    }
+            updatePagerTitle(position);
 
-                    updatePagerTitle(position);
+            mMainContainer.setCurrentItem(position);
 
-                    mMainContainer.setCurrentItem(position);
-
-                    mPreviousPosition = position;
-                    return true;
-                }
-            });
+            mPreviousPosition = position;
+            return true;
+        });
 
         mMainContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
