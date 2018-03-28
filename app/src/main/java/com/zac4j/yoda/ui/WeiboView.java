@@ -68,10 +68,10 @@ public class WeiboView extends RelativeLayout {
 
     public void setAdapter(WeiboAdapter adapter) {
         Weibo weibo = adapter.getWeibo();
-        bindWeibo(weibo);
+        populateWeibo(weibo);
     }
 
-    private void bindWeibo(Weibo weibo) {
+    private void populateWeibo(Weibo weibo) {
         // 发送时间
         WeiboReader.readPostTime(mPostTimeView, weibo.getCreatedAt());
 
