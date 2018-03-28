@@ -86,7 +86,7 @@ dependencies {
 
   implementation rootProject.ext.glide
   annotationProcessor rootProject.ext.glideCompiler
-  implementation rootProject.ext.glideTransformer
+  implementation rootProject.ext.okhttpGlide
   implementation rootProject.ext.photoview
 
   implementation rootProject.ext.timber

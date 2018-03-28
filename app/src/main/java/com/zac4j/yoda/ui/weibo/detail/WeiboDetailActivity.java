@@ -76,7 +76,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weibo_detail);
+        setContentView(R.layout.activity_weibo_details);
 
         getActivityComponent().inject(this);
         mPresenter.attach(this);

@@ -13,12 +13,10 @@ import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.zac4j.yoda.ui.main.MainActivity;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import java.util.concurrent.Callable;
 import timber.log.Timber;
 
 public class LoginActivity extends AppCompatActivity implements WeiboAuthListener {
@@ -74,36 +72,33 @@ public class LoginActivity extends AppCompatActivity implements WeiboAuthListene
     /*********************** Weibo Auth Listener Implementation *****************************/
     @Override
     public void onComplete(final Bundle bundle) {
-        mDisposable.add(Observable.defer(new Callable<ObservableSource<Oauth2AccessToken>>() {
-            @Override
-            public ObservableSource<Oauth2AccessToken> call() throws Exception {
-                return Observable.just(Oauth2AccessToken.parseAccessToken(bundle));
-            }
-        })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(new DisposableObserver<Oauth2AccessToken>() {
-                @Override
-                public void onNext(Oauth2AccessToken token) {
-                    if (token.isSessionValid()) {
-                        AccessTokenKeeper.writeAccessToken(LoginActivity.this, token);
-                    } else {
-                        String code = bundle.getString("code");
-                        Timber.d("error code: " + code);
+        mDisposable.add(
+            Observable.defer(() -> Observable.just(Oauth2AccessToken.parseAccessToken(bundle)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<Oauth2AccessToken>() {
+                    @Override
+                    public void onNext(Oauth2AccessToken token) {
+                        if (token.isSessionValid()) {
+                            AccessTokenKeeper.writeAccessToken(LoginActivity.this, token);
+                        } else {
+                            String code = bundle.getString("code");
+                            Timber.d("error code: " + code);
+                        }
                     }
-                }
 
-                @Override
-                public void onError(Throwable e) {
-                    Timber.e(e);
-                }
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e);
+                    }
 
-                @Override
-                public void onComplete() {
-                    Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
-                    startMainPage(LoginActivity.this);
-                }
-            }));
+                    @Override
+                    public void onComplete() {
+                        Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT)
+                            .show();
+                        startMainPage(LoginActivity.this);
+                    }
+                }));
     }
 
     @Override

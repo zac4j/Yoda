@@ -2,6 +2,7 @@ package com.zac4j.yoda.util.image;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Registry;
@@ -21,11 +22,11 @@ import java.io.IOException;
  * Created by Zaccc on 2017/12/6.
  */
 
-@GlideModule
-public class AppGlideModuleImpl extends AppGlideModule {
+@GlideModule public class WeiboGlideModule extends AppGlideModule {
 
     @Override
-    public void registerComponents(Context context, Glide glide, Registry registry) {
+    public void registerComponents(@NonNull Context context, @NonNull Glide glide,
+        @NonNull Registry registry) {
         registry.prepend(File.class, BitmapFactory.Options.class, new BitmapSizeDecoder());
         registry.register(BitmapFactory.Options.class, Size.class,
             new OptionsSizeResourceTranscoder());
@@ -34,14 +35,14 @@ public class AppGlideModuleImpl extends AppGlideModule {
     class BitmapSizeDecoder implements ResourceDecoder<File, BitmapFactory.Options> {
 
         @Override
-        public boolean handles(File source, Options options) throws IOException {
+        public boolean handles(@NonNull File source, @NonNull Options options) throws IOException {
             return true;
         }
 
         @Nullable
         @Override
-        public Resource<BitmapFactory.Options> decode(File source, int width, int height,
-            Options options) throws IOException {
+        public Resource<BitmapFactory.Options> decode(@NonNull File source, int width, int height,
+            @NonNull Options options) throws IOException {
             BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
             bitmapOptions.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(source.getAbsolutePath(), bitmapOptions);
@@ -52,7 +53,8 @@ public class AppGlideModuleImpl extends AppGlideModule {
     class OptionsSizeResourceTranscoder implements ResourceTranscoder<BitmapFactory.Options, Size> {
 
         @Override
-        public Resource<Size> transcode(Resource<BitmapFactory.Options> resource, Options options) {
+        public Resource<Size> transcode(@NonNull Resource<BitmapFactory.Options> resource,
+            @NonNull Options options) {
             BitmapFactory.Options bitmapOptions = resource.get();
             Size size = new Size(bitmapOptions.outWidth, bitmapOptions.outHeight);
             return new SimpleResource<>(size);
