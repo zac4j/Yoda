@@ -25,7 +25,7 @@ import com.zac4j.yoda.ui.adapter.WeiboCommentAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
 import com.zac4j.yoda.ui.weibo.repost.WeiboRepostDialogFragment;
-import com.zac4j.yoda.util.WeiboReader;
+import com.zac4j.yoda.util.weibo.WeiboReader;
 import java.util.List;
 import javax.inject.Inject;
 

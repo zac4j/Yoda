@@ -1,4 +1,4 @@
-package com.zac4j.yoda.util;
+package com.zac4j.yoda.util.weibo;
 
 /**
  * Helper for weibo write logic

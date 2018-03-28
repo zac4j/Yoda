@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.db.Profile;
-import com.zac4j.yoda.util.WeiboReader;
+import com.zac4j.yoda.util.weibo.WeiboReader;
 
 /**
  * User Detail Dialog

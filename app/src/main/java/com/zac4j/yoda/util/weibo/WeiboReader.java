@@ -1,4 +1,4 @@
-package com.zac4j.yoda.util;
+package com.zac4j.yoda.util.weibo;
 
 import android.content.Context;
 import android.os.Build;
@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.zac4j.yoda.R;
+import com.zac4j.yoda.util.NumberUtils;
+import com.zac4j.yoda.util.TimeUtils;
 import com.zac4j.yoda.util.image.GlideApp;
 import com.zac4j.yoda.util.image.GlideCircleTransformation;
 

@@ -9,10 +9,25 @@
   <item name="error_view_txt" type="id"/>
   <item name="web_view" type="id"/>
   <item name="photo_view" type="id"/>
-  <item name="weibo_media_container" type="id"/>
+  <item name="empty_view" type="id"/>
   <item name="weibo_media_type" type="id"/>
   <item name="weibo_media_tv_desc" type="id"/>
   <item name="weibo_media_iv_img" type="id"/>
+
+  <!--Weibo Container-->
+  <item name="weibo_main_container" type="id"/>
+  <item name="weibo_iv_avatar" type="id"/>
+  <item name="weibo_tv_nickname" type="id"/>
+  <item name="weibo_tv_username" type="id"/>
+  <item name="weibo_tv_post_time" type="id"/>
+  <item name="weibo_tv_post_from" type="id"/>
+  <item name="weibo_tv_content" type="id"/>
+  <item name="weibo_media_container" type="id"/>
+  <item name="weibo_repost_container" type="id"/>
+  <item name="weibo_action_button_container" type="id"/>
+  <item name="weibo_tv_like" type="id"/>
+  <item name="weibo_tv_comment" type="id"/>
+  <item name="weibo_tv_repost" type="id"/>
 
   <!--Main page-->
   <item name="main_drawer_layout" type="id"/>
@@ -33,6 +48,7 @@
   <item name="nav_drawer_my_friends" type="id"/>
 
   <!--Weibo List Item-->
+  <item name="weibo_list_item_root_layout" type="id"/>
   <item name="weibo_list_item_root_container" type="id"/>
   <item name="weibo_list_item_tv_nickname" type="id"/>
   <item name="weibo_list_item_tv_username" type="id"/>
@@ -165,7 +181,5 @@
   <item name="comment_list_item_tv_comment_content" type="id"/>
   <item name="comment_list_item_weibo_container" type="id"/>
   <item name="comment_list_item_bottom_btns" type="id"/>
-  <item name="empty_view" type="id"/>
-  <item name="weibo_list_item_root_layout" type="id"/>
 
 </resources>

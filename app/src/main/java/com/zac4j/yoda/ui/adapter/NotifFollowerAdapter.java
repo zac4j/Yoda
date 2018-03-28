@@ -8,7 +8,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.di.ActivityContext;
-import com.zac4j.yoda.util.WeiboReader;
+import com.zac4j.yoda.util.weibo.WeiboReader;
 import com.zac4j.yoda.util.image.ImageUtil;
 import java.util.ArrayList;
 import java.util.List;

@@ -13,7 +13,7 @@ import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Comment;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.di.ActivityContext;
-import com.zac4j.yoda.util.WeiboReader;
+import com.zac4j.yoda.util.weibo.WeiboReader;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
