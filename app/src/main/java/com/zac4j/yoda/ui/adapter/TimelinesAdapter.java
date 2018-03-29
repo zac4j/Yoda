@@ -1,11 +1,10 @@
 package com.zac4j.yoda.ui.adapter;
 
+import android.content.Context;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.widget.WeiboView;
 import java.util.ArrayList;
@@ -19,7 +18,16 @@ import javax.inject.Inject;
 
 public class TimelinesAdapter extends RecyclerView.Adapter<TimelinesAdapter.ViewHolder> {
 
+    public interface OnItemClickListener {
+        void onClick(Weibo weibo);
+    }
+
+    public interface OnItemImageClickListener {
+        void onClick(Weibo weibo);
+    }
+
     private OnItemClickListener mItemClickListener;
+    private OnItemImageClickListener mItemImageClickListener;
     private List<Weibo> mWeiboList;
 
     @Inject
@@ -29,6 +37,10 @@ public class TimelinesAdapter extends RecyclerView.Adapter<TimelinesAdapter.View
 
     public void setOnItemClickListener(OnItemClickListener itemClickListener) {
         mItemClickListener = itemClickListener;
+    }
+
+    public void setOnItemImageClickListener(OnItemImageClickListener listener) {
+        mItemImageClickListener = listener;
     }
 
     public void addWeiboList(final List<Weibo> weiboList) {
@@ -52,16 +64,24 @@ public class TimelinesAdapter extends RecyclerView.Adapter<TimelinesAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        //View view = inflater.inflate(R.layout.layout_weibo_main, parent, false);
-
         // Add view holder item click listener
-        final ViewHolder holder = new ViewHolder(new WeiboView(parent.getContext()));
+        Context context = parent.getContext();
+        WeiboView weiboView = new WeiboView(context);
+        final ViewHolder holder = new ViewHolder(weiboView);
+
         holder.itemView.setOnClickListener(v -> {
+            // get adapter position in runtime.
             int position = holder.getAdapterPosition();
-            mItemClickListener.onClick(mWeiboList.get(position));
+            Weibo weibo = mWeiboList.get(position);
+            mItemClickListener.onClick(weibo);
         });
 
+        weiboView.setOnImageClickListener(() -> {
+            // get adapter position in runtime.
+            int position = holder.getAdapterPosition();
+            Weibo weibo = mWeiboList.get(position);
+            mItemImageClickListener.onClick(weibo);
+        });
         return holder;
     }
 
@@ -80,10 +100,6 @@ public class TimelinesAdapter extends RecyclerView.Adapter<TimelinesAdapter.View
             return 0;
         }
         return mWeiboList.size();
-    }
-
-    public interface OnItemClickListener {
-        void onClick(Weibo weibo);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

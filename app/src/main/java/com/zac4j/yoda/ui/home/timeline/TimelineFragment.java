@@ -18,11 +18,14 @@ import butterknife.ButterKnife;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
+import com.zac4j.yoda.data.model.ThumbUrl;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.adapter.TimelinesAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
+import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import timber.log.Timber;
@@ -78,7 +81,8 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mWeiboListView.setLayoutManager(layoutManager);
         mWeiboListView.setAdapter(mTimelineAdapter);
-        mTimelineAdapter.setOnItemClickListener(weibo -> goToWeiboDetail(getContext(), weibo));
+
+        addItemClickListeners();
 
         Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(getContext());
         mToken = accessToken.getToken();
@@ -99,6 +103,25 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
             android.R.color.holo_red_light);
 
         refreshPage();
+    }
+
+    private void addItemClickListeners() {
+        // Add item click listener
+        mTimelineAdapter.setOnItemClickListener(weibo -> goToWeiboDetail(getContext(), weibo));
+        // Add item image click listener
+        mTimelineAdapter.setOnItemImageClickListener(weibo -> {
+            ArrayList<ThumbUrl> imgUrlList = new ArrayList<>();
+            if (weibo.hasMultipleImage()) {
+                imgUrlList = (ArrayList<ThumbUrl>) weibo.getPicUrls();
+            } else {
+                String imgUrl = weibo.getOriginalPic();
+                ThumbUrl thumbUrl = new ThumbUrl(imgUrl);
+                imgUrlList.add(thumbUrl);
+            }
+            Intent intent = new Intent(getActivity(), WeiboImageActivity.class);
+            intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_LIST, imgUrlList);
+            startActivity(intent);
+        });
     }
 
     @Override

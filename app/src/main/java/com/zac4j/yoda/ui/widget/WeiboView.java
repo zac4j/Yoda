@@ -23,6 +23,10 @@ import com.zac4j.yoda.util.weibo.WeiboReader;
 
 public class WeiboView extends RelativeLayout {
 
+    public interface OnImageClickListener {
+        void onClick();
+    }
+
     @BindView(R.id.weibo_main_container)
     RelativeLayout mMainContainer;
     @BindView(R.id.weibo_iv_avatar)
@@ -50,6 +54,8 @@ public class WeiboView extends RelativeLayout {
     @BindView(R.id.weibo_tv_like)
     TextView mLikeButton;
 
+    private OnImageClickListener mOnImageClickListener;
+
     public WeiboView(Context context) {
         this(context, null);
     }
@@ -72,6 +78,10 @@ public class WeiboView extends RelativeLayout {
         populateWeibo(weibo);
     }
 
+    public void setOnImageClickListener(OnImageClickListener listener) {
+        mOnImageClickListener = listener;
+    }
+
     private void populateWeibo(Weibo weibo) {
 
         if (weibo == null || weibo.getUser() == null) {
@@ -91,7 +101,9 @@ public class WeiboView extends RelativeLayout {
         // weibo content
         reader.readTextContent(mContentView, weibo.getText());
         // weibo media content
-        reader.readMediaContent(mMediaContainer, weibo);
+        //todo parse media content into diff type.
+        reader.parseWeiboMedia(mMediaContainer, weibo);
+        //reader.readPictureContent(mMediaContainer, weibo);
         // weibo repost
         reader.readRepostContent(mRepostContainer, weibo.getRepostWeibo());
         // repost number

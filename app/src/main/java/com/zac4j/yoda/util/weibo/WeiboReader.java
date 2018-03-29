@@ -66,7 +66,7 @@ public class WeiboReader {
     }
 
     public void readDescription(TextView descriptionView, String description) {
-        descriptionView.setText(TextUtils.isEmpty(description) ? "这个人虽勤快，却懒得写简介。" : description);
+        descriptionView.setText(TextUtils.isEmpty(description) ? "这个人虽勤快，依然懒得写简介。" : description);
     }
 
     public void readLocation(TextView locationView, String location) {
@@ -74,7 +74,7 @@ public class WeiboReader {
     }
 
     //todo read image, video, multiple image
-    public void readMediaContent(ViewGroup mediaContainer, Weibo weibo) {
+    public void parseWeiboMedia(ViewGroup mediaContainer, Weibo weibo) {
         boolean hasMultipleImage = weibo.getPicUrls() != null && weibo.getPicUrls().size() > 1;
         setupImageLayout(mediaContainer, weibo.getBmiddlePic(), hasMultipleImage);
     }
@@ -102,7 +102,7 @@ public class WeiboReader {
         weiboContent = "@" + name + ": " + weiboContent;
         WeiboParser.setupText(textContainer, weiboContent);
 
-        readMediaContent(mediaContainer, repostWeibo);
+        readPictureContent(mediaContainer, repostWeibo);
 
         repostContentView.setBackgroundColor(ContextCompat.getColor(context, R.color.white_light));
         repostContainer.addView(repostContentView);
@@ -152,6 +152,11 @@ public class WeiboReader {
         }
     }
 
+    private void readPictureContent(ViewGroup mediaContainer, Weibo weibo) {
+        boolean hasMultipleImage = weibo.getPicUrls() != null && weibo.getPicUrls().size() > 1;
+        setupImageLayout(mediaContainer, weibo.getBmiddlePic(), hasMultipleImage);
+    }
+
     private LayoutInflater getLayoutInflater(Context context) {
         if (mLayoutInflater == null) {
             mLayoutInflater = LayoutInflater.from(context);
@@ -169,19 +174,14 @@ public class WeiboReader {
             return;
         }
 
-        if (!TextUtils.isEmpty(mediaUrl)) {
-            View singleImageContainer =
-                mLayoutInflater.inflate(R.layout.layout_weibo_single_image, mediaContainer,
-                    false);
-            final ImageView imageHolder =
-                singleImageContainer.findViewById(R.id.weibo_media_iv_img);
-            final TextView imageDescView =
-                singleImageContainer.findViewById(R.id.weibo_media_tv_desc);
+        View singleImageContainer = getLayoutInflater(mediaContainer.getContext()).inflate(
+            R.layout.layout_weibo_single_image, mediaContainer, false);
+        final ImageView imageHolder = singleImageContainer.findViewById(R.id.weibo_media_iv_img);
+        final TextView imageDescView = singleImageContainer.findViewById(R.id.weibo_media_tv_desc);
 
-            updateImageContainer(imageHolder, imageDescView, mediaUrl, hasMultipleImage);
+        updateImageContainer(imageHolder, imageDescView, mediaUrl, hasMultipleImage);
 
-            mediaContainer.addView(singleImageContainer);
-        }
+        mediaContainer.addView(singleImageContainer);
     }
 
     private void updateImageContainer(ImageView imageView, TextView descriptionView,
@@ -189,8 +189,7 @@ public class WeiboReader {
         WeiboImageManager.decodeNetworkImageSize(imageView.getContext(), imageUrl)
             .into(new SimpleTarget<Size>() {
                 @Override
-                public void onResourceReady(Size imageSize,
-                    Transition<? super Size> transition) {
+                public void onResourceReady(Size imageSize, Transition<? super Size> transition) {
                     int width = imageSize.getWidth();
                     int height = imageSize.getHeight();
 
