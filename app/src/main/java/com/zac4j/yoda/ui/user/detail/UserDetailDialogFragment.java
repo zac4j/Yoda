@@ -67,15 +67,16 @@ public class UserDetailDialogFragment extends DialogFragment {
         if (friend == null) {
             return;
         }
-        WeiboReader.readAvatar(getContext(), mAvatarView, friend.avatarUrl());
-        WeiboReader.readNickname(mNicknameView, friend.nickname());
+        WeiboReader reader = WeiboReader.getInstance();
+        reader.readAvatar(mAvatarView, friend.avatarUrl());
+        reader.readNickname(mNicknameView, friend.nickname());
 
         boolean isMale = "m".equals(friend.gender());
         mNicknameView.setCompoundDrawablesWithIntrinsicBounds(0, 0,
             isMale ? R.drawable.ic_user_male : R.drawable.ic_user_female, 0);
 
-        WeiboReader.readLocation(mLocationView, friend.location());
-        WeiboReader.readDescription(mDescriptionView, friend.description());
+        reader.readLocation(mLocationView, friend.location());
+        reader.readDescription(mDescriptionView, friend.description());
         mFollowerCountView.setText(String.valueOf(friend.follower()));
         mFollowingCountView.setText(String.valueOf(friend.follow()));
     }

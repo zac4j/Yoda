@@ -199,18 +199,18 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
             return;
         }
 
-        WeiboReader.readAvatar(this, mAvatarView, user.getProfileImageUrl());
-        WeiboReader.readUsername(mUsernameView, user.getDomain());
-        WeiboReader.readNickname(mNicknameView, user.getName());
-        WeiboReader.readPostTime(mPostTimeView, weibo.getCreatedAt());
-        WeiboReader.readPostSource(mPostFromView, weibo.getSource());
-        WeiboReader.readContent(mWeiboContentView, weibo.getText());
-        WeiboReader.readRepostNumber(mRepostView, weibo.getRepostsCount());
-        WeiboReader.readCommentsNumber(mReplyView, weibo.getCommentsCount());
-        WeiboReader.readLikeNumber(mLikeView, weibo.getAttitudesCount());
-
+        WeiboReader reader = WeiboReader.getInstance();
+        reader.readAvatar(mAvatarView, user.getProfileImageUrl());
+        reader.readUsername(mUsernameView, user.getDomain());
+        reader.readNickname(mNicknameView, user.getName());
+        reader.readPostTime(mPostTimeView, weibo.getCreatedAt());
+        reader.readPostSource(mPostFromView, weibo.getSource());
+        reader.readTextContent(mWeiboContentView, weibo.getText());
+        reader.readRepostNumber(mRepostView, weibo.getRepostsCount());
+        reader.readCommentsNumber(mReplyView, weibo.getCommentsCount());
+        reader.readLikeNumber(mLikeView, weibo.getAttitudesCount());
         // 设置自己是否赞过
-        WeiboReader.readLikeState(mLikeView, weibo.getFavorited());
+        reader.readLikeState(mLikeView, weibo.getFavorited());
     }
 
     @Override

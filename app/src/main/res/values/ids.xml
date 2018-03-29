@@ -28,6 +28,8 @@
   <item name="weibo_tv_like" type="id"/>
   <item name="weibo_tv_comment" type="id"/>
   <item name="weibo_tv_repost" type="id"/>
+  <item name="weibo_repost_text_container" type="id"/>
+  <item name="weibo_repost_media_container" type="id"/>
 
   <!--Main page-->
   <item name="main_drawer_layout" type="id"/>

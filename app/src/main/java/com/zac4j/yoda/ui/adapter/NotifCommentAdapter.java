@@ -102,10 +102,10 @@ public class NotifCommentAdapter extends RecyclerView.Adapter<NotifCommentAdapte
 
         void bindTo(Comment comment) {
             showCommentUser(comment.getUser());
-
-            WeiboReader.readPostTime(mPostTimeView, comment.getCreatedAt());
-            WeiboReader.readPostSource(mPostSourceView, comment.getSource());
-            WeiboReader.readContent(mCommentContentView, comment.getText());
+            WeiboReader reader = WeiboReader.getInstance();
+            reader.readPostTime(mPostTimeView, comment.getCreatedAt());
+            reader.readPostSource(mPostSourceView, comment.getSource());
+            reader.readTextContent(mCommentContentView, comment.getText());
             if (comment.getWeibo() != null) {
                 mWeiboContainer.setBackgroundResource(R.drawable.bg_gray_border);
 
@@ -113,13 +113,13 @@ public class NotifCommentAdapter extends RecyclerView.Adapter<NotifCommentAdapte
                 String weiboContent =
                     "@" + comment.getWeibo().getUser().getScreenName() + "：" + comment.getWeibo()
                         .getText();
-                WeiboReader.readContent(mWeiboContentView, weiboContent);
+                reader.readTextContent(mWeiboContentView, weiboContent);
 
                 mWeiboContainer.setVisibility(View.VISIBLE);
 
-                WeiboReader.readLikeNumber(mWeiboLikeBtn, comment.getLikeCount());
-                WeiboReader.readRepostNumber(mWeiboRepostBtn, comment.getWeibo().getRepostsCount());
-                WeiboReader.readCommentsNumber(mWeiboCommentBtn, comment.getReplyCount());
+                reader.readLikeNumber(mWeiboLikeBtn, comment.getLikeCount());
+                reader.readRepostNumber(mWeiboRepostBtn, comment.getWeibo().getRepostsCount());
+                reader.readCommentsNumber(mWeiboCommentBtn, comment.getReplyCount());
             } else {
                 mWeiboContainer.setBackgroundResource(0);
                 mWeiboContainer.setVisibility(View.GONE);
@@ -130,9 +130,10 @@ public class NotifCommentAdapter extends RecyclerView.Adapter<NotifCommentAdapte
             if (user == null) {
                 return;
             }
-            WeiboReader.readAvatar(mContext, mAvatarView, user.getProfileImageUrl());
-            WeiboReader.readNickname(mNicknameView, user.getScreenName());
-            WeiboReader.readUsername(mUsernameView, user.getDomain());
+            WeiboReader reader = WeiboReader.getInstance();
+            reader.readAvatar(mAvatarView, user.getProfileImageUrl());
+            reader.readNickname(mNicknameView, user.getScreenName());
+            reader.readUsername(mUsernameView, user.getDomain());
         }
     }
 }

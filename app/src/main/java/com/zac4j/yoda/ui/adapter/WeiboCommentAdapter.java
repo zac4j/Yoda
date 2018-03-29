@@ -60,7 +60,7 @@ public class WeiboCommentAdapter extends RecyclerView.Adapter<WeiboCommentAdapte
             return;
         }
 
-        holder.bindTo(mContext, mCommentList.get(position));
+        holder.bindTo(mCommentList.get(position));
     }
 
     @Override
@@ -91,21 +91,23 @@ public class WeiboCommentAdapter extends RecyclerView.Adapter<WeiboCommentAdapte
             ButterKnife.bind(this, itemView);
         }
 
-        void bindTo(Context context, Comment comment) {
-            WeiboReader.readPostTime(mPostTimeView, comment.getCreatedAt());
-            WeiboReader.readPostSource(mPostSourceView, comment.getSource());
-            WeiboReader.readContent(mCommentContentView, comment.getText());
+        void bindTo(Comment comment) {
+            WeiboReader reader = WeiboReader.getInstance();
+            reader.readPostTime(mPostTimeView, comment.getCreatedAt());
+            reader.readPostSource(mPostSourceView, comment.getSource());
+            reader.readTextContent(mCommentContentView, comment.getText());
 
-            showCommentUser(context, comment.getUser());
+            showCommentUser(comment.getUser());
         }
 
-        private void showCommentUser(Context context, User user) {
+        private void showCommentUser(User user) {
             if (user == null) {
                 return;
             }
-            WeiboReader.readAvatar(context, mAvatarView, user.getProfileImageUrl());
-            WeiboReader.readNickname(mNicknameView, user.getScreenName());
-            WeiboReader.readUsername(mUsernameView, user.getDomain());
+            WeiboReader reader = WeiboReader.getInstance();
+            reader.readAvatar(mAvatarView, user.getProfileImageUrl());
+            reader.readNickname(mNicknameView, user.getScreenName());
+            reader.readUsername(mUsernameView, user.getDomain());
         }
     }
 }

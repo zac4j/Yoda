@@ -1,4 +1,4 @@
-package com.zac4j.yoda.ui;
+package com.zac4j.yoda.ui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.zac4j.yoda.R;
+import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.adapter.WeiboAdapter;
 import com.zac4j.yoda.util.weibo.WeiboReader;
@@ -41,12 +42,12 @@ public class WeiboView extends RelativeLayout {
     @BindView(R.id.weibo_media_container)
     ViewGroup mMediaContainer;
     @BindView(R.id.weibo_action_button_container)
-    View mButttonContainer;
+    View mButtonContainer;
     @BindView(R.id.weibo_tv_repost)
     TextView mRepostButton;
-    @BindView(R.id.weibo_list_item_tv_comment)
+    @BindView(R.id.weibo_tv_comment)
     TextView mCommentButton;
-    @BindView(R.id.weibo_list_item_tv_like)
+    @BindView(R.id.weibo_tv_like)
     TextView mLikeButton;
 
     public WeiboView(Context context) {
@@ -72,21 +73,33 @@ public class WeiboView extends RelativeLayout {
     }
 
     private void populateWeibo(Weibo weibo) {
-        // 发送时间
-        WeiboReader.readPostTime(mPostTimeView, weibo.getCreatedAt());
 
-        // 发送来源
-        WeiboReader.readPostSource(mPostSourceView, weibo.getSource());
+        if (weibo == null || weibo.getUser() == null) {
+            return;
+        }
 
-        // 微博内容
-        WeiboReader.readContent(mContentView, weibo.getText());
-
-        // 转发数
-        WeiboReader.readRepostNumber(mRepostButton, weibo.getRepostsCount());
-        // 评论数
-        WeiboReader.readCommentsNumber(mCommentButton, weibo.getCommentsCount());
-        // 点赞数
-        WeiboReader.readLikeState(mLikeButton, weibo.getFavorited());
-        WeiboReader.readLikeNumber(mLikeButton, weibo.getAttitudesCount());
+        User user = weibo.getUser();
+        WeiboReader reader = WeiboReader.getInstance();
+        // user info
+        reader.readAvatar(mAvatarView, user.getProfileImageUrl());
+        reader.readNickname(mNicknameView, user.getScreenName());
+        reader.readUsername(mUsernameView, user.getDomain());
+        // post time
+        reader.readPostTime(mPostTimeView, weibo.getCreatedAt());
+        // post from
+        reader.readPostSource(mPostSourceView, weibo.getSource());
+        // weibo content
+        reader.readTextContent(mContentView, weibo.getText());
+        // weibo media content
+        reader.readMediaContent(mMediaContainer, weibo);
+        // weibo repost
+        reader.readRepostContent(mRepostContainer, weibo.getRepostWeibo());
+        // repost number
+        reader.readRepostNumber(mRepostButton, weibo.getRepostsCount());
+        // comment number
+        reader.readCommentsNumber(mCommentButton, weibo.getCommentsCount());
+        // favorite number&state
+        reader.readLikeState(mLikeButton, weibo.getFavorited());
+        reader.readLikeNumber(mLikeButton, weibo.getAttitudesCount());
     }
 }

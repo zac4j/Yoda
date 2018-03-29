@@ -74,7 +74,7 @@ public class NotifFollowerAdapter extends BaseAdapter {
 
         User user = getItem(position);
 
-        WeiboReader.readAvatar(mContext, imageView, user.getProfileImageUrl());
+        WeiboReader.getInstance().readAvatar(imageView, user.getProfileImageUrl());
 
         return imageView;
     }
