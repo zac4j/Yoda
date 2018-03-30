@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.widget.WeiboView;
+import com.zac4j.yoda.util.image.MediaType;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -22,12 +23,12 @@ public class TimelinesAdapter extends RecyclerView.Adapter<TimelinesAdapter.View
         void onClick(Weibo weibo);
     }
 
-    public interface OnItemImageClickListener {
-        void onClick(Weibo weibo);
+    public interface OnItemMediaClickListener {
+        void onClick(MediaType type, Weibo weibo);
     }
 
     private OnItemClickListener mItemClickListener;
-    private OnItemImageClickListener mItemImageClickListener;
+    private OnItemMediaClickListener mItemMediaClickListener;
     private List<Weibo> mWeiboList;
 
     @Inject
@@ -39,8 +40,8 @@ public class TimelinesAdapter extends RecyclerView.Adapter<TimelinesAdapter.View
         mItemClickListener = itemClickListener;
     }
 
-    public void setOnItemImageClickListener(OnItemImageClickListener listener) {
-        mItemImageClickListener = listener;
+    public void setOnItemMediaClickListener(OnItemMediaClickListener listener) {
+        mItemMediaClickListener = listener;
     }
 
     public void addWeiboList(final List<Weibo> weiboList) {
@@ -76,12 +77,8 @@ public class TimelinesAdapter extends RecyclerView.Adapter<TimelinesAdapter.View
             mItemClickListener.onClick(weibo);
         });
 
-        weiboView.setOnImageClickListener(() -> {
-            // get adapter position in runtime.
-            int position = holder.getAdapterPosition();
-            Weibo weibo = mWeiboList.get(position);
-            mItemImageClickListener.onClick(weibo);
-        });
+        weiboView.setOnMediaClickListener(
+            (type, weibo) -> mItemMediaClickListener.onClick(type, weibo));
         return holder;
     }
 

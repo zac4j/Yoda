@@ -25,6 +25,7 @@ import com.zac4j.yoda.ui.base.BaseFragment;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
+import com.zac4j.yoda.util.image.MediaType;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -109,18 +110,20 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
         // Add item click listener
         mTimelineAdapter.setOnItemClickListener(weibo -> goToWeiboDetail(getContext(), weibo));
         // Add item image click listener
-        mTimelineAdapter.setOnItemImageClickListener(weibo -> {
-            ArrayList<ThumbUrl> imgUrlList = new ArrayList<>();
-            if (weibo.hasMultipleImage()) {
-                imgUrlList = (ArrayList<ThumbUrl>) weibo.getPicUrls();
-            } else {
-                String imgUrl = weibo.getOriginalPic();
-                ThumbUrl thumbUrl = new ThumbUrl(imgUrl);
-                imgUrlList.add(thumbUrl);
+        mTimelineAdapter.setOnItemMediaClickListener((type, weibo) -> {
+            if (type == MediaType.PICTURE) {
+                ArrayList<ThumbUrl> imgUrlList = new ArrayList<>();
+                if (weibo.hasMultipleImage()) {
+                    imgUrlList = (ArrayList<ThumbUrl>) weibo.getPicUrls();
+                } else {
+                    String imgUrl = weibo.getOriginalPic();
+                    ThumbUrl thumbUrl = new ThumbUrl(imgUrl);
+                    imgUrlList.add(thumbUrl);
+                }
+                Intent intent = new Intent(getActivity(), WeiboImageActivity.class);
+                intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_LIST, imgUrlList);
+                startActivity(intent);
             }
-            Intent intent = new Intent(getActivity(), WeiboImageActivity.class);
-            intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_LIST, imgUrlList);
-            startActivity(intent);
         });
     }
 

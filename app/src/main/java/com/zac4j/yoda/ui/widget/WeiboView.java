@@ -14,6 +14,7 @@ import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.adapter.WeiboAdapter;
+import com.zac4j.yoda.util.image.MediaType;
 import com.zac4j.yoda.util.weibo.WeiboReader;
 
 /**
@@ -23,8 +24,8 @@ import com.zac4j.yoda.util.weibo.WeiboReader;
 
 public class WeiboView extends RelativeLayout {
 
-    public interface OnImageClickListener {
-        void onClick();
+    public interface OnMediaClickListener {
+        void onClick(MediaType type, Weibo weibo);
     }
 
     @BindView(R.id.weibo_main_container)
@@ -54,7 +55,7 @@ public class WeiboView extends RelativeLayout {
     @BindView(R.id.weibo_tv_like)
     TextView mLikeButton;
 
-    private OnImageClickListener mOnImageClickListener;
+    private OnMediaClickListener mOnMediaClickListener;
 
     public WeiboView(Context context) {
         this(context, null);
@@ -78,8 +79,8 @@ public class WeiboView extends RelativeLayout {
         populateWeibo(weibo);
     }
 
-    public void setOnImageClickListener(OnImageClickListener listener) {
-        mOnImageClickListener = listener;
+    public void setOnMediaClickListener(OnMediaClickListener listener) {
+        mOnMediaClickListener = listener;
     }
 
     private void populateWeibo(Weibo weibo) {
@@ -103,7 +104,7 @@ public class WeiboView extends RelativeLayout {
         // weibo media content
         //todo parse media content into diff type.
         reader.parseWeiboMedia(mMediaContainer, weibo);
-        //reader.readPictureContent(mMediaContainer, weibo);
+        addWeiboMediaClickListener(mMediaContainer, weibo);
         // weibo repost
         reader.readRepostContent(mRepostContainer, weibo.getRepostWeibo());
         // repost number
@@ -113,5 +114,10 @@ public class WeiboView extends RelativeLayout {
         // favorite number&state
         reader.readLikeState(mLikeButton, weibo.getFavorited());
         reader.readLikeNumber(mLikeButton, weibo.getAttitudesCount());
+    }
+
+    private void addWeiboMediaClickListener(ViewGroup mediaContainer, Weibo weibo) {
+        mediaContainer.setOnClickListener(
+            v -> mOnMediaClickListener.onClick(MediaType.PICTURE, weibo));
     }
 }
