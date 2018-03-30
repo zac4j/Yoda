@@ -20,7 +20,7 @@ import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.ThumbUrl;
 import com.zac4j.yoda.data.model.Weibo;
-import com.zac4j.yoda.ui.adapter.TimelinesAdapter;
+import com.zac4j.yoda.ui.adapter.TimelineAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
@@ -47,7 +47,7 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     @Inject
     TimelinePresenter mPresenter;
     @Inject
-    TimelinesAdapter mTimelineAdapter;
+    TimelineAdapter mTimelineAdapter;
     @BindView(R.id.swipe_weibo_list_container)
     SwipeRefreshLayout mSwipeContainer;
     @BindView(R.id.recycler_weibo_list)
