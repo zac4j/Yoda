@@ -5,15 +5,29 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.MenuItem;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import com.zac4j.yoda.R;
 import com.zac4j.yoda.ui.base.BaseActivity;
 
 public class BrowserActivity extends BaseActivity {
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.browser_container)
+    FrameLayout mBrowserContainer;
 
     public static final String EXTRA_LINK = "link";
     private WebView mWebView;
@@ -21,15 +35,48 @@ public class BrowserActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(prepareContentView());
+        setContentView(R.layout.activity_browser);
+        ButterKnife.bind(this);
+
+        updateUi();
+
+        setUpWebViewDefaults();
 
         // Check whether we're recreating a previously destroyed instance
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null && mWebView != null) {
             // Restore the previous URL and history stack
             mWebView.restoreState(savedInstanceState);
         }
 
-        setUpWebViewDefaults();
+        String link = getIntent().getStringExtra(EXTRA_LINK);
+        if (!TextUtils.isEmpty(link)) {
+            mWebView.loadUrl(link);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        destroyWebView();
+        super.onDestroy();
+    }
+
+    private void updateUi() {
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+        }
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(getString(R.string.weibo_detail));
+        }
+
+        mWebView = new WebView(getApplicationContext());
+        mBrowserContainer.addView(mWebView);
+
+        if (mProgressBar != null) {
+            mProgressBar.setMax(100);
+        }
     }
 
     /**
@@ -60,16 +107,13 @@ public class BrowserActivity extends BaseActivity {
         // We set the WebViewClient to ensure links are consumed by the WebView rather
         // than passed to a browser if it can
         mWebView.setWebViewClient(new WebViewClient());
-    }
 
-    private View prepareContentView() {
-        FrameLayout layout = new FrameLayout(this);
-        mWebView = new WebView(getApplicationContext());
-        FrameLayout.LayoutParams layoutParams =
-            new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        layout.addView(mWebView, layoutParams);
-        return layout;
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                mProgressBar.setProgress(newProgress);
+            }
+        });
     }
 
     private void destroyWebView() {
@@ -101,4 +145,13 @@ public class BrowserActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

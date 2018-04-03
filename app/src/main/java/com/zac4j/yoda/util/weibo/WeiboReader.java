@@ -24,6 +24,7 @@ import com.zac4j.yoda.util.image.GlideCircleTransformation;
 import com.zac4j.yoda.util.image.ImageSize;
 import com.zac4j.yoda.util.image.WeiboImageManager;
 import com.zac4j.yoda.util.loader.WeiboImageLoader;
+import javax.inject.Inject;
 
 /**
  * Weibo content read helper
@@ -33,6 +34,8 @@ public class WeiboReader {
 
     private static WeiboReader sReader;
     private LayoutInflater mLayoutInflater;
+
+    @Inject WeiboParser mWeiboParser;
 
     private WeiboReader() {
 
@@ -100,7 +103,7 @@ public class WeiboReader {
 
         String name = repostWeibo.getUser().getScreenName();
         weiboContent = "@" + name + ": " + weiboContent;
-        WeiboParser.setupText(textContainer, weiboContent);
+        mWeiboParser.setupText(textContainer, weiboContent);
 
         readPictureContent(mediaContainer, repostWeibo);
 
@@ -130,7 +133,7 @@ public class WeiboReader {
         if (TextUtils.isEmpty(content)) {
             contentView.setText("");
         } else {
-            WeiboParser.setupText(contentView, content);
+            mWeiboParser.setupText(contentView, content);
         }
     }
 

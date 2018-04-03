@@ -23,11 +23,12 @@ import javax.inject.Singleton;
 @Singleton
 public class WeiboParser {
 
-    private static final int MAX_NICKNAME_LENGTH = 25;
     private CurrentActivityProvider mActivityProvider;
-    public static final int SPAN_NAME = 0x001;
-    public static final int SPAN_TOPIC = 0x002;
-    public static final int SPAN_LINK = 0x003;
+
+    private static final int MAX_NICKNAME_LENGTH = 25;
+    private static final int SPAN_NAME = 0x001;
+    private static final int SPAN_TOPIC = 0x002;
+    private static final int SPAN_LINK = 0x003;
 
     @Inject
     public WeiboParser(CurrentActivityProvider activityProvider) {
@@ -117,7 +118,9 @@ public class WeiboParser {
                 break;
             case SPAN_LINK:
                 Activity currentActivity = mActivityProvider.provideCurrentActivity();
-                currentActivity.startActivity(new Intent(currentActivity, BrowserActivity.class));
+                String link = spanContent.toString();
+                currentActivity.startActivity(new Intent(currentActivity, BrowserActivity.class)
+                    .putExtra(BrowserActivity.EXTRA_LINK, link));
                 break;
         }
     }

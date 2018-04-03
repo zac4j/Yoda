@@ -1,6 +1,5 @@
 package com.zac4j.yoda.di.module;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +8,7 @@ import com.zac4j.yoda.CurrentActivityProvider;
 import com.zac4j.yoda.data.remote.ApiServer;
 import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.di.ApplicationContext;
+import com.zac4j.yoda.util.weibo.WeiboParser;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -18,7 +18,8 @@ import javax.inject.Singleton;
  * Created by zac on 16-7-3.
  */
 
-@Module public class ApplicationModule {
+@Module
+public class ApplicationModule {
 
     private Application mApplication;
 
@@ -38,9 +39,8 @@ import javax.inject.Singleton;
     }
 
     @Provides
-    @ActivityContext
     CurrentActivityProvider provideCurrentActivityProvider() {
-        return (CurrentActivityProvider) mApplication;
+        return (App) mApplication;
     }
 
     @Provides
@@ -52,5 +52,11 @@ import javax.inject.Singleton;
     @Singleton
     ApiServer provideWebService() {
         return ApiServer.Factory.create(mApplication);
+    }
+
+    @Provides
+    @Singleton
+    WeiboParser provideWeiboParser() {
+        return new WeiboParser((App) mApplication);
     }
 }

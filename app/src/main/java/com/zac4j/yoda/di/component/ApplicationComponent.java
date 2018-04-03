@@ -8,6 +8,8 @@ import com.zac4j.yoda.data.local.PreferencesHelper;
 import com.zac4j.yoda.data.remote.ApiServer;
 import com.zac4j.yoda.di.ApplicationContext;
 import com.zac4j.yoda.di.module.ApplicationModule;
+import com.zac4j.yoda.util.weibo.WeiboParser;
+import com.zac4j.yoda.util.weibo.WeiboReader;
 import dagger.Component;
 import javax.inject.Singleton;
 
@@ -29,4 +31,8 @@ import javax.inject.Singleton;
     ApiServer webService();
 
     DataManager dataManager();
+
+    WeiboParser weiboParser();
+
+    void inject(WeiboReader reader);
 }
