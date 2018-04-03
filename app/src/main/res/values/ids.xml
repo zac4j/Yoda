@@ -8,6 +8,7 @@
   <item name="error_view_img" type="id"/>
   <item name="error_view_txt" type="id"/>
   <item name="web_view" type="id"/>
+  <item name="browser_container" type="id"/>
   <item name="photo_view" type="id"/>
   <item name="empty_view" type="id"/>
   <item name="weibo_media_type" type="id"/>

@@ -34,6 +34,7 @@
     <activity android:name=".ui.WebViewActivity"/>
     <activity android:name=".ui.user.friend.UserFriendListActivity"/>
     <activity android:name=".ui.user.detail.UserDetailActivity"/>
+    <activity android:name=".ui.BrowserActivity"/>
 
     <provider
         android:name="android.support.v4.content.FileProvider"

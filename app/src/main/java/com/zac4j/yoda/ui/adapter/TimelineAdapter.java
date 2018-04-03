@@ -2,6 +2,7 @@ package com.zac4j.yoda.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.util.DiffUtil;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;

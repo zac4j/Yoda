@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import com.zac4j.yoda.ui.weibo.detail.WeiboDetailActivity;
 import com.zac4j.yoda.util.image.MediaType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 import timber.log.Timber;
 
@@ -86,7 +88,7 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
         addItemClickListeners();
 
         Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(getContext());
-        mToken = accessToken.getToken();
+        mToken = Objects.requireNonNull(accessToken).getToken();
         Timber.d("Token: " + mToken + "\r\n" + "UID: >> " + accessToken.getUid());
         mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
@@ -96,13 +98,19 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
             }
         };
         mWeiboListView.addOnScrollListener(mScrollListener);
+        mWeiboListView.addItemDecoration(
+            new DividerItemDecoration(Objects.requireNonNull(getActivity()), DividerItemDecoration.VERTICAL));
 
         mSwipeContainer.setOnRefreshListener(this::refreshPage);
 
         mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
             android.R.color.holo_green_light, android.R.color.holo_orange_light,
             android.R.color.holo_red_light);
+    }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         refreshPage();
     }
 
