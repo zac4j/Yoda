@@ -66,13 +66,17 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     TextView mRepostView;
     @BindView(R.id.weibo_detail_tv_reply)
     TextView mReplyView;
-    @BindView(R.id.weibo_detail_tv_like)
-    TextView mLikeView;
+    @BindView(R.id.weibo_detail_iv_like_heart)
+    TextView mHeartView;
+    @BindView(R.id.weibo_detail_tv_like_counter)
+    TextView mLikeCounter;
     @BindView(R.id.weibo_detail_rv_comment_list)
     RecyclerView mCommentListView;
     private int mCommentPage = DEFAULT_COMMENT_PAGE;
     private long mWeiboId;
     private String mToken;
+    private boolean mIsLike;
+    private int mLikeCount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -129,7 +133,9 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
         }
     }
 
-    @OnClick({ R.id.weibo_detail_tv_repost, R.id.weibo_detail_tv_reply, R.id.weibo_detail_tv_like })
+    @OnClick({
+        R.id.weibo_detail_tv_repost, R.id.weibo_detail_tv_reply, R.id.weibo_detail_iv_like_heart
+    })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.weibo_detail_tv_repost:
@@ -137,7 +143,9 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
                 break;
             case R.id.weibo_detail_tv_reply:
                 break;
-            case R.id.weibo_detail_tv_like:
+            case R.id.weibo_detail_iv_like_heart:
+                mIsLike = !mIsLike;
+                updateLinkCounter(mIsLike);
                 break;
         }
     }
@@ -159,6 +167,14 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
                 // Try to do something fun.
             }
         });
+    }
+
+    private void updateLinkCounter(boolean isLike) {
+        if (isLike) {
+            mLikeCounter.setText(++mLikeCount);
+        } else {
+            mLikeCounter.setText(mLikeCount);
+        }
     }
 
     @Override
@@ -210,9 +226,11 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
         reader.readTextContent(mWeiboContentView, weibo.getText());
         reader.readRepostNumber(mRepostView, weibo.getRepostsCount());
         reader.readCommentsNumber(mReplyView, weibo.getCommentsCount());
-        reader.readLikeNumber(mLikeView, weibo.getAttitudesCount());
+        mLikeCount = weibo.getAttitudesCount().intValue();
+        mLikeCounter.setText(mLikeCount);
+        //reader.readLikeNumber(mLikeView, weibo.getAttitudesCount());
         // 设置自己是否赞过
-        reader.readLikeState(mLikeView, weibo.getFavorited());
+        //reader.readLikeState(mLikeView, weibo.getFavorited());
     }
 
     @Override

@@ -120,6 +120,8 @@
   <item name="weibo_detail_fl_media_container" type="id"/>
   <item name="weibo_detail_tv_repost" type="id"/>
   <item name="weibo_detail_tv_reply" type="id"/>
+  <item name="weibo_detail_tv_like_counter" type="id"/>
+  <item name="weibo_detail_iv_like_heart" type="id"/>
   <item name="weibo_detail_tv_like" type="id"/>
   <item name="weibo_detail_fab_discuss" type="id"/>
   <item name="weibo_detail_rv_comment_list" type="id"/>

@@ -48,8 +48,8 @@
               android:id="@id/weibo_detail_iv_avatar"
               android:layout_width="@dimen/img.medium"
               android:layout_height="@dimen/img.medium"
-              android:layout_marginStart="?attr/actionBarSize"
               android:layout_marginEnd="@dimen/space.medium"
+              android:layout_marginStart="?attr/actionBarSize"
               />
 
           <TextView
@@ -101,12 +101,12 @@
             android:id="@id/weibo_detail_tv_post_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="end"
-            android:padding="@dimen/space.small"
             android:background="@color/white"
             android:ellipsize="end"
+            android:gravity="end"
             android:lines="1"
             android:maxLength="16"
+            android:padding="@dimen/space.small"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             tools:text="4min"
             />
@@ -124,6 +124,7 @@
               android:layout_height="wrap_content"
               android:drawablePadding="@dimen/space.very_small"
               android:drawableStart="@drawable/ic_weibo_repost"
+              android:foreground="?android:attr/selectableItemBackground"
               android:gravity="center"
               android:textAppearance="@style/TextAppearance.AppCompat.Caption"
               tools:text="100"
@@ -137,21 +138,43 @@
               android:layout_marginStart="@dimen/space.large"
               android:drawablePadding="@dimen/space.very_small"
               android:drawableStart="@drawable/ic_weibo_comment"
+              android:foreground="?android:attr/selectableItemBackground"
               android:gravity="center"
               android:textAppearance="@style/TextAppearance.AppCompat.Caption"
               tools:text="110"
               />
 
-          <TextView
-              android:id="@id/weibo_detail_tv_like"
+          <ImageView
+              android:id="@id/weibo_detail_iv_like_heart"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:drawablePadding="@dimen/space.very_small"
-              android:drawableStart="@drawable/ic_weibo_like"
-              android:gravity="center"
-              android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-              tools:text="120"
+              android:src="@drawable/ic_weibo_like"
+              android:foreground="?android:attr/selectableItemBackground"
               />
+
+          <TextSwitcher
+              android:id="@id/weibo_detail_tv_like_counter"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="@dimen/space.very_small"
+              android:inAnimation="@anim/anim_slide_in_counter"
+              android:outAnimation="@anim/anim_slide_out_counter"
+              >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                tools:text="120"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                tools:text="120"
+                />
+          </TextSwitcher>
 
         </LinearLayout>
       </LinearLayout>
