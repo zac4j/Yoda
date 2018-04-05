@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -76,6 +77,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_SWIPE_TO_DISMISS);
         setContentView(R.layout.activity_weibo_details);
 
         getActivityComponent().inject(this);

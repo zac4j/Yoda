@@ -180,15 +180,4 @@
       android:id="@id/progress_bar"
       />
 
-  <android.support.design.widget.FloatingActionButton
-      android:id="@id/weibo_detail_fab_discuss"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_margin="@dimen/fab_margin"
-      android:clickable="true"
-      android:focusable="true"
-      android:src="@drawable/ic_discuss"
-      app:layout_anchor="@id/appbar"
-      app:layout_anchorGravity="bottom|right|end"
-      />
 </android.support.design.widget.CoordinatorLayout>

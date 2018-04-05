@@ -8,34 +8,29 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
-import com.zac4j.yoda.App;
 import com.zac4j.yoda.CurrentActivityProvider;
 import com.zac4j.yoda.ui.BrowserActivity;
-import com.zac4j.yoda.ui.WebViewActivity;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * Text process helper
  * Created by zac on 4/10/2017.
  */
 
-@Singleton
 public class WeiboParser {
 
-    private CurrentActivityProvider mActivityProvider;
+    private static CurrentActivityProvider mActivityProvider;
 
     private static final int MAX_NICKNAME_LENGTH = 25;
     private static final int SPAN_NAME = 0x001;
     private static final int SPAN_TOPIC = 0x002;
     private static final int SPAN_LINK = 0x003;
 
-    @Inject
-    public WeiboParser(CurrentActivityProvider activityProvider) {
-        mActivityProvider = activityProvider;
+    public WeiboParser() {
+
     }
 
-    public void setupText(TextView textView, String content) {
+    public static void setupText(TextView textView, String content) {
+        mActivityProvider = (CurrentActivityProvider) textView.getContext().getApplicationContext();
         SpannableString spannableString = new SpannableString(content);
 
         int nameStartIndex = 0;
@@ -76,7 +71,7 @@ public class WeiboParser {
                 }
             }
 
-            if (content.charAt(i) == 'h') {
+            if (content.charAt(i) == 'h' && i + 8 < content.length() - 1) {
                 String subContent = content.substring(i, i + 8);
                 if (subContent.startsWith("http://") || subContent.startsWith("https://")) {
                     hasLinkSignal = true;
@@ -93,8 +88,8 @@ public class WeiboParser {
         }
     }
 
-    private void setClickableSpan(int spanType, SpannableString spannableString, int startIndex,
-        int endIndex) {
+    private static void setClickableSpan(int spanType, SpannableString spannableString,
+        int startIndex, int endIndex) {
         if (startIndex >= endIndex || endIndex - startIndex > MAX_NICKNAME_LENGTH) {
             return;
         }
@@ -110,7 +105,7 @@ public class WeiboParser {
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
-    private void dispatchSpanClickEvent(int spanType, CharSequence spanContent) {
+    private static void dispatchSpanClickEvent(int spanType, CharSequence spanContent) {
         switch (spanType) {
             case SPAN_NAME:
                 break;
@@ -119,8 +114,9 @@ public class WeiboParser {
             case SPAN_LINK:
                 Activity currentActivity = mActivityProvider.provideCurrentActivity();
                 String link = spanContent.toString();
-                currentActivity.startActivity(new Intent(currentActivity, BrowserActivity.class)
-                    .putExtra(BrowserActivity.EXTRA_LINK, link));
+                currentActivity.startActivity(
+                    new Intent(currentActivity, BrowserActivity.class).putExtra(
+                        BrowserActivity.EXTRA_LINK, link));
                 break;
         }
     }

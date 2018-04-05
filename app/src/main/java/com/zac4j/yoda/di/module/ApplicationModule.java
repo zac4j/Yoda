@@ -6,9 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.App;
 import com.zac4j.yoda.CurrentActivityProvider;
 import com.zac4j.yoda.data.remote.ApiServer;
-import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.di.ApplicationContext;
-import com.zac4j.yoda.util.weibo.WeiboParser;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -52,11 +50,5 @@ public class ApplicationModule {
     @Singleton
     ApiServer provideWebService() {
         return ApiServer.Factory.create(mApplication);
-    }
-
-    @Provides
-    @Singleton
-    WeiboParser provideWeiboParser() {
-        return new WeiboParser((App) mApplication);
     }
 }
