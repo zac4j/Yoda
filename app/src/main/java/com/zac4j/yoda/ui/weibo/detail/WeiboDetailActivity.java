@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -26,6 +27,7 @@ import com.zac4j.yoda.ui.adapter.WeiboCommentAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
 import com.zac4j.yoda.ui.weibo.repost.WeiboRepostDialogFragment;
+import com.zac4j.yoda.util.WeiboAnimatorManager;
 import com.zac4j.yoda.util.weibo.WeiboReader;
 import java.util.List;
 import javax.inject.Inject;
@@ -67,9 +69,9 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     @BindView(R.id.weibo_detail_tv_reply)
     TextView mReplyView;
     @BindView(R.id.weibo_detail_iv_like_heart)
-    TextView mHeartView;
+    ImageView mHeartView;
     @BindView(R.id.weibo_detail_tv_like_counter)
-    TextView mLikeCounter;
+    TextSwitcher mLikeCounter;
     @BindView(R.id.weibo_detail_rv_comment_list)
     RecyclerView mCommentListView;
     private int mCommentPage = DEFAULT_COMMENT_PAGE;
@@ -134,7 +136,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     }
 
     @OnClick({
-        R.id.weibo_detail_tv_repost, R.id.weibo_detail_tv_reply, R.id.weibo_detail_iv_like_heart
+        R.id.weibo_detail_tv_repost, R.id.weibo_detail_tv_reply, R.id.weibo_detail_heart_container
     })
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -143,9 +145,14 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
                 break;
             case R.id.weibo_detail_tv_reply:
                 break;
-            case R.id.weibo_detail_iv_like_heart:
+            case R.id.weibo_detail_heart_container:
+                if (mIsLike) {
+                    mHeartView.setImageResource(R.drawable.ic_weibo_like);
+                } else {
+                    WeiboAnimatorManager.playHeartAnimator(mHeartView);
+                }
                 mIsLike = !mIsLike;
-                updateLinkCounter(mIsLike);
+                updateLikeCounter(mIsLike);
                 break;
         }
     }
@@ -159,7 +166,10 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
         dialogFragment.setOnRepostListener(new WeiboRepostDialogFragment.OnRepostListener() {
             @Override
             public void onSuccess(Weibo weibo1) {
-                WeiboDetailActivity.this.onStart();
+                if (mWeiboId != 0L) {
+                    mPresenter.getWeiboComments(mToken, mWeiboId, DEFAULT_COMMENT_PAGE,
+                        DEFAULT_COMMENT_COUNT);
+                }
             }
 
             @Override
@@ -169,11 +179,11 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
         });
     }
 
-    private void updateLinkCounter(boolean isLike) {
+    private void updateLikeCounter(boolean isLike) {
         if (isLike) {
-            mLikeCounter.setText(++mLikeCount);
+            mLikeCounter.setText(String.valueOf(++mLikeCount));
         } else {
-            mLikeCounter.setText(mLikeCount);
+            mLikeCounter.setCurrentText(String.valueOf(--mLikeCount));
         }
     }
 
@@ -227,7 +237,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
         reader.readRepostNumber(mRepostView, weibo.getRepostsCount());
         reader.readCommentsNumber(mReplyView, weibo.getCommentsCount());
         mLikeCount = weibo.getAttitudesCount().intValue();
-        mLikeCounter.setText(mLikeCount);
+        mLikeCounter.setText(String.valueOf(mLikeCount));
         //reader.readLikeNumber(mLikeView, weibo.getAttitudesCount());
         // 设置自己是否赞过
         //reader.readLikeState(mLikeView, weibo.getFavorited());

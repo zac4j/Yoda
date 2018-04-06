@@ -144,38 +144,46 @@
               tools:text="110"
               />
 
-          <ImageView
-              android:id="@id/weibo_detail_iv_like_heart"
+          <LinearLayout
+              android:id="@id/weibo_detail_heart_container"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:src="@drawable/ic_weibo_like"
-              android:foreground="?android:attr/selectableItemBackground"
-              />
-
-          <TextSwitcher
-              android:id="@id/weibo_detail_tv_like_counter"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="@dimen/space.very_small"
-              android:inAnimation="@anim/anim_slide_in_counter"
-              android:outAnimation="@anim/anim_slide_out_counter"
+              android:orientation="horizontal"
               >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                tools:text="120"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                tools:text="120"
-                />
-          </TextSwitcher>
 
+            <ImageView
+                android:id="@id/weibo_detail_iv_like_heart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_weibo_like"
+                />
+
+            <TextSwitcher
+                android:id="@id/weibo_detail_tv_like_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/space.very_small"
+                android:inAnimation="@anim/anim_slide_in_counter"
+                android:outAnimation="@anim/anim_slide_out_counter"
+                >
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:gravity="center"
+                  android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                  tools:text="120"
+                  />
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:gravity="center"
+                  android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                  tools:text="120"
+                  />
+            </TextSwitcher>
+          </LinearLayout>
         </LinearLayout>
       </LinearLayout>
 

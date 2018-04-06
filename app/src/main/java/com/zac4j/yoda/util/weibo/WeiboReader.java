@@ -24,7 +24,6 @@ import com.zac4j.yoda.util.image.GlideCircleTransformation;
 import com.zac4j.yoda.util.image.ImageSize;
 import com.zac4j.yoda.util.image.WeiboImageManager;
 import com.zac4j.yoda.util.loader.WeiboImageLoader;
-import javax.inject.Inject;
 
 /**
  * Weibo content read helper
