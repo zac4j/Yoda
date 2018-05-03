@@ -1,93 +1,93 @@
 apply plugin: 'com.android.application'
 
 android {
-  compileSdkVersion versions.compileSdk
+    compileSdkVersion versions.compileSdk
 
-  defaultConfig {
-    minSdkVersion versions.minSdk
-    targetSdkVersion versions.compileSdk
-    applicationId "com.zac4j.yoda"
-    versionCode 1
-    versionName '1.0'
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    vectorDrawables.useSupportLibrary = true
-  }
-
-  buildTypes {
-    release {
-      minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    defaultConfig {
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
+        applicationId "com.zac4j.yoda"
+        versionCode 1
+        versionName '1.0'
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
-  }
-  lintOptions {
-    abortOnError false
-  }
-  packagingOptions {
-    exclude 'META-INF/LICENSE'
-    exclude 'META-INF/rxjava.properties'
-  }
-  compileOptions {
-    targetCompatibility 1.8
-    sourceCompatibility 1.8
-  }
-  buildToolsVersion '27.0.3'
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/rxjava.properties'
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+    buildToolsVersion '27.0.3'
 }
 
 repositories {
-  flatDir {
-    dirs 'libs'
-  }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
-  compile(name: 'weibosdk', ext: 'aar')
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api(name: 'weibosdk', ext: 'aar')
 
-  implementation rootProject.ext.supportV4
-  implementation rootProject.ext.supportAppcompat
-  implementation rootProject.ext.supportCardView
-  implementation rootProject.ext.supportDesign
-  implementation rootProject.ext.supportV13
-  implementation rootProject.ext.supportAnnotations
-  implementation rootProject.ext.constraintLayout
+    implementation rootProject.ext.supportV4
+    implementation rootProject.ext.supportAppcompat
+    implementation rootProject.ext.supportCardView
+    implementation rootProject.ext.supportDesign
+    implementation rootProject.ext.supportV13
+    implementation rootProject.ext.supportAnnotations
+    implementation rootProject.ext.constraintLayout
 
-  implementation rootProject.ext.lifecycle
-  annotationProcessor rootProject.ext.lifecycleCompiler
-  implementation rootProject.ext.lifecycleExtension
-  implementation rootProject.ext.room
-  annotationProcessor rootProject.ext.roomCompiler
-  implementation rootProject.ext.roomRxjava
+    implementation rootProject.ext.lifecycle
+    annotationProcessor rootProject.ext.lifecycleCompiler
+    implementation rootProject.ext.lifecycleExtension
+    implementation rootProject.ext.room
+    annotationProcessor rootProject.ext.roomCompiler
+    implementation rootProject.ext.roomRxjava
 
-  implementation rootProject.ext.dagger
-  annotationProcessor rootProject.ext.daggerCompiler
+    implementation rootProject.ext.dagger
+    annotationProcessor rootProject.ext.daggerCompiler
 
-  implementation rootProject.ext.retrofit
-  implementation rootProject.ext.retrofitRxjava
-  implementation rootProject.ext.retrofitJackson
-  implementation rootProject.ext.stetho
-  implementation rootProject.ext.stethoKhttp
-  implementation rootProject.ext.okhttp
-  implementation rootProject.ext.okhttpLogging
+    implementation rootProject.ext.retrofit
+    implementation rootProject.ext.retrofitRxjava
+    implementation rootProject.ext.retrofitJackson
+    implementation rootProject.ext.stetho
+    implementation rootProject.ext.stethoKhttp
+    implementation rootProject.ext.okhttp
+    implementation rootProject.ext.okhttpLogging
 
-  implementation rootProject.ext.butterKnifeRuntime
-  annotationProcessor rootProject.ext.butterKnifeCompiler
+    implementation rootProject.ext.butterKnifeRuntime
+    annotationProcessor rootProject.ext.butterKnifeCompiler
 
-  implementation rootProject.ext.rxJava
-  implementation rootProject.ext.rxAndroid
-  implementation rootProject.ext.rxBinding
-  implementation rootProject.ext.rxrelay
+    implementation rootProject.ext.rxJava
+    implementation rootProject.ext.rxAndroid
+    implementation rootProject.ext.rxBinding
+    implementation rootProject.ext.rxrelay
 
-  compileOnly rootProject.ext.autoValue
-  annotationProcessor rootProject.ext.autoValue
-  annotationProcessor rootProject.ext.autoValueParcel
+    compileOnly rootProject.ext.autoValue
+    annotationProcessor rootProject.ext.autoValue
+    annotationProcessor rootProject.ext.autoValueParcel
 
-  implementation rootProject.ext.sqlbrite
-  implementation rootProject.ext.supportSqliteFramework
+    implementation rootProject.ext.sqlbrite
+    implementation rootProject.ext.supportSqliteFramework
 
-  implementation rootProject.ext.glide
-  annotationProcessor rootProject.ext.glideCompiler
-  implementation rootProject.ext.okhttpGlide
-  implementation rootProject.ext.photoview
+    implementation rootProject.ext.glide
+    annotationProcessor rootProject.ext.glideCompiler
+    implementation rootProject.ext.okhttpGlide
+    implementation rootProject.ext.photoview
 
-  implementation rootProject.ext.timber
+    implementation rootProject.ext.timber
 }
