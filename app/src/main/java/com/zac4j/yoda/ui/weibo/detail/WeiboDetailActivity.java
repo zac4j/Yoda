@@ -89,6 +89,28 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
 
         mWeiboView = new WeiboView(this);
         mWeiboContainer.addView(mWeiboView);
+
+        mToken = AccessTokenKeeper.readAccessToken(this).getToken();
+
+        // Set up CommentView
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mCommentListView.setLayoutManager(layoutManager);
+        mCommentListView.addItemDecoration(
+            new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        mCommentListView.setAdapter(mAdapter);
+
+        Weibo weibo = (Weibo) getIntent().getSerializableExtra(EXTRA_WEIBO);
+        if (weibo != null) {
+            showWeiboInfo(weibo);
+            mWeiboId = weibo.getId();
+        } else {
+            showEmptyView(true);
+        }
+
+        addUiListeners(layoutManager);
+    }
+
+    private void addUiListeners(LinearLayoutManager layoutManager) {
         mAppBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
 
             if (verticalOffset == 0) {
@@ -103,14 +125,23 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
             }
         });
 
-        mToken = AccessTokenKeeper.readAccessToken(this).getToken();
+        mWeiboView.setOnOperateWeiboListener(new WeiboView.OnOperateWeiboListener() {
+            @Override
+            public void onRepost(Weibo weibo) {
+                repostWeibo(weibo.getIdstr());
+            }
 
-        // Set up CommentView
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mCommentListView.setLayoutManager(layoutManager);
-        mCommentListView.addItemDecoration(
-            new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        mCommentListView.setAdapter(mAdapter);
+            @Override
+            public void onComment(Weibo weibo) {
+
+            }
+
+            @Override
+            public void onLike(Weibo weibo) {
+
+            }
+        });
+
         mCommentListView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -118,14 +149,6 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
                 mPresenter.getWeiboComments(mToken, mWeiboId, mCommentPage, DEFAULT_COMMENT_COUNT);
             }
         });
-
-        Weibo weibo = (Weibo) getIntent().getSerializableExtra(EXTRA_WEIBO);
-        if (weibo != null) {
-            showWeiboInfo(weibo);
-            mWeiboId = weibo.getId();
-        } else {
-            showEmptyView(true);
-        }
     }
 
     @Override
@@ -141,7 +164,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     /**
      * 转发按钮点击事件
      */
-    private void setRepostClickEvent(String weiboId) {
+    private void repostWeibo(String weiboId) {
         WeiboRepostDialogFragment dialogFragment = WeiboRepostDialogFragment.newInstance(weiboId);
         dialogFragment.show(getSupportFragmentManager());
         dialogFragment.setOnRepostListener(new WeiboRepostDialogFragment.OnRepostListener() {
@@ -155,7 +178,8 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
 
             @Override
             public void onFailure() {
-                // Try to do something fun.
+                Toast.makeText(WeiboDetailActivity.this, "cancel repost weibo", Toast.LENGTH_SHORT)
+                    .show();
             }
         });
     }

@@ -28,6 +28,14 @@ public class WeiboView extends RelativeLayout {
         void onClick(MediaType type, Weibo weibo);
     }
 
+    public interface OnOperateWeiboListener {
+        void onRepost(Weibo weibo);
+
+        void onComment(Weibo weibo);
+
+        void onLike(Weibo weibo);
+    }
+
     @BindView(R.id.weibo_main_container)
     RelativeLayout mMainContainer;
     @BindView(R.id.weibo_iv_avatar)
@@ -57,6 +65,8 @@ public class WeiboView extends RelativeLayout {
 
     private OnMediaClickListener mOnMediaClickListener;
 
+    private OnOperateWeiboListener mOnOperateWeiboListener;
+
     public WeiboView(Context context) {
         this(context, null);
     }
@@ -81,6 +91,10 @@ public class WeiboView extends RelativeLayout {
 
     public void setOnMediaClickListener(OnMediaClickListener listener) {
         mOnMediaClickListener = listener;
+    }
+
+    public void setOnOperateWeiboListener(OnOperateWeiboListener listener) {
+        mOnOperateWeiboListener = listener;
     }
 
     private void populateWeibo(Weibo weibo) {
@@ -114,6 +128,14 @@ public class WeiboView extends RelativeLayout {
         // favorite number&state
         reader.readLikeState(mLikeButton, weibo.getFavorited());
         reader.readLikeNumber(mLikeButton, weibo.getAttitudesCount());
+        addOperateWeiboListener(mRepostContainer, mCommentButton, mLikeButton, weibo);
+    }
+
+    private void addOperateWeiboListener(ViewGroup repostContainer, TextView commentButton,
+        TextView likeButton, Weibo weibo) {
+        repostContainer.setOnClickListener(v -> mOnOperateWeiboListener.onRepost(weibo));
+        commentButton.setOnClickListener(v -> mOnOperateWeiboListener.onComment(weibo));
+        likeButton.setOnClickListener(v -> mOnOperateWeiboListener.onLike(weibo));
     }
 
     private void addWeiboMediaClickListener(ViewGroup mediaContainer, Weibo weibo) {
