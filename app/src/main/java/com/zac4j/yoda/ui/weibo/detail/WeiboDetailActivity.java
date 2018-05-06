@@ -51,8 +51,8 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     WeiboDetailPresenter mPresenter;
     @Inject
     WeiboCommentAdapter mAdapter;
-    @BindView(R.id.weibo_detail_main_view)
-    FrameLayout mMainView;
+    @BindView(R.id.weibo_detail_weibo_container)
+    FrameLayout mWeiboContainer;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.collapsing_toolbar)
@@ -67,8 +67,6 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     private int mCommentPage = DEFAULT_COMMENT_PAGE;
     private long mWeiboId;
     private String mToken;
-    private boolean mIsLike;
-    private int mLikeCount;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +88,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
         }
 
         mWeiboView = new WeiboView(this);
-        mMainView.addView(mWeiboView);
+        mWeiboContainer.addView(mWeiboView);
         mAppBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
 
             if (verticalOffset == 0) {
@@ -98,7 +96,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
                 mCollapsingToolbarLayout.setTitle(" ");
             } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
                 // State.COLLAPSED;
-                mCollapsingToolbarLayout.setTitle("Weibo");
+                mCollapsingToolbarLayout.setTitle("Timeline");
             } else {
                 // State.IDLE;
                 mCollapsingToolbarLayout.setTitle(" ");
