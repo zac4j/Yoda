@@ -128,12 +128,12 @@ public class WeiboView extends RelativeLayout {
         // favorite number&state
         reader.readLikeState(mLikeButton, weibo.getFavorited());
         reader.readLikeNumber(mLikeButton, weibo.getAttitudesCount());
-        addOperateWeiboListener(mRepostContainer, mCommentButton, mLikeButton, weibo);
+        addOperateWeiboListener(mRepostButton, mCommentButton, mLikeButton, weibo);
     }
 
-    private void addOperateWeiboListener(ViewGroup repostContainer, TextView commentButton,
+    private void addOperateWeiboListener(TextView repostButton, TextView commentButton,
         TextView likeButton, Weibo weibo) {
-        repostContainer.setOnClickListener(v -> mOnOperateWeiboListener.onRepost(weibo));
+        repostButton.setOnClickListener(v -> mOnOperateWeiboListener.onRepost(weibo));
         commentButton.setOnClickListener(v -> mOnOperateWeiboListener.onComment(weibo));
         likeButton.setOnClickListener(v -> mOnOperateWeiboListener.onLike(weibo));
     }
