@@ -1,192 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!--Commons-->
-  <item name="appbar" type="id"/>
-  <item name="collapsing_toolbar" type="id"/>
-  <item name="toolbar" type="id"/>
-  <item name="root_layout" type="id"/>
-  <item name="error_view_img" type="id"/>
-  <item name="error_view_txt" type="id"/>
-  <item name="web_view" type="id"/>
-  <item name="browser_container" type="id"/>
-  <item name="photo_view" type="id"/>
-  <item name="empty_view" type="id"/>
-  <item name="weibo_media_type" type="id"/>
-  <item name="weibo_media_tv_desc" type="id"/>
-  <item name="weibo_media_iv_img" type="id"/>
+    <!--Commons-->
+    <item name="appbar" type="id"/>
+    <item name="collapsing_toolbar" type="id"/>
+    <item name="toolbar" type="id"/>
+    <item name="root_layout" type="id"/>
+    <item name="error_view_img" type="id"/>
+    <item name="error_view_txt" type="id"/>
+    <item name="web_view" type="id"/>
+    <item name="browser_container" type="id"/>
+    <item name="photo_view" type="id"/>
+    <item name="empty_view" type="id"/>
+    <item name="weibo_media_type" type="id"/>
+    <item name="weibo_media_tv_desc" type="id"/>
+    <item name="weibo_media_iv_img" type="id"/>
 
-  <!--Weibo Container-->
-  <item name="weibo_main_container" type="id"/>
-  <item name="weibo_iv_avatar" type="id"/>
-  <item name="weibo_tv_nickname" type="id"/>
-  <item name="weibo_tv_username" type="id"/>
-  <item name="weibo_tv_post_time" type="id"/>
-  <item name="weibo_tv_post_from" type="id"/>
-  <item name="weibo_tv_content" type="id"/>
-  <item name="weibo_media_container" type="id"/>
-  <item name="weibo_repost_container" type="id"/>
-  <item name="weibo_action_button_container" type="id"/>
-  <item name="weibo_tv_like" type="id"/>
-  <item name="weibo_tv_comment" type="id"/>
-  <item name="weibo_tv_repost" type="id"/>
-  <item name="weibo_repost_text_container" type="id"/>
-  <item name="weibo_repost_media_container" type="id"/>
+    <!--Weibo Container-->
+    <item name="weibo_main_container" type="id"/>
+    <item name="weibo_iv_avatar" type="id"/>
+    <item name="weibo_tv_nickname" type="id"/>
+    <item name="weibo_tv_username" type="id"/>
+    <item name="weibo_tv_post_time" type="id"/>
+    <item name="weibo_tv_post_from" type="id"/>
+    <item name="weibo_tv_content" type="id"/>
+    <item name="weibo_media_container" type="id"/>
+    <item name="weibo_repost_container" type="id"/>
+    <item name="weibo_action_button_container" type="id"/>
+    <item name="weibo_tv_like" type="id"/>
+    <item name="weibo_hv_like" type="id"/>
+    <item name="weibo_tv_comment" type="id"/>
+    <item name="weibo_tv_repost" type="id"/>
+    <item name="weibo_repost_text_container" type="id"/>
+    <item name="weibo_repost_media_container" type="id"/>
 
-  <!--Main page-->
-  <item name="main_drawer_layout" type="id"/>
-  <item name="main_nav_view" type="id"/>
-  <item name="main_container" type="id"/>
-  <item name="main_vp_container" type="id"/>
-  <item name="main_fragment_container" type="id"/>
-  <item name="main_nav_home" type="id"/>
-  <item name="main_nav_hot" type="id"/>
-  <item name="main_nav_message" type="id"/>
-  <item name="main_nav_notification" type="id"/>
-  <item name="main_nav_user" type="id"/>
-  <item name="main_bottom_navigation" type="id"/>
-  <item name="main_fab_write" type="id"/>
+    <!--Main page-->
+    <item name="main_drawer_layout" type="id"/>
+    <item name="main_nav_view" type="id"/>
+    <item name="main_container" type="id"/>
+    <item name="main_vp_container" type="id"/>
+    <item name="main_fragment_container" type="id"/>
+    <item name="main_nav_home" type="id"/>
+    <item name="main_nav_hot" type="id"/>
+    <item name="main_nav_message" type="id"/>
+    <item name="main_nav_notification" type="id"/>
+    <item name="main_nav_user" type="id"/>
+    <item name="main_bottom_navigation" type="id"/>
+    <item name="main_fab_write" type="id"/>
 
-  <!--Main Navigation Drawer-->
-  <item name="nav_drawer_my_moments" type="id"/>
-  <item name="nav_drawer_my_friends" type="id"/>
+    <!--Main Navigation Drawer-->
+    <item name="nav_drawer_my_moments" type="id"/>
+    <item name="nav_drawer_my_friends" type="id"/>
 
-  <!--Weibo List Item-->
-  <item name="weibo_list_item_root_layout" type="id"/>
-  <item name="weibo_list_item_root_container" type="id"/>
-  <item name="weibo_list_item_tv_nickname" type="id"/>
-  <item name="weibo_list_item_tv_username" type="id"/>
-  <item name="weibo_list_item_tv_post_from" type="id"/>
-  <item name="weibo_list_item_tv_post_time" type="id"/>
-  <item name="weibo_list_item_iv_media" type="id"/>
-  <item name="weibo_list_item_media_container" type="id"/>
-  <item name="weibo_list_item_iv_avatar" type="id"/>
-  <item name="weibo_list_item_tv_content" type="id"/>
-  <item name="weibo_list_item_bottom_btns" type="id"/>
-  <item name="weibo_list_item_tv_repost" type="id"/>
-  <item name="weibo_list_item_tv_comment" type="id"/>
-  <item name="weibo_list_item_tv_like" type="id"/>
-  <item name="weibo_list_item_repost_container" type="id"/>
-  <item name="weibo_list_item_repost_text_container" type="id"/>
-  <item name="weibo_list_item_repost_media_container" type="id"/>
+    <!--Weibo List Item-->
+    <item name="weibo_list_item_root_layout" type="id"/>
+    <item name="weibo_list_item_root_container" type="id"/>
+    <item name="weibo_list_item_tv_nickname" type="id"/>
+    <item name="weibo_list_item_tv_username" type="id"/>
+    <item name="weibo_list_item_tv_post_from" type="id"/>
+    <item name="weibo_list_item_tv_post_time" type="id"/>
+    <item name="weibo_list_item_iv_media" type="id"/>
+    <item name="weibo_list_item_media_container" type="id"/>
+    <item name="weibo_list_item_iv_avatar" type="id"/>
+    <item name="weibo_list_item_tv_content" type="id"/>
+    <item name="weibo_list_item_bottom_btns" type="id"/>
+    <item name="weibo_list_item_tv_repost" type="id"/>
+    <item name="weibo_list_item_tv_comment" type="id"/>
+    <item name="weibo_list_item_tv_like" type="id"/>
+    <item name="weibo_list_item_repost_container" type="id"/>
+    <item name="weibo_list_item_repost_text_container" type="id"/>
+    <item name="weibo_list_item_repost_media_container" type="id"/>
 
-  <!--Weibo List-->
-  <item name="recycler_weibo_list" type="id"/>
-  <item name="progress_bar" type="id"/>
-  <item name="swipe_weibo_list_container" type="id"/>
-  <item name="error_view" type="id"/>
+    <!--Weibo List-->
+    <item name="recycler_weibo_list" type="id"/>
+    <item name="progress_bar" type="id"/>
+    <item name="swipe_weibo_list_container" type="id"/>
+    <item name="error_view" type="id"/>
 
-  <!--Notifications-->
-  <item name="home_notif_follower_container" type="id"/>
-  <item name="home_notif_gv_at_me_avatars" type="id"/>
-  <item name="home_notif_tv_at_me_username" type="id"/>
-  <item name="home_notif_tv_at_me_count" type="id"/>
-  <item name="home_notif_rv_comment_list" type="id"/>
+    <!--Notifications-->
+    <item name="home_notif_follower_container" type="id"/>
+    <item name="home_notif_gv_at_me_avatars" type="id"/>
+    <item name="home_notif_tv_at_me_username" type="id"/>
+    <item name="home_notif_tv_at_me_count" type="id"/>
+    <item name="home_notif_rv_comment_list" type="id"/>
 
-  <!--User -->
-  <item name="user_fragment_container" type="id"/>
-  <item name="user_toolbar" type="id"/>
-  <item name="user_appbar" type="id"/>
+    <!--User -->
+    <item name="user_fragment_container" type="id"/>
+    <item name="user_toolbar" type="id"/>
+    <item name="user_appbar" type="id"/>
 
-  <!--Send Weibo-->
-  <item name="weibo_send_action_container" type="id"/>
-  <item name="weibo_send_et_content" type="id"/>
-  <item name="weibo_send_rv_gallery" type="id"/>
-  <item name="weibo_send_iv_action_camera" type="id"/>
-  <item name="weibo_send_iv_action_gallery" type="id"/>
-  <item name="weibo_send_iv_action_visibility" type="id"/>
-  <item name="weibo_send_iv_action_location" type="id"/>
-  <item name="weibo_send_tv_action_send" type="id"/>
-  <item name="weibo_send_progressbar" type="id"/>
-  <item name="weibo_send_media_container" type="id"/>
+    <!--Send Weibo-->
+    <item name="weibo_send_action_container" type="id"/>
+    <item name="weibo_send_et_content" type="id"/>
+    <item name="weibo_send_rv_gallery" type="id"/>
+    <item name="weibo_send_iv_action_camera" type="id"/>
+    <item name="weibo_send_iv_action_gallery" type="id"/>
+    <item name="weibo_send_iv_action_visibility" type="id"/>
+    <item name="weibo_send_iv_action_location" type="id"/>
+    <item name="weibo_send_tv_action_send" type="id"/>
+    <item name="weibo_send_progressbar" type="id"/>
+    <item name="weibo_send_media_container" type="id"/>
 
-  <!--Weibo Repost-->
-  <item name="weibo_repost_dialog_input_layout" type="id"/>
-  <item name="weibo_repost_dialog_et_comment" type="id"/>
-  <item name="weibo_repost_dialog_ckb_as_content" type="id"/>
-  <item name="weibo_repost_dialog_tv_cancel" type="id"/>
-  <item name="weibo_repost_dialog_tv_ok" type="id"/>
+    <!--Weibo Repost-->
+    <item name="weibo_repost_dialog_input_layout" type="id"/>
+    <item name="weibo_repost_dialog_et_comment" type="id"/>
+    <item name="weibo_repost_dialog_ckb_as_content" type="id"/>
+    <item name="weibo_repost_dialog_tv_cancel" type="id"/>
+    <item name="weibo_repost_dialog_tv_ok" type="id"/>
 
-  <!--Weibo Image-->
-  <item name="weibo_image_iv_container" type="id"/>
-  <item name="weibo_image_vp_container" type="id"/>
+    <!--Weibo Image-->
+    <item name="weibo_image_iv_container" type="id"/>
+    <item name="weibo_image_vp_container" type="id"/>
 
-  <!--Weibo Detail-->
-  <item name="weibo_detail_iv_avatar" type="id"/>
-  <item name="weibo_detail_tv_nickname" type="id"/>
-  <item name="weibo_detail_tv_username" type="id"/>
-  <item name="weibo_detail_tv_post_time" type="id"/>
-  <item name="weibo_detail_tv_content" type="id"/>
-  <item name="weibo_detail_tv_post_from" type="id"/>
-  <item name="weibo_detail_fl_media_container" type="id"/>
-  <item name="weibo_detail_tv_repost" type="id"/>
-  <item name="weibo_detail_tv_reply" type="id"/>
-  <item name="weibo_detail_heart_container" type="id"/>
-  <item name="weibo_detail_tv_like_counter" type="id"/>
-  <item name="weibo_detail_iv_like_heart" type="id"/>
-  <item name="weibo_detail_tv_like" type="id"/>
-  <item name="weibo_detail_fab_discuss" type="id"/>
-  <item name="weibo_detail_rv_comment_list" type="id"/>
-  <item name="weibo_detail_weibo_container" type="id"/>
-  <item name="weibo_detail_main_view" type="id"/>
-  <item name="weibo_send_main_view" type="id"/>
-  <item name="weibo_list_main_view" type="id"/>
-  <item name="weibo_detail_iv_media_view" type="id"/>
-  <item name="weibo_list_item_stub_repost_weibo" type="id"/>
-  <item name="weibo_list_item_stub_tv_repost_content" type="id"/>
-  <item name="weibo_list_item_stub_media_container" type="id"/>
-  <item name="weibo_list_item_stub_iv_media" type="id"/>
+    <!--Weibo Detail-->
+    <item name="weibo_detail_iv_avatar" type="id"/>
+    <item name="weibo_detail_tv_nickname" type="id"/>
+    <item name="weibo_detail_tv_username" type="id"/>
+    <item name="weibo_detail_tv_post_time" type="id"/>
+    <item name="weibo_detail_tv_content" type="id"/>
+    <item name="weibo_detail_tv_post_from" type="id"/>
+    <item name="weibo_detail_fl_media_container" type="id"/>
+    <item name="weibo_detail_tv_repost" type="id"/>
+    <item name="weibo_detail_tv_reply" type="id"/>
+    <item name="weibo_detail_heart_container" type="id"/>
+    <item name="weibo_detail_tv_like_counter" type="id"/>
+    <item name="weibo_detail_iv_like_heart" type="id"/>
+    <item name="weibo_detail_tv_like" type="id"/>
+    <item name="weibo_detail_fab_discuss" type="id"/>
+    <item name="weibo_detail_rv_comment_list" type="id"/>
+    <item name="weibo_detail_weibo_container" type="id"/>
+    <item name="weibo_detail_main_view" type="id"/>
+    <item name="weibo_send_main_view" type="id"/>
+    <item name="weibo_list_main_view" type="id"/>
+    <item name="weibo_detail_iv_media_view" type="id"/>
+    <item name="weibo_list_item_stub_repost_weibo" type="id"/>
+    <item name="weibo_list_item_stub_tv_repost_content" type="id"/>
+    <item name="weibo_list_item_stub_media_container" type="id"/>
+    <item name="weibo_list_item_stub_iv_media" type="id"/>
 
-  <!--User Friends-->
-  <item name="user_friend_list_swipe_container" type="id"/>
-  <item name="user_friend_list_view" type="id"/>
-  <item name="user_friend_list_iv_avatar" type="id"/>
-  <item name="user_friends_list_tv_nickname" type="id"/>
-  <item name="user_friends_list_tv_username" type="id"/>
-  <item name="user_friends_list_tv_description" type="id"/>
-  <item name="user_friends_list_tv_follow" type="id"/>
-  <item name="user_friends_list_btn_follow" type="id"/>
+    <!--User Friends-->
+    <item name="user_friend_list_swipe_container" type="id"/>
+    <item name="user_friend_list_view" type="id"/>
+    <item name="user_friend_list_iv_avatar" type="id"/>
+    <item name="user_friends_list_tv_nickname" type="id"/>
+    <item name="user_friends_list_tv_username" type="id"/>
+    <item name="user_friends_list_tv_description" type="id"/>
+    <item name="user_friends_list_tv_follow" type="id"/>
+    <item name="user_friends_list_btn_follow" type="id"/>
 
-  <!--User Detail-->
-  <item name="user_detail_tv_nickname" type="id"/>
-  <item name="user_detail_tv_username" type="id"/>
-  <item name="user_detail_tv_description" type="id"/>
-  <item name="user_detail_tv_location" type="id"/>
-  <item name="user_detail_tv_link" type="id"/>
-  <item name="user_detail_ll_location_container" type="id"/>
-  <item name="user_detail_vp_media_container" type="id"/>
-  <item name="user_detail_iv_background" type="id"/>
-  <item name="user_detail_fab_avatar" type="id"/>
+    <!--User Detail-->
+    <item name="user_detail_tv_nickname" type="id"/>
+    <item name="user_detail_tv_username" type="id"/>
+    <item name="user_detail_tv_description" type="id"/>
+    <item name="user_detail_tv_location" type="id"/>
+    <item name="user_detail_tv_link" type="id"/>
+    <item name="user_detail_ll_location_container" type="id"/>
+    <item name="user_detail_vp_media_container" type="id"/>
+    <item name="user_detail_iv_background" type="id"/>
+    <item name="user_detail_fab_avatar" type="id"/>
 
-  <!--Home Search-->
-  <item name="home_search_lv_hot_tags" type="id"/>
-  <item name="home_search_tv_search_btn" type="id"/>
-  <item name="home_search" type="id"/>
-  <item name="user_detail_iv_cover" type="id"/>
-  <item name="user_detail_iv_avatar" type="id"/>
-  <item name="user_detail_swc_night_mode" type="id"/>
-  <item name="user_detail_tv_profile" type="id"/>
-  <item name="user_detail_tv_lists" type="id"/>
-  <item name="user_detail_tv_recommends" type="id"/>
-  <item name="user_detail_swc_data_saver" type="id"/>
-  <item name="user_detail_tv_settings" type="id"/>
-  <item name="user_detail_tv_support" type="id"/>
-  <item name="user_detail_tv_quit" type="id"/>
-  <item name="user_detail_tv_follower_count" type="id"/>
-  <item name="user_detail_tv_following_count" type="id"/>
-  <item name="home_search_tv_title" type="id"/>
-  <item name="home_search_list_tv_tag" type="id"/>
-  <item name="home_search_list_tv_tag_count" type="id"/>
+    <!--Home Search-->
+    <item name="home_search_lv_hot_tags" type="id"/>
+    <item name="home_search_tv_search_btn" type="id"/>
+    <item name="home_search" type="id"/>
+    <item name="user_detail_iv_cover" type="id"/>
+    <item name="user_detail_iv_avatar" type="id"/>
+    <item name="user_detail_swc_night_mode" type="id"/>
+    <item name="user_detail_tv_profile" type="id"/>
+    <item name="user_detail_tv_lists" type="id"/>
+    <item name="user_detail_tv_recommends" type="id"/>
+    <item name="user_detail_swc_data_saver" type="id"/>
+    <item name="user_detail_tv_settings" type="id"/>
+    <item name="user_detail_tv_support" type="id"/>
+    <item name="user_detail_tv_quit" type="id"/>
+    <item name="user_detail_tv_follower_count" type="id"/>
+    <item name="user_detail_tv_following_count" type="id"/>
+    <item name="home_search_tv_title" type="id"/>
+    <item name="home_search_list_tv_tag" type="id"/>
+    <item name="home_search_list_tv_tag_count" type="id"/>
 
-  <!--Comment-->
-  <item name="comment_list_item_iv_avatar" type="id"/>
-  <item name="comment_list_item_tv_nickname" type="id"/>
-  <item name="comment_list_item_tv_username" type="id"/>
-  <item name="comment_list_item_tv_post_time" type="id"/>
-  <item name="comment_list_item_tv_post_source" type="id"/>
-  <item name="comment_list_item_tv_content" type="id"/>
-  <item name="comment_list_item_tv_weibo_content" type="id"/>
-  <item name="comment_list_item_tv_comment_content" type="id"/>
-  <item name="comment_list_item_weibo_container" type="id"/>
-  <item name="comment_list_item_bottom_btns" type="id"/>
+    <!--Comment-->
+    <item name="comment_list_item_iv_avatar" type="id"/>
+    <item name="comment_list_item_tv_nickname" type="id"/>
+    <item name="comment_list_item_tv_username" type="id"/>
+    <item name="comment_list_item_tv_post_time" type="id"/>
+    <item name="comment_list_item_tv_post_source" type="id"/>
+    <item name="comment_list_item_tv_content" type="id"/>
+    <item name="comment_list_item_tv_weibo_content" type="id"/>
+    <item name="comment_list_item_tv_comment_content" type="id"/>
+    <item name="comment_list_item_weibo_container" type="id"/>
+    <item name="comment_list_item_bottom_btns" type="id"/>
+
+    <!--Heart View-->
+    <item name="weibo_heart_view_container" type="id"/>
+    <item name="weibo_heart_view_heart" type="id"/>
+    <item name="weibo_heart_view_counter" type="id"/>
 
 </resources>

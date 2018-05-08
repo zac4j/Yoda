@@ -4,48 +4,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-  <LinearLayout
-      android:id="@id/weibo_action_button_container"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/space.very_small"
-      >
-
-    <TextView
-        android:id="@id/weibo_tv_repost"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@id/weibo_action_button_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/space.very_small"
-        android:drawableStart="@drawable/ic_weibo_repost"
-        android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        tools:text="100"
-        />
+        android:layout_marginTop="@dimen/space.very_small"
+        >
 
-    <TextView
-        android:id="@id/weibo_tv_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/space.large"
-        android:layout_marginStart="@dimen/space.large"
-        android:drawablePadding="@dimen/space.very_small"
-        android:drawableStart="@drawable/ic_weibo_comment"
-        android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        tools:text="110"
-        />
+        <TextView
+            android:id="@id/weibo_tv_repost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/space.very_small"
+            android:drawableStart="@drawable/ic_weibo_repost"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            tools:text="100"
+            />
 
-    <TextView
-        android:id="@id/weibo_tv_like"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/space.very_small"
-        android:drawableStart="@drawable/ic_weibo_like"
-        android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        tools:text="120"
-        />
+        <TextView
+            android:id="@id/weibo_tv_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/space.large"
+            android:layout_marginStart="@dimen/space.large"
+            android:drawablePadding="@dimen/space.very_small"
+            android:drawableStart="@drawable/ic_weibo_comment"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            tools:text="110"
+            />
 
-  </LinearLayout>
+        <com.zac4j.yoda.ui.widget.HeartView
+            android:id="@id/weibo_hv_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
 
 </merge>

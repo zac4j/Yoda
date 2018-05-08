@@ -17,6 +17,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Size;
 import com.zac4j.yoda.data.model.Weibo;
+import com.zac4j.yoda.ui.widget.HeartView;
 import com.zac4j.yoda.util.NumberUtils;
 import com.zac4j.yoda.util.TimeUtils;
 import com.zac4j.yoda.util.image.GlideApp;
@@ -143,13 +144,12 @@ public class WeiboReader {
     }
 
     public void readLikeNumber(TextView likeBtn, long likeNumber) {
-        likeBtn.setText(NumberUtils.getRelativeNumberSpanString(likeNumber));
+
     }
 
-    public void readLikeState(TextView likeBtn, boolean likeState) {
-        if (likeState) {
-            likeBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_weibo_liked, 0, 0, 0);
-        }
+    public void readLikeState(HeartView heartView, long likeNumber, boolean likeState) {
+        heartView.setLikeCount(NumberUtils.getRelativeNumberSpanString(likeNumber));
+        heartView.setLike(likeState);
     }
 
     private void readPictureContent(ViewGroup mediaContainer, Weibo weibo) {

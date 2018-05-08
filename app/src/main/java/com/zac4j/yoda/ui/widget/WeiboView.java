@@ -33,7 +33,7 @@ public class WeiboView extends RelativeLayout {
 
         void onComment(Weibo weibo);
 
-        void onLike(Weibo weibo);
+        void onLike(HeartView heartView, Weibo weibo);
     }
 
     @BindView(R.id.weibo_main_container)
@@ -60,8 +60,8 @@ public class WeiboView extends RelativeLayout {
     TextView mRepostButton;
     @BindView(R.id.weibo_tv_comment)
     TextView mCommentButton;
-    @BindView(R.id.weibo_tv_like)
-    TextView mLikeButton;
+    @BindView(R.id.weibo_hv_like)
+    HeartView mHeartView;
 
     private OnMediaClickListener mOnMediaClickListener;
 
@@ -118,7 +118,7 @@ public class WeiboView extends RelativeLayout {
         // weibo media content
         //todo parse media content into diff type.
         reader.parseWeiboMedia(mMediaContainer, weibo);
-        addWeiboMediaClickListener(mMediaContainer, weibo);
+        setOnWeiboMediaClickListener(mMediaContainer, weibo);
         // weibo repost
         reader.readRepostContent(mRepostContainer, weibo.getRepostWeibo());
         // repost number
@@ -126,19 +126,24 @@ public class WeiboView extends RelativeLayout {
         // comment number
         reader.readCommentsNumber(mCommentButton, weibo.getCommentsCount());
         // favorite number&state
-        reader.readLikeState(mLikeButton, weibo.getFavorited());
-        reader.readLikeNumber(mLikeButton, weibo.getAttitudesCount());
-        addOperateWeiboListener(mRepostButton, mCommentButton, mLikeButton, weibo);
+        reader.readLikeState(mHeartView, weibo.getAttitudesCount(), weibo.getFavorited());
+        // repost, comment, like weibo event listener
+        setOnOperateWeiboListener(mRepostButton, mCommentButton, mHeartView, weibo);
     }
 
-    private void addOperateWeiboListener(TextView repostButton, TextView commentButton,
-        TextView likeButton, Weibo weibo) {
+    private void setOnOperateWeiboListener(TextView repostButton, TextView commentButton,
+        HeartView heartView, Weibo weibo) {
+
+        if (mOnOperateWeiboListener == null) {
+            return;
+        }
+
         repostButton.setOnClickListener(v -> mOnOperateWeiboListener.onRepost(weibo));
         commentButton.setOnClickListener(v -> mOnOperateWeiboListener.onComment(weibo));
-        likeButton.setOnClickListener(v -> mOnOperateWeiboListener.onLike(weibo));
+        heartView.setOnClickListener(v -> mOnOperateWeiboListener.onLike(mHeartView, weibo));
     }
 
-    private void addWeiboMediaClickListener(ViewGroup mediaContainer, Weibo weibo) {
+    private void setOnWeiboMediaClickListener(ViewGroup mediaContainer, Weibo weibo) {
         mediaContainer.setOnClickListener(
             v -> mOnMediaClickListener.onClick(MediaType.PICTURE, weibo));
     }

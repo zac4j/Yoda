@@ -31,6 +31,7 @@ import com.zac4j.yoda.ui.adapter.WeiboCommentAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
 import com.zac4j.yoda.ui.weibo.repost.WeiboRepostDialogFragment;
+import com.zac4j.yoda.ui.widget.HeartView;
 import com.zac4j.yoda.ui.widget.WeiboView;
 import com.zac4j.yoda.util.WeiboAnimatorManager;
 import com.zac4j.yoda.util.weibo.WeiboReader;
@@ -137,8 +138,8 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
             }
 
             @Override
-            public void onLike(Weibo weibo) {
-
+            public void onLike(HeartView heartView, Weibo weibo) {
+                heartView.updateLikeState();
             }
         });
 
