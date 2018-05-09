@@ -105,7 +105,8 @@ public class WeiboReader {
 
         readPictureContent(mediaContainer, repostWeibo);
 
-        repostContentView.setBackgroundColor(ContextCompat.getColor(context, R.color.white_light));
+        repostContentView.setBackground(
+            ContextCompat.getDrawable(context, R.drawable.bg_card_view));
         repostContainer.addView(repostContentView);
     }
 

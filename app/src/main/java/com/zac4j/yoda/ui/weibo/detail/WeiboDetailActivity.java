@@ -1,5 +1,6 @@
 package com.zac4j.yoda.ui.weibo.detail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -24,17 +25,21 @@ import butterknife.OnClick;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Comment;
+import com.zac4j.yoda.data.model.ThumbUrl;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.adapter.WeiboAdapter;
 import com.zac4j.yoda.ui.adapter.WeiboCommentAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
+import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.ui.weibo.repost.WeiboRepostDialogFragment;
 import com.zac4j.yoda.ui.widget.HeartView;
 import com.zac4j.yoda.ui.widget.WeiboView;
 import com.zac4j.yoda.util.WeiboAnimatorManager;
+import com.zac4j.yoda.util.image.MediaType;
 import com.zac4j.yoda.util.weibo.WeiboReader;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -126,6 +131,22 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
             }
         });
 
+        mWeiboView.setOnMediaClickListener((type, weibo) -> {
+            if (type == MediaType.PICTURE) {
+                ArrayList<ThumbUrl> imgUrlList = new ArrayList<>();
+                if (weibo.hasMultipleImage()) {
+                    imgUrlList = (ArrayList<ThumbUrl>) weibo.getPicUrls();
+                } else {
+                    String imgUrl = weibo.getOriginalPic();
+                    ThumbUrl thumbUrl = new ThumbUrl(imgUrl);
+                    imgUrlList.add(thumbUrl);
+                }
+                Intent intent = new Intent(WeiboDetailActivity.this, WeiboImageActivity.class);
+                intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_LIST, imgUrlList);
+                startActivity(intent);
+            }
+        });
+
         mWeiboView.setOnOperateWeiboListener(new WeiboView.OnOperateWeiboListener() {
             @Override
             public void onRepost(Weibo weibo) {
@@ -184,14 +205,6 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
             }
         });
     }
-
-    //private void updateLikeCounter(boolean isLike) {
-    //    if (isLike) {
-    //        mLikeCounter.setText(String.valueOf(++mLikeCount));
-    //    } else {
-    //        mLikeCounter.setCurrentText(String.valueOf(--mLikeCount));
-    //    }
-    //}
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

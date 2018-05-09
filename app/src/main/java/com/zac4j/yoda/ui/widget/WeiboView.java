@@ -140,7 +140,7 @@ public class WeiboView extends RelativeLayout {
 
         repostButton.setOnClickListener(v -> mOnOperateWeiboListener.onRepost(weibo));
         commentButton.setOnClickListener(v -> mOnOperateWeiboListener.onComment(weibo));
-        heartView.setOnClickListener(v -> mOnOperateWeiboListener.onLike(mHeartView, weibo));
+        heartView.setOnClickListener(v -> mOnOperateWeiboListener.onLike(heartView, weibo));
     }
 
     private void setOnWeiboMediaClickListener(ViewGroup mediaContainer, Weibo weibo) {
