@@ -104,9 +104,6 @@ public class WeiboReader {
         WeiboParser.setupText(textContainer, weiboContent);
 
         readPictureContent(mediaContainer, repostWeibo);
-
-        repostContentView.setBackground(
-            ContextCompat.getDrawable(context, R.drawable.bg_card_view));
         repostContainer.addView(repostContentView);
     }
 

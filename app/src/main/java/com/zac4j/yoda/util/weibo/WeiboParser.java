@@ -6,10 +6,13 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.TextView;
 import com.zac4j.yoda.CurrentActivityProvider;
 import com.zac4j.yoda.ui.BrowserActivity;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Text process helper
@@ -79,8 +82,19 @@ public class WeiboParser {
                 }
             }
 
-            if (hasLinkSignal && i > linkStartIndex && content.charAt(i) == ' ') {
-                setClickableSpan(SPAN_LINK, spannableString, linkStartIndex, i);
+            String s = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+
+            Pattern urlPattern = Patterns.WEB_URL;
+
+            Pattern punctPattern = Pattern.compile("\\p{Punct}");
+
+            if (hasLinkSignal && i > linkStartIndex) {
+                if (content.charAt(i) == ' ' // is a blank
+                    || punctPattern.matcher(String.valueOf(content.charAt(i)))
+                    .find() // is a punctuation
+                    ) {
+                    setClickableSpan(SPAN_LINK, spannableString, linkStartIndex, i);
+                }
             }
 
             textView.setText(spannableString);
@@ -90,7 +104,7 @@ public class WeiboParser {
 
     private static void setClickableSpan(int spanType, SpannableString spannableString,
         int startIndex, int endIndex) {
-        if (startIndex >= endIndex || endIndex - startIndex > MAX_NICKNAME_LENGTH) {
+        if (startIndex >= endIndex) {
             return;
         }
         // System.out.println("startIndex: " + startIndex + " : " + "endIndex: " + endIndex);
