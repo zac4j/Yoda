@@ -82,18 +82,23 @@ public class WeiboParser {
                 }
             }
 
-            String s = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
-
-            Pattern urlPattern = Patterns.WEB_URL;
-
-            Pattern punctPattern = Pattern.compile("\\p{Punct}");
-
             if (hasLinkSignal && i > linkStartIndex) {
-                if (content.charAt(i) == ' ' // is a blank
-                    || punctPattern.matcher(String.valueOf(content.charAt(i)))
-                    .find() // is a punctuation
-                    ) {
+                if (content.charAt(i) == ' ') {
                     setClickableSpan(SPAN_LINK, spannableString, linkStartIndex, i);
+                    hasLinkSignal = false;
+                }
+            }
+
+            if (i == content.length() - 1) {
+                if (hasAtSignal) {
+                    setClickableSpan(SPAN_NAME, spannableString, nameStartIndex, i + 1);
+                    hasAtSignal = false;
+                } else if (hasSharpSignal) {
+                    setClickableSpan(SPAN_NAME, spannableString, nameStartIndex, i + 1);
+                    hasSharpSignal = false;
+                } else if (hasLinkSignal) {
+                    setClickableSpan(SPAN_NAME, spannableString, nameStartIndex, i + 1);
+                    hasLinkSignal = false;
                 }
             }
 

@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,16 +12,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextSwitcher;
-import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Comment;
@@ -31,14 +26,13 @@ import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.adapter.WeiboAdapter;
 import com.zac4j.yoda.ui.adapter.WeiboCommentAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
+import com.zac4j.yoda.ui.listener.EndlessNestedScrollViewScrollListener;
 import com.zac4j.yoda.ui.listener.EndlessRecyclerViewScrollListener;
 import com.zac4j.yoda.ui.weibo.WeiboImageActivity;
 import com.zac4j.yoda.ui.weibo.repost.WeiboRepostDialogFragment;
 import com.zac4j.yoda.ui.widget.HeartView;
 import com.zac4j.yoda.ui.widget.WeiboView;
-import com.zac4j.yoda.util.WeiboAnimatorManager;
 import com.zac4j.yoda.util.image.MediaType;
-import com.zac4j.yoda.util.weibo.WeiboReader;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -52,7 +46,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
 
     public static final String EXTRA_WEIBO = "extra_weibo";
     private static final int DEFAULT_COMMENT_PAGE = 1;
-    private static final int DEFAULT_COMMENT_COUNT = 10;
+    private static final int DEFAULT_COMMENT_COUNT = 20;
     @Inject
     WeiboDetailPresenter mPresenter;
     @Inject
@@ -61,12 +55,12 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     FrameLayout mWeiboContainer;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.collapsing_toolbar)
-    CollapsingToolbarLayout mCollapsingToolbarLayout;
     @BindView(R.id.appbar)
     AppBarLayout mAppBarLayout;
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
+    @BindView(R.id.weibo_detail_scroll_container)
+    NestedScrollView mNestedScrollContainer;
     @BindView(R.id.weibo_detail_rv_comment_list)
     RecyclerView mCommentListView;
     private WeiboView mWeiboView;
@@ -77,7 +71,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weibo_detail);
+        setContentView(R.layout.activity_weibo_details);
 
         getActivityComponent().inject(this);
         mPresenter.attach(this);
@@ -117,20 +111,6 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     }
 
     private void addUiListeners(LinearLayoutManager layoutManager) {
-        mAppBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
-
-            if (verticalOffset == 0) {
-                // State.EXPANDED;
-                mCollapsingToolbarLayout.setTitle(" ");
-            } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
-                // State.COLLAPSED;
-                mCollapsingToolbarLayout.setTitle("Timeline");
-            } else {
-                // State.IDLE;
-                mCollapsingToolbarLayout.setTitle(" ");
-            }
-        });
-
         mWeiboView.setOnMediaClickListener((type, weibo) -> {
             if (type == MediaType.PICTURE) {
                 ArrayList<ThumbUrl> imgUrlList = new ArrayList<>();
@@ -164,9 +144,10 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
             }
         });
 
-        mCommentListView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+
+        mNestedScrollContainer.setOnScrollChangeListener(new EndlessNestedScrollViewScrollListener(layoutManager) {
             @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+            public void onLoadMore(int page, int totalItemsCount, NestedScrollView view) {
                 mCommentPage = ++page;
                 mPresenter.getWeiboComments(mToken, mWeiboId, mCommentPage, DEFAULT_COMMENT_COUNT);
             }
