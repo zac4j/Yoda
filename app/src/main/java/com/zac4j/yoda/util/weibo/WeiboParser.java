@@ -6,13 +6,12 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Patterns;
+import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.TextView;
 import com.zac4j.yoda.CurrentActivityProvider;
 import com.zac4j.yoda.ui.BrowserActivity;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.zac4j.yoda.util.StringUtil;
 
 /**
  * Text process helper
@@ -23,10 +22,10 @@ public class WeiboParser {
 
     private static CurrentActivityProvider mActivityProvider;
 
-    private static final int MAX_NICKNAME_LENGTH = 25;
     private static final int SPAN_NAME = 0x001;
     private static final int SPAN_TOPIC = 0x002;
     private static final int SPAN_LINK = 0x003;
+    private static final int SPAN_EMOJI = 0x004;
 
     public WeiboParser() {
 
@@ -39,10 +38,12 @@ public class WeiboParser {
         int nameStartIndex = 0;
         int topicStartIndex = 0;
         int linkStartIndex = 0;
+        int emojiStartIndex = 0;
 
         boolean hasAtSignal = false; // if has @Name signal
         boolean hasSharpSignal = false;// if has #Topic# signal
         boolean hasLinkSignal = false; // if has http/https link signal
+        boolean hasEmojiSignal = false; // if has emoji link signal
 
         textView.setVisibility(View.VISIBLE);
 
@@ -56,7 +57,7 @@ public class WeiboParser {
                 if (content.charAt(i) == ' '
                     || content.charAt(i) == ':'
                     || content.charAt(i) == '：') {
-                    setClickableSpan(SPAN_NAME, spannableString, nameStartIndex, i);
+                    setSpan(SPAN_NAME, spannableString, nameStartIndex, i);
                     hasAtSignal = false;
                 }
             }
@@ -69,7 +70,7 @@ public class WeiboParser {
 
             if (hasSharpSignal && i > topicStartIndex && i < content.length() - 1) {
                 if (content.charAt(i) == '#') {
-                    setClickableSpan(SPAN_TOPIC, spannableString, topicStartIndex, i + 1);
+                    setSpan(SPAN_TOPIC, spannableString, topicStartIndex, i + 1);
                     hasSharpSignal = false;
                 }
             }
@@ -83,22 +84,36 @@ public class WeiboParser {
             }
 
             if (hasLinkSignal && i > linkStartIndex) {
-                if (content.charAt(i) == ' ') {
-                    setClickableSpan(SPAN_LINK, spannableString, linkStartIndex, i);
+                if (content.charAt(i) == ' ' || StringUtil.isChinese(content.charAt(i))) {
+                    setSpan(SPAN_LINK, spannableString, linkStartIndex, i);
                     hasLinkSignal = false;
+                }
+            }
+
+            if (content.charAt(i) == '[') {
+                hasEmojiSignal = true;
+                emojiStartIndex = i;
+            }
+
+            if (hasEmojiSignal && i > emojiStartIndex && i < content.length() - 1) {
+                if (content.charAt(i) == ']') {
+                    hasEmojiSignal = false;
+                    setEmojiSpan(SPAN_EMOJI, spannableString, emojiStartIndex, i);
                 }
             }
 
             if (i == content.length() - 1) {
                 if (hasAtSignal) {
-                    setClickableSpan(SPAN_NAME, spannableString, nameStartIndex, i + 1);
+                    setSpan(SPAN_NAME, spannableString, nameStartIndex, i + 1);
                     hasAtSignal = false;
                 } else if (hasSharpSignal) {
-                    setClickableSpan(SPAN_NAME, spannableString, nameStartIndex, i + 1);
+                    setSpan(SPAN_TOPIC, spannableString, topicStartIndex, i + 1);
                     hasSharpSignal = false;
                 } else if (hasLinkSignal) {
-                    setClickableSpan(SPAN_NAME, spannableString, nameStartIndex, i + 1);
+                    setSpan(SPAN_LINK, spannableString, linkStartIndex, i + 1);
                     hasLinkSignal = false;
+                } else if (hasEmojiSignal) {
+                    setSpan(SPAN_EMOJI, spannableString, emojiStartIndex, i);
                 }
             }
 
@@ -107,21 +122,47 @@ public class WeiboParser {
         }
     }
 
-    private static void setClickableSpan(int spanType, SpannableString spannableString,
-        int startIndex, int endIndex) {
+    private static void setSpan(int spanType, SpannableString spannableString, int startIndex,
+        int endIndex) {
         if (startIndex >= endIndex) {
             return;
         }
+
+        ClickableSpan clickableSpan = null;
+        CharSequence spanContent = spannableString.subSequence(startIndex, endIndex);
+        switch (spanType) {
+            case SPAN_NAME:
+            case SPAN_TOPIC:
+                clickableSpan = new ClickableSpan() {
+                    @Override
+                    public void onClick(View widget) {
+                        dispatchSpanClickEvent(spanType, spanContent);
+                    }
+                };
+                break;
+            case SPAN_LINK:
+                clickableSpan = new URLSpan(spanContent.toString()) {
+                    @Override
+                    public void onClick(View widget) {
+                        dispatchSpanClickEvent(spanType, spanContent);
+                    }
+                };
+                break;
+            case SPAN_EMOJI:
+                break;
+        }
+
         // System.out.println("startIndex: " + startIndex + " : " + "endIndex: " + endIndex);
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(View widget) {
-                CharSequence spanContent = spannableString.subSequence(startIndex, endIndex);
-                dispatchSpanClickEvent(spanType, spanContent);
-            }
-        };
+
         spannableString.setSpan(clickableSpan, startIndex, endIndex,
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    private static void setEmojiSpan(int spanType, SpannableString spannableString, int startIndex,
+        int endIndex) {
+        if (startIndex >= endIndex) {
+            return;
+        }
     }
 
     private static void dispatchSpanClickEvent(int spanType, CharSequence spanContent) {
