@@ -59,7 +59,6 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
     @BindView(R.id.error_view)
     View mErrorView;
     private int mRequestPage = 1;
-    private String mToken; // user token
     private EndlessRecyclerViewScrollListener mScrollListener;
 
     public static TimelineFragment newInstance() {
@@ -87,14 +86,11 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
 
         addItemClickListeners();
 
-        Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(getContext());
-        mToken = Objects.requireNonNull(accessToken).getToken();
-        Timber.d("Token: " + mToken + "\r\n" + "UID: >> " + accessToken.getUid());
         mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 mRequestPage = page;
-                mPresenter.getTimeline(mToken, mRequestCount, mRequestPage);
+                mPresenter.getTimeline(mRequestCount, mRequestPage);
             }
         };
         mWeiboListView.addOnScrollListener(mScrollListener);
@@ -197,7 +193,7 @@ public class TimelineFragment extends BaseFragment implements TimelineView {
      */
     private void refreshPage() {
         mRequestPage = 1;
-        mPresenter.getTimeline(mToken, DEFAULT_WEIBO_COUNT, mRequestPage);
+        mPresenter.getTimeline(DEFAULT_WEIBO_COUNT, mRequestPage);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.zac4j.yoda.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zac4j.yoda.data.local.AccessTokenHelper;
 import com.zac4j.yoda.data.local.PreferencesHelper;
 import com.zac4j.yoda.data.remote.ApiServer;
 import io.reactivex.Observable;
@@ -21,12 +22,14 @@ import retrofit2.Response;
 
     private ApiServer mApiServer;
     private PreferencesHelper mPrefsHelper;
+    private AccessTokenHelper mTokenHelper;
     private ObjectMapper mObjectMapper;
 
     @Inject
-    public DataManager(ApiServer apiServer, PreferencesHelper prefsHelper, ObjectMapper mapper) {
+    public DataManager(ApiServer apiServer, PreferencesHelper prefsHelper, AccessTokenHelper tokenHelper,ObjectMapper mapper) {
         mApiServer = apiServer;
         mPrefsHelper = prefsHelper;
+        mTokenHelper = tokenHelper;
         mObjectMapper = mapper;
     }
 
@@ -42,12 +45,16 @@ import retrofit2.Response;
         return mObjectMapper;
     }
 
-    public Observable<Response<Object>> getHomeTimeline(String token, int count, int page) {
-        return mApiServer.getTimeline("friends", token, count, page);
+    public AccessTokenHelper getTokenHelper() {
+        return mTokenHelper;
     }
 
-    public Single<Response<Object>> getWeiboInfo(String token, long id) {
-        return mApiServer.getWeiboInfo(token, id);
+    public Observable<Response<Object>> getHomeTimeline(int count, int page) {
+        return mApiServer.getTimeline("friends", mTokenHelper.getToken(), count, page);
+    }
+
+    public Single<Response<Object>> getWeiboInfo(long id) {
+        return mApiServer.getWeiboInfo(mTokenHelper.getToken(), id);
     }
 
     public Single<Response<Object>> getWeiboComments(String token, long id, int page, int count) {
@@ -107,4 +114,10 @@ import retrofit2.Response;
     public Single<Response<Object>> getLatestComments(String token) {
         return mApiServer.getLatestComments(token);
     }
+
+    public Single<Response<Object>> getEmotions(String token) {
+        return mApiServer.getEmotions(token);
+    }
+
+
 }

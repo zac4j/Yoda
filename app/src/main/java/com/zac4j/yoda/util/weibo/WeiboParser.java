@@ -2,18 +2,14 @@ package com.zac4j.yoda.util.weibo;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.icu.text.UnicodeSet;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.text.style.ImageSpan;
-import android.text.style.RelativeSizeSpan;
 import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.TextView;
 import com.zac4j.yoda.CurrentActivityProvider;
-import com.zac4j.yoda.common.Emoji;
 import com.zac4j.yoda.ui.BrowserActivity;
 import com.zac4j.yoda.util.StringUtil;
 
@@ -154,7 +150,7 @@ public class WeiboParser {
                 break;
             case SPAN_EMOJI:
                 String emojiName = spannableString.subSequence(startIndex + 1, endIndex - 1).toString();
-                clickableSpan = new URLSpan(Emoji.parseEmoji(emojiName));
+                //clickableSpan = new URLSpan(Emotion.parseEmoji(emojiName));
                 break;
         }
 

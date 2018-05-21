@@ -1,4 +1,4 @@
-package com.zac4j.yoda.util;
+package com.zac4j.yoda.util.manager;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

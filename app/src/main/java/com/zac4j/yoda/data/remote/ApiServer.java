@@ -205,6 +205,15 @@ public interface ApiServer {
     Single<Response<Object>> getFollowers(@Query("access_token") String token,
         @Query("uid") String uid);
 
+    /**
+     * Get weibo emotions
+     *
+     * @param token user access token
+     * @return weibo emotions
+     */
+    @GET("emotions.json")
+    Single<Response<Object>> getEmotions(@Query("access_token") String token);
+
     class Factory {
         public static ApiServer create(Context context) {
 

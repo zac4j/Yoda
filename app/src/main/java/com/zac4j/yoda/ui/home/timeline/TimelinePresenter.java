@@ -43,11 +43,11 @@ import retrofit2.Response;
         mDisposable.clear();
     }
 
-    void getTimeline(String token, int count, int page) {
+    void getTimeline(int count, int page) {
         checkViewAttached();
 
         Observable<Response<Object>> responseObservable =
-            mDataManager.getHomeTimeline(token, count, page)
+            mDataManager.getHomeTimeline(count, page)
                 .compose(RxUtils.applyObservableSchedulers())
                 .doOnSubscribe(disposable -> {
                     if (!getMvpView().isRefreshing()) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zac4j.yoda.CurrentActivityProvider;
 import com.zac4j.yoda.data.DataManager;
+import com.zac4j.yoda.data.local.AccessTokenHelper;
 import com.zac4j.yoda.data.local.PreferencesHelper;
 import com.zac4j.yoda.data.remote.ApiServer;
 import com.zac4j.yoda.di.ApplicationContext;
@@ -23,6 +24,8 @@ import javax.inject.Singleton;
     CurrentActivityProvider currentActivityProvider();
 
     PreferencesHelper prefsHelper();
+
+    AccessTokenHelper tokenHelper();
 
     ObjectMapper mapper();
 

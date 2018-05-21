@@ -12,7 +12,7 @@ import android.widget.TextSwitcher;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.zac4j.yoda.R;
-import com.zac4j.yoda.util.WeiboAnimatorManager;
+import com.zac4j.yoda.util.manager.WeiboAnimatorManager;
 
 /**
  * Created by zac on 2018/5/8.
