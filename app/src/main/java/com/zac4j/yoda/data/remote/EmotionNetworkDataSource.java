@@ -3,8 +3,9 @@ package com.zac4j.yoda.data.remote;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
-import com.fasterxml.jackson.core.JsonParser;
+import android.widget.Toast;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
@@ -12,6 +13,7 @@ import com.zac4j.yoda.AppExecutors;
 import com.zac4j.yoda.data.model.EmotionEntry;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -50,7 +52,7 @@ public class EmotionNetworkDataSource {
         return mEmotionList;
     }
 
-    void fetchEmotion() {
+    public void fetchEmotions() {
         mAppExecutors.networkIO().execute(() -> {
             String token = AccessTokenKeeper.readAccessToken(mContext).getToken();
             String url = "https://api.weibo.com/2/emotions.json?access_token=" + token;
@@ -62,14 +64,14 @@ public class EmotionNetworkDataSource {
             OkHttpClient client = new OkHttpClient();
             client.newCall(request).enqueue(new Callback() {
                 @Override
-                public void onFailure(Call call, IOException e) {
-
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                    Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
-                public void onResponse(Call call, Response response) throws IOException {
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                     if (response.isSuccessful()) {
-                        String json = response.body().string();
+                        String json = Objects.requireNonNull(response.body()).string();
                         ObjectMapper mapper = new ObjectMapper();
                         List<EmotionEntry> emotionEntryList = mapper.readValue(json, new TypeReference<List<EmotionEntry>>(){});
                         mEmotionList.postValue(emotionEntryList);
