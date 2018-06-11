@@ -1,6 +1,7 @@
 package com.zac4j.yoda.data.model;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import java.util.HashMap;
@@ -50,8 +51,21 @@ public class EmotionEntry {
     private String value;
     @JsonProperty("picid")
     private String picid;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<>();
+
+    @Ignore
+    public EmotionEntry(String phrase, String type, String url, Boolean hot, Boolean common,
+        String category, String icon, String value, String picid) {
+        this.id = id;
+        this.phrase = phrase;
+        this.type = type;
+        this.url = url;
+        this.hot = hot;
+        this.common = common;
+        this.category = category;
+        this.icon = icon;
+        this.value = value;
+        this.picid = picid;
+    }
 
     // Constructor used by Room to create WeatherEntries
     public EmotionEntry(int id, String phrase, String type, String url, Boolean hot, Boolean common,
@@ -66,6 +80,10 @@ public class EmotionEntry {
         this.icon = icon;
         this.value = value;
         this.picid = picid;
+    }
+
+    public int getId() {
+        return id;
     }
 
     @JsonProperty("phrase")
@@ -156,16 +174,6 @@ public class EmotionEntry {
     @JsonProperty("picid")
     public void setPicid(String picid) {
         this.picid = picid;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
     }
 
 }

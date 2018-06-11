@@ -18,19 +18,19 @@ public abstract class EmotionDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "emotion";
 
     private static final Object LOCK = new Object();
-    private static EmotionDatabase sIntance;
+    private static EmotionDatabase sInstance;
 
     private static EmotionDatabase getInstance(Context context) {
         Log.d(TAG, "Getting the database");
-        if (sIntance == null) {
+        if (sInstance == null) {
             synchronized (LOCK) {
-                sIntance =
+                sInstance =
                     Room.databaseBuilder(context.getApplicationContext(), EmotionDatabase.class,
                         EmotionDatabase.DATABASE_NAME).build();
                 Log.d(TAG, "Made new database");
             }
         }
-        return sIntance;
+        return sInstance;
     }
 
     // The associated DAOs for the database
