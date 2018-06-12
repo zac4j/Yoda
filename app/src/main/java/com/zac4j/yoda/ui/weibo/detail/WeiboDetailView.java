@@ -1,7 +1,6 @@
 package com.zac4j.yoda.ui.weibo.detail;
 
 import com.zac4j.yoda.data.model.Comment;
-import com.zac4j.yoda.data.model.Weibo;
 import com.zac4j.yoda.ui.base.MvpView;
 import java.util.List;
 
@@ -11,8 +10,6 @@ import java.util.List;
  */
 
 public interface WeiboDetailView extends MvpView {
-
-    void showWeiboInfo(Weibo weibo);
 
     void showWeiboComments(List<Comment> commentList);
 
