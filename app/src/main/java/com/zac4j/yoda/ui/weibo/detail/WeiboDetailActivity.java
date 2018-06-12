@@ -48,8 +48,6 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     WeiboDetailPresenter mPresenter;
     @Inject
     WeiboDetailAdapter mAdapter;
-    @BindView(R.id.weibo_detail_weibo_container)
-    FrameLayout mWeiboContainer;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.appbar)
@@ -63,6 +61,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     private long mWeiboId;
     private Weibo mWeibo;
     private String mToken;
+    List<Object> mWeiboDetails;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,12 +90,19 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
         mCommentListView.addItemDecoration(
             new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mCommentListView.setAdapter(mAdapter);
+        mCommentListView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                mCommentPage = ++page;
+                mPresenter.getWeiboComments(mToken, mWeiboId, mCommentPage, DEFAULT_COMMENT_COUNT);
+            }
+        });
 
         mWeibo = (Weibo) getIntent().getSerializableExtra(EXTRA_WEIBO);
 
-        if (mWeiboView != null) {
-            mWeiboId = mWeiboView.getId();
-            addUiListeners(layoutManager);
+        if (mWeibo != null) {
+            mWeiboId = mWeibo.getId();
+            //addUiListeners(layoutManager);
         } else {
             showEmptyView(true);
         }
@@ -133,15 +139,6 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
             @Override
             public void onLike(HeartView heartView, Weibo weibo) {
                 heartView.updateLikeState();
-            }
-        });
-
-
-        mCommentListView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                mCommentPage = ++page;
-                mPresenter.getWeiboComments(mToken, mWeiboId, mCommentPage, DEFAULT_COMMENT_COUNT);
             }
         });
     }
@@ -211,14 +208,16 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
 
     @Override
     public void showWeiboComments(List<Comment> commentList) {
-        List<Object> weiboDetails = new ArrayList<>();
 
-        WeiboView weiboView = new WeiboView(WeiboDetailActivity.this);
-        weiboView.setAdapter(new WeiboAdapter(mWeibo));
-        weiboDetails.add(weiboView);
+        if (mWeiboDetails == null) {
+            mWeiboDetails = new ArrayList<>();
+            WeiboView weiboView = new WeiboView(WeiboDetailActivity.this);
+            weiboView.setAdapter(new WeiboAdapter(mWeibo));
+            mWeiboDetails.add(weiboView);
+        }
 
-        weiboDetails.addAll(commentList);
-        mAdapter.addWeiboDetails(weiboDetails);
+        mWeiboDetails.addAll(commentList);
+        mAdapter.addWeiboDetails(mWeiboDetails);
     }
 
     @Override

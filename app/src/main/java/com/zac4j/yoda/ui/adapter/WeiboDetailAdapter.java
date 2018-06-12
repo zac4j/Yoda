@@ -82,15 +82,15 @@ public class WeiboDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 itemContainer.addView(weiboView);
                 break;
             case VIEW_TYPE_COMMENTS:
-                CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
+                //CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
                 Comment comment = (Comment) mWeiboDetails.get(position);
 
-                if (position == 1) {
-                    ViewGroup itemViewContainer = (ViewGroup) commentViewHolder.itemView;
-                    if (itemViewContainer.getChildCount() > 0) {
-                        itemViewContainer.removeAllViews();
-                    }
-                }
+                //if (position == 1) {
+                //    ViewGroup itemViewContainer = (ViewGroup) commentViewHolder.itemView;
+                //    if (itemViewContainer.getChildCount() > 0) {
+                //        itemViewContainer.removeAllViews();
+                //    }
+                //}
 
                 ((CommentViewHolder) holder).bindTo(comment);
                 break;
@@ -117,7 +117,7 @@ public class WeiboDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    private static class CommentViewHolder extends RecyclerView.ViewHolder {
+    class CommentViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.comment_list_item_iv_avatar)
         ImageView mAvatarView;
