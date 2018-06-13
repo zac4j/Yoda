@@ -2,6 +2,7 @@ package com.zac4j.yoda.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,10 +80,25 @@ public class WeiboDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 WeiboViewHolder weiboViewHolder = (WeiboViewHolder) holder;
                 WeiboView weiboView = (WeiboView) mWeiboDetails.get(position);
                 ViewGroup itemContainer = (ViewGroup) weiboViewHolder.itemView;
+
+                // The AdViewHolder recycled by the RecyclerView may be a different
+                // instance than the one used previously for this position. Clear the
+                // AdViewHolder of any subviews in case it has a different
+                // AdView associated with it, and make sure the AdView for this position doesn't
+                // already have a parent of a different recycled AdViewHolder.
+                if (itemContainer.getChildCount() > 0) {
+                    itemContainer.removeAllViews();
+                }
+
+                if (weiboView.getParent() != null) {
+                    ((ViewGroup) weiboView.getParent()).removeView(weiboView);
+                }
+
                 itemContainer.addView(weiboView);
                 break;
             case VIEW_TYPE_COMMENTS:
                 //CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
+                Log.i("Recycler", "onBindViewHolder: position>>" + position);
                 Comment comment = (Comment) mWeiboDetails.get(position);
 
                 //if (position == 1) {

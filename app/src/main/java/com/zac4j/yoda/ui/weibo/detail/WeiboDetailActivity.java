@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -150,8 +149,8 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     }
 
     private void fetchWeiboComments(long weiboId) {
-        if (mWeiboId != 0L) {
-            mPresenter.getWeiboComments(mToken, mWeiboId, DEFAULT_COMMENT_PAGE,
+        if (weiboId != 0L) {
+            mPresenter.getWeiboComments(mToken, weiboId, DEFAULT_COMMENT_PAGE,
                 DEFAULT_COMMENT_COUNT);
         }
     }
