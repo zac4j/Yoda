@@ -55,12 +55,12 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     ProgressBar mProgressBar;
     @BindView(R.id.weibo_detail_rv_comment_list)
     RecyclerView mCommentListView;
-    private WeiboView mWeiboView;
     private int mCommentPage = DEFAULT_COMMENT_PAGE;
     private long mWeiboId;
     private Weibo mWeibo;
     private String mToken;
-    List<Object> mWeiboDetails;
+    private int mLastInsertPosition;
+    List<Object> mWeiboDetails = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,45 +101,9 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
 
         if (mWeibo != null) {
             mWeiboId = mWeibo.getId();
-            //addUiListeners(layoutManager);
         } else {
             showEmptyView(true);
         }
-    }
-
-    private void addUiListeners(LinearLayoutManager layoutManager) {
-        mWeiboView.setOnMediaClickListener((type, weibo) -> {
-            if (type == MediaType.PICTURE) {
-                ArrayList<ThumbUrl> imgUrlList = new ArrayList<>();
-                if (weibo.hasMultipleImage()) {
-                    imgUrlList = (ArrayList<ThumbUrl>) weibo.getPicUrls();
-                } else {
-                    String imgUrl = weibo.getOriginalPic();
-                    ThumbUrl thumbUrl = new ThumbUrl(imgUrl);
-                    imgUrlList.add(thumbUrl);
-                }
-                Intent intent = new Intent(WeiboDetailActivity.this, WeiboImageActivity.class);
-                intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_LIST, imgUrlList);
-                startActivity(intent);
-            }
-        });
-
-        mWeiboView.setOnOperateWeiboListener(new WeiboView.OnOperateWeiboListener() {
-            @Override
-            public void onRepost(Weibo weibo) {
-                repostWeibo(weibo.getIdstr());
-            }
-
-            @Override
-            public void onComment(Weibo weibo) {
-
-            }
-
-            @Override
-            public void onLike(HeartView heartView, Weibo weibo) {
-                heartView.updateLikeState();
-            }
-        });
     }
 
     @Override
@@ -207,16 +171,61 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
 
     @Override
     public void showWeiboComments(List<Comment> commentList) {
+        int insertPosition = mWeiboDetails.size();
+        mAdapter.setWeiboDetails(mWeiboDetails);
 
-        if (mWeiboDetails == null) {
-            mWeiboDetails = new ArrayList<>();
+        if (mWeiboDetails.isEmpty()) {
             WeiboView weiboView = new WeiboView(WeiboDetailActivity.this);
             weiboView.setAdapter(new WeiboAdapter(mWeibo));
+            addWeiboClickListeners(weiboView);
             mWeiboDetails.add(weiboView);
         }
 
+        //if (mLastInsertPosition != 0) {
+        //    Comment lastComment = (Comment) mWeiboDetails.get(mLastInsertPosition);
+        //    if (lastComment.getId().equals(commentList.get(0).getId())) {
+        //        return;
+        //    }
+        //}
+
         mWeiboDetails.addAll(commentList);
-        mAdapter.addWeiboDetails(mWeiboDetails);
+        mAdapter.notifyItemInserted(insertPosition);
+        mLastInsertPosition = insertPosition;
+    }
+
+    private void addWeiboClickListeners(final WeiboView weiboView) {
+        weiboView.setOnMediaClickListener((type, weibo) -> {
+            if (type == MediaType.PICTURE) {
+                ArrayList<ThumbUrl> imgUrlList = new ArrayList<>();
+                if (weibo.hasMultipleImage()) {
+                    imgUrlList = (ArrayList<ThumbUrl>) weibo.getPicUrls();
+                } else {
+                    String imgUrl = weibo.getOriginalPic();
+                    ThumbUrl thumbUrl = new ThumbUrl(imgUrl);
+                    imgUrlList.add(thumbUrl);
+                }
+                Intent intent = new Intent(WeiboDetailActivity.this, WeiboImageActivity.class);
+                intent.putExtra(WeiboImageActivity.EXTRA_IMAGE_LIST, imgUrlList);
+                startActivity(intent);
+            }
+        });
+
+        weiboView.setOnOperateWeiboListener(new WeiboView.OnOperateWeiboListener() {
+            @Override
+            public void onRepost(Weibo weibo) {
+                repostWeibo(weibo.getIdstr());
+            }
+
+            @Override
+            public void onComment(Weibo weibo) {
+
+            }
+
+            @Override
+            public void onLike(HeartView heartView, Weibo weibo) {
+                heartView.updateLikeState();
+            }
+        });
     }
 
     @Override

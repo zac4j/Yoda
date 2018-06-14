@@ -1,8 +1,8 @@
 package com.zac4j.yoda.ui.adapter;
 
 import android.content.Context;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +16,6 @@ import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.di.ActivityContext;
 import com.zac4j.yoda.ui.widget.WeiboView;
 import com.zac4j.yoda.util.weibo.WeiboReader;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -36,16 +35,10 @@ public class WeiboDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Inject
     public WeiboDetailAdapter(@ActivityContext Context context) {
         mContext = context;
-        mWeiboDetails = new ArrayList<>();
     }
 
-    public void addWeiboDetails(List<Object> weiboDetails) {
-        if (weiboDetails == null || weiboDetails.isEmpty()) {
-            return;
-        }
-
-        mWeiboDetails.addAll(weiboDetails);
-        notifyDataSetChanged();
+    public void setWeiboDetails(List<Object> weiboDetails) {
+        mWeiboDetails = weiboDetails;
     }
 
     public boolean isEmpty() {
@@ -81,11 +74,11 @@ public class WeiboDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 WeiboView weiboView = (WeiboView) mWeiboDetails.get(position);
                 ViewGroup itemContainer = (ViewGroup) weiboViewHolder.itemView;
 
-                // The AdViewHolder recycled by the RecyclerView may be a different
+                // The WeiboViewHolder recycled by the RecyclerView may be a different
                 // instance than the one used previously for this position. Clear the
-                // AdViewHolder of any subviews in case it has a different
-                // AdView associated with it, and make sure the AdView for this position doesn't
-                // already have a parent of a different recycled AdViewHolder.
+                // WeiboViewHolder of any subviews in case it has a different
+                // WeiboView associated with it, and make sure the WeiboView for this position doesn't
+                // already have a parent of a different recycled WeiboViewHolder.
                 if (itemContainer.getChildCount() > 0) {
                     itemContainer.removeAllViews();
                 }
@@ -97,17 +90,7 @@ public class WeiboDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 itemContainer.addView(weiboView);
                 break;
             case VIEW_TYPE_COMMENTS:
-                //CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
-                Log.i("Recycler", "onBindViewHolder: position>>" + position);
                 Comment comment = (Comment) mWeiboDetails.get(position);
-
-                //if (position == 1) {
-                //    ViewGroup itemViewContainer = (ViewGroup) commentViewHolder.itemView;
-                //    if (itemViewContainer.getChildCount() > 0) {
-                //        itemViewContainer.removeAllViews();
-                //    }
-                //}
-
                 ((CommentViewHolder) holder).bindTo(comment);
                 break;
         }
@@ -170,6 +153,41 @@ public class WeiboDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             reader.readAvatar(mAvatarView, user.getProfileImageUrl());
             reader.readNickname(mNicknameView, user.getScreenName());
             reader.readUsername(mUsernameView, user.getDomain());
+        }
+    }
+
+    private static class DiffCallback extends DiffUtil.Callback {
+
+        private List<Comment> mOldList;
+        private List<Comment> mNewList;
+
+        public DiffCallback(List<Comment> oldList, List<Comment> newList) {
+            mOldList = oldList;
+            mNewList = newList;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return mOldList.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return mNewList.size();
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return mOldList.get(oldItemPosition)
+                .getId()
+                .equals(mNewList.get(newItemPosition).getId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return mOldList.get(oldItemPosition)
+                .getText()
+                .equals(mNewList.get(newItemPosition).getText());
         }
     }
 }
