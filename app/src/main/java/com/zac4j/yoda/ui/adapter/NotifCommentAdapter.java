@@ -80,8 +80,6 @@ public class NotifCommentAdapter extends RecyclerView.Adapter<NotifCommentAdapte
         TextView mUsernameView;
         @BindView(R.id.comment_list_item_tv_post_time)
         TextView mPostTimeView;
-        @BindView(R.id.comment_list_item_tv_post_source)
-        TextView mPostSourceView;
         @BindView(R.id.comment_list_item_tv_comment_content)
         TextView mCommentContentView;
         @BindView(R.id.comment_list_item_weibo_container)
@@ -104,7 +102,6 @@ public class NotifCommentAdapter extends RecyclerView.Adapter<NotifCommentAdapte
             showCommentUser(comment.getUser());
             WeiboReader reader = WeiboReader.getInstance();
             reader.readPostTime(mPostTimeView, comment.getCreatedAt());
-            reader.readPostSource(mPostSourceView, comment.getSource());
             reader.readTextContent(mCommentContentView, comment.getText());
             if (comment.getWeibo() != null) {
                 mWeiboContainer.setBackgroundResource(R.drawable.bg_gray_border);
@@ -117,9 +114,9 @@ public class NotifCommentAdapter extends RecyclerView.Adapter<NotifCommentAdapte
 
                 mWeiboContainer.setVisibility(View.VISIBLE);
 
-                reader.readLikeNumber(mWeiboLikeBtn, comment.getLikeCount());
+                reader.readLikeNumber(mWeiboLikeBtn, comment.getWeibo().getAttitudesCount());
                 reader.readRepostNumber(mWeiboRepostBtn, comment.getWeibo().getRepostsCount());
-                reader.readCommentsNumber(mWeiboCommentBtn, comment.getReplyCount());
+                reader.readCommentsNumber(mWeiboCommentBtn, comment.getWeibo().getCommentsCount());
             } else {
                 mWeiboContainer.setBackgroundResource(0);
                 mWeiboContainer.setVisibility(View.GONE);

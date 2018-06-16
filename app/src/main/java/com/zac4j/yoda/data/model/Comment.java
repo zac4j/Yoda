@@ -1,52 +1,47 @@
 package com.zac4j.yoda.data.model;
 
+import java.util.HashMap;
+import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import java.util.List;
 
-/**
- * Model for User Comment
- * Created by zac on 17-5-11.
- */
-
-@JsonInclude(JsonInclude.Include.NON_NULL) @JsonPropertyOrder({
-    "created_at", "id", "rootid", "floor_number", "text", "source_allowclick", "source_type",
-    "source", "user", "mid", "idstr", "status", "like_count", "reply_count", "url_objects", "liked"
-}) public class Comment {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+    "created_at", "disable_reply", "floor_number", "id", "idstr", "mid", "reply_comment",
+    "reply_original_text", "rootid", "status", "text", "user"
+})
+public class Comment {
 
     @JsonProperty("created_at")
     private String createdAt;
-    @JsonProperty("id")
-    private Long id;
-    @JsonProperty("rootid")
-    private Long rootid;
+    @JsonProperty("disable_reply")
+    private Integer disableReply;
     @JsonProperty("floor_number")
     private Integer floorNumber;
-    @JsonProperty("text")
-    private String text;
-    @JsonProperty("source_allowclick")
-    private Integer sourceAllowclick;
-    @JsonProperty("source_type")
-    private Integer sourceType;
-    @JsonProperty("source")
-    private String source;
-    @JsonProperty("user")
-    private User user;
-    @JsonProperty("mid")
-    private String mid;
+    @JsonProperty("id")
+    private Long id;
     @JsonProperty("idstr")
     private String idstr;
+    @JsonProperty("mid")
+    private String mid;
+    @JsonProperty("reply_comment")
+    private Comment replyComment;
+    @JsonProperty("reply_original_text")
+    private String replyOriginalText;
+    @JsonProperty("rootid")
+    private Long rootid;
     @JsonProperty("status")
-    private Weibo weibo;
-    @JsonProperty("like_count")
-    private Long likeCount;
-    @JsonProperty("reply_count")
-    private Long replyCount;
-    @JsonProperty("url_objects")
-    private List<Object> urlObjects = null;
-    @JsonProperty("liked")
-    private Boolean liked;
+    private Weibo status;
+    @JsonProperty("text")
+    private String text;
+    @JsonProperty("user")
+    private User user;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonProperty("created_at")
     public String getCreatedAt() {
@@ -58,24 +53,14 @@ import java.util.List;
         this.createdAt = createdAt;
     }
 
-    @JsonProperty("id")
-    public Long getId() {
-        return id;
+    @JsonProperty("disable_reply")
+    public Integer getDisableReply() {
+        return disableReply;
     }
 
-    @JsonProperty("id")
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @JsonProperty("rootid")
-    public Long getRootid() {
-        return rootid;
-    }
-
-    @JsonProperty("rootid")
-    public void setRootid(Long rootid) {
-        this.rootid = rootid;
+    @JsonProperty("disable_reply")
+    public void setDisableReply(Integer disableReply) {
+        this.disableReply = disableReply;
     }
 
     @JsonProperty("floor_number")
@@ -88,64 +73,14 @@ import java.util.List;
         this.floorNumber = floorNumber;
     }
 
-    @JsonProperty("text")
-    public String getText() {
-        return text;
+    @JsonProperty("id")
+    public Long getId() {
+        return id;
     }
 
-    @JsonProperty("text")
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    @JsonProperty("source_allowclick")
-    public Integer getSourceAllowclick() {
-        return sourceAllowclick;
-    }
-
-    @JsonProperty("source_allowclick")
-    public void setSourceAllowclick(Integer sourceAllowclick) {
-        this.sourceAllowclick = sourceAllowclick;
-    }
-
-    @JsonProperty("source_type")
-    public Integer getSourceType() {
-        return sourceType;
-    }
-
-    @JsonProperty("source_type")
-    public void setSourceType(Integer sourceType) {
-        this.sourceType = sourceType;
-    }
-
-    @JsonProperty("source")
-    public String getSource() {
-        return source;
-    }
-
-    @JsonProperty("source")
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    @JsonProperty("user")
-    public User getUser() {
-        return user;
-    }
-
-    @JsonProperty("user")
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @JsonProperty("mid")
-    public String getMid() {
-        return mid;
-    }
-
-    @JsonProperty("mid")
-    public void setMid(String mid) {
-        this.mid = mid;
+    @JsonProperty("id")
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @JsonProperty("idstr")
@@ -158,53 +93,83 @@ import java.util.List;
         this.idstr = idstr;
     }
 
+    @JsonProperty("mid")
+    public String getMid() {
+        return mid;
+    }
+
+    @JsonProperty("mid")
+    public void setMid(String mid) {
+        this.mid = mid;
+    }
+
+    @JsonProperty("reply_comment")
+    public Comment getReplyComment() {
+        return replyComment;
+    }
+
+    @JsonProperty("reply_comment")
+    public void setReplyComment(Comment replyComment) {
+        this.replyComment = replyComment;
+    }
+
+    @JsonProperty("reply_original_text")
+    public String getReplyOriginalText() {
+        return replyOriginalText;
+    }
+
+    @JsonProperty("reply_original_text")
+    public void setReplyOriginalText(String replyOriginalText) {
+        this.replyOriginalText = replyOriginalText;
+    }
+
+    @JsonProperty("rootid")
+    public Long getRootid() {
+        return rootid;
+    }
+
+    @JsonProperty("rootid")
+    public void setRootid(Long rootid) {
+        this.rootid = rootid;
+    }
+
     @JsonProperty("status")
     public Weibo getWeibo() {
-        return weibo;
+        return status;
     }
 
     @JsonProperty("status")
-    public void setWeibo(Weibo weibo) {
-        this.weibo = weibo;
+    public void setWeibo(Weibo status) {
+        this.status = status;
     }
 
-    @JsonProperty("like_count")
-    public Long getLikeCount() {
-        return likeCount;
+    @JsonProperty("text")
+    public String getText() {
+        return text;
     }
 
-    @JsonProperty("like_count")
-    public void setLikeCount(Long likeCount) {
-        this.likeCount = likeCount;
+    @JsonProperty("text")
+    public void setText(String text) {
+        this.text = text;
     }
 
-    @JsonProperty("reply_count")
-    public Long getReplyCount() {
-        return replyCount;
+    @JsonProperty("user")
+    public User getUser() {
+        return user;
     }
 
-    @JsonProperty("reply_count")
-    public void setReplyCount(Long replyCount) {
-        this.replyCount = replyCount;
+    @JsonProperty("user")
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    @JsonProperty("url_objects")
-    public List<Object> getUrlObjects() {
-        return urlObjects;
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
-    @JsonProperty("url_objects")
-    public void setUrlObjects(List<Object> urlObjects) {
-        this.urlObjects = urlObjects;
-    }
-
-    @JsonProperty("liked")
-    public Boolean getLiked() {
-        return liked;
-    }
-
-    @JsonProperty("liked")
-    public void setLiked(Boolean liked) {
-        this.liked = liked;
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
 }

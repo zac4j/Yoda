@@ -62,14 +62,6 @@
     </LinearLayout>
 
     <TextView
-        android:id="@id/comment_list_item_tv_post_source"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        tools:text="Weibo.com"
-        />
-
-    <TextView
         android:id="@id/comment_list_item_tv_comment_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

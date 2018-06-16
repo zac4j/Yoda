@@ -59,7 +59,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     private long mWeiboId;
     private Weibo mWeibo;
     private String mToken;
-    private int mLastInsertPosition;
+
     List<Object> mWeiboDetails = new ArrayList<>();
 
     @Override
@@ -104,11 +104,7 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
         } else {
             showEmptyView(true);
         }
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
         fetchWeiboComments(mWeiboId);
     }
 
@@ -172,25 +168,18 @@ public class WeiboDetailActivity extends BaseActivity implements WeiboDetailView
     @Override
     public void showWeiboComments(List<Comment> commentList) {
         int insertPosition = mWeiboDetails.size();
-        mAdapter.setWeiboDetails(mWeiboDetails);
 
         if (mWeiboDetails.isEmpty()) {
             WeiboView weiboView = new WeiboView(WeiboDetailActivity.this);
             weiboView.setAdapter(new WeiboAdapter(mWeibo));
             addWeiboClickListeners(weiboView);
             mWeiboDetails.add(weiboView);
-        }
 
-        //if (mLastInsertPosition != 0) {
-        //    Comment lastComment = (Comment) mWeiboDetails.get(mLastInsertPosition);
-        //    if (lastComment.getId().equals(commentList.get(0).getId())) {
-        //        return;
-        //    }
-        //}
+            mAdapter.setWeiboDetails(mWeiboDetails);
+        }
 
         mWeiboDetails.addAll(commentList);
         mAdapter.notifyItemInserted(insertPosition);
-        mLastInsertPosition = insertPosition;
     }
 
     private void addWeiboClickListeners(final WeiboView weiboView) {

@@ -1,7 +1,6 @@
 package com.zac4j.yoda.ui.adapter;
 
 import android.content.Context;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,8 +125,6 @@ public class WeiboDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView mUsernameView;
         @BindView(R.id.comment_list_item_tv_post_time)
         TextView mPostTimeView;
-        @BindView(R.id.comment_list_item_tv_post_source)
-        TextView mPostSourceView;
         @BindView(R.id.comment_list_item_tv_comment_content)
         TextView mCommentContentView;
 
@@ -139,7 +136,6 @@ public class WeiboDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         void bindTo(Comment comment) {
             WeiboReader reader = WeiboReader.getInstance();
             reader.readPostTime(mPostTimeView, comment.getCreatedAt());
-            reader.readPostSource(mPostSourceView, comment.getSource());
             reader.readTextContent(mCommentContentView, comment.getText());
 
             showCommentUser(comment.getUser());
@@ -156,38 +152,4 @@ public class WeiboDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    private static class DiffCallback extends DiffUtil.Callback {
-
-        private List<Comment> mOldList;
-        private List<Comment> mNewList;
-
-        public DiffCallback(List<Comment> oldList, List<Comment> newList) {
-            mOldList = oldList;
-            mNewList = newList;
-        }
-
-        @Override
-        public int getOldListSize() {
-            return mOldList.size();
-        }
-
-        @Override
-        public int getNewListSize() {
-            return mNewList.size();
-        }
-
-        @Override
-        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return mOldList.get(oldItemPosition)
-                .getId()
-                .equals(mNewList.get(newItemPosition).getId());
-        }
-
-        @Override
-        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            return mOldList.get(oldItemPosition)
-                .getText()
-                .equals(mNewList.get(newItemPosition).getText());
-        }
-    }
 }
