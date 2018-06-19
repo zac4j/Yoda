@@ -1,7 +1,10 @@
 package com.zac4j.yoda.ui.main;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
@@ -10,12 +13,16 @@ import android.support.v7.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
+import com.zac4j.yoda.InjectorHelper;
 import com.zac4j.yoda.R;
+import com.zac4j.yoda.data.EmotionRepository;
+import com.zac4j.yoda.data.model.EmotionEntry;
 import com.zac4j.yoda.ui.adapter.MainPagerAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.login.LoginActivity;
 import com.zac4j.yoda.ui.weibo.send.WeiboSendActivity;
 import com.zac4j.yoda.util.BottomNavigationHelper;
+import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
@@ -39,6 +46,7 @@ public class MainActivity extends BaseActivity {
         R.id.main_nav_home, R.id.main_nav_hot, R.id.main_nav_notification, R.id.main_nav_message,
         R.id.main_nav_user
     };
+    private MainActivityViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,9 @@ public class MainActivity extends BaseActivity {
             mWriteBtn.setOnClickListener(
                 v -> startActivity(new Intent(MainActivity.this, WeiboSendActivity.class)));
         }
+
+        MainViewModelFactory factory = InjectorHelper.provideMainActivityViewModelFactory(this);
+        mViewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
 
         mMainContainer.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
         BottomNavigationHelper.disableShiftMode(mBottomNavigationView);

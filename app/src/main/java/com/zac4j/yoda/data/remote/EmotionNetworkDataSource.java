@@ -72,6 +72,7 @@ public class EmotionNetworkDataSource {
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                     if (response.isSuccessful()) {
                         String json = Objects.requireNonNull(response.body()).string();
+                        System.out.println("json >>>> " + json);
                         ObjectMapper mapper = new ObjectMapper();
                         List<EmotionEntry> emotionEntryList = mapper.readValue(json, new TypeReference<List<EmotionEntry>>(){});
                         mEmotionList.postValue(emotionEntryList);

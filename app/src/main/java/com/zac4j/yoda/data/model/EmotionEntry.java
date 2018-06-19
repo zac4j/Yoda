@@ -4,6 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -19,17 +20,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "phrase",
-    "type",
-    "url",
-    "hot",
-    "common",
-    "category",
-    "icon",
-    "value",
-    "picid"
+    "phrase", "type", "url", "hot", "common", "category", "icon", "value", "picid"
 })
-@Entity(tableName = "emotion", indices = {@Index(value = {"phrase"}, unique = true)})
+@Entity(tableName = "emotion", indices = { @Index(value = { "phrase" }, unique = true) })
 public class EmotionEntry {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -51,11 +44,18 @@ public class EmotionEntry {
     private String value;
     @JsonProperty("picid")
     private String picid;
+    @Ignore
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @Ignore
+    public EmotionEntry() {
+
+    }
 
     @Ignore
     public EmotionEntry(String phrase, String type, String url, Boolean hot, Boolean common,
         String category, String icon, String value, String picid) {
-        this.id = id;
         this.phrase = phrase;
         this.type = type;
         this.url = url;
@@ -176,4 +176,13 @@ public class EmotionEntry {
         this.picid = picid;
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
 }

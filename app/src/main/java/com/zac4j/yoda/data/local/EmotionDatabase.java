@@ -20,7 +20,7 @@ public abstract class EmotionDatabase extends RoomDatabase {
     private static final Object LOCK = new Object();
     private static EmotionDatabase sInstance;
 
-    private static EmotionDatabase getInstance(Context context) {
+    public static EmotionDatabase getInstance(Context context) {
         Log.d(TAG, "Getting the database");
         if (sInstance == null) {
             synchronized (LOCK) {
