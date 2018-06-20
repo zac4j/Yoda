@@ -150,6 +150,7 @@ public class WeiboParser {
                 break;
             case SPAN_EMOJI:
                 String emojiName = spannableString.subSequence(startIndex + 1, endIndex - 1).toString();
+
                 //clickableSpan = new URLSpan(Emotion.parseEmoji(emojiName));
                 break;
         }

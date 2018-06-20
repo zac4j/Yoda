@@ -1,10 +1,8 @@
 package com.zac4j.yoda.ui.main;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
@@ -15,14 +13,12 @@ import butterknife.ButterKnife;
 import com.sina.weibo.sdk.auth.sso.AccessTokenKeeper;
 import com.zac4j.yoda.InjectorHelper;
 import com.zac4j.yoda.R;
-import com.zac4j.yoda.data.EmotionRepository;
-import com.zac4j.yoda.data.model.EmotionEntry;
 import com.zac4j.yoda.ui.adapter.MainPagerAdapter;
 import com.zac4j.yoda.ui.base.BaseActivity;
 import com.zac4j.yoda.ui.login.LoginActivity;
 import com.zac4j.yoda.ui.weibo.send.WeiboSendActivity;
 import com.zac4j.yoda.util.BottomNavigationHelper;
-import java.util.List;
+import com.zac4j.yoda.util.image.EmotionManager;
 
 public class MainActivity extends BaseActivity {
 
@@ -67,6 +63,12 @@ public class MainActivity extends BaseActivity {
 
         MainViewModelFactory factory = InjectorHelper.provideMainActivityViewModelFactory(this);
         mViewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
+        mViewModel.getEmotions().observe(this, emotionEntries -> {
+            if (emotionEntries == null || emotionEntries.isEmpty()) {
+                return;
+            }
+            EmotionManager.getInstance().saveEmotions(emotionEntries);
+        });
 
         mMainContainer.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
         BottomNavigationHelper.disableShiftMode(mBottomNavigationView);
