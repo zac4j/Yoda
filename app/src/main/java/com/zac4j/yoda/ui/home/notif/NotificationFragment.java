@@ -20,8 +20,8 @@ import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Comment;
 import com.zac4j.yoda.data.model.User;
 import com.zac4j.yoda.data.model.db.Profile;
-import com.zac4j.yoda.ui.adapter.NotifCommentAdapter;
-import com.zac4j.yoda.ui.adapter.NotifFollowerAdapter;
+import com.zac4j.yoda.ui.adapter.NotifyCommentAdapter;
+import com.zac4j.yoda.ui.adapter.NotifyFollowerAdapter;
 import com.zac4j.yoda.ui.base.BaseFragment;
 import com.zac4j.yoda.ui.user.detail.UserDetailDialogFragment;
 import java.util.List;
@@ -37,9 +37,9 @@ public class NotificationFragment extends BaseFragment implements NotificationVi
     @Inject
     NotificationPresenter mPresenter;
     @Inject
-    NotifCommentAdapter mCommentAdapter;
+    NotifyCommentAdapter mCommentAdapter;
     @Inject
-    NotifFollowerAdapter mFollowerAdapter;
+    NotifyFollowerAdapter mFollowerAdapter;
 
     @BindView(R.id.home_notif_gv_at_me_avatars)
     GridView mAvatarContainer;

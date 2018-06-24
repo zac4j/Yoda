@@ -35,14 +35,14 @@ import java.io.IOException;
     class BitmapSizeDecoder implements ResourceDecoder<File, BitmapFactory.Options> {
 
         @Override
-        public boolean handles(@NonNull File source, @NonNull Options options) throws IOException {
+        public boolean handles(@NonNull File source, @NonNull Options options) {
             return true;
         }
 
         @Nullable
         @Override
         public Resource<BitmapFactory.Options> decode(@NonNull File source, int width, int height,
-            @NonNull Options options) throws IOException {
+            @NonNull Options options) {
             BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
             bitmapOptions.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(source.getAbsolutePath(), bitmapOptions);

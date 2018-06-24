@@ -2,16 +2,22 @@ package com.zac4j.yoda.util.weibo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.TextView;
 import com.zac4j.yoda.CurrentActivityProvider;
 import com.zac4j.yoda.ui.BrowserActivity;
 import com.zac4j.yoda.util.StringUtil;
+import com.zac4j.yoda.util.image.EmotionManager;
+import com.zac4j.yoda.util.loader.WeiboImageLoader;
+import org.w3c.dom.Text;
 
 /**
  * Text process helper
@@ -44,6 +50,7 @@ public class WeiboParser {
         boolean hasSharpSignal = false;// if has #Topic# signal
         boolean hasLinkSignal = false; // if has http/https link signal
         boolean hasEmojiSignal = false; // if has emoji link signal
+        boolean isAsyncProcessing = false; // load emoji is a async process.
 
         textView.setVisibility(View.VISIBLE);
 
@@ -57,7 +64,7 @@ public class WeiboParser {
                 if (content.charAt(i) == ' '
                     || content.charAt(i) == ':'
                     || content.charAt(i) == '：') {
-                    setSpan(SPAN_NAME, spannableString, nameStartIndex, i);
+                    setSpan(textView, SPAN_NAME, spannableString, nameStartIndex, i);
                     hasAtSignal = false;
                 }
             }
@@ -70,7 +77,7 @@ public class WeiboParser {
 
             if (hasSharpSignal && i > topicStartIndex && i < content.length() - 1) {
                 if (content.charAt(i) == '#') {
-                    setSpan(SPAN_TOPIC, spannableString, topicStartIndex, i + 1);
+                    setSpan(textView, SPAN_TOPIC, spannableString, topicStartIndex, i + 1);
                     hasSharpSignal = false;
                 }
             }
@@ -85,7 +92,7 @@ public class WeiboParser {
 
             if (hasLinkSignal && i > linkStartIndex) {
                 if (content.charAt(i) == ' ' || StringUtil.isChinese(content.charAt(i))) {
-                    setSpan(SPAN_LINK, spannableString, linkStartIndex, i);
+                    setSpan(textView, SPAN_LINK, spannableString, linkStartIndex, i);
                     hasLinkSignal = false;
                 }
             }
@@ -98,36 +105,41 @@ public class WeiboParser {
             if (hasEmojiSignal && i > emojiStartIndex && i < content.length() - 1) {
                 if (content.charAt(i) == ']') {
                     hasEmojiSignal = false;
-                    setSpan(SPAN_EMOJI, spannableString, emojiStartIndex, i);
+                    isAsyncProcessing = true;
+                    setSpan(textView, SPAN_EMOJI, spannableString, emojiStartIndex, i + 1);
                 }
             }
 
             if (i == content.length() - 1) {
                 if (hasAtSignal) {
-                    setSpan(SPAN_NAME, spannableString, nameStartIndex, i + 1);
+                    setSpan(textView, SPAN_NAME, spannableString, nameStartIndex, i + 1);
                     hasAtSignal = false;
                 } else if (hasSharpSignal) {
-                    setSpan(SPAN_TOPIC, spannableString, topicStartIndex, i + 1);
+                    setSpan(textView, SPAN_TOPIC, spannableString, topicStartIndex, i + 1);
                     hasSharpSignal = false;
                 } else if (hasLinkSignal) {
-                    setSpan(SPAN_LINK, spannableString, linkStartIndex, i + 1);
+                    setSpan(textView, SPAN_LINK, spannableString, linkStartIndex, i + 1);
                     hasLinkSignal = false;
                 } else if (hasEmojiSignal) {
-                    setSpan(SPAN_EMOJI, spannableString, emojiStartIndex, i);
+                    isAsyncProcessing = true;
+                    setSpan(textView, SPAN_EMOJI, spannableString, emojiStartIndex, i + 1);
                 }
             }
 
-            textView.setText(spannableString);
-            textView.setMovementMethod(LinkMovementMethod.getInstance());
+            if (!isAsyncProcessing) {
+                textView.setText(spannableString, TextView.BufferType.SPANNABLE);
+                textView.setMovementMethod(LinkMovementMethod.getInstance());
+            }
         }
     }
 
-    private static void setSpan(int spanType, SpannableString spannableString, int startIndex,
+    private static void setSpan(TextView textView, int spanType, SpannableString spannableString, int startIndex,
         int endIndex) {
         if (startIndex >= endIndex) {
             return;
         }
 
+        boolean shouldSetSpan = true;
         ClickableSpan clickableSpan = null;
         CharSequence spanContent = spannableString.subSequence(startIndex, endIndex);
         switch (spanType) {
@@ -149,16 +161,20 @@ public class WeiboParser {
                 };
                 break;
             case SPAN_EMOJI:
-                String emojiName = spannableString.subSequence(startIndex + 1, endIndex - 1).toString();
-
-                //clickableSpan = new URLSpan(Emotion.parseEmoji(emojiName));
+                String emojiName = spannableString.subSequence(startIndex, endIndex).toString();
+                String emojiUrl = EmotionManager.getInstance().getEmotion(emojiName);
+                WeiboImageLoader.loadEmoji(textView, emojiUrl, spannableString, startIndex,
+                    endIndex);
+                shouldSetSpan = false;
                 break;
         }
 
         // System.out.println("startIndex: " + startIndex + " : " + "endIndex: " + endIndex);
 
-        spannableString.setSpan(clickableSpan, startIndex, endIndex,
-            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (shouldSetSpan) {
+            spannableString.setSpan(clickableSpan, startIndex, endIndex,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
     }
 
     private static void dispatchSpanClickEvent(int spanType, CharSequence spanContent) {

@@ -19,13 +19,13 @@ import javax.inject.Inject;
  * Created by zaccc on 6/8/2017.
  */
 
-public class NotifFollowerAdapter extends BaseAdapter {
+public class NotifyFollowerAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<User> mUserList;
 
     @Inject
-    public NotifFollowerAdapter(@ActivityContext Context context) {
+    public NotifyFollowerAdapter(@ActivityContext Context context) {
         mContext = context;
         mUserList = new ArrayList<>();
     }

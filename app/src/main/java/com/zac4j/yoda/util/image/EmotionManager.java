@@ -1,6 +1,8 @@
 package com.zac4j.yoda.util.image;
 
+import android.text.style.ImageSpan;
 import com.zac4j.yoda.data.model.EmotionEntry;
+import com.zac4j.yoda.util.loader.WeiboImageLoader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +37,7 @@ public class EmotionManager {
             emotionContainer = new HashMap<>();
             mInitializedEmotionContainer = true;
         }
-        // Save emotions into memory
+        // Save emotions url into memory
         for (EmotionEntry entry : emotionEntries) {
             emotionContainer.put(entry.getPhrase(), entry.getIcon());
         }

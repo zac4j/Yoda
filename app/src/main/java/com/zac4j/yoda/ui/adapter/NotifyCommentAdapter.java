@@ -23,13 +23,13 @@ import javax.inject.Inject;
  * Created by zac on 17-5-11.
  */
 
-public class NotifCommentAdapter extends RecyclerView.Adapter<NotifCommentAdapter.ViewHolder> {
+public class NotifyCommentAdapter extends RecyclerView.Adapter<NotifyCommentAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Comment> mCommentList;
 
     @Inject
-    public NotifCommentAdapter(@ActivityContext Context context) {
+    public NotifyCommentAdapter(@ActivityContext Context context) {
         mContext = context;
         mCommentList = new ArrayList<>();
     }
