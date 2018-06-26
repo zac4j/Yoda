@@ -5,14 +5,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.zac4j.yoda.R;
 import com.zac4j.yoda.data.model.Size;
 import com.zac4j.yoda.util.image.GlideApp;
 
@@ -51,13 +50,15 @@ public class WeiboImageLoader {
         SpannableString spannableString, int startIndex, int endIndex) {
         GlideApp.with(textView.getContext())
             .load(emojiUrl)
+            .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.RESOURCE))
             .into(new SimpleTarget<Drawable>() {
                 @Override
                 public void onResourceReady(@NonNull Drawable resource,
                     @Nullable Transition<? super Drawable> transition) {
+                    resource.setBounds(0, 0, 48, 48);
                     ImageSpan imageSpan = new ImageSpan(resource);
                     spannableString.setSpan(imageSpan, startIndex, endIndex,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
                     textView.setText(spannableString, TextView.BufferType.SPANNABLE);
                 }
             });
