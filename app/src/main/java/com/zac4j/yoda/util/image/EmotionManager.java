@@ -1,8 +1,6 @@
 package com.zac4j.yoda.util.image;
 
-import android.text.style.ImageSpan;
 import com.zac4j.yoda.data.model.EmotionEntry;
-import com.zac4j.yoda.util.loader.WeiboImageLoader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +42,10 @@ public class EmotionManager {
     }
 
     public String getEmotion(String phrase) {
-        return emotionContainer.get(phrase);
+        if (emotionContainer != null) {
+            return emotionContainer.get(phrase);
+        }
+        return "";
     }
 
 }
